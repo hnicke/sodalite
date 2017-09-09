@@ -1,0 +1,28 @@
+#!/bin/bash  
+
+## set up environment
+export SODALITE_APPNAME=sodalite
+export XDG_CONFIG=${XDG_CONFIG_HOME:-$HOME/.config}
+export XDG_DATA=${XDG_DATA_HOME:-$HOME/.local/share}
+export CONFIG_DIR=${XDG_CONFIG}/$SODALITE_APPNAME
+export DATA_DIR=${XDG_DATA}/$SODALITE_APPNAME
+mkdir -p $CONFIG_DIR $DATA_DIR &2> /dev/null
+export SODALITE_DB_PATH=${DATA_DIR}/db.sqlite
+[ -f $SODALITE_DB_PATH ] || \
+    echo "CREATE TABLE IF NOT EXISTS files (
+    name text NOT NULL,
+    parent text NOT NULL,
+    key text NOT NULL,
+    frequency INTEGER NOT NULL DEFAULT 0,
+    PRIMARY KEY ( name, parent )
+);" | sqlite3 $SODALITE_DB_PATH
+
+# handle config
+export SODALITE_CONFIG_PATH=${CONFIG_DIR}/sodalite.rc
+[ -f $SODALITE_CONFIG_PATH ] || cp $(dirname $(readlink -f "$0"))/example.rc $SODALITE_CONFIG_PATH
+
+# adjust the delay time in ms curses waits for an escape sequence to happen after pressing ESC
+export ESCDELAY=0
+setterm -cursor off
+python $(dirname $(readlink -f "$0"))/frame.py
+setterm -cursor on

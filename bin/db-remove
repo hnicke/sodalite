@@ -1,0 +1,2 @@
+#!/bin/bash  
+rm $HOME/.local/share/sodalite/db.sqlite

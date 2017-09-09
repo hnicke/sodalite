@@ -1,0 +1,110 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+AssignForm	bin/frame.py	/^class AssignForm(npyscreen.FormMuttActiveTraditional):$/;"	c
+AssignPane	bin/assignpane.py	/^class AssignPane(entrypane.EntryPane,npyscreen.MultiLineAction):$/;"	c
+Core	bin/core.py	/^class Core:$/;"	c
+Entry	bin/entry.py	/^class Entry:$/;"	c
+EntryPane	bin/entrypane.py	/^class EntryPane:$/;"	c
+Enum	bin/assignpane.py	/^from enum import Enum$/;"	i
+Frame	bin/frame.py	/^class Frame(npyscreen.NPSAppManaged):$/;"	c
+Key	bin/key.py	/^class Key:$/;"	c
+MAIN_WIDGET_CLASS	bin/frame.py	/^    MAIN_WIDGET_CLASS = assignpane.AssignPane$/;"	v	class:AssignForm
+MAIN_WIDGET_CLASS	bin/frame.py	/^    MAIN_WIDGET_CLASS = navigationpane.NavigationPane$/;"	v	class:NavigationForm
+NavigationForm	bin/frame.py	/^class NavigationForm(npyscreen.FormMuttActiveTraditional):$/;"	c
+NavigationPane	bin/navigationpane.py	/^class NavigationPane(entrypane.EntryPane,npyscreen.Pager):$/;"	c
+__eq__	bin/entry.py	/^    def __eq__( self, other ):$/;"	m	class:Entry	file:
+__eq__	bin/key.py	/^    def __eq__( self, other ):$/;"	m	class:Key	file:
+__hash__	bin/entry.py	/^    def __hash__( self ):$/;"	m	class:Entry	file:
+__hash__	bin/key.py	/^    def __hash__( self ):$/;"	m	class:Key	file:
+__init__	bin/assignpane.py	/^    def __init__(self, *args, **keywords):$/;"	m	class:AssignPane
+__init__	bin/core.py	/^    def __init__(self, cwd="\/" ):$/;"	m	class:Core
+__init__	bin/entry.py	/^    def __init__( self, name, parent ):$/;"	m	class:Entry
+__init__	bin/entrypane.py	/^    def __init__(self):$/;"	m	class:EntryPane
+__init__	bin/frame.py	/^    def __init__(self, *args, **keywords):$/;"	m	class:AssignForm
+__init__	bin/frame.py	/^    def __init__(self, *args, **keywords):$/;"	m	class:NavigationForm
+__init__	bin/key.py	/^    def __init__( self, value ):$/;"	m	class:Key
+__init__	bin/navigationpane.py	/^    def __init__(self, *args, **keywords):$/;"	m	class:NavigationPane
+__key	bin/entry.py	/^    def __key( self ):$/;"	m	class:Entry	file:
+__key	bin/key.py	/^    def __key( self ):$/;"	m	class:Key	file:
+__lt__	bin/key.py	/^    def __lt__( self, other ):$/;"	m	class:Key	file:
+__str__	bin/entry.py	/^    def __str__( self ):$/;"	m	class:Entry	file:
+__str__	bin/key.py	/^    def __str__( self ):$/;"	m	class:Key	file:
+add_new_entries_to_db	bin/core.py	/^    def add_new_entries_to_db( self, entries_filesystem, entries_db ):$/;"	m	class:Core
+all_keys	bin/key.py	/^all_keys = []$/;"	v
+app	bin/frame.py	/^    app = Frame()$/;"	v
+assign_key	bin/assignpane.py	/^    def assign_key(self, input):$/;"	m	class:AssignPane
+assign_key	bin/core.py	/^    def assign_key(self, entry, char ):$/;"	m	class:Core
+assign_keys	bin/key.py	/^def assign_keys( new_entries, old_entries ):$/;"	f
+assignpane	bin/frame.py	/^import assignpane$/;"	i
+beforeEditing	bin/frame.py	/^    def beforeEditing(self):$/;"	m	class:AssignForm
+change_dir	bin/navigationpane.py	/^    def change_dir(self, dir):$/;"	m	class:NavigationPane
+change_to_key	bin/core.py	/^    def change_to_key( self, key):$/;"	m	class:Core
+choose_entry	bin/assignpane.py	/^    def choose_entry(self, entry ):$/;"	m	class:AssignPane
+compute_key_rank	bin/key.py	/^    def compute_key_rank( self ):$/;"	m	class:Key
+core	bin/frame.py	/^import core$/;"	i
+curses	bin/assignpane.py	/^import curses$/;"	i
+curses	bin/entrypane.py	/^import curses$/;"	i
+curses	bin/frame.py	/^import curses$/;"	i
+display_value	bin/entrypane.py	/^    def display_value( self, vl ):$/;"	m	class:EntryPane
+entry	bin/navigationpane.py	/^import entry$/;"	i
+entry_module	bin/core.py	/^import entry as entry_module$/;"	i
+entrypane	bin/assignpane.py	/^import entrypane$/;"	i
+entrypane	bin/navigationpane.py	/^import entrypane$/;"	i
+fh	bin/mylogger.py	/^fh = logging.FileHandler(os.getenv('HOME') + '\/dev\/sodalite\/bin\/debug.log')$/;"	v
+formatter	bin/mylogger.py	/^formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')$/;"	v
+get_absolute_path	bin/entry.py	/^    def get_absolute_path( self ):$/;"	m	class:Entry
+get_all_keys	bin/key.py	/^def get_all_keys():$/;"	f
+get_available_keys	bin/key.py	/^def get_available_keys( old_entries ):$/;"	f
+get_entry	bin/entry.py	/^def get_entry( path ):$/;"	f
+h_abort	bin/assignpane.py	/^    def h_abort(self, input):$/;"	m	class:AssignPane
+h_choose_selection	bin/assignpane.py	/^    def h_choose_selection( self, input):$/;"	m	class:AssignPane
+h_enter_assign_mode	bin/frame.py	/^    def h_enter_assign_mode(self, input):$/;"	m	class:NavigationForm
+h_exit	bin/frame.py	/^    def h_exit(self, input):$/;"	m	class:NavigationForm
+h_exit_assign_mode	bin/frame.py	/^    def h_exit_assign_mode(self, input):$/;"	m	class:AssignForm
+h_scroll_half_page_down	bin/entrypane.py	/^    def h_scroll_half_page_down(self, input):$/;"	m	class:EntryPane
+h_scroll_half_page_up	bin/entrypane.py	/^    def h_scroll_half_page_up(self, input):$/;"	m	class:EntryPane
+h_scroll_page_down	bin/entrypane.py	/^    def h_scroll_page_down(self, input):$/;"	m	class:EntryPane
+h_scroll_page_up	bin/entrypane.py	/^    def h_scroll_page_up(self, input):$/;"	m	class:EntryPane
+input_is_navigation_key	bin/entrypane.py	/^    def input_is_navigation_key(self, input):$/;"	m	class:EntryPane
+key	bin/assignpane.py	/^import key$/;"	i
+key	bin/core.py	/^import key$/;"	i
+key	bin/entry.py	/^import key$/;"	i
+key	bin/entrypane.py	/^import key$/;"	i
+logger	bin/assignpane.py	/^from mylogger import logger$/;"	i
+logger	bin/core.py	/^from mylogger import logger$/;"	i
+logger	bin/entrypane.py	/^from mylogger import logger$/;"	i
+logger	bin/frame.py	/^from mylogger import logger$/;"	i
+logger	bin/mylogger.py	/^logger = logging.getLogger('sodalite')$/;"	v
+logger	bin/navigationpane.py	/^from mylogger import logger$/;"	i
+logging	bin/mylogger.py	/^import logging$/;"	i
+navigate_to_key	bin/navigationpane.py	/^    def navigate_to_key(self, input):$/;"	m	class:NavigationPane
+navigationpane	bin/frame.py	/^import navigationpane$/;"	i
+npyscreen	bin/assignpane.py	/^import npyscreen$/;"	i
+npyscreen	bin/frame.py	/^import npyscreen$/;"	i
+npyscreen	bin/navigationpane.py	/^import npyscreen $/;"	i
+onCleanExit	bin/frame.py	/^    def onCleanExit(self):$/;"	m	class:Frame
+onStart	bin/frame.py	/^    def onStart(self):$/;"	m	class:Frame
+os	bin/core.py	/^import os$/;"	i
+os	bin/entry.py	/^import os$/;"	i
+os	bin/mylogger.py	/^import os$/;"	i
+os	bin/navigationpane.py	/^import os$/;"	i
+remove_old_entries	bin/core.py	/^    def remove_old_entries( self, entries_filesystem, entries_db ):$/;"	m	class:Core
+retrieve_entries_from_db	bin/core.py	/^    def retrieve_entries_from_db ( self, entry ):$/;"	m	class:Core
+retrieve_entries_from_filesystem	bin/core.py	/^    def retrieve_entries_from_filesystem( self, entry ):$/;"	m	class:Core
+set_title	bin/frame.py	/^    def set_title(self, title):$/;"	m	class:NavigationForm
+set_title_to_cwd	bin/frame.py	/^    def set_title_to_cwd(self):$/;"	m	class:NavigationForm
+shuffle	bin/key.py	/^from random import shuffle $/;"	i
+shutdown	bin/core.py	/^    def shutdown(self):$/;"	m	class:Core
+sqlite3	bin/core.py	/^import sqlite3$/;"	i
+string	bin/key.py	/^import string$/;"	i
+sys	bin/frame.py	/^import sys$/;"	i
+sys	bin/navigationpane.py	/^import sys$/;"	i
+time	bin/entrypane.py	/^import time$/;"	i
+unite_data	bin/core.py	/^    def unite_data( self, entries_filesystem, entries_db ):$/;"	m	class:Core
+update_entries	bin/navigationpane.py	/^    def update_entries(self):$/;"	m	class:NavigationPane
+update_entry	bin/core.py	/^    def update_entry ( self, entry ):$/;"	m	class:Core
+visit_entry	bin/core.py	/^    def visit_entry( self, entry ):$/;"	m	class:Core

@@ -1,0 +1,21 @@
+actions:
+  dir:
+    hooks:
+      ^s: konsole %s
+      ^e: vifm %s %s
+  text:
+    hooks:
+      ^o: vim %s
+
+  image:
+    extensions: [png, jpg]
+    hooks:
+      ^o: feh %s
+  pdf:
+    extensions: [pdf]
+    hooks:
+      ^o: zathura %s
+  hypertext:
+    extensions: [html]
+    hooksL
+      ^o: firefox %s 
