@@ -26,5 +26,5 @@ export SODALITE_CONFIG_PATH=${CONFIG_DIR}/sodalite.rc
 # adjust the delay time in ms curses waits for an escape sequence to happen after pressing ESC
 export ESCDELAY=0
 
-python $(dirname $(readlink -f "$0"))/frame.py
+python $(dirname $(readlink -f "$0"))/main.py
 setterm -cursor on

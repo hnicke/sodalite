@@ -8,7 +8,7 @@ import mainform
 
 
 
-class Frame(npyscreen.NPSAppManaged):
+class App(npyscreen.NPSAppManaged):
     def onStart(self):
         npyscreen.setTheme(theme.Theme)
         self.core = core.Core()
@@ -22,7 +22,7 @@ class Frame(npyscreen.NPSAppManaged):
 
 if __name__ == "__main__":
     logger.info('starting sodalite')
-    app = Frame()
+    app = App()
     try:
         app.run()
     except KeyboardInterrupt:
