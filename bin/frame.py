@@ -1,5 +1,7 @@
 import npyscreen
 import core
+import config
+import actionhook
 from mylogger import logger
 import navigationpane
 import assignpane
@@ -26,12 +28,15 @@ class NavigationForm(npyscreen.FormMuttActiveTraditional):
         self.parentApp.switchForm('ASSIGN')
 
 
-    def set_title(self, title):
-        self.wStatus1.value = title + " "
-        self.wStatus1.display()
-
     def set_title_to_cwd(self):
         self.set_title(self.parentApp.core.current_entry.get_absolute_path())
+
+    def set_title(self, title):
+        self.wStatus1.value = " " + title 
+        self.wStatus1.display()
+
+    def beforeEditing(self):
+        self.wMain.redraw()
 
 class AssignForm(npyscreen.FormMuttActiveTraditional):
     MAIN_WIDGET_CLASS = assignpane.AssignPane
@@ -59,22 +64,26 @@ class ActionForm(npyscreen.FormMuttActiveTraditional):
 
     def __init__(self, *args, **keywords):
         super(ActionForm, self).__init__(*args, **keywords)
-        self.wStatus1.value = "choose action: "
-        self.wStatus1.display()
-
         self.handlers = {
+                curses.ascii.ESC:       self.h_exit, 
                 }
         return
 
+    def h_exit(self, input):
+        sys.exit(0)
+
     def beforeEditing(self):
-        #self.wMain.values = self.parentApp.core.current_entry.children
-        pass
+        self.wStatus1.value = "{} - choose action:".format(self.parentApp.core.current_entry.name)
+        self.wMain.redraw()
+
 
 
 class Frame(npyscreen.NPSAppManaged):
     def onStart(self):
         npyscreen.setTheme(theme.Theme)
         self.core = core.Core()
+        self.config = config.Config()
+        self.action_engine = actionhook.ActionEngine( self.config )
         self.addForm("MAIN", NavigationForm)
         self.addForm("ASSIGN", AssignForm)
         self.addForm("ACTION", ActionForm)

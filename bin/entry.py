@@ -4,6 +4,7 @@ import os
 if os.name == 'nt':
     import win32api, win32con
 from mylogger import logger
+from binaryornot.check import is_binary
 
 class Entry:
 
@@ -46,6 +47,11 @@ class Entry:
         else:
             return self.name.startswith('.')
 
+    def is_file(self):
+        return self.type == 'file'
+    
+    def is_plain_text_file(self):
+        return self.is_file() and not is_binary(self.get_absolute_path())
 
 def sort(entries):
     entries.sort(key=lambda x: x.name)
@@ -53,10 +59,4 @@ def sort(entries):
     entries.sort(key=lambda x: x.is_hidden())
     entries.sort(key=lambda x: x.key.value=="")
     entries.sort(key=lambda x: x.frequency,reverse=True)
-
-
-
-
-
-
 

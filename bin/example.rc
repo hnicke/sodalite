@@ -1,21 +1,42 @@
-actions:
-  dir:
-    hooks:
-      ^s: konsole %s
-      ^e: vifm %s %s
-  text:
-    hooks:
-      ^o: vim %s
+## usage of meta keys:
+# use ^ for ctrl, ! for alt
+# for key bindings with meta keys, always use upper case keys
+# example:
+# '^a' <-- wrong
+# '^A' <-- correct 
 
-  image:
-    extensions: [png, jpg]
-    hooks:
-      ^o: feh %s
-  pdf:
-    extensions: [pdf]
-    hooks:
-      ^o: zathura %s
-  hypertext:
-    extensions: [html]
-    hooksL
-      ^o: firefox %s 
+# key bindings without modifiers are case sensitive:
+# example: 'o' differs from 'O'
+#
+##############
+# variables ################################################################
+# following variables can be used within hooks. they are expanded at runtime:
+# #f:   current entry (filename or dirname)
+# #q:   if hook ends with #q, sodalite will issue the hook and exit
+#       example: vim #f#q
+#       this is usedful if hook is designed to serve as launcher
+#       If the app spawns in another window (like all x apps),
+#       consider spawning the process in the background
+#       (in order for sodalite to exit immediately)
+#       example: zathura #f &#q
+
+# mind the indentation, this is YAML
+actions:
+  text:
+    o: ["vim #f#q", open with vim]
+  dir:
+    ^S: ["konsole #f", drop to shell]
+    ^E: ["vifm #f #f", drop to file manager]
+  custom:
+    image:
+      extensions: [png, jpg]
+      hooks:
+        o: ["feh #f & #q", open with feh]
+    pdf:
+      extensions: [pdf]
+      hooks:
+        o: ["zathura #f#q", open with zathura]
+    hypertext:
+      extensions: [html]
+      hooks:
+        v: ["firefox #f$q", open with firefox]

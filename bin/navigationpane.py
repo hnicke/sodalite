@@ -32,6 +32,8 @@ class NavigationPane(theme.LinePrinter,entrypane.EntryPane,npyscreen.Pager):
     def navigate_to_key(self, input):
         char = chr(input)
         self.core.change_to_key(char)
+        if self.core.current_entry.is_file():
+            self.parent.parentApp.switchForm("ACTION")
         self.redraw()
         return
 
