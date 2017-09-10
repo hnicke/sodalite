@@ -31,10 +31,5 @@ class EntryPane:
         self.start_display_at -= len(self._my_widgets)
         self.cursor_line -= len(self._my_widgets)
 
-    def input_is_navigation_key(self, input):
-        char = chr(input)
-        is_navigation_key = (char in key.get_all_keys() or char == '.')
-        return is_navigation_key
-
     def display_value( self, vl ):
         return "  {}{}".format(vl.key.value.ljust(4), vl.name.ljust(30))

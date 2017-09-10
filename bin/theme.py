@@ -6,7 +6,7 @@ class Theme(npyscreen.ThemeManager):
     'FORMDEFAULT' : 'WHITE_BLACK',
     'NO_EDIT'     : 'BLUE_BLACK',
     'STANDOUT'    : 'YELLOW_BLACK',
-    'CURSOR'      : 'BLUE_BLACK',
+    'CURSOR'      : 'BLACK_YELLOW',
     'CURSOR_INVERSE': 'BLACK_WHITE',
     'LABEL'       : 'GREEN_BLACK',
     'LABELBOLD'   : 'GREEN_BLACK',

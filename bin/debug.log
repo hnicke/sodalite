@@ -981,3 +981,670 @@
 2017-09-10 13:25:43,282 - sodalite - INFO - bye
 2017-09-10 13:26:07,230 - sodalite - INFO - starting sodalite
 2017-09-10 13:26:07,239 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:529]
+2017-09-10 13:31:10,848 - sodalite - INFO - bye
+2017-09-10 13:31:22,113 - sodalite - INFO - starting sodalite
+2017-09-10 13:34:01,713 - sodalite - INFO - bye
+2017-09-10 13:34:02,677 - sodalite - INFO - starting sodalite
+2017-09-10 13:34:20,926 - sodalite - INFO - starting sodalite
+2017-09-10 13:36:42,708 - sodalite - INFO - starting sodalite
+2017-09-10 13:36:51,409 - sodalite - INFO - starting sodalite
+2017-09-10 13:36:51,418 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:530]
+2017-09-10 13:37:16,673 - sodalite - INFO - starting sodalite
+2017-09-10 13:37:16,682 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:531]
+2017-09-10 13:37:29,316 - sodalite - INFO - starting sodalite
+2017-09-10 13:37:29,324 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:532]
+2017-09-10 13:44:30,002 - sodalite - INFO - starting sodalite
+2017-09-10 13:56:52,445 - sodalite - INFO - starting sodalite
+2017-09-10 14:00:45,543 - sodalite - INFO - starting sodalite
+2017-09-10 14:00:45,552 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:533]
+2017-09-10 14:01:12,854 - sodalite - INFO - starting sodalite
+2017-09-10 14:01:12,863 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:534]
+2017-09-10 14:02:52,142 - sodalite - INFO - visitting entry [parent:/home/heiko, name:dev, key:d, type:dir, frequency:148]
+2017-09-10 14:02:53,141 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:535]
+2017-09-10 14:02:53,316 - sodalite - INFO - visitting entry [parent:/, name:home, key:k, type:unknown, frequency:95]
+2017-09-10 14:02:54,288 - sodalite - INFO - visitting entry [parent:/, name:, key:, type:unknown, frequency:0]
+2017-09-10 14:02:54,808 - sodalite - INFO - visitting entry [parent:/, name:, key:, type:unknown, frequency:0]
+2017-09-10 14:02:55,035 - sodalite - INFO - visitting entry [parent:/, name:, key:, type:unknown, frequency:0]
+2017-09-10 14:02:55,549 - sodalite - INFO - visitting entry [parent:/, name:home, key:k, type:dir, frequency:96]
+2017-09-10 14:02:55,914 - sodalite - INFO - visitting entry [parent:/, name:, key:, type:unknown, frequency:0]
+2017-09-10 14:02:57,748 - sodalite - INFO - bye
+2017-09-10 14:03:14,924 - sodalite - INFO - starting sodalite
+2017-09-10 14:03:14,932 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:536]
+2017-09-10 14:03:16,582 - sodalite - INFO - bye
+2017-09-10 14:03:35,501 - sodalite - INFO - starting sodalite
+2017-09-10 14:03:35,510 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:537]
+2017-09-10 14:28:32,101 - sodalite - INFO - starting sodalite
+2017-09-10 14:28:50,619 - sodalite - INFO - starting sodalite
+2017-09-10 14:28:50,628 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:538]
+2017-09-10 14:29:09,869 - sodalite - INFO - starting sodalite
+2017-09-10 14:29:09,877 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:539]
+2017-09-10 14:29:31,287 - sodalite - INFO - visitting entry [parent:/home/heiko, name:Documents, key:k, type:dir, frequency:4]
+2017-09-10 14:29:31,760 - sodalite - INFO - bye
+2017-09-10 14:29:32,409 - sodalite - INFO - starting sodalite
+2017-09-10 14:29:32,417 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:540]
+2017-09-10 14:29:35,244 - sodalite - INFO - bye
+2017-09-10 14:29:44,248 - sodalite - INFO - starting sodalite
+2017-09-10 14:29:44,257 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:541]
+2017-09-10 14:29:46,037 - sodalite - INFO - bye
+2017-09-10 14:30:49,460 - sodalite - INFO - starting sodalite
+2017-09-10 14:30:49,469 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:542]
+2017-09-10 14:30:50,587 - sodalite - INFO - bye
+2017-09-10 14:31:00,410 - sodalite - INFO - starting sodalite
+2017-09-10 14:31:00,419 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:543]
+2017-09-10 14:31:04,149 - sodalite - INFO - bye
+2017-09-10 14:31:47,210 - sodalite - INFO - starting sodalite
+2017-09-10 14:31:47,218 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:544]
+2017-09-10 14:31:50,342 - sodalite - INFO - bye
+2017-09-10 14:32:01,209 - sodalite - INFO - starting sodalite
+2017-09-10 14:32:01,217 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:545]
+2017-09-10 14:32:08,970 - sodalite - INFO - bye
+2017-09-10 14:32:36,425 - sodalite - INFO - starting sodalite
+2017-09-10 14:32:36,434 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:546]
+2017-09-10 14:32:38,460 - sodalite - INFO - bye
+2017-09-10 14:32:46,564 - sodalite - INFO - starting sodalite
+2017-09-10 14:32:46,574 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:547]
+2017-09-10 14:32:47,351 - sodalite - INFO - bye
+2017-09-10 14:33:21,054 - sodalite - INFO - starting sodalite
+2017-09-10 14:33:21,063 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:548]
+2017-09-10 14:33:22,383 - sodalite - INFO - bye
+2017-09-10 14:33:34,772 - sodalite - INFO - starting sodalite
+2017-09-10 14:33:34,781 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:549]
+2017-09-10 14:33:50,638 - sodalite - INFO - starting sodalite
+2017-09-10 14:33:50,647 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:550]
+2017-09-10 14:34:09,924 - sodalite - INFO - starting sodalite
+2017-09-10 14:34:18,954 - sodalite - INFO - starting sodalite
+2017-09-10 14:34:18,960 - sodalite - INFO - half47
+2017-09-10 14:34:18,963 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:551]
+2017-09-10 14:36:05,961 - sodalite - INFO - starting sodalite
+2017-09-10 14:36:05,967 - sodalite - INFO - half47
+2017-09-10 14:36:05,970 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:552]
+2017-09-10 14:36:15,217 - sodalite - INFO - starting sodalite
+2017-09-10 14:36:15,223 - sodalite - INFO - half47
+2017-09-10 14:36:15,226 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:553]
+2017-09-10 14:36:22,893 - sodalite - INFO - bye
+2017-09-10 14:36:29,624 - sodalite - INFO - starting sodalite
+2017-09-10 14:36:29,631 - sodalite - INFO - half47
+2017-09-10 14:36:29,633 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:554]
+2017-09-10 14:36:32,106 - sodalite - INFO - bye
+2017-09-10 14:36:41,760 - sodalite - INFO - starting sodalite
+2017-09-10 14:36:41,766 - sodalite - INFO - half47
+2017-09-10 14:36:41,769 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:555]
+2017-09-10 14:36:54,497 - sodalite - INFO - bye
+2017-09-10 14:37:10,830 - sodalite - INFO - starting sodalite
+2017-09-10 14:37:10,836 - sodalite - INFO - half47
+2017-09-10 14:37:10,838 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:556]
+2017-09-10 14:37:12,082 - sodalite - INFO - bye
+2017-09-10 14:37:20,157 - sodalite - INFO - starting sodalite
+2017-09-10 14:37:20,164 - sodalite - INFO - half47
+2017-09-10 14:37:20,166 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:557]
+2017-09-10 14:37:22,433 - sodalite - INFO - bye
+2017-09-10 14:38:42,279 - sodalite - INFO - starting sodalite
+2017-09-10 14:38:51,899 - sodalite - INFO - starting sodalite
+2017-09-10 14:38:51,906 - sodalite - INFO - (55, 95)
+2017-09-10 14:38:51,908 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:558]
+2017-09-10 14:38:54,699 - sodalite - INFO - bye
+2017-09-10 14:38:57,298 - sodalite - INFO - starting sodalite
+2017-09-10 14:38:57,305 - sodalite - INFO - (56, 191)
+2017-09-10 14:38:57,308 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:559]
+2017-09-10 14:39:38,539 - sodalite - INFO - visitting entry [parent:/home/heiko, name:Documents, key:k, type:dir, frequency:5]
+2017-09-10 14:39:39,050 - sodalite - INFO - bye
+2017-09-10 14:39:39,677 - sodalite - INFO - starting sodalite
+2017-09-10 14:39:39,684 - sodalite - INFO - (55, 95)
+2017-09-10 14:39:41,086 - sodalite - INFO - starting sodalite
+2017-09-10 14:39:41,095 - sodalite - INFO - (55, 95)
+2017-09-10 14:39:45,866 - sodalite - INFO - starting sodalite
+2017-09-10 14:39:45,873 - sodalite - INFO - (55, 95)
+2017-09-10 14:39:52,107 - sodalite - INFO - starting sodalite
+2017-09-10 14:39:52,113 - sodalite - INFO - (55, 95)
+2017-09-10 14:39:52,116 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:560]
+2017-09-10 14:39:59,473 - sodalite - INFO - starting sodalite
+2017-09-10 14:39:59,480 - sodalite - INFO - (55, 95)
+2017-09-10 14:39:59,482 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:561]
+2017-09-10 14:40:00,366 - sodalite - INFO - bye
+2017-09-10 14:40:30,357 - sodalite - INFO - starting sodalite
+2017-09-10 14:40:30,363 - sodalite - INFO - (55, 95)
+2017-09-10 14:40:30,366 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:562]
+2017-09-10 14:40:35,935 - sodalite - INFO - visitting entry [parent:/home/heiko, name:PlayOnLinux's virtual drives, key:o, type:dir, frequency:1]
+2017-09-10 14:40:37,138 - sodalite - INFO - visitting entry [parent:/home/heiko/PlayOnLinux's virtual drives, name:northgard, key:k, type:dir, frequency:0]
+2017-09-10 14:40:37,884 - sodalite - INFO - bye
+2017-09-10 14:41:23,319 - sodalite - INFO - starting sodalite
+2017-09-10 14:41:23,325 - sodalite - INFO - (55, 95)
+2017-09-10 14:41:23,328 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:563]
+2017-09-10 14:43:46,910 - sodalite - INFO - bye
+2017-09-10 14:43:47,624 - sodalite - INFO - starting sodalite
+2017-09-10 14:43:47,630 - sodalite - INFO - (55, 95)
+2017-09-10 14:43:47,633 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:564]
+2017-09-10 14:43:54,605 - sodalite - INFO - visitting entry [parent:/home/heiko, name:Documents, key:k, type:dir, frequency:6]
+2017-09-10 14:43:55,113 - sodalite - INFO - bye
+2017-09-10 14:43:55,861 - sodalite - INFO - starting sodalite
+2017-09-10 14:43:55,868 - sodalite - INFO - (55, 95)
+2017-09-10 14:43:55,870 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:565]
+2017-09-10 14:44:18,603 - sodalite - INFO - starting sodalite
+2017-09-10 14:44:18,612 - sodalite - INFO - (55, 95)
+2017-09-10 14:44:18,616 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:566]
+2017-09-10 14:45:05,664 - sodalite - INFO - starting sodalite
+2017-09-10 14:45:05,671 - sodalite - INFO - (55, 95)
+2017-09-10 14:45:05,674 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:567]
+2017-09-10 14:45:48,644 - sodalite - INFO - starting sodalite
+2017-09-10 14:45:48,650 - sodalite - INFO - (55, 95)
+2017-09-10 14:45:48,653 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:568]
+2017-09-10 14:46:04,477 - sodalite - INFO - starting sodalite
+2017-09-10 14:46:04,483 - sodalite - INFO - (56, 191)
+2017-09-10 14:46:04,487 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:569]
+2017-09-10 14:47:14,381 - sodalite - INFO - starting sodalite
+2017-09-10 14:47:14,388 - sodalite - INFO - (56, 191)
+2017-09-10 14:47:14,391 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:570]
+2017-09-10 14:47:21,791 - sodalite - INFO - starting sodalite
+2017-09-10 14:47:21,798 - sodalite - INFO - (56, 191)
+2017-09-10 14:47:21,801 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:571]
+2017-09-10 14:47:21,820 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:572]
+2017-09-10 14:47:32,510 - sodalite - INFO - bye
+2017-09-10 14:47:33,285 - sodalite - INFO - starting sodalite
+2017-09-10 14:47:33,292 - sodalite - INFO - (55, 95)
+2017-09-10 14:47:33,295 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:573]
+2017-09-10 14:47:33,312 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:574]
+2017-09-10 14:47:35,780 - sodalite - INFO - bye
+2017-09-10 14:47:47,425 - sodalite - INFO - starting sodalite
+2017-09-10 14:47:47,432 - sodalite - INFO - (55, 95)
+2017-09-10 14:47:47,434 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:575]
+2017-09-10 14:47:47,452 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:576]
+2017-09-10 14:47:53,133 - sodalite - INFO - bye
+2017-09-10 14:47:58,943 - sodalite - INFO - starting sodalite
+2017-09-10 14:47:58,950 - sodalite - INFO - (55, 95)
+2017-09-10 14:47:58,952 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:577]
+2017-09-10 14:48:04,489 - sodalite - INFO - starting sodalite
+2017-09-10 14:48:04,496 - sodalite - INFO - (55, 95)
+2017-09-10 14:48:04,499 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:578]
+2017-09-10 14:48:04,526 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:579]
+2017-09-10 14:48:05,761 - sodalite - INFO - bye
+2017-09-10 14:48:14,274 - sodalite - INFO - starting sodalite
+2017-09-10 14:48:14,280 - sodalite - INFO - (55, 95)
+2017-09-10 14:48:14,283 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:580]
+2017-09-10 14:48:14,318 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:581]
+2017-09-10 14:48:29,428 - sodalite - INFO - visitting entry [parent:/home/heiko, name:Documents, key:k, type:dir, frequency:7]
+2017-09-10 14:48:30,121 - sodalite - INFO - bye
+2017-09-10 14:48:30,988 - sodalite - INFO - starting sodalite
+2017-09-10 14:48:30,994 - sodalite - INFO - (55, 95)
+2017-09-10 14:48:30,997 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:582]
+2017-09-10 14:48:32,488 - sodalite - INFO - visitting entry [parent:/home/heiko, name:dev, key:d, type:dir, frequency:149]
+2017-09-10 14:48:34,230 - sodalite - INFO - bye
+2017-09-10 14:50:31,031 - sodalite - INFO - starting sodalite
+2017-09-10 14:50:31,037 - sodalite - INFO - (55, 95)
+2017-09-10 14:51:55,961 - sodalite - INFO - starting sodalite
+2017-09-10 14:51:55,967 - sodalite - INFO - (55, 95)
+2017-09-10 14:52:09,051 - sodalite - INFO - starting sodalite
+2017-09-10 14:52:09,058 - sodalite - INFO - (55, 95)
+2017-09-10 14:52:27,483 - sodalite - INFO - starting sodalite
+2017-09-10 14:52:27,490 - sodalite - INFO - (55, 95)
+2017-09-10 14:52:27,493 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:583]
+2017-09-10 14:54:16,415 - sodalite - INFO - bye
+2017-09-10 14:54:17,041 - sodalite - INFO - starting sodalite
+2017-09-10 14:54:17,047 - sodalite - INFO - (55, 95)
+2017-09-10 14:54:17,050 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:584]
+2017-09-10 14:54:19,332 - sodalite - INFO - bye
+2017-09-10 14:54:26,164 - sodalite - INFO - starting sodalite
+2017-09-10 14:54:26,171 - sodalite - INFO - (55, 95)
+2017-09-10 14:54:26,174 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:585]
+2017-09-10 14:55:12,525 - sodalite - INFO - visitting entry [parent:/home/heiko, name:Documents, key:k, type:dir, frequency:8]
+2017-09-10 14:55:13,411 - sodalite - DEBUG - no match found for key 'c'
+2017-09-10 14:55:13,872 - sodalite - INFO - bye
+2017-09-10 14:55:14,550 - sodalite - INFO - starting sodalite
+2017-09-10 14:55:14,557 - sodalite - INFO - (55, 95)
+2017-09-10 14:55:14,560 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:586]
+2017-09-10 14:55:21,090 - sodalite - INFO - visitting entry [parent:/home/heiko, name:Downloads, key:a, type:dir, frequency:1]
+2017-09-10 14:55:21,109 - sodalite - DEBUG - no match found for key 'l'
+2017-09-10 14:55:21,168 - sodalite - DEBUG - no match found for key 'k'
+2017-09-10 14:55:21,967 - sodalite - INFO - bye
+2017-09-10 14:55:22,820 - sodalite - INFO - starting sodalite
+2017-09-10 14:55:22,826 - sodalite - INFO - (55, 95)
+2017-09-10 14:55:22,829 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:587]
+2017-09-10 14:55:27,662 - sodalite - INFO - visitting entry [parent:/home/heiko, name:Desktop, key:l, type:dir, frequency:1]
+2017-09-10 14:55:27,868 - sodalite - INFO - visitting entry [parent:/home/heiko/Desktop, name:environmentsetupweb, key:j, type:dir, frequency:0]
+2017-09-10 14:55:30,337 - sodalite - INFO - visitting entry [parent:/home/heiko, name:Desktop, key:l, type:unknown, frequency:2]
+2017-09-10 14:55:31,432 - sodalite - INFO - visitting entry [parent:/home/heiko/Desktop, name:apache, key:s, type:dir, frequency:1]
+2017-09-10 14:55:32,149 - sodalite - INFO - visitting entry [parent:/home/heiko, name:Desktop, key:l, type:unknown, frequency:3]
+2017-09-10 14:55:32,299 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:588]
+2017-09-10 14:55:33,141 - sodalite - INFO - visitting entry [parent:/, name:home, key:k, type:unknown, frequency:97]
+2017-09-10 14:55:33,694 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:dir, frequency:589]
+2017-09-10 14:55:34,043 - sodalite - INFO - visitting entry [parent:/, name:home, key:k, type:unknown, frequency:98]
+2017-09-10 14:55:34,226 - sodalite - INFO - visitting entry [parent:/, name:, key:, type:unknown, frequency:0]
+2017-09-10 14:55:34,455 - sodalite - INFO - visitting entry [parent:/, name:, key:, type:unknown, frequency:0]
+2017-09-10 14:55:34,644 - sodalite - INFO - visitting entry [parent:/, name:etc, key:d, type:dir, frequency:0]
+2017-09-10 14:55:35,841 - sodalite - INFO - visitting entry [parent:/etc, name:UPower, key:k, type:dir, frequency:0]
+2017-09-10 14:55:35,863 - sodalite - DEBUG - no match found for key 'k'
+2017-09-10 14:55:35,867 - sodalite - DEBUG - no match found for key 'k'
+2017-09-10 14:55:35,871 - sodalite - DEBUG - no match found for key 'k'
+2017-09-10 14:55:35,875 - sodalite - DEBUG - no match found for key 'k'
+2017-09-10 14:55:35,980 - sodalite - DEBUG - no match found for key 'k'
+2017-09-10 14:55:37,471 - sodalite - INFO - visitting entry [parent:/, name:etc, key:d, type:unknown, frequency:1]
+2017-09-10 14:55:38,015 - sodalite - INFO - visitting entry [parent:/etc, name:UPower, key:k, type:dir, frequency:1]
+2017-09-10 14:55:38,411 - sodalite - INFO - visitting entry [parent:/, name:etc, key:d, type:unknown, frequency:2]
+2017-09-10 14:55:38,565 - sodalite - INFO - visitting entry [parent:/, name:, key:, type:unknown, frequency:0]
+2017-09-10 14:55:38,715 - sodalite - INFO - visitting entry [parent:/, name:, key:, type:unknown, frequency:0]
+2017-09-10 14:55:39,223 - sodalite - INFO - visitting entry [parent:/, name:home, key:k, type:dir, frequency:99]
+2017-09-10 14:55:39,758 - sodalite - INFO - visitting entry [parent:/, name:, key:, type:unknown, frequency:0]
+2017-09-10 14:55:40,566 - sodalite - INFO - visitting entry [parent:/, name:home, key:k, type:dir, frequency:100]
+2017-09-10 14:55:41,155 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:dir, frequency:590]
+2017-09-10 14:55:41,705 - sodalite - INFO - visitting entry [parent:/home/heiko, name:dev, key:d, type:dir, frequency:150]
+2017-09-10 14:55:55,333 - sodalite - INFO - visitting entry [parent:/home/heiko/dev, name:RemoteSystemsTempFiles, key:k, type:dir, frequency:2]
+2017-09-10 14:55:55,808 - sodalite - INFO - bye
+2017-09-10 14:55:56,490 - sodalite - INFO - starting sodalite
+2017-09-10 14:55:56,497 - sodalite - INFO - (55, 95)
+2017-09-10 14:55:56,499 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:591]
+2017-09-10 14:56:27,254 - sodalite - INFO - bye
+2017-09-10 14:56:27,859 - sodalite - INFO - starting sodalite
+2017-09-10 14:56:27,865 - sodalite - INFO - (55, 95)
+2017-09-10 14:56:27,868 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:592]
+2017-09-10 14:56:46,834 - sodalite - INFO - bye
+2017-09-10 14:56:47,614 - sodalite - INFO - starting sodalite
+2017-09-10 14:56:47,620 - sodalite - INFO - (55, 95)
+2017-09-10 14:56:47,623 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:593]
+2017-09-10 14:57:44,300 - sodalite - INFO - bye
+2017-09-10 14:57:44,890 - sodalite - INFO - starting sodalite
+2017-09-10 14:57:44,896 - sodalite - INFO - (55, 95)
+2017-09-10 14:57:44,899 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:594]
+2017-09-10 14:57:53,371 - sodalite - INFO - bye
+2017-09-10 14:57:53,944 - sodalite - INFO - starting sodalite
+2017-09-10 14:57:53,950 - sodalite - INFO - (55, 95)
+2017-09-10 14:57:53,953 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:595]
+2017-09-10 14:58:00,313 - sodalite - INFO - visitting entry [parent:/home/heiko, name:Documents, key:k, type:dir, frequency:9]
+2017-09-10 14:58:01,268 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:596]
+2017-09-10 14:58:01,843 - sodalite - INFO - visitting entry [parent:/home/heiko, name:dev, key:d, type:dir, frequency:151]
+2017-09-10 14:58:02,373 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:597]
+2017-09-10 14:58:02,871 - sodalite - INFO - visitting entry [parent:/, name:home, key:k, type:unknown, frequency:101]
+2017-09-10 14:58:03,555 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:dir, frequency:598]
+2017-09-10 14:58:04,147 - sodalite - INFO - visitting entry [parent:/home/heiko, name:dev, key:d, type:dir, frequency:152]
+2017-09-10 14:58:04,917 - sodalite - DEBUG - no match found for key 'u'
+2017-09-10 14:58:07,279 - sodalite - DEBUG - no match found for key 'u'
+2017-09-10 14:58:07,432 - sodalite - DEBUG - no match found for key 'u'
+2017-09-10 14:58:07,953 - sodalite - INFO - visitting entry [parent:/home/heiko/dev, name:stupro_toscana, key:y, type:dir, frequency:124]
+2017-09-10 14:58:09,653 - sodalite - INFO - visitting entry [parent:/home/heiko, name:dev, key:d, type:unknown, frequency:153]
+2017-09-10 14:58:09,810 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:599]
+2017-09-10 14:58:09,976 - sodalite - INFO - visitting entry [parent:/, name:home, key:k, type:unknown, frequency:102]
+2017-09-10 14:58:11,026 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:dir, frequency:600]
+2017-09-10 14:58:12,521 - sodalite - INFO - visitting entry [parent:/home/heiko, name:test.py, key:x, type:file, frequency:64]
+2017-09-10 14:58:40,296 - sodalite - INFO - starting sodalite
+2017-09-10 14:58:40,302 - sodalite - INFO - (55, 95)
+2017-09-10 14:58:40,305 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:601]
+2017-09-10 14:58:49,069 - sodalite - INFO - bye
+2017-09-10 14:58:49,709 - sodalite - INFO - starting sodalite
+2017-09-10 14:58:49,715 - sodalite - INFO - (55, 95)
+2017-09-10 14:58:49,717 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:602]
+2017-09-10 15:01:38,523 - sodalite - INFO - bye
+2017-09-10 15:01:39,695 - sodalite - INFO - starting sodalite
+2017-09-10 15:01:39,701 - sodalite - INFO - (55, 95)
+2017-09-10 15:01:39,704 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:603]
+2017-09-10 15:01:44,658 - sodalite - INFO - visitting entry [parent:/home/heiko, name:dev, key:d, type:dir, frequency:154]
+2017-09-10 15:01:45,397 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:604]
+2017-09-10 15:01:46,586 - sodalite - INFO - visitting entry [parent:/, name:home, key:k, type:unknown, frequency:103]
+2017-09-10 15:01:47,067 - sodalite - INFO - bye
+2017-09-10 15:01:47,710 - sodalite - INFO - starting sodalite
+2017-09-10 15:01:47,717 - sodalite - INFO - (55, 95)
+2017-09-10 15:01:47,720 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:605]
+2017-09-10 15:03:17,960 - sodalite - INFO - bye
+2017-09-10 15:03:18,569 - sodalite - INFO - starting sodalite
+2017-09-10 15:03:18,576 - sodalite - INFO - (55, 95)
+2017-09-10 15:03:18,579 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:606]
+2017-09-10 15:03:24,431 - sodalite - INFO - visitting entry [parent:/home/heiko, name:test.py, key:x, type:file, frequency:65]
+2017-09-10 15:04:51,146 - sodalite - INFO - starting sodalite
+2017-09-10 15:04:51,153 - sodalite - INFO - (55, 95)
+2017-09-10 15:04:51,155 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:607]
+2017-09-10 15:04:55,351 - sodalite - INFO - bye
+2017-09-10 15:05:42,475 - sodalite - INFO - starting sodalite
+2017-09-10 15:05:42,482 - sodalite - INFO - (55, 95)
+2017-09-10 15:05:42,484 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:608]
+2017-09-10 15:05:47,039 - sodalite - INFO - starting sodalite
+2017-09-10 15:05:47,046 - sodalite - INFO - (55, 95)
+2017-09-10 15:05:47,048 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:609]
+2017-09-10 15:05:49,180 - sodalite - INFO - starting sodalite
+2017-09-10 15:05:49,187 - sodalite - INFO - (55, 95)
+2017-09-10 15:05:49,190 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:610]
+2017-09-10 15:06:00,102 - sodalite - INFO - bye
+2017-09-10 15:06:02,105 - sodalite - INFO - starting sodalite
+2017-09-10 15:06:02,111 - sodalite - INFO - (55, 95)
+2017-09-10 15:06:02,113 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:611]
+2017-09-10 15:06:31,111 - sodalite - INFO - starting sodalite
+2017-09-10 15:06:31,118 - sodalite - INFO - (55, 95)
+2017-09-10 15:06:31,121 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:612]
+2017-09-10 15:07:10,409 - sodalite - INFO - starting sodalite
+2017-09-10 15:07:10,415 - sodalite - INFO - (55, 95)
+2017-09-10 15:07:10,418 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:613]
+2017-09-10 15:07:31,886 - sodalite - INFO - starting sodalite
+2017-09-10 15:07:31,892 - sodalite - INFO - (55, 95)
+2017-09-10 15:07:31,895 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:614]
+2017-09-10 15:07:32,737 - sodalite - INFO - bye
+2017-09-10 15:07:52,829 - sodalite - INFO - starting sodalite
+2017-09-10 15:07:52,836 - sodalite - INFO - (55, 95)
+2017-09-10 15:07:52,838 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:615]
+2017-09-10 15:07:54,598 - sodalite - INFO - bye
+2017-09-10 15:08:20,840 - sodalite - INFO - starting sodalite
+2017-09-10 15:08:20,846 - sodalite - INFO - (55, 95)
+2017-09-10 15:08:20,849 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:616]
+2017-09-10 15:08:21,761 - sodalite - INFO - bye
+2017-09-10 15:08:55,105 - sodalite - INFO - starting sodalite
+2017-09-10 15:08:55,111 - sodalite - INFO - (55, 95)
+2017-09-10 15:08:55,114 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:617]
+2017-09-10 15:09:24,393 - sodalite - INFO - starting sodalite
+2017-09-10 15:09:24,400 - sodalite - INFO - (55, 95)
+2017-09-10 15:09:24,403 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:618]
+2017-09-10 15:09:26,132 - sodalite - INFO - bye
+2017-09-10 15:10:17,625 - sodalite - INFO - starting sodalite
+2017-09-10 15:10:17,632 - sodalite - INFO - (55, 95)
+2017-09-10 15:10:17,634 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:619]
+2017-09-10 15:10:20,254 - sodalite - INFO - bye
+2017-09-10 15:10:59,934 - sodalite - INFO - starting sodalite
+2017-09-10 15:10:59,940 - sodalite - INFO - (55, 95)
+2017-09-10 15:10:59,943 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:620]
+2017-09-10 15:11:00,537 - sodalite - INFO - bye
+2017-09-10 15:13:23,441 - sodalite - INFO - starting sodalite
+2017-09-10 15:13:33,890 - sodalite - INFO - starting sodalite
+2017-09-10 15:13:33,896 - sodalite - INFO - (55, 95)
+2017-09-10 15:13:48,922 - sodalite - INFO - starting sodalite
+2017-09-10 15:13:48,929 - sodalite - INFO - (55, 95)
+2017-09-10 15:13:48,931 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:621]
+2017-09-10 15:14:02,489 - sodalite - INFO - starting sodalite
+2017-09-10 15:14:02,495 - sodalite - INFO - (55, 95)
+2017-09-10 15:14:02,498 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:622]
+2017-09-10 15:14:03,212 - sodalite - INFO - bye
+2017-09-10 15:20:33,827 - sodalite - INFO - starting sodalite
+2017-09-10 15:20:33,834 - sodalite - INFO - (55, 95)
+2017-09-10 15:20:33,837 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:623]
+2017-09-10 15:20:50,916 - sodalite - INFO - starting sodalite
+2017-09-10 15:20:50,923 - sodalite - INFO - (55, 95)
+2017-09-10 15:20:50,926 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:624]
+2017-09-10 15:20:56,640 - sodalite - INFO - starting sodalite
+2017-09-10 15:20:56,647 - sodalite - INFO - (55, 95)
+2017-09-10 15:20:56,649 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:625]
+2017-09-10 15:23:49,815 - sodalite - INFO - starting sodalite
+2017-09-10 15:23:49,821 - sodalite - INFO - (55, 95)
+2017-09-10 15:24:21,948 - sodalite - INFO - starting sodalite
+2017-09-10 15:24:21,955 - sodalite - INFO - (55, 95)
+2017-09-10 15:24:25,430 - sodalite - INFO - bye
+2017-09-10 15:24:46,180 - sodalite - INFO - starting sodalite
+2017-09-10 15:24:46,187 - sodalite - INFO - (55, 95)
+2017-09-10 15:24:57,523 - sodalite - INFO - starting sodalite
+2017-09-10 15:24:57,530 - sodalite - INFO - (55, 95)
+2017-09-10 15:24:58,163 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:626]
+2017-09-10 15:25:53,792 - sodalite - INFO - starting sodalite
+2017-09-10 15:25:53,798 - sodalite - INFO - (55, 95)
+2017-09-10 15:25:55,275 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:627]
+2017-09-10 15:25:59,841 - sodalite - INFO - bye
+2017-09-10 15:26:14,686 - sodalite - INFO - starting sodalite
+2017-09-10 15:26:14,692 - sodalite - INFO - (55, 95)
+2017-09-10 15:26:14,698 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:628]
+2017-09-10 15:26:40,827 - sodalite - INFO - starting sodalite
+2017-09-10 15:26:40,833 - sodalite - INFO - (55, 95)
+2017-09-10 15:26:40,839 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:629]
+2017-09-10 15:26:42,967 - sodalite - INFO - visitting entry [parent:/home/heiko, name:dev, key:d, type:dir, frequency:155]
+2017-09-10 15:26:43,841 - sodalite - INFO - visitting entry [parent:/home/heiko/dev, name:stupro_toscana, key:y, type:dir, frequency:125]
+2017-09-10 15:26:43,869 - sodalite - INFO - visitting entry [parent:/home/heiko/dev/stupro_toscana, name:linklist.md, key:u, type:file, frequency:4]
+2017-09-10 15:27:58,506 - sodalite - INFO - starting sodalite
+2017-09-10 15:27:58,513 - sodalite - INFO - (55, 95)
+2017-09-10 15:27:58,518 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:630]
+2017-09-10 15:32:12,986 - sodalite - INFO - starting sodalite
+2017-09-10 15:32:12,993 - sodalite - INFO - (55, 95)
+2017-09-10 15:32:12,998 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:631]
+2017-09-10 15:35:56,500 - sodalite - INFO - starting sodalite
+2017-09-10 15:35:56,507 - sodalite - INFO - (55, 95)
+2017-09-10 15:35:56,512 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:632]
+2017-09-10 15:36:00,678 - sodalite - INFO - visitting entry [parent:/home/heiko, name:Downloads, key:a, type:dir, frequency:2]
+2017-09-10 15:36:01,661 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:633]
+2017-09-10 15:36:02,974 - sodalite - INFO - visitting entry [parent:/, name:home, key:k, type:unknown, frequency:104]
+2017-09-10 15:36:03,539 - sodalite - INFO - visitting entry [parent:/, name:, key:, type:unknown, frequency:0]
+2017-09-10 15:36:03,883 - sodalite - INFO - visitting entry [parent:/, name:, key:, type:unknown, frequency:0]
+2017-09-10 15:36:19,866 - sodalite - INFO - starting sodalite
+2017-09-10 15:36:19,873 - sodalite - INFO - (55, 95)
+2017-09-10 15:36:19,877 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:634]
+2017-09-10 15:37:27,487 - sodalite - INFO - starting sodalite
+2017-09-10 15:37:27,494 - sodalite - INFO - (55, 95)
+2017-09-10 15:38:13,813 - sodalite - INFO - starting sodalite
+2017-09-10 15:38:13,819 - sodalite - INFO - (55, 95)
+2017-09-10 15:38:13,827 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:635]
+2017-09-10 15:38:19,240 - sodalite - INFO - bye
+2017-09-10 15:38:27,177 - sodalite - INFO - starting sodalite
+2017-09-10 15:38:27,183 - sodalite - INFO - (55, 95)
+2017-09-10 15:38:27,190 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:636]
+2017-09-10 15:38:32,741 - sodalite - INFO - visitting entry [parent:/home/heiko, name:.atom, key:j, type:dir, frequency:22]
+2017-09-10 15:38:33,768 - sodalite - INFO - bye
+2017-09-10 15:38:41,695 - sodalite - INFO - starting sodalite
+2017-09-10 15:38:41,701 - sodalite - INFO - (55, 95)
+2017-09-10 15:38:41,708 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:637]
+2017-09-10 15:38:43,406 - sodalite - INFO - bye
+2017-09-10 15:42:23,366 - sodalite - INFO - starting sodalite
+2017-09-10 15:42:23,373 - sodalite - INFO - (55, 95)
+2017-09-10 15:42:23,381 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:638]
+2017-09-10 15:43:02,309 - sodalite - INFO - starting sodalite
+2017-09-10 15:43:02,315 - sodalite - INFO - (55, 95)
+2017-09-10 15:43:02,322 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:639]
+2017-09-10 15:43:24,019 - sodalite - INFO - starting sodalite
+2017-09-10 15:43:24,026 - sodalite - INFO - (55, 95)
+2017-09-10 15:43:24,033 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:640]
+2017-09-10 15:43:26,106 - sodalite - INFO - bye
+2017-09-10 15:43:37,822 - sodalite - INFO - starting sodalite
+2017-09-10 15:43:37,828 - sodalite - INFO - (55, 95)
+2017-09-10 15:43:37,836 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:641]
+2017-09-10 15:43:43,224 - sodalite - INFO - bye
+2017-09-10 15:43:44,290 - sodalite - INFO - starting sodalite
+2017-09-10 15:43:44,297 - sodalite - INFO - (55, 95)
+2017-09-10 15:43:44,304 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:642]
+2017-09-10 15:43:48,908 - sodalite - INFO - bye
+2017-09-10 15:45:02,031 - sodalite - INFO - starting sodalite
+2017-09-10 15:45:02,037 - sodalite - INFO - (55, 95)
+2017-09-10 15:45:02,044 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:643]
+2017-09-10 15:45:07,425 - sodalite - INFO - bye
+2017-09-10 15:46:25,024 - sodalite - INFO - starting sodalite
+2017-09-10 15:46:25,030 - sodalite - INFO - (55, 95)
+2017-09-10 15:46:25,037 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:644]
+2017-09-10 15:46:46,913 - sodalite - INFO - starting sodalite
+2017-09-10 15:46:46,919 - sodalite - INFO - (55, 95)
+2017-09-10 15:46:46,926 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:645]
+2017-09-10 15:46:52,728 - sodalite - INFO - visitting entry [parent:/home/heiko, name:.atom, key:j, type:dir, frequency:23]
+2017-09-10 15:46:53,471 - sodalite - INFO - visitting entry [parent:/home/heiko/.atom, name:blob-store, key:j, type:dir, frequency:2]
+2017-09-10 15:46:53,900 - sodalite - DEBUG - no match found for key 'k'
+2017-09-10 15:46:54,454 - sodalite - INFO - visitting entry [parent:/home/heiko, name:.atom, key:j, type:unknown, frequency:24]
+2017-09-10 15:46:54,719 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:646]
+2017-09-10 15:46:57,024 - sodalite - INFO - bye
+2017-09-10 15:49:15,785 - sodalite - INFO - starting sodalite
+2017-09-10 15:49:15,791 - sodalite - INFO - (55, 95)
+2017-09-10 15:49:15,798 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:647]
+2017-09-10 15:49:30,625 - sodalite - INFO - bye
+2017-09-10 15:51:36,533 - sodalite - INFO - starting sodalite
+2017-09-10 15:51:36,540 - sodalite - INFO - (55, 95)
+2017-09-10 15:51:36,547 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:648]
+2017-09-10 15:52:00,043 - sodalite - INFO - starting sodalite
+2017-09-10 15:52:00,050 - sodalite - INFO - (55, 95)
+2017-09-10 15:52:00,057 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:649]
+2017-09-10 15:57:17,036 - sodalite - INFO - starting sodalite
+2017-09-10 15:57:17,042 - sodalite - INFO - (55, 95)
+2017-09-10 15:57:17,049 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:650]
+2017-09-10 15:57:50,047 - sodalite - INFO - starting sodalite
+2017-09-10 15:57:50,054 - sodalite - INFO - (55, 95)
+2017-09-10 15:57:50,061 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:651]
+2017-09-10 15:59:54,161 - sodalite - INFO - starting sodalite
+2017-09-10 15:59:54,167 - sodalite - INFO - (55, 95)
+2017-09-10 15:59:54,175 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:652]
+2017-09-10 15:59:57,854 - sodalite - ERROR - While swapping keys, encountered too many conflicts. Database is corrupted
+2017-09-10 16:00:50,389 - sodalite - INFO - starting sodalite
+2017-09-10 16:00:50,395 - sodalite - INFO - (55, 95)
+2017-09-10 16:01:21,400 - sodalite - INFO - starting sodalite
+2017-09-10 16:01:21,407 - sodalite - INFO - (55, 95)
+2017-09-10 16:03:18,780 - sodalite - INFO - starting sodalite
+2017-09-10 16:03:18,787 - sodalite - INFO - (55, 95)
+2017-09-10 16:03:23,168 - sodalite - INFO - starting sodalite
+2017-09-10 16:03:23,174 - sodalite - INFO - (55, 95)
+2017-09-10 16:03:51,574 - sodalite - INFO - starting sodalite
+2017-09-10 16:03:51,580 - sodalite - INFO - (55, 95)
+2017-09-10 16:05:04,679 - sodalite - INFO - starting sodalite
+2017-09-10 16:05:04,685 - sodalite - INFO - (55, 95)
+2017-09-10 16:05:04,692 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:d, type:unknown, frequency:653]
+2017-09-10 16:05:07,571 - sodalite - ERROR - While assigning an entry for key change, found '3'entries for given key 'x'
+2017-09-10 16:05:21,788 - sodalite - ERROR - While assigning an entry for key change, found '2'entries for given key 't'
+2017-09-10 16:05:31,965 - sodalite - INFO - bye
+2017-09-10 16:05:42,036 - sodalite - INFO - starting sodalite
+2017-09-10 16:05:42,043 - sodalite - INFO - (55, 95)
+2017-09-10 16:05:42,050 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:, type:unknown, frequency:0]
+2017-09-10 16:05:46,039 - sodalite - INFO - visitting entry [parent:/home/heiko, name:AcmeWorkspace, key:s, type:dir, frequency:0]
+2017-09-10 16:05:51,864 - sodalite - DEBUG - Swapped key of conflicting entry '[parent:/home/heiko/AcmeWorkspace, name:.metadata, key:a, type:dir, frequency:0]'
+2017-09-10 16:06:04,166 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:, type:unknown, frequency:0]
+2017-09-10 16:06:05,419 - sodalite - INFO - visitting entry [parent:/home/heiko, name:AcmeWorkspace, key:s, type:dir, frequency:1]
+2017-09-10 16:12:28,577 - sodalite - INFO - starting sodalite
+2017-09-10 16:12:28,583 - sodalite - INFO - (55, 95)
+2017-09-10 16:12:28,590 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:, type:unknown, frequency:0]
+2017-09-10 16:12:55,962 - sodalite - DEBUG - Swapped key of conflicting entry '[parent:/home/heiko, name:Downloads, key:F, type:dir, frequency:0]'
+2017-09-10 16:13:07,451 - sodalite - DEBUG - Swapped key of conflicting entry '[parent:/home/heiko, name:.FreeCAD, key:f, type:dir, frequency:0]'
+2017-09-10 16:13:35,128 - sodalite - INFO - starting sodalite
+2017-09-10 16:13:35,134 - sodalite - INFO - (55, 95)
+2017-09-10 16:13:35,142 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:, type:unknown, frequency:0]
+2017-09-10 16:13:39,688 - sodalite - DEBUG - Swapped key of conflicting entry '[parent:/home/heiko, name:Android, key:s, type:dir, frequency:0]'
+2017-09-10 16:13:51,890 - sodalite - INFO - starting sodalite
+2017-09-10 16:13:51,896 - sodalite - INFO - (55, 95)
+2017-09-10 16:13:51,903 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:, type:unknown, frequency:0]
+2017-09-10 16:13:56,480 - sodalite - INFO - starting sodalite
+2017-09-10 16:13:56,486 - sodalite - INFO - (55, 95)
+2017-09-10 16:13:56,494 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:, type:unknown, frequency:0]
+2017-09-10 16:13:58,211 - sodalite - INFO - starting sodalite
+2017-09-10 16:13:58,217 - sodalite - INFO - (55, 95)
+2017-09-10 16:13:58,225 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:, type:unknown, frequency:0]
+2017-09-10 16:13:59,726 - sodalite - INFO - visitting entry [parent:/home/heiko, name:AcmeWorkspace, key:j, type:dir, frequency:2]
+2017-09-10 16:14:00,721 - sodalite - INFO - visitting entry [parent:/home/heiko/AcmeWorkspace, name:4-1_ACME, key:k, type:dir, frequency:0]
+2017-09-10 16:14:02,318 - sodalite - INFO - visitting entry [parent:/home/heiko/AcmeWorkspace/4-1_ACME, name:System1.acme, key:j, type:file, frequency:0]
+2017-09-10 16:14:43,046 - sodalite - INFO - visitting entry [parent:/home/heiko/AcmeWorkspace, name:4-1_ACME, key:k, type:unknown, frequency:1]
+2017-09-10 16:16:03,021 - sodalite - INFO - starting sodalite
+2017-09-10 16:16:03,028 - sodalite - INFO - (55, 95)
+2017-09-10 16:16:03,035 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:, type:unknown, frequency:0]
+2017-09-10 16:16:04,518 - sodalite - INFO - visitting entry [parent:/home/heiko, name:AcmeWorkspace, key:j, type:dir, frequency:3]
+2017-09-10 16:16:04,905 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:, type:unknown, frequency:0]
+2017-09-10 16:16:05,139 - sodalite - INFO - visitting entry [parent:/, name:home, key:, type:unknown, frequency:0]
+2017-09-10 16:16:05,798 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:s, type:dir, frequency:0]
+2017-09-10 16:16:08,218 - sodalite - INFO - bye
+2017-09-10 16:16:23,574 - sodalite - INFO - starting sodalite
+2017-09-10 16:16:23,580 - sodalite - INFO - (55, 95)
+2017-09-10 16:16:23,588 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:s, type:unknown, frequency:1]
+2017-09-10 16:16:31,063 - sodalite - INFO - bye
+2017-09-10 16:16:51,546 - sodalite - INFO - starting sodalite
+2017-09-10 16:16:51,553 - sodalite - INFO - (55, 95)
+2017-09-10 16:16:51,560 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:s, type:unknown, frequency:2]
+2017-09-10 16:16:54,573 - sodalite - INFO - bye
+2017-09-10 16:17:48,380 - sodalite - INFO - starting sodalite
+2017-09-10 16:17:48,386 - sodalite - INFO - (55, 95)
+2017-09-10 16:17:48,394 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:s, type:unknown, frequency:3]
+2017-09-10 16:18:04,311 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:s, type:unknown, frequency:4]
+2017-09-10 16:19:32,250 - sodalite - INFO - bye
+2017-09-10 16:19:32,977 - sodalite - INFO - starting sodalite
+2017-09-10 16:19:32,984 - sodalite - INFO - (55, 95)
+2017-09-10 16:19:32,990 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:s, type:unknown, frequency:5]
+2017-09-10 16:19:35,753 - sodalite - INFO - visitting entry [parent:/home/heiko, name:uni, key:n, type:dir, frequency:0]
+2017-09-10 16:19:37,137 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:s, type:unknown, frequency:6]
+2017-09-10 16:20:27,095 - sodalite - INFO - bye
+2017-09-10 16:20:27,843 - sodalite - INFO - starting sodalite
+2017-09-10 16:20:27,850 - sodalite - INFO - (55, 95)
+2017-09-10 16:20:27,857 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:s, type:unknown, frequency:7]
+2017-09-10 16:20:33,872 - sodalite - INFO - bye
+2017-09-10 16:20:35,022 - sodalite - INFO - starting sodalite
+2017-09-10 16:20:35,029 - sodalite - INFO - (55, 95)
+2017-09-10 16:20:35,036 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:s, type:unknown, frequency:8]
+2017-09-10 16:20:49,955 - sodalite - INFO - bye
+2017-09-10 16:20:50,760 - sodalite - INFO - starting sodalite
+2017-09-10 16:20:50,766 - sodalite - INFO - (55, 95)
+2017-09-10 16:20:50,773 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:s, type:unknown, frequency:9]
+2017-09-10 16:20:55,135 - sodalite - INFO - starting sodalite
+2017-09-10 16:20:55,142 - sodalite - INFO - (55, 95)
+2017-09-10 16:20:55,149 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:s, type:unknown, frequency:10]
+2017-09-10 16:20:58,803 - sodalite - INFO - starting sodalite
+2017-09-10 16:20:58,809 - sodalite - INFO - (55, 95)
+2017-09-10 16:20:58,816 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:s, type:unknown, frequency:11]
+2017-09-10 16:21:58,337 - sodalite - INFO - visitting entry [parent:/home/heiko, name:Desktop, key:k, type:dir, frequency:0]
+2017-09-10 16:21:59,107 - sodalite - INFO - bye
+2017-09-10 16:21:59,707 - sodalite - INFO - starting sodalite
+2017-09-10 16:21:59,713 - sodalite - INFO - (55, 95)
+2017-09-10 16:21:59,720 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:s, type:unknown, frequency:12]
+2017-09-10 16:22:17,445 - sodalite - DEBUG - Swapped key of conflicting entry '[parent:/home/heiko, name:dev, key:L, type:dir, frequency:0]'
+2017-09-10 16:22:21,071 - sodalite - DEBUG - Swapped key of conflicting entry '[parent:/home/heiko, name:Desktop, key:j, type:dir, frequency:1]'
+2017-09-10 16:23:09,953 - sodalite - INFO - starting sodalite
+2017-09-10 16:23:09,960 - sodalite - INFO - (55, 95)
+2017-09-10 16:23:09,966 - sodalite - INFO - bitch
+2017-09-10 16:23:09,966 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:s, type:unknown, frequency:13]
+2017-09-10 16:23:56,224 - sodalite - INFO - starting sodalite
+2017-09-10 16:23:56,230 - sodalite - INFO - (55, 95)
+2017-09-10 16:23:56,237 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:s, type:unknown, frequency:14]
+2017-09-10 16:23:57,850 - sodalite - INFO - test
+2017-09-10 16:23:58,350 - sodalite - INFO - test
+2017-09-10 16:23:58,523 - sodalite - INFO - test
+2017-09-10 16:23:58,688 - sodalite - INFO - test
+2017-09-10 16:23:59,399 - sodalite - INFO - test
+2017-09-10 16:23:59,564 - sodalite - INFO - test
+2017-09-10 16:23:59,721 - sodalite - INFO - test
+2017-09-10 16:23:59,879 - sodalite - INFO - test
+2017-09-10 16:24:00,052 - sodalite - INFO - test
+2017-09-10 16:24:00,225 - sodalite - INFO - test
+2017-09-10 16:24:01,739 - sodalite - INFO - bye
+2017-09-10 16:26:45,947 - sodalite - INFO - starting sodalite
+2017-09-10 16:26:45,953 - sodalite - INFO - (55, 95)
+2017-09-10 16:26:45,960 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:s, type:unknown, frequency:15]
+2017-09-10 16:27:55,964 - sodalite - INFO - starting sodalite
+2017-09-10 16:27:55,971 - sodalite - INFO - (55, 95)
+2017-09-10 16:27:55,978 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:s, type:unknown, frequency:16]
+2017-09-10 16:28:00,936 - sodalite - DEBUG - Swapped key of conflicting entry '[parent:/home/heiko, name:.AndroidStudio2.3, key:s, type:dir, frequency:0]'
+2017-09-10 16:28:20,769 - sodalite - INFO - starting sodalite
+2017-09-10 16:28:20,776 - sodalite - INFO - (55, 95)
+2017-09-10 16:28:20,784 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:s, type:unknown, frequency:17]
+2017-09-10 16:28:23,415 - sodalite - INFO - visitting entry [parent:/home/heiko, name:Desktop, key:j, type:dir, frequency:1]
+2017-09-10 16:28:30,673 - sodalite - INFO - bye
+2017-09-10 16:31:26,605 - sodalite - INFO - starting sodalite
+2017-09-10 16:31:26,611 - sodalite - INFO - (55, 95)
+2017-09-10 16:31:26,618 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:s, type:unknown, frequency:18]
+2017-09-10 16:31:33,684 - sodalite - INFO - visitting entry [parent:/home/heiko, name:Recordings, key:c, type:dir, frequency:0]
+2017-09-10 16:31:34,879 - sodalite - INFO - bye
+2017-09-10 16:31:44,655 - sodalite - INFO - starting sodalite
+2017-09-10 16:31:44,662 - sodalite - INFO - (55, 95)
+2017-09-10 16:31:44,669 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:s, type:unknown, frequency:19]
+2017-09-10 16:31:52,517 - sodalite - INFO - bye
+2017-09-10 16:32:12,223 - sodalite - INFO - starting sodalite
+2017-09-10 16:32:12,229 - sodalite - INFO - (55, 95)
+2017-09-10 16:32:12,237 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:s, type:unknown, frequency:20]
+2017-09-10 16:32:15,017 - sodalite - INFO - bye
+2017-09-10 16:32:40,448 - sodalite - INFO - starting sodalite
+2017-09-10 16:32:40,454 - sodalite - INFO - (55, 95)
+2017-09-10 16:32:40,461 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:s, type:unknown, frequency:21]
+2017-09-10 16:33:07,992 - sodalite - INFO - starting sodalite
+2017-09-10 16:33:07,999 - sodalite - INFO - (55, 95)
+2017-09-10 16:33:08,006 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:s, type:unknown, frequency:22]
+2017-09-10 16:33:11,972 - sodalite - INFO - bye
+2017-09-10 16:33:28,324 - sodalite - INFO - starting sodalite
+2017-09-10 16:33:28,331 - sodalite - INFO - (55, 95)
+2017-09-10 16:33:28,338 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:s, type:unknown, frequency:23]
+2017-09-10 16:33:31,422 - sodalite - INFO - bye
+2017-09-10 16:33:50,490 - sodalite - INFO - starting sodalite
+2017-09-10 16:33:50,497 - sodalite - INFO - (55, 95)
+2017-09-10 16:33:50,504 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:s, type:unknown, frequency:24]
+2017-09-10 16:34:01,448 - sodalite - INFO - starting sodalite
+2017-09-10 16:34:01,454 - sodalite - INFO - (55, 95)
+2017-09-10 16:34:01,461 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:s, type:unknown, frequency:25]
+2017-09-10 16:34:02,653 - sodalite - INFO - bye
+2017-09-10 16:34:08,681 - sodalite - INFO - starting sodalite
+2017-09-10 16:34:08,688 - sodalite - INFO - (55, 95)
+2017-09-10 16:34:08,695 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:s, type:unknown, frequency:26]
+2017-09-10 16:34:22,288 - sodalite - INFO - starting sodalite
+2017-09-10 16:34:22,298 - sodalite - INFO - (55, 95)
+2017-09-10 16:34:22,305 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:s, type:unknown, frequency:27]
+2017-09-10 16:34:51,588 - sodalite - INFO - starting sodalite
+2017-09-10 16:34:51,595 - sodalite - INFO - (55, 95)
+2017-09-10 16:34:51,602 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:s, type:unknown, frequency:28]
+2017-09-10 16:35:01,414 - sodalite - INFO - bye
+2017-09-10 16:35:15,435 - sodalite - INFO - starting sodalite
+2017-09-10 16:35:15,443 - sodalite - INFO - (55, 95)
+2017-09-10 16:35:15,450 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:s, type:unknown, frequency:29]
+2017-09-10 16:37:19,369 - sodalite - INFO - starting sodalite
+2017-09-10 16:37:19,375 - sodalite - INFO - (55, 95)
+2017-09-10 16:37:19,382 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:s, type:unknown, frequency:30]
+2017-09-10 16:38:47,745 - sodalite - INFO - starting sodalite
+2017-09-10 16:38:47,752 - sodalite - INFO - (55, 95)
+2017-09-10 16:38:47,759 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:s, type:unknown, frequency:31]
+2017-09-10 16:39:32,076 - sodalite - INFO - visitting entry [parent:/home/heiko, name:AcmeWorkspace, key:k, type:dir, frequency:4]
+2017-09-10 16:39:33,638 - sodalite - INFO - starting sodalite
+2017-09-10 16:39:33,644 - sodalite - INFO - (55, 95)
+2017-09-10 16:39:33,655 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:s, type:unknown, frequency:32]
+2017-09-10 16:39:59,716 - sodalite - INFO - starting sodalite
+2017-09-10 16:39:59,723 - sodalite - INFO - (55, 95)
+2017-09-10 16:39:59,730 - sodalite - INFO - visitting entry [parent:/home, name:heiko, key:s, type:unknown, frequency:33]
+2017-09-10 16:40:02,433 - sodalite - INFO - bye
