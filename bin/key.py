@@ -75,11 +75,29 @@ def get_available_keys( old_entries ):
 def assign_keys( new_entries, old_entries ):
     unused_keys = get_available_keys( old_entries)
     entry_module.sort(new_entries)
+    entries_assign_later = []
     for entry in new_entries:
         if len(unused_keys) > 0:
-            entry.key = Key(unused_keys.pop(0))
+            # try to assign starting character as key
+            start_char = entry.name[0].lower()
+            char = ""
+            if start_char in unused_keys:
+                unused_keys.remove(start_char)
+                char = start_char
+            elif start_char.upper() in unused_keys:
+                unused_keys.remove(start_char.upper())
+                char = start_char.upper()
+            else:
+                entries_assign_later.append(entry)
+                continue
+            entry.key = Key( char)
         else:
-            # TODO
-            # what shall we do if we dont have enough keys?
-            break
+            return
+    # now assign entries whose starting chars are already taken
+    for entry in entries_assign_later:
+        if len(unused_keys) > 0:
+            char = unused_keys.pop(0)
+            entry.key = Key( char )
+        else:
+            return
     return

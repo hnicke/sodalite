@@ -10,12 +10,10 @@ import sys
 
 class MainForm(npyscreen.FormBaseNew):
     def create(self):
+        self.core = self.parentApp.core
         self.in_assign_mode = False
-        # valid values: 'choose-entry' and 'choose-key'
-        self.assign_mode_progress = 'choose-entry'
         self.entry_for_assignment = None
         middle_x = self.curses_pad.getmaxyx()[1] // 2
-        logger.info(self.curses_pad.getmaxyx())
         spacing = 1
         self.statusbar = self.add(npyscreen.FixedText, relx=3*spacing, rely=spacing)
         self.statusbar.handlers={}
@@ -34,12 +32,13 @@ class MainForm(npyscreen.FormBaseNew):
             curses.ascii.ESC:       self.h_exit, 
             "^N":                   self.assignpane.h_cursor_line_down,
             "^P":                   self.assignpane.h_cursor_line_up,
-            curses.ascii.NL:        self.h_choose_selection,
+            curses.ascii.NL:        self.assignpane.h_choose_selection,
             }
         self.handlers = self.navigation_mode_handlers
-        self.core = self.parentApp.core
         self.complex_handlers = [
-                (self.t_input_is_navigation_key, self.h_react_to_key)
+                (self.navigationpane.t_input_is_navigation_key, self.h_navigate_to_key),
+                (self.assignpane.t_input_is_assign_key, self.assignpane.h_assign_key),
+                (self.actionpane.is_action_trigger, self.actionpane.trigger_action)
                 ]
         self.change_dir(os.getenv('HOME'))
         self.redraw()
@@ -64,7 +63,7 @@ class MainForm(npyscreen.FormBaseNew):
         else:
             self.handlers = self.navigation_mode_handlers
             self.set_title_to_cwd()
-            self.assign_mode_progress = 'choose-entry'
+            self.assignpane.assign_mode_progress = 'choose-entry'
             self.entry_for_assignment = None
 
 
@@ -72,38 +71,9 @@ class MainForm(npyscreen.FormBaseNew):
         self.assignpane.display()
         self.redraw()
 
-    def t_input_is_navigation_key(self, input):
-        char = chr(input)
-        is_navigation_key = (char in key.get_all_keys() or char == '.')
-        return is_navigation_key
 
-    def h_react_to_key(self, input):
-        if self.in_assign_mode:
-            self.assign_key(input)
-        else:
-            self.navigate_to_key(input)
 
-    def assign_key(self, input):
-        char = chr(input)
-        if self.assign_mode_progress == 'choose-entry':
-            matches = [ x for x in self.values if x.key.value == char]
-            if len(matches) == 1:
-                entry = matches[0]
-                self.cursor_line = self.values.index(entry)
-                self.choose_entry(entry)
-            elif len(matches) < 0:
-                pass
-            else:
-                logger.error("While assigning an entry for key change, found '{}'entries for given key '{}'".format(len(matches),char))
-        elif self.assign_mode_progress == 'choose-key':
-           char = chr(input)
-           self.parentApp.core.assign_key ( self.entry_for_assignment, char )
-           self.assign_mode_progress == 'choose-entry'
-           #self.reset_cursor()
-           self.h_toggle_assign_mode("_")
-        return
-
-    def navigate_to_key(self, input):
+    def h_navigate_to_key(self, input):
         char = chr(input)
         self.core.change_to_key(char)
         self.redraw()
@@ -118,14 +88,14 @@ class MainForm(npyscreen.FormBaseNew):
         self.values = self.core.current_entry.children
         self.navigationpane.values = self.values
         self.assignpane.values = self.values
-        #self.actionpane.values = self.values
+        self.actionpane.values = self.parentApp.action_engine.get_actions(self.core.current_entry)
         self.redraw_statusbar()
         self.display()
         return
 
     def redraw_statusbar(self):
         if self.in_assign_mode:
-            if self.assign_mode_progress == "choose-entry":
+            if self.assignpane.assign_mode_progress == "choose-entry":
                 self.set_title("assign key: choose entry")
             else:
                 self.set_title("assign key: choose new key")
@@ -139,16 +109,6 @@ class MainForm(npyscreen.FormBaseNew):
         self.statusbar.value = " " + title 
         self.statusbar.display()
 
-    def h_choose_selection( self, input):
-        entry = self.assignpane.values[self.assignpane.cursor_line]
-        self.choose_entry( entry )
-
-
-    def choose_entry(self, entry ):
-        if self.assign_mode_progress == 'choose-entry':
-            self.entry_for_assignment = entry
-            self.assign_mode_progress = 'choose-key'
-            self.redraw_statusbar()
 
 
 
