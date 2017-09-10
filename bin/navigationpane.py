@@ -13,8 +13,8 @@ class NavigationPane(theme.LinePrinter,entrypane.EntryPane,npyscreen.Pager):
         npyscreen.Pager.__init__(self, *args, **keywords)
         entrypane.EntryPane.__init__(self)
 
-        self.add_handlers({
-            })
+        self.handlers = {
+            }
         return
 
 

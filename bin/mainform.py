@@ -20,7 +20,7 @@ class MainForm(npyscreen.FormBaseNew):
         self.statusbar = self.add(npyscreen.FixedText, relx=3*spacing, rely=spacing)
         self.statusbar.handlers={}
         self.navigationpane = self.add(navigationpane.NavigationPane, relx=spacing,rely=spacing+1, max_width=middle_x-(2*spacing))
-        self.assignpane = self.add(assignpane.AssignPane, relx=spacing, rely=spacing+1, max_width=middle_x-(2*spacing), hidden=True)
+        self.assignpane = self.add(assignpane.AssignPane, relx=spacing, rely=spacing+1, max_width=middle_x-(2*spacing), hidden=True, always_show_cursor=True, editable=False)
         #self.curses_pad.vline(0, middle_x, "n", middle_x)
         self.actionpane = self.add(actionpane.ActionPane, relx=middle_x+spacing, rely=spacing+1, max_width=middle_x-(3*spacing))
         self.navigation_mode_handlers = {

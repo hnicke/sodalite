@@ -3,11 +3,6 @@ import core
 import config
 import actionhook
 from mylogger import logger
-import navigationpane
-import assignpane
-import actionpane
-import sys
-import curses
 import theme
 import mainform
 

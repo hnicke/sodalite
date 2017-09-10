@@ -33,5 +33,7 @@ class LinePrinter:
         try:
             if self.values[value_indexer].type == 'dir':
                 line.show_bold = True
+            if self.cursor_line == value_indexer:
+                line.is_cursor = True
         except IndexError:
             pass
