@@ -36,7 +36,7 @@ class MainForm(npyscreen.FormBaseNew):
                 (self.assignpane.t_input_is_assign_key, self.assignpane.h_assign_key),
                 (self.actionpane.is_action_trigger, self.actionpane.trigger_action)
                 ]
-        self.change_dir(os.getenv('HOME'))
+        self.change_dir(os.getenv('SODALITE_STARTING_DIR'))
         self.redraw()
     
     def populate(self):

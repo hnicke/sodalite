@@ -1,5 +1,6 @@
 #!/bin/bash  
 
+
 ## set up environment
 export SODALITE_APPNAME=sodalite
 export XDG_CONFIG=${XDG_CONFIG_HOME:-$HOME/.config}
@@ -17,6 +18,9 @@ export SODALITE_DB_PATH=${SODALITE_DATA_DIR}/db.sqlite
     frequency INTEGER NOT NULL DEFAULT 0,
     PRIMARY KEY ( name, parent )
 );" | sqlite3 $SODALITE_DB_PATH
+
+# $1: starting directory
+export SODALITE_STARTING_DIR=${1:-$SODALITE_BOOKMARK_DIR}
 
 # handle config
 # TODO dont ship following line
