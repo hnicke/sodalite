@@ -20,6 +20,7 @@ class Config:
     # returns: actionhook.ActionHooks object
     def get_actionmap(self):
         actionhooks = actionhook.ActionMap()
+        actionhooks.general = self.actions['general']
         actionhooks.dir = self.actions['dir']
         actionhooks.text = self.actions['text']
 

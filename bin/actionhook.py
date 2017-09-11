@@ -12,6 +12,7 @@ class ActionEngine:
     def __init__(self, config):
         self.config = config
         actionmap = config.get_actionmap() 
+        self.general_actions = self.extract_actions(actionmap.general)
         self.dir_actions = self.extract_actions(actionmap.dir)
         self.text_actions = self.extract_actions(actionmap.text)
         self.extension_actions = {}
@@ -42,13 +43,14 @@ class ActionEngine:
     def get_actions( self, entry ):
         actions = []
         extension = os.path.splitext(entry.name)[1].lower().replace(".", "")
+        actions.extend(self.general_actions)
         if entry.is_file():
-            actions = self.extension_actions.get(extension, [])
+            actions.extend(self.extension_actions.get(extension, []))
             if entry.is_plain_text_file():
                 actions.extend(self.text_actions)
         else:
             # entry is dir
-            actions = self.dir_actions
+            actions.extend(self.dir_actions)
         return actions
 
     def extract_actions(self, map):
@@ -62,6 +64,7 @@ class ActionEngine:
 
 class ActionMap:
     def __init__(self):
+        self.general = {}
         self.dir = {}
         self.text = {}
         self.extensions = {}
@@ -70,7 +73,7 @@ class ActionMap:
         return str(self)
 
     def __str__(self):
-        return "dir: {}, text: {}, extensions: {}".format(self.dir, self.text, self.extensions)
+        return "general: {}, dir: {}, text: {}, extensions: {}".format(self.general, self.dir, self.text, self.extensions)
         
 class Action:
 

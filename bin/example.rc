@@ -1,16 +1,12 @@
-## usage of meta keys:
-# use ^ for ctrl, ! for alt
-# for key bindings with meta keys, always use upper case keys
-# example:
-# '^a' <-- wrong
-# '^A' <-- correct 
+## meta keys
+# Control-A must be written as ^A
+# Alt-A must be wrtten as !a
+# Mind the casing.
+
 ## special keys
-# these keys  can be specified:
+# these special keys  can be specified:
 # ENTER
 
-# key bindings without modifiers are case sensitive:
-# example: 'o' differs from 'O'
-#
 ##############
 # variables ################################################################
 # following variables can be used within hooks. they are expanded at runtime:
@@ -25,22 +21,25 @@
 
 # mind the indentation, this is YAML
 actions:
-  text:
-    o: ["vim #f#q", open with vim]
+  general:
+    "^B": ['ln -s "#f" $SODALITE_BOOKMARK_DIR/$(basename "#f")', add to bookmarks]
+    "!b": ['rm $SODALITE_BOOKMARK_DIR/$(basename "#f")', delete from bookmarks]
   dir:
-    ENTER: ['terminator --working-directory=#f#q', drop to shell]
-    ^S: ["terminator --working-directory=#f", open shell]
-    ^E: ["vifm #f #f#q", drop to file manager]
+    ENTER: ['terminator --working-directory="#f"#q', drop to shell]
+    "^S": ['terminator --working-directory="#f"', open shell]
+    "^E": ['vifm "#f" #f#q', drop to file manager]
+  text:
+    "o": ['vim "#f"#q', open with vim]
   custom:
     image:
       extensions: [png, jpg]
       hooks:
-        o: ["feh #f & #q", open with feh]
+        "o": ['feh "#f" & #q', open with feh]
     pdf:
       extensions: [pdf]
       hooks:
-        o: ["zathura #f#q", open with zathura]
+        "o": ['zathura "#f"#q', open with zathura]
     hypertext:
       extensions: [html]
       hooks:
-        v: ["firefox #f$q", open with firefox]
+        "v": ['firefox "#f"#q', open with firefox]
