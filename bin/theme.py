@@ -25,6 +25,7 @@ class Theme(npyscreen.ThemeManager):
 
 
 class LinePrinter:
+    ## copied from npyscreen. added feature: dirs are printed bold
     def _print_line(self, line, value_indexer):
         line.color = self.color
         self._set_line_values(line, value_indexer)
@@ -33,7 +34,5 @@ class LinePrinter:
         try:
             if self.values[value_indexer].type == 'dir':
                 line.show_bold = True
-            if self.cursor_line == value_indexer:
-                line.is_cursor = True
         except IndexError:
             pass

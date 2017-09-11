@@ -2,6 +2,10 @@ import config
 import os
 from mylogger import logger
 import sys
+import curses
+
+special_keys= { 'ENTER': '^J'
+            }
 
 class ActionEngine:
 
@@ -15,16 +19,21 @@ class ActionEngine:
             self.extension_actions[extension] = self.extract_actions(actionmap.extensions[extension])
 
     def trigger_action(self, key, entry):
-        filename = entry.get_absolute_path()
         matches = [action.hook for action in self.get_actions(entry) if action.key.lower() == key.lower()]
         hook = matches[0]
         logger.info("hook before parsing: {}".format(hook))
+        filename = entry.get_absolute_path()
         hook = hook.replace("#f", filename)
         finally_exit = False
         if hook.endswith("#q"):
             finally_exit = True
             hook = hook[:-2]
         logger.info("hook after parsing: {}".format(hook))
+        if entry.is_file():
+            cwd = os.path.dirname(entry.get_absolute_path())
+        else:
+            cwd = entry.get_absolute_path()
+        os.chdir(cwd)
         os.system("{}".format(hook))
         if finally_exit:
             sys.exit(0)
@@ -66,7 +75,7 @@ class ActionMap:
 class Action:
 
     def __init__(self, key, hook, description):
-        self.key = key
+        self.key = special_keys.get(key, key)
         self.hook = hook
         self.description = description
 

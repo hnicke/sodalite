@@ -4,6 +4,9 @@
 # example:
 # '^a' <-- wrong
 # '^A' <-- correct 
+## special keys
+# these keys  can be specified:
+# ENTER
 
 # key bindings without modifiers are case sensitive:
 # example: 'o' differs from 'O'
@@ -14,7 +17,7 @@
 # #f:   current entry (filename or dirname)
 # #q:   if hook ends with #q, sodalite will issue the hook and exit
 #       example: vim #f#q
-#       this is usedful if hook is designed to serve as launcher
+#       this is useful if the hook is designed to serve as launcher>
 #       If the app spawns in another window (like all x apps),
 #       consider spawning the process in the background
 #       (in order for sodalite to exit immediately)
@@ -25,8 +28,9 @@ actions:
   text:
     o: ["vim #f#q", open with vim]
   dir:
-    ^S: ["konsole #f", drop to shell]
-    ^E: ["vifm #f #f", drop to file manager]
+    ENTER: ['terminator --working-directory=#f#q', drop to shell]
+    ^S: ["terminator --working-directory=#f", open shell]
+    ^E: ["vifm #f #f#q", drop to file manager]
   custom:
     image:
       extensions: [png, jpg]

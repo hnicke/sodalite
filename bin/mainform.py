@@ -13,6 +13,8 @@ class MainForm(npyscreen.FormBaseNew):
         self.core = self.parentApp.core
         self.in_assign_mode = False
         self.entry_for_assignment = None
+        # form can be made smaller after creation
+        FIX_MINIMUM_SIZE_WHEN_CREATED = True
         middle_x = self.curses_pad.getmaxyx()[1] // 2
         spacing = 1
         self.statusbar = self.add(npyscreen.FixedText, relx=3*spacing, rely=spacing)
