@@ -20,7 +20,7 @@ export SODALITE_DB_PATH=${SODALITE_DATA_DIR}/db.sqlite
 );" | sqlite3 $SODALITE_DB_PATH
 
 # $1: starting directory
-export SODALITE_STARTING_DIR=${1:-$SODALITE_BOOKMARK_DIR}
+export SODALITE_STARTING_DIR=${1:-$HOME}
 
 # handle config
 # TODO dont ship following line
