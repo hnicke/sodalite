@@ -9,13 +9,14 @@ import key
 import sys
 
 class MainForm(npyscreen.FormBaseNew):
+        # form can be made smaller after creation
+        #FIX_MINIMUM_SIZE_WHEN_CREATED = True
+
     def create(self):
         self.core = self.parentApp.core
+        self.populate()
         self.in_assign_mode = False
         self.entry_for_assignment = None
-        # form can be made smaller after creation
-        FIX_MINIMUM_SIZE_WHEN_CREATED = True
-        self.populate()
         self.navigation_mode_handlers = {
                 "=":                    self.h_toggle_assign_mode,
                 curses.ascii.ESC:       self.h_exit, 
@@ -39,14 +40,13 @@ class MainForm(npyscreen.FormBaseNew):
         self.redraw()
     
     def populate(self):
-        logger.info(self.curses_pad.getmaxyx())
         middle_x = self.curses_pad.getmaxyx()[1] // 2
         spacing = 1
+        self.statusbar = self.add(npyscreen.FixedText, relx=3*spacing, rely=spacing)
+        self.statusbar.handlers={}
         self.navigationpane = self.add(navigationpane.NavigationPane, relx=spacing,rely=spacing+1, max_width=middle_x-(2*spacing))
         self.assignpane = self.add(assignpane.AssignPane, relx=spacing, rely=spacing+1, max_width=middle_x-(2*spacing), hidden=True, always_show_cursor=True, editable=False)
         self.actionpane = self.add(actionpane.ActionPane, relx=middle_x+spacing, rely=spacing+1, max_width=middle_x-(3*spacing))
-        self.statusbar = self.add(npyscreen.FixedText, relx=3*spacing, rely=spacing)
-        self.statusbar.handlers={}
 
     def h_change_to_home(self, input):
         home = os.getenv('HOME')
