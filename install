@@ -6,6 +6,6 @@ mkdir -p ${FAKE_ROOT}/etc
 mkdir -p ${FAKE_ROOT}/usr/share/sodalite
 mkdir -p ${FAKE_ROOT}/usr/bin
 cp "docs/example.rc" "${FAKE_ROOT}/etc/"
-cp "src/*" "${FAKE_ROOT}/usr/share/sodalite/"
-awk 'NR==1 {print; print "SOURCES=/usr/share/sodalite"} NR!=1'  sodalite > "${FAKE_ROOT}/usr/bin/"
+cp src/* "${FAKE_ROOT}/usr/share/sodalite/"
+awk 'NR==1 {print; print "SOURCES=/usr/share/sodalite"} NR!=1'  sodalite > "${FAKE_ROOT}/usr/bin/sodalite"
 [ -L "${FAKE_ROOT}/usr/bin/sl" ] || ln -s "${FAKE_ROOT}/usr/bin/sodalite" ${FAKE_ROOT}/usr/bin/sl
