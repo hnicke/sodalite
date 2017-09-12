@@ -3,7 +3,7 @@
 
 ## set up environment
 APPNAME=sodalite
-SOURCES=/usr/share/$APPNAME
+SOURCES="${SOURCES:-$(dirname $(readlink -f "$0"))/src}"
 export SODALITE_LOG=/var/log/sodalite/sodalite.log
 XDG_CONFIG=${XDG_CONFIG_HOME:-$HOME/.config}
 XDG_DATA=${XDG_DATA_HOME:-$HOME/.local/share}
@@ -32,4 +32,5 @@ export SODALITE_CONFIG_PATH
 # adjust the delay time in ms curses waits for an escape sequence to happen after pressing ESC
 export ESCDELAY=0
 
-python $(dirname $(readlink -f "$0"))/main.py
+
+python $(dirname $(readlink -f "$0"))/src/main.py
