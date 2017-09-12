@@ -2,9 +2,9 @@
 # use var FAKE_ROOT to specify a fake root.
 # Leave empty, if you intend to install to true root ('/')
 cd $(dirname $0)
-mkdir ${FAKE_ROOT}/etc
+mkdir -p ${FAKE_ROOT}/etc
 mkdir -p ${FAKE_ROOT}/usr/share/sodalite
-mkdir ${FAKE_ROOT}/usr/bin
+mkdir -p ${FAKE_ROOT}/usr/bin
 cp "docs/example.rc" "${FAKE_ROOT}/etc/"
 cp "src/*" "${FAKE_ROOT}/usr/share/sodalite/"
 awk 'NR==1 {print; print "SOURCES=/usr/share/sodalite"} NR!=1'  sodalite > "${FAKE_ROOT}/usr/bin/"
