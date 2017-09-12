@@ -2,13 +2,15 @@
 
 
 ## set up environment
-export SODALITE_APPNAME=sodalite
-export XDG_CONFIG=${XDG_CONFIG_HOME:-$HOME/.config}
-export XDG_DATA=${XDG_DATA_HOME:-$HOME/.local/share}
-export SODALITE_CONFIG_DIR=${XDG_CONFIG}/$SODALITE_APPNAME
-export SODALITE_DATA_DIR=${XDG_DATA}/$SODALITE_APPNAME
+APPNAME=sodalite
+SOURCES=/usr/share/$APPNAME
+export SODALITE_LOG=/var/log/sodalite/sodalite.log
+XDG_CONFIG=${XDG_CONFIG_HOME:-$HOME/.config}
+XDG_DATA=${XDG_DATA_HOME:-$HOME/.local/share}
+SODALITE_CONFIG_DIR=${XDG_CONFIG}/$APPNAME
+SODALITE_DATA_DIR=${XDG_DATA}/$APPNAME
 export SODALITE_BOOKMARK_DIR=${SODALITE_CONFIG_DIR}/bookmarks
-mkdir -p $SODALITE_CONFIG_DIR $SODALITE_DATA_DIR $SODALITE_BOOKMARK_DIR &2> /dev/null
+mkdir -p $SODALITE_GLOBAL_CONFIG_DIR $SODALITE_DATA_DIR $SODALITE_BOOKMARK_DIR &2> /dev/null
 export SODALITE_DB_PATH=${SODALITE_DATA_DIR}/db.sqlite
 [ -f $SODALITE_DB_PATH ] || \
     echo "CREATE TABLE IF NOT EXISTS files (
@@ -23,10 +25,9 @@ export SODALITE_DB_PATH=${SODALITE_DATA_DIR}/db.sqlite
 export SODALITE_STARTING_DIR=${1:-$HOME}
 
 # handle config
-# TODO dont ship following line
-$(dirname $(readlink -f "$0"))/config-remove
-export SODALITE_CONFIG_PATH=${SODALITE_CONFIG_DIR}/sodalite.rc
-[ -f $SODALITE_CONFIG_PATH ] || cp $(dirname $(readlink -f "$0"))/example.rc $SODALITE_CONFIG_PATH
+SODALITE_CONFIG_PATH=${SODALITE_CONFIG_DIR}/${APPNAME}.rc
+[ -f $SODALITE_CONFIG_PATH ] || SODALITE_CONFIG_PATH=/etc/${APPNAME}.rc
+export SODALITE_CONFIG_PATH
 
 # adjust the delay time in ms curses waits for an escape sequence to happen after pressing ESC
 export ESCDELAY=0

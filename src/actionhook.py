@@ -22,14 +22,12 @@ class ActionEngine:
     def trigger_action(self, key, entry):
         matches = [action.hook for action in self.get_actions(entry) if action.key.lower() == key.lower()]
         hook = matches[0]
-        logger.info("hook before parsing: {}".format(hook))
         filename = entry.get_absolute_path()
         hook = hook.replace("#f", filename)
         finally_exit = False
         if hook.endswith("#q"):
             finally_exit = True
             hook = hook[:-2]
-        logger.info("hook after parsing: {}".format(hook))
         if entry.is_file():
             cwd = os.path.dirname(entry.get_absolute_path())
         else:

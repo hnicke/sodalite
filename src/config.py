@@ -7,6 +7,7 @@ import actionhook
 class Config:
     def __init__(self):
         config_file = os.getenv('SODALITE_CONFIG_PATH')
+        logger.debug(config_file)
         try:
             with open(config_file) as f:
                 # use safe_load instead load

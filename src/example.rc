@@ -43,3 +43,10 @@ actions:
       extensions: [html]
       hooks:
         "v": ['firefox "#f"#q', open with firefox]
+    archive:
+      extensions: [xz]
+      hooks:
+        "u": ['tar xpvf #f', extract]
+
+
+# vim: set ts=2 sw=2 et:

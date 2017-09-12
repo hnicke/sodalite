@@ -1,0 +1,3 @@
+#!/bin/bash  
+rm -f $HOME/.config/sodalite/sodalite.rc
+sudo cp $(dirname $(readlink -f "$0"))/example.rc /etc/sodalite.rc
