@@ -3,13 +3,14 @@ from mylogger import logger
 import navigationpane
 import assignpane
 import actionpane
+import main
 import curses
 import os
 import key
 import sys
 
 class MainForm(npyscreen.FormBaseNew):
-        # form can be made smaller after creation
+    # form can be made smaller after creation
         #FIX_MINIMUM_SIZE_WHEN_CREATED = True
 
     def create(self):
@@ -25,11 +26,11 @@ class MainForm(npyscreen.FormBaseNew):
                 curses.KEY_HOME:        self.h_change_to_home,
                 }
         self.assign_mode_handlers = {
-            curses.ascii.ESC:       self.h_exit, 
-            "^N":                   self.assignpane.h_cursor_line_down,
-            "^P":                   self.assignpane.h_cursor_line_up,
-            curses.ascii.NL:        self.assignpane.h_choose_selection,
-            }
+                curses.ascii.ESC:       self.h_exit, 
+                "^N":                   self.assignpane.h_cursor_line_down,
+                "^P":                   self.assignpane.h_cursor_line_up,
+                curses.ascii.NL:        self.assignpane.h_choose_selection,
+                }
         self.handlers = self.navigation_mode_handlers
         self.complex_handlers = [
                 (self.navigationpane.t_input_is_navigation_key, self.h_navigate_to_key),
@@ -38,7 +39,7 @@ class MainForm(npyscreen.FormBaseNew):
                 ]
         self.change_dir(os.getenv('SODALITE_STARTING_DIR'))
         self.redraw()
-    
+
     def populate(self):
         middle_x = self.curses_pad.getmaxyx()[1] // 2
         spacing = 1
@@ -46,7 +47,7 @@ class MainForm(npyscreen.FormBaseNew):
         self.statusbar.handlers={}
         self.navigationpane = self.add(navigationpane.NavigationPane, relx=spacing,rely=spacing+1, max_width=middle_x-(2*spacing))
         self.assignpane = self.add(assignpane.AssignPane, relx=spacing, rely=spacing+1, max_width=middle_x-(2*spacing), hidden=True, always_show_cursor=True, editable=False)
-        self.actionpane = self.add(actionpane.ActionPane, relx=middle_x+spacing, rely=spacing+1, max_width=middle_x-(3*spacing))
+        self.actionpane = self.add(actionpane.ActionPane, relx=middle_x+spacing, rely=spacing+1, max_width=middle_x-(4*spacing))
 
     def h_change_to_home(self, input):
         home = os.getenv('HOME')
@@ -56,6 +57,12 @@ class MainForm(npyscreen.FormBaseNew):
         if self.in_assign_mode:
             self.h_toggle_assign_mode("_")
         else:
+            currentEntry = self.core.current_entry;
+            if currentEntry.is_file():
+                working_dir = currentEntry.parent
+            else:
+                working_dir = currentEntry.get_absolute_path()
+            main.append_to_cwd_pipe( working_dir )
             sys.exit(0)
 
     def h_toggle_assign_mode(self, input):

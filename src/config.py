@@ -4,6 +4,7 @@ import sys
 from mylogger import logger
 import actionhook
 
+
 class Config:
     def __init__(self):
         config_file = os.getenv('SODALITE_CONFIG_PATH')

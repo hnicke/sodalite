@@ -10,7 +10,7 @@ XDG_DATA=${XDG_DATA_HOME:-$HOME/.local/share}
 SODALITE_CONFIG_DIR=${XDG_CONFIG}/$APPNAME
 SODALITE_DATA_DIR=${XDG_DATA}/$APPNAME
 export SODALITE_BOOKMARK_DIR=${SODALITE_CONFIG_DIR}/bookmarks
-mkdir -p $SODALITE_GLOBAL_CONFIG_DIR $SODALITE_DATA_DIR $SODALITE_BOOKMARK_DIR &2> /dev/null
+( mkdir -p $SODALITE_GLOBAL_CONFIG_DIR $SODALITE_DATA_DIR $SODALITE_BOOKMARK_DIR &2> /dev/null )
 export SODALITE_DB_PATH=${SODALITE_DATA_DIR}/db.sqlite
 [ -f $SODALITE_DB_PATH ] || \
     echo "CREATE TABLE IF NOT EXISTS files (
@@ -29,8 +29,14 @@ SODALITE_CONFIG_PATH=${SODALITE_CONFIG_DIR}/${APPNAME}.rc
 [ -f $SODALITE_CONFIG_PATH ] || SODALITE_CONFIG_PATH=/etc/${APPNAME}.rc
 export SODALITE_CONFIG_PATH
 
+
 # adjust the delay time in ms curses waits for an escape sequence to happen after pressing ESC
 export ESCDELAY=0
 
-
-python $(dirname $(readlink -f "$0"))/src/main.py
+export SODALITE_OUTPUT_PIPE=$(mktemp -u "${TMPDIR:-/tmp/}$(basename $0).XXXXXXXX")
+mkfifo $SODALITE_OUTPUT_PIPE
+trap "rm -f $SODALITE_OUTPUT_PIPE" EXIT
+exec 3< <(read line <$SODALITE_OUTPUT_PIPE; echo $line)
+python $(dirname $(readlink -f "$(which sodalite)"))/src/main.py
+read <&3 line
+cd "$line"

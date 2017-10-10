@@ -5,7 +5,7 @@ import actionhook
 from mylogger import logger
 import theme
 import mainform
-
+import os
 
 
 class App(npyscreen.NPSAppManaged):
@@ -18,7 +18,13 @@ class App(npyscreen.NPSAppManaged):
 
     def onCleanExit(self):
         self.core.shutdown()
+        logger.info('hooook')
 
+def append_to_cwd_pipe( cwd ):
+    pipe = os.getenv("SODALITE_OUTPUT_PIPE")
+    with open(pipe, 'w') as p:
+        p.write(cwd)
+        p.close()
 
 if __name__ == "__main__":
     logger.info('starting sodalite')
@@ -27,5 +33,6 @@ if __name__ == "__main__":
         app.run()
     except KeyboardInterrupt:
         app.core.shutdown()
-        logger.info('bye')
+        append_to_cwd_pipe("$PWD")
+        logger.info('got interrupted')
 
