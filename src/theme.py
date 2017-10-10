@@ -32,7 +32,7 @@ class LinePrinter:
         self._set_line_highlighting(line, value_indexer)
         # added section for printing dir entries in a special way
         try:
-            if self.values[value_indexer].type == 'dir':
+            if self.values[value_indexer].isdir:
                 line.show_bold = True
         except IndexError:
             pass

@@ -14,11 +14,10 @@ export SODALITE_BOOKMARK_DIR=${SODALITE_CONFIG_DIR}/bookmarks
 export SODALITE_DB_PATH=${SODALITE_DATA_DIR}/db.sqlite
 [ -f $SODALITE_DB_PATH ] || \
     echo "CREATE TABLE IF NOT EXISTS files (
-    name text NOT NULL,
-    parent text NOT NULL,
+    path text NOT NULL,
     key text NOT NULL,
     frequency INTEGER NOT NULL DEFAULT 0,
-    PRIMARY KEY ( name, parent )
+    PRIMARY KEY ( path )
 );" | sqlite3 $SODALITE_DB_PATH
 
 # $1: starting directory

@@ -1,17 +1,16 @@
 import config
 import os
 from mylogger import logger
-import sys
 import curses
-import main
 
 special_keys= { 'ENTER': '^J'
-            }
+        }
 
 class ActionEngine:
 
-    def __init__(self, config):
+    def __init__(self, config, core):
         self.config = config
+        self.core = core
         actionmap = config.get_actionmap() 
         self.general_actions = self.extract_actions(actionmap.general)
         self.dir_actions = self.extract_actions(actionmap.dir)
@@ -23,28 +22,26 @@ class ActionEngine:
     def trigger_action(self, key, entry):
         matches = [action.hook for action in self.get_actions(entry) if action.key.lower() == key.lower()]
         hook = matches[0]
-        filename = entry.get_absolute_path()
-        hook = hook.replace("#f", filename)
+        hook = hook.replace("#f", entry.path)
         finally_exit = False
         if hook.endswith("#q"):
             finally_exit = True
             hook = hook[:-2]
-        if entry.is_file():
-            cwd = os.path.dirname(entry.get_absolute_path())
+        if not entry.isdir:
+            cwd = os.path.dirname(entry.path)
         else:
-            cwd = entry.get_absolute_path()
-        os.chdir(cwd)
+            cwd = entry.path
         os.system("{}".format(hook))
         if finally_exit:
-            main.append_to_cwd_pipe( "." )
-            sys.exit(0)
+            logger.info('finally exit')
+            self.core.shutdown( 0, self.core.dir_service.getcwd() )
 
     # returns list of possible actions for given entry
     def get_actions( self, entry ):
         actions = []
         extension = os.path.splitext(entry.name)[1].lower().replace(".", "")
         actions.extend(self.general_actions)
-        if entry.is_file():
+        if not entry.isdir:
             actions.extend(self.extension_actions.get(extension, []))
             if entry.is_plain_text_file():
                 actions.extend(self.text_actions)
@@ -74,7 +71,7 @@ class ActionMap:
 
     def __str__(self):
         return "general: {}, dir: {}, text: {}, extensions: {}".format(self.general, self.dir, self.text, self.extensions)
-        
+
 class Action:
 
     def __init__(self, key, hook, description):

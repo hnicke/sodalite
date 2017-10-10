@@ -13,14 +13,13 @@ class App(npyscreen.NPSAppManaged):
         npyscreen.setTheme(theme.Theme)
         self.core = core.Core()
         self.config = config.Config()
-        self.action_engine = actionhook.ActionEngine( self.config )
+        self.action_engine = actionhook.ActionEngine( self.config, self.core )
         self.addForm("MAIN", mainform.MainForm)
 
     def onCleanExit(self):
-        self.core.shutdown()
-        logger.info('hooook')
+        self.core.shutdown( 0, self.core.dir_service.getcwd() )
 
-def append_to_cwd_pipe( cwd ):
+def _append_to_cwd_pipe( cwd ):
     pipe = os.getenv("SODALITE_OUTPUT_PIPE")
     with open(pipe, 'w') as p:
         p.write(cwd)
@@ -32,7 +31,6 @@ if __name__ == "__main__":
     try:
         app.run()
     except KeyboardInterrupt:
-        app.core.shutdown()
-        append_to_cwd_pipe(".")
         logger.info('got interrupted')
+        app.core.shutdown( 1, "." )
 

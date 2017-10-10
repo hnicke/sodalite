@@ -19,12 +19,10 @@ class ActionPane(entrypane.EntryPane, npyscreen.Pager):
 
     def is_action_trigger(self, input):
         key = curses.ascii.unctrl(input)
-        logger.info(key)
         return key in [action.key for action in self.values]
 
     def trigger_action(self, input):
         key = curses.ascii.unctrl(input)
-        logger.info("action")
         current_entry = self.core.current_entry
         self.action_engine.trigger_action( key, current_entry )
 

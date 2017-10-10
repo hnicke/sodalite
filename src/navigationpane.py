@@ -22,7 +22,6 @@ class NavigationPane(theme.LinePrinter,entrypane.EntryPane,npyscreen.Pager):
             return False
         char = chr(input)
         is_navigation_key = char == "." or char in [entry.key.value for entry in self.values] 
-        #is_navigation_key = (char in key.get_all_keys() or char == '.')
         return is_navigation_key
 
 

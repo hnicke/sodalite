@@ -7,7 +7,6 @@ import main
 import curses
 import os
 import key
-import sys
 
 class MainForm(npyscreen.FormBaseNew):
     # form can be made smaller after creation
@@ -37,7 +36,6 @@ class MainForm(npyscreen.FormBaseNew):
                 (self.assignpane.t_input_is_assign_key, self.assignpane.h_assign_key),
                 (self.actionpane.is_action_trigger, self.actionpane.trigger_action)
                 ]
-        self.change_dir(os.getenv('SODALITE_STARTING_DIR'))
         self.redraw()
 
     def populate(self):
@@ -58,12 +56,7 @@ class MainForm(npyscreen.FormBaseNew):
             self.h_toggle_assign_mode("_")
         else:
             currentEntry = self.core.current_entry;
-            if currentEntry.is_file():
-                working_dir = currentEntry.parent
-            else:
-                working_dir = currentEntry.get_absolute_path()
-            main.append_to_cwd_pipe( working_dir )
-            sys.exit(0)
+            self.core.shutdown( 0, self.core.dir_service.getcwd() )
 
     def h_toggle_assign_mode(self, input):
         self.in_assign_mode = not self.in_assign_mode
@@ -115,7 +108,7 @@ class MainForm(npyscreen.FormBaseNew):
             self.set_title_to_cwd()
 
     def set_title_to_cwd(self):
-        self.set_title(self.parentApp.core.current_entry.get_absolute_path())
+        self.set_title(self.parentApp.core.current_entry.path)
 
     def set_title(self, title):
         self.statusbar.value = " " + title 

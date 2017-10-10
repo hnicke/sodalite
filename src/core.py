@@ -1,52 +1,72 @@
 #!/bin/env python
 import sqlite3
+import re
 import os
+import dirservice as dirservice_module
 import entry as entry_module
 import key
+import sys
+import main
 from mylogger import logger
+
+def regexp(expr, item):
+    reg = re.compile(expr)
+    return reg.search(item) is not None
+
 
 
 class Core:
 
+
     def __init__(self, cwd="/" ):
-        home = os.getenv('HOME')
+        self.dir_service = dirservice_module.DirService()
         self.conn = sqlite3.connect(os.environ['SODALITE_DB_PATH'])
-        self.current_entry = self.get_entry( home )
+        self.conn.create_function("REGEXP", 2, regexp)
+        self.current_entry = self.get_entry( self.dir_service.getcwd() )
+        self.visit_entry( self.current_entry )
 
 
-    def shutdown(self):
+    # clean shutdown of application
+    # status_code: returned status code
+    # pwd: new pwd for parent process
+    def shutdown( self, status_code, pwd ):
         self.conn.close()
+        main._append_to_cwd_pipe( pwd )
+        logger.info("shutdown")
+        sys.exit(0)
 
 
     def update_entry ( self, entry ):
-        self.conn.cursor().execute("UPDATE files SET frequency=?, key=?  WHERE name=? AND parent=?", (entry.frequency, entry.key.value, entry.name, entry.parent))
+        self.conn.cursor().execute("UPDATE files SET frequency=?, key=?  WHERE path=?", (entry.frequency, entry.key.value, entry.path))
         self.conn.commit()
 
     def retrieve_entries_from_filesystem( self, entry ):
         filelist = []
         dirlist = []
-        path = entry.get_absolute_path()
-        for (dirpath, dirnames, filenames) in os.walk( path ):
+        for (dirpath, dirnames, filenames) in os.walk( entry.path ):
             filelist = filenames
             dirlist = dirnames
             break
         entries = []
         for file in dirlist:
-            new_entry = entry_module.Entry( file, path )
-            new_entry.type = "dir"
+            absolute_file_path = os.path.join(entry.path, file)
+            new_entry = entry_module.Entry( absolute_file_path )
             entries.append(new_entry)
         for file in filelist:
-            new_entry = entry_module.Entry( file, path )
-            new_entry.type = "file"
+            absolute_file_path = os.path.join(entry.path, file)
+            new_entry = entry_module.Entry( absolute_file_path )
             entries.append(new_entry)
         return entries
 
     def retrieve_entries_from_db ( self, entry ):
         entries = []
-        path = entry.get_absolute_path()
-        cursor = self.conn.cursor().execute( "SELECT name,key,frequency FROM files WHERE parent=?", (path,))
+        path = entry.path
+        # fix regexp for root
+        if path == '/':
+            path = '';
+        cursor = self.conn.cursor().execute( "SELECT path,key,frequency FROM files WHERE path REGEXP ?", ["^"+ path + "/[^/]+$"])
         for row in cursor:
-            new_entry = entry_module.Entry ( row[0], path )
+            new_entry = entry_module.Entry ( row[0] )
             new_entry.key = key.Key(row[1])
             new_entry.frequency = row[2]
             entries.append(new_entry)
@@ -56,7 +76,7 @@ class Core:
         new_entries = list(set(entries_filesystem) - set(entries_db))
         key.assign_keys(new_entries, entries_db)
         for entry in new_entries:
-            self.conn.cursor().execute("INSERT INTO files VALUES (?,?,?,?)", (entry.name, entry.parent, entry.key.value, entry.frequency))
+            self.conn.cursor().execute("INSERT INTO files VALUES (?,?,?)", (entry.path, entry.key.value, entry.frequency))
             self.conn.commit()
         entries_db.extend(new_entries)
         return 
@@ -65,7 +85,7 @@ class Core:
     def remove_old_entries( self, entries_filesystem, entries_db ):
         obsolete_entries = list(set(entries_db) - set(entries_filesystem))
         for entry in obsolete_entries:
-            self.conn.cursor().execute("DELETE FROM files WHERE name=? AND parent=?", (entry.name, entry.parent))
+            self.conn.cursor().execute("DELETE FROM files WHERE path=?", (entry.path, ))
         self.conn.commit()
         return
 
@@ -93,26 +113,30 @@ class Core:
         self.update_entry( entry )
         entries_filesystem = self.retrieve_entries_from_filesystem( entry )
         entries_db = self.retrieve_entries_from_db( entry )
-
         self.add_new_entries_to_db( entries_filesystem, entries_db )
-        
+
         self.remove_old_entries( entries_filesystem, entries_db )
         entries = self.unite_data( entries_filesystem, entries_db )
         entry_module.sort(entries)
         self.current_entry.children = entries
 
-    def change_to_key( self, key):
+    def change_to_key( self, key ):
         if key == '.':
-            parent = self.current_entry.parent
-            parent_entry = self.get_entry( parent )
-            self.visit_entry(parent_entry)
+            precessor_path = self.dir_service.travel_back();
+            precessor = self.get_entry( precessor_path );
+            self.visit_entry( precessor )
         else:
             matches = [x for x in self.current_entry.children if x.key.value == key]
             if len(matches) > 0:
-                self.visit_entry( matches[0] )
+                new_dir = matches[0]
+                self.dir_service.travel_to( new_dir.path )
+                self.visit_entry( new_dir )
             else:
                 logger.debug("no match found for key '{}'".format(key))
         return
+
+
+
 
     # assigns given entry the new key. if the new key is already taken by another entry on the same level,
     # keys are swapped
@@ -134,14 +158,12 @@ class Core:
         return
 
 # returns an entry object which matches given absolute path
-# needs a database connection object in order to also retrieve frequency and key of value
+# connects to db to retrieve frequency and key of entry, if exists
     def get_entry( self, path ):
-        name = os.path.basename( path)
-        parent = os.path.dirname ( path )
-        entry = entry_module.Entry( name, parent)
-        cursor = self.conn.execute("SELECT key,frequency FROM files WHERE name=? and parent=?", (entry.name, entry.parent))
+        entry = entry_module.Entry( path )
+        cursor = self.conn.execute("SELECT key,frequency FROM files WHERE path=?", (entry.path, ))
         match = cursor.fetchone()
         if match is not None:
-            entry.frequency = match[1]
             entry.key = key.Key( match[0] )
+            entry.frequency = match[1]
         return entry
