@@ -22,8 +22,8 @@
 # mind the indentation, this is YAML
 actions:
   general:
-    "^B": ['ln -s "#f" $SODALITE_BOOKMARK_DIR/$(basename "#f")', add to bookmarks]
-    "!b": ['rm $SODALITE_BOOKMARK_DIR/$(basename "#f")', delete from bookmarks]
+    "^B": ['ln -s "#f" "$SODALITE_BOOKMARK_DIR/$(basename "#f")"', add to bookmarks]
+    "!b": ['rm "$SODALITE_BOOKMARK_DIR/$(basename "#f")"', delete from bookmarks]
   dir:
     ENTER: ['terminator --working-directory="#f"#q', drop to shell]
     "^S": ['terminator --working-directory="#f"', open shell]

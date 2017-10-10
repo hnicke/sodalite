@@ -31,6 +31,7 @@ class ActionEngine:
             cwd = os.path.dirname(entry.path)
         else:
             cwd = entry.path
+        logger.info("hook is {}".format(hook))
         os.system("{}".format(hook))
         if finally_exit:
             logger.info('finally exit')
