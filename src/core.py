@@ -23,7 +23,7 @@ class Core:
         self.conn = sqlite3.connect(os.environ['SODALITE_DB_PATH'])
         self.conn.create_function("REGEXP", 2, regexp)
         self.current_entry = self.get_entry( self.dir_service.getcwd() )
-        self.visit_entry( self.current_entry )
+        self.__visit_entry( self.current_entry )
 
 
     # clean shutdown of application
@@ -123,7 +123,7 @@ class Core:
                 logger.error('couldnt find match for entry_fs: {}'.format(entry_fs))
         return entries
 
-    def visit_entry( self, entry ):
+    def __visit_entry( self, entry ):
         logger.info("visitting entry {}".format(entry))
         self.current_entry = entry
         entry.frequency += 1
@@ -140,16 +140,22 @@ class Core:
         if key == '.':
             precessor_path = self.dir_service.travel_back();
             precessor = self.get_entry( precessor_path );
-            self.visit_entry( precessor )
+            self.__visit_entry( precessor )
         else:
             matches = [x for x in self.current_entry.children if x.key.value == key]
             if len(matches) > 0:
                 new_dir = matches[0]
                 self.dir_service.travel_to( new_dir.path )
-                self.visit_entry( new_dir )
+                self.__visit_entry( new_dir )
             else:
                 logger.debug("no match found for key '{}'".format(key))
         return
+
+    def change_to_dir( self, path ):
+        entry = self.get_entry( path )
+        self.dir_service.travel_to ( path )
+        self.__visit_entry( entry )
+
 
 
 

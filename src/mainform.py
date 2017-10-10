@@ -49,7 +49,8 @@ class MainForm(npyscreen.FormBaseNew):
 
     def h_change_to_home(self, input):
         home = os.getenv('HOME')
-        self.change_dir(home)
+        self.core.change_to_dir( home )
+        self.redraw()
 
     def h_exit(self, input):
         if self.in_assign_mode:
@@ -84,10 +85,6 @@ class MainForm(npyscreen.FormBaseNew):
         self.redraw()
         return
 
-    def change_dir(self, dir):
-        self.core.visit_entry( self.core.get_entry( dir ))
-        self.redraw()
-        return
 
     def redraw(self):
         self.values = self.core.current_entry.children
