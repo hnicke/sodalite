@@ -29,12 +29,12 @@ actions:
     "^S": ['terminator --working-directory="#f"', open shell]
     "^E": ['vifm "#f" #f#q', drop to file manager]
   text:
-    "o": ['vim "#f"#q', open with vim]
+    "o": ['vim "#f" #q', open with vim]
   custom:
     image:
       extensions: [png, jpg]
       hooks:
-        "o": ['feh "#f" & #q', open with feh]
+        "o": ['feh "#f" &', open with feh]
     pdf:
       extensions: [pdf]
       hooks:
@@ -46,7 +46,4 @@ actions:
     archive:
       extensions: [xz]
       hooks:
-        "u": ['tar xpvf #f', extract]
-
-
-# vim: set ts=2 sw=2 et:
+        "u": ['tar xpvf #f #q', extract]
