@@ -41,49 +41,59 @@ class Core:
         self.conn.commit()
 
     def retrieve_entries_from_filesystem( self, entry ):
-        filelist = []
-        dirlist = []
-        for (dirpath, dirnames, filenames) in os.walk( entry.path ):
-            filelist = filenames
-            dirlist = dirnames
-            break
-        entries = []
-        for file in dirlist:
-            absolute_file_path = os.path.join(entry.path, file)
-            new_entry = entry_module.Entry( absolute_file_path )
-            entries.append(new_entry)
-        for file in filelist:
-            absolute_file_path = os.path.join(entry.path, file)
-            new_entry = entry_module.Entry( absolute_file_path )
-            entries.append(new_entry)
+        entries = set()
+        if not entry.isdir:
+            return entries
+        filenames = os.listdir( entry.path )
+        for name in filenames:
+            absolute_path = os.path.join(entry.path, name)
+            realpath = os.path.realpath( absolute_path )
+            new_entry = entry_module.Entry( realpath )
+            if realpath != absolute_path:
+                new_entry.issymlink = True
+            entries.add(new_entry)
         return entries
 
-    def retrieve_entries_from_db ( self, entry ):
-        entries = []
-        path = entry.path
-        # fix regexp for root
-        if path == '/':
-            path = '';
-        cursor = self.conn.cursor().execute( "SELECT path,key,frequency FROM files WHERE path REGEXP ?", ["^"+ path + "/[^/]+$"])
+    def get_entries_from_db_for_criteria( self, criteria ):
+        entries = set()
+        cursor = self.conn.cursor().execute( "SELECT path,key,frequency FROM files WHERE path REGEXP ?", (criteria,) )
         for row in cursor:
             new_entry = entry_module.Entry ( row[0] )
             new_entry.key = key.Key(row[1])
             new_entry.frequency = row[2]
-            entries.append(new_entry)
+            entries.add(new_entry)
         return entries
 
-    def add_new_entries_to_db( self, entries_filesystem, entries_db ):
-        new_entries = list(set(entries_filesystem) - set(entries_db))
+    # for every absolute (real) path in files, tries to 
+    # basedir: the basedir which needs to match entries in databse
+    # returns: all entries matching basedir and symlinks
+    def retrieve_entries_from_db ( self, basedir, entries_fs ):
+        entries = set()
+        # fix regexp for root
+        if basedir == '/':
+            basedir = '';
+        entries.update(self.get_entries_from_db_for_criteria( "^"+ basedir + "/[^/]+$" ))
+        for entry in entries_fs:
+            if entry.issymlink:
+                entries.update(self.get_entries_from_db_for_criteria( entry.path ))
+        return entries
+
+
+
+    def add_new_entries_to_db( self, entries_fs, entries_db ):
+        new_entries = entries_fs - entries_db
         key.assign_keys(new_entries, entries_db)
         for entry in new_entries:
-            self.conn.cursor().execute("INSERT INTO files VALUES (?,?,?)", (entry.path, entry.key.value, entry.frequency))
+            try:
+                self.conn.cursor().execute("INSERT INTO files VALUES (?,?,?)", (entry.path, entry.key.value, entry.frequency))
+            except sqlite3.IntegrityError:
+                logger.error("Integrity error. failed to insert " + str(entry))
             self.conn.commit()
-        entries_db.extend(new_entries)
-        return 
+        entries_db.update(new_entries)
 
     # deletes obsolete entries in the db
     def remove_old_entries( self, entries_filesystem, entries_db ):
-        obsolete_entries = list(set(entries_db) - set(entries_filesystem))
+        obsolete_entries = entries_db - entries_filesystem
         for entry in obsolete_entries:
             self.conn.cursor().execute("DELETE FROM files WHERE path=?", (entry.path, ))
         self.conn.commit()
@@ -91,7 +101,13 @@ class Core:
 
     # attention: this method changes entries_filesystem. after calling, this variable does not reflect the entries of the filesystem anymore!! Use the returned value.
     def unite_data( self, entries_filesystem, entries_db ):
-        entries = []
+        #logger.info("unite data entries filesystem ---------------------------")
+        #for testentry in entries_filesystem:
+       #     logger.debug(testentry)
+       # logger.info("unite data entries db ------------------------------------")
+       # for testentry in entries_db:
+       #     logger.debug(testentry)
+        entries = set()
         for entry_fs in entries_filesystem:
             matches = [ x for x in entries_db if x == entry_fs ]
             if len(matches) == 1:
@@ -99,11 +115,12 @@ class Core:
                 entries_db.remove(entry_db)
                 entry_fs.key = entry_db.key
                 entry_fs.frequency = entry_db.frequency
-                entries.append(entry_fs)
+                entries.add(entry_fs)
             elif len(matches) > 1:
+                logger.error(matches)
                 raise ValueError('Error, multiple matches found. constraint: uniqueness of entries') 
             else:
-                print('couldnt find match for entry_fs: {}'.format(entry_fs))
+                logger.error('couldnt find match for entry_fs: {}'.format(entry_fs))
         return entries
 
     def visit_entry( self, entry ):
@@ -111,14 +128,13 @@ class Core:
         self.current_entry = entry
         entry.frequency += 1
         self.update_entry( entry )
-        entries_filesystem = self.retrieve_entries_from_filesystem( entry )
-        entries_db = self.retrieve_entries_from_db( entry )
-        self.add_new_entries_to_db( entries_filesystem, entries_db )
-
-        self.remove_old_entries( entries_filesystem, entries_db )
-        entries = self.unite_data( entries_filesystem, entries_db )
-        entry_module.sort(entries)
-        self.current_entry.children = entries
+        entries_fs = self.retrieve_entries_from_filesystem( entry )
+        entries_db = self.retrieve_entries_from_db( entry.path, entries_fs )
+        self.add_new_entries_to_db( entries_fs, entries_db )
+        self.remove_old_entries( entries_fs, entries_db )
+        entries = self.unite_data( entries_fs, entries_db )
+        entry_list = entry_module.sort(entries)
+        self.current_entry.children = entry_list
 
     def change_to_key( self, key ):
         if key == '.':

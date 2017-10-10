@@ -10,10 +10,11 @@ class Entry:
 
 
     # path: the absolute, cannonical file path
-    def __init__( self, path ):
+    def __init__( self, path, issymlink=False ):
         self.path = path
         self.name = os.path.basename( path )
         self.isdir = os.path.isdir( path )
+        self.issymlink = issymlink
         self.key = key.Key("")
         self.frequency = 0
         # the children of this
@@ -48,9 +49,11 @@ class Entry:
         return self.__is_plain_text_file
 
 def sort(entries):
-    entries.sort(key=lambda x: x.name)
-    entries.sort(key=lambda x: x.isdir,reverse=True)
-    entries.sort(key=lambda x: x.is_hidden())
-    entries.sort(key=lambda x: x.key.value=="")
-    entries.sort(key=lambda x: x.frequency,reverse=True)
+    entryList = list(entries)
+    entryList.sort(key=lambda x: x.name)
+    entryList.sort(key=lambda x: x.isdir,reverse=True)
+    entryList.sort(key=lambda x: x.is_hidden())
+    entryList.sort(key=lambda x: x.key.value=="")
+    entryList.sort(key=lambda x: x.frequency,reverse=True)
+    return entryList
 
