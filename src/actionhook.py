@@ -3,6 +3,7 @@ import os
 from mylogger import logger
 import sys
 import curses
+import main
 
 special_keys= { 'ENTER': '^J'
             }
@@ -35,6 +36,7 @@ class ActionEngine:
         os.chdir(cwd)
         os.system("{}".format(hook))
         if finally_exit:
+            main.append_to_cwd_pipe( "." )
             sys.exit(0)
 
     # returns list of possible actions for given entry

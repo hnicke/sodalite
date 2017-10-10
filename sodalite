@@ -34,6 +34,7 @@ export SODALITE_CONFIG_PATH
 export ESCDELAY=0
 
 export SODALITE_OUTPUT_PIPE=$(mktemp -u "${TMPDIR:-/tmp/}$(basename $0).XXXXXXXX")
+
 mkfifo $SODALITE_OUTPUT_PIPE
 trap "rm -f $SODALITE_OUTPUT_PIPE" EXIT
 exec 3< <(read line <$SODALITE_OUTPUT_PIPE; echo $line)

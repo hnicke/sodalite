@@ -33,6 +33,6 @@ if __name__ == "__main__":
         app.run()
     except KeyboardInterrupt:
         app.core.shutdown()
-        append_to_cwd_pipe("$PWD")
+        append_to_cwd_pipe(".")
         logger.info('got interrupted')
 
