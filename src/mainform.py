@@ -127,7 +127,7 @@ class MainForm(npyscreen.FormBaseNew):
     def h_navigate_to_key(self, input):
         char = chr(input)
         self.core.change_to_key(char)
-        self.commandline.clear_search()
+        self.commandline.clear_search( "" )
         self.data.set_entries( self.core.current_entry.children )
         self.redraw()
         return
