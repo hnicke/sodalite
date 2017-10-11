@@ -66,7 +66,6 @@ class MainForm(npyscreen.FormBaseNew):
                 relx=spacing,
                 rely=startline,
                 max_width=middle_x-(2*spacing),
-                max_height=-2
                 )
         self.assignpane = self.add(assignpane.AssignPane,
                 relx=spacing,
@@ -75,13 +74,11 @@ class MainForm(npyscreen.FormBaseNew):
                 hidden=True, 
                 always_show_cursor=True, 
                 editable=False,
-                max_height=-2
                 )
         self.actionpane = self.add(actionpane.ActionPane,
                 relx=middle_x+spacing, 
                 rely=startline, 
                 max_width=middle_x-(4*spacing),
-                max_height=-2
                 )
         self.commandline = self.add(commandline.Commandline,
                 relx=spacing,
