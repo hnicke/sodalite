@@ -35,9 +35,9 @@ class MainForm(npyscreen.FormBaseNew):
         self.statusbar.handlers={}
         self.navigation_mode_handlers = {
                 "=":                    self.h_toggle_assign_mode,
-                ord('~'):               self.h_change_to_home,
-                ord('`'):               self.h_change_to_home,
-                curses.KEY_HOME:        self.h_change_to_home,
+                ord('~'):               self.h_navigate_to_home,
+                ord('`'):               self.h_navigate_to_home,
+                curses.KEY_HOME:        self.h_navigate_to_home,
                 }
         self.assign_mode_handlers = {
                 "^N":                   self.assignpane.h_cursor_line_down,
@@ -90,9 +90,6 @@ class MainForm(npyscreen.FormBaseNew):
                 data=self.data
                 )
 
-    def h_change_to_home(self, input):
-        home = os.getenv('HOME')
-        self.change_dir(home)
 
     def t_input_is_exit_key(self, input):
         return input == curses.ascii.ESC
@@ -127,15 +124,19 @@ class MainForm(npyscreen.FormBaseNew):
     def h_navigate_to_key(self, input):
         char = chr(input)
         self.core.change_to_key(char)
-        self.commandline.clear_search( "" )
-        self.data.set_entries( self.core.current_entry.children )
-        self.redraw()
+        self.after_navigation()
         return
 
-    def change_dir(self, dir):
-        self.core.visit_entry( self.core.get_entry( dir ))
+    def h_navigate_to_home(self, input):
+        home = os.getenv('HOME')
+        self.core.change_to_dir( home )
+        self.after_navigation()
+
+    def after_navigation( self ):
+        self.data.set_entries( self.core.current_entry.children )
+        self.commandline.clear_search( "" )
         self.redraw()
-        return
+
 
     def redraw(self):
         self.navigationpane.values = self.data.get_filtered_entries()
