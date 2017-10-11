@@ -27,13 +27,8 @@ class Core:
 
 
     # clean shutdown of application
-    # status_code: returned status code
-    # pwd: new pwd for parent process
-    def shutdown( self, status_code, pwd ):
+    def shutdown( self ):
         self.conn.close()
-        main._append_to_cwd_pipe( pwd )
-        logger.info("shutdown")
-        sys.exit(0)
 
 
     def update_entry ( self, entry ):

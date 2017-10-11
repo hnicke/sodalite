@@ -2,15 +2,17 @@ import config
 import os
 from mylogger import logger
 import curses
+import npyscreen
 
 special_keys= { 'ENTER': '^J'
         }
 
 class ActionEngine:
 
-    def __init__(self, config, core):
+    def __init__(self, config, core , app):
         self.config = config
         self.core = core
+        self.app = app
         actionmap = config.get_actionmap() 
         self.general_actions = self.extract_actions(actionmap.general)
         self.dir_actions = self.extract_actions(actionmap.dir)
@@ -32,10 +34,20 @@ class ActionEngine:
         else:
             cwd = entry.path
         logger.info("hook is {}".format(hook))
+        self.reset_terminal()
         os.system("{}".format(hook))
         if finally_exit:
-            logger.info('finally exit')
             self.core.shutdown( 0, self.core.dir_service.getcwd() )
+
+    # this is what would happen if npyscreen app would shutdown. 
+    # these calls make sure to reset the terminal
+    # note: somehow, undoing these changes on resume is not necessary, everything seems to work
+    def reset_terminal( self ):
+        screen = npyscreen.npyssafewrapper._SCREEN
+        screen.keypad(0)
+        curses.echo()
+        curses.nocbreak()
+        curses.endwin()
 
     # returns list of possible actions for given entry
     def get_actions( self, entry ):

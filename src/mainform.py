@@ -14,8 +14,10 @@ class MainForm(npyscreen.FormBaseNew):
     # form can be made smaller after creation
         #FIX_MINIMUM_SIZE_WHEN_CREATED = True
 
-    def __init__(self, parent, cycle_widgets = True, *args, **keywords):
-        self.parentApp = parent
+    def after_editing( self ):
+        self.parentApp.setNextForm(None)
+
+    def __init__(self, cycle_widgets = True, *args, **keywords):
         super(MainForm, self).__init__(cycle_widgets=cycle_widgets, *args, **keywords)
 
     def draw_form(self):
@@ -98,8 +100,8 @@ class MainForm(npyscreen.FormBaseNew):
         if self.in_assign_mode:
             self.h_toggle_assign_mode("_")
         else:
-            currentEntry = self.core.current_entry;
-            self.core.shutdown( 0, self.core.dir_service.getcwd() )
+            self.parentApp.setNextForm(None)
+            self.exit_editing()
 
     def h_toggle_assign_mode(self, input):
         self.in_assign_mode = not self.in_assign_mode

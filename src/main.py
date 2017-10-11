@@ -8,19 +8,22 @@ import mainform
 import os
 
 
-class App(npyscreen.NPSApp):
-    def main(self):
+class App(npyscreen.NPSAppManaged):
+    def onStart(self):
         npyscreen.setTheme(theme.Theme)
         self.core = core.Core()
         self.config = config.Config()
-        self.action_engine = actionhook.ActionEngine( self.config, self.core )
-        F = mainform.MainForm ( self )
-        #F.wStatus2.value = "Second Status Line "
-        F.edit()
+        self.action_engine = actionhook.ActionEngine( self.config, self.core, self)
+        self.addForm( 'MAIN', mainform.MainForm, name="main")
 
     def onCleanExit(self):
-        self.core.shutdown( 0, self.core.dir_service.getcwd() )
+        self.core.shutdown( )
+        _append_to_cwd_pipe( self.core.dir_service.getcwd() )
+        logger.info("shutdown")
 
+# before exiting, this needs to be called once;
+# or the wrapping script won't stop
+# cwd: new working dir after exiting this process
 def _append_to_cwd_pipe( cwd ):
     pipe = os.getenv("SODALITE_OUTPUT_PIPE")
     with open(pipe, 'w') as p:
@@ -34,5 +37,5 @@ if __name__ == "__main__":
         app.run()
     except KeyboardInterrupt:
         logger.info('got interrupted')
-        app.core.shutdown( 1, "." )
+        _append_to_cwd_pipe( "." )
 
