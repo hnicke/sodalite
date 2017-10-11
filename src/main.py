@@ -8,13 +8,15 @@ import mainform
 import os
 
 
-class App(npyscreen.NPSAppManaged):
-    def onStart(self):
+class App(npyscreen.NPSApp):
+    def main(self):
         npyscreen.setTheme(theme.Theme)
         self.core = core.Core()
         self.config = config.Config()
         self.action_engine = actionhook.ActionEngine( self.config, self.core )
-        self.addForm("MAIN", mainform.MainForm)
+        F = mainform.MainForm ( self )
+        #F.wStatus2.value = "Second Status Line "
+        F.edit()
 
     def onCleanExit(self):
         self.core.shutdown( 0, self.core.dir_service.getcwd() )
