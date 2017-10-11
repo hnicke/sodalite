@@ -3,17 +3,18 @@ import os
 from mylogger import logger
 import curses
 import npyscreen
+import sys
 
 special_keys= { 'ENTER': '^J'
         }
 
 class ActionEngine:
 
-    def __init__(self, config, core , app):
-        self.config = config
-        self.core = core
+    def __init__(self, app):
         self.app = app
-        actionmap = config.get_actionmap() 
+        self.config = app.config
+        self.core = app.core
+        actionmap = self.config.get_actionmap() 
         self.general_actions = self.extract_actions(actionmap.general)
         self.dir_actions = self.extract_actions(actionmap.dir)
         self.text_actions = self.extract_actions(actionmap.text)
@@ -37,7 +38,8 @@ class ActionEngine:
         self.reset_terminal()
         os.system("{}".format(hook))
         if finally_exit:
-            self.core.shutdown( 0, self.core.dir_service.getcwd() )
+            self.app.onCleanExit()
+            sys.exit(0)            
 
     # this is what would happen if npyscreen app would shutdown. 
     # these calls make sure to reset the terminal

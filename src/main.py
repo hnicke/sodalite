@@ -1,6 +1,6 @@
 import npyscreen
 import core
-import config
+import config as config_module
 import actionhook
 from mylogger import logger
 import theme
@@ -12,8 +12,8 @@ class App(npyscreen.NPSAppManaged):
     def onStart(self):
         npyscreen.setTheme(theme.Theme)
         self.core = core.Core()
-        self.config = config.Config()
-        self.action_engine = actionhook.ActionEngine( self.config, self.core, self)
+        self.config = config_module.Config()
+        self.action_engine = actionhook.ActionEngine( self )
         self.addForm( 'MAIN', mainform.MainForm, name="main")
 
     def onCleanExit(self):
