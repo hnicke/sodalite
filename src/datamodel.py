@@ -19,7 +19,6 @@ class DataModel:
             self.filtered_entries[:] = [x for x in self.filtered_entries if filter_string in x.name.lower()]
         # rebuild filter list from scratch
         else:
-            logger.info("normal")
             self.filtered_entries.clear()
             for entry in self.entries:
                 if filter_string in entry.name.lower():
