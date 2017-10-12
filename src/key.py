@@ -61,12 +61,14 @@ def get_all_keys():
 # returns a list of keys which are not yet used by given entries
 # old_entries: list of Entry which alreay have a key
 def get_available_keys( old_entries ):
-    used_keys = map(lambda x: x.key.value, old_entries)
+    used_keys = set(map(lambda x: x.key.value, old_entries))
+    used_keys.discard('')
     unused_keys = []
-    for i in range( 3 ):
-        tmp = list(set(all_keys[i]) - set(used_keys))
+    for i in range( 4 ):
+        tmp = list(set(all_keys[i]) - used_keys)
         shuffle(tmp)
         unused_keys.extend(tmp)
+
     return unused_keys
 
 # assigns keys to the given new entries

@@ -77,14 +77,16 @@ class Core:
 
     def add_new_entries_to_db( self, entries_fs, entries_db ):
         new_entries = entries_fs - entries_db
+        for entry in new_entries:
+            logger.info("not yet persisted entry: {}".format(entry))
         key.assign_keys(new_entries, entries_db)
         for entry in new_entries:
             try:
                 self.conn.cursor().execute("INSERT INTO files VALUES (?,?,?)", (entry.path, entry.key.value, entry.frequency))
+                self.conn.commit()
+                entries_db.add(entry)
             except sqlite3.IntegrityError:
                 logger.error("Integrity error. failed to insert " + str(entry))
-            self.conn.commit()
-        entries_db.update(new_entries)
 
     # deletes obsolete entries in the db
     def remove_old_entries( self, entries_filesystem, entries_db ):
@@ -96,12 +98,6 @@ class Core:
 
     # attention: this method changes entries_filesystem. after calling, this variable does not reflect the entries of the filesystem anymore!! Use the returned value.
     def unite_data( self, entries_filesystem, entries_db ):
-        #logger.info("unite data entries filesystem ---------------------------")
-        #for testentry in entries_filesystem:
-       #     logger.debug(testentry)
-       # logger.info("unite data entries db ------------------------------------")
-       # for testentry in entries_db:
-       #     logger.debug(testentry)
         entries = set()
         for entry_fs in entries_filesystem:
             matches = [ x for x in entries_db if x == entry_fs ]
@@ -128,8 +124,8 @@ class Core:
         self.add_new_entries_to_db( entries_fs, entries_db )
         self.remove_old_entries( entries_fs, entries_db )
         entries = self.unite_data( entries_fs, entries_db )
-        entry_list = entry_module.sort(entries)
-        self.current_entry.children = entry_list
+        sorted_entries = entry_module.sort(entries)
+        self.current_entry.children = sorted_entries
 
     def change_to_key( self, key ):
         if key == '.':
