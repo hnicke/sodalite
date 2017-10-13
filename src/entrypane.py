@@ -8,12 +8,7 @@ class EntryPane:
 
     def __init__(self):
         self.handlers = {
-                curses.ascii.SP:    self.h_scroll_page_down,
-                "^B":    self.h_scroll_page_up,
-                "^U":    self.h_scroll_half_page_up,
-                "^D":    self.h_scroll_half_page_down,
                 }
-        return
 
     def h_scroll_half_page_down(self, input):
         self.start_display_at += len(self._my_widgets) // 2

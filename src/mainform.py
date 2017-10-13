@@ -31,21 +31,34 @@ class MainForm(npyscreen.FormBaseNew):
         self.core = self.parentApp.core
         self.data = datamodel.DataModel( self.core.current_entry.children )
         self.populate()
+        self.setup_handlers()
 
         self.in_assign_mode = False
         self.entry_for_assignment = None
         self.statusbar.handlers={}
+        self.redraw()
+        self.navigationpane.edit()
+
+    def setup_handlers( self ):
+        self.common_handlers = {
+                curses.ascii.SP:        self.navigationpane.h_scroll_page_down,
+                "^B":                   self.navigationpane.h_scroll_page_up,
+                "^U":                   self.navigationpane.h_scroll_half_page_up,
+                "^D":                   self.navigationpane.h_scroll_half_page_down,
+                }
         self.navigation_mode_handlers = {
                 "=":                    self.h_toggle_assign_mode,
                 ord('~'):               self.h_navigate_to_home,
                 ord('`'):               self.h_navigate_to_home,
                 curses.KEY_HOME:        self.h_navigate_to_home,
                 }
+        self.navigation_mode_handlers.update(self.common_handlers)
         self.assign_mode_handlers = {
                 "^N":                   self.assignpane.h_cursor_line_down,
                 "^P":                   self.assignpane.h_cursor_line_up,
                 curses.ascii.NL:        self.assignpane.h_choose_selection,
                 }
+        self.assign_mode_handlers.update(self.common_handlers)
         self.handlers = self.navigation_mode_handlers
         self.complex_handlers = [
                 (self.commandline.t_filter, self.commandline.trigger),
@@ -54,7 +67,6 @@ class MainForm(npyscreen.FormBaseNew):
                 (self.assignpane.t_input_is_assign_key, self.assignpane.h_assign_key),
                 (self.actionpane.is_action_trigger, self.actionpane.trigger_action)
                 ]
-        self.redraw()
 
     def populate(self):
         MAXY, MAXX = self.lines, self.columns
