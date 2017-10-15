@@ -11,8 +11,6 @@ import commandline
 import datamodel
 
 class MainForm(npyscreen.FormBaseNew):
-    # form can be made smaller after creation
-        #FIX_MINIMUM_SIZE_WHEN_CREATED = True
 
     def after_editing( self ):
         self.parentApp.setNextForm(None)
@@ -24,7 +22,6 @@ class MainForm(npyscreen.FormBaseNew):
         MAXY, MAXX = self.lines, self.columns
         self.curses_pad.hline(0, 0, curses.ACS_HLINE, MAXX-1)  
         self.curses_pad.hline(MAXY-2, 0, curses.ACS_HLINE, MAXX-1)  
-        #super(MainForm, self).draw_form() > would draw frame
 
 
     def create(self):
@@ -109,8 +106,9 @@ class MainForm(npyscreen.FormBaseNew):
         if self.in_assign_mode:
             self.h_toggle_assign_mode("_")
         else:
+            logger.info("call to h_exit")
             self.parentApp.setNextForm(None)
-            self.exit_editing()
+            self.navigationpane.editing = False
 
     def h_toggle_assign_mode(self, input):
         self.in_assign_mode = not self.in_assign_mode
