@@ -1,16 +1,21 @@
 #!/bin/bash  
 
-
 ## set up environment
 APPNAME=sodalite
-SOURCES="${SOURCES:-$(dirname $(readlink -f "$0"))/src}"
+LIB_DIR="${LIB_DIR:-$(dirname $(readlink -f "$0"))/src}"
+CONFIG_FILE="${CONFIG_FILE:-$(dirname $(readlink -f "$0"))/src}"
+
+# TODO externalize LOG_DIR
 export SODALITE_LOG=/var/log/sodalite/sodalite.log
+
 XDG_CONFIG=${XDG_CONFIG_HOME:-$HOME/.config}
 XDG_DATA=${XDG_DATA_HOME:-$HOME/.local/share}
 SODALITE_CONFIG_DIR=${XDG_CONFIG}/$APPNAME
 SODALITE_DATA_DIR=${XDG_DATA}/$APPNAME
 export SODALITE_BOOKMARK_DIR=${SODALITE_CONFIG_DIR}/bookmarks
 ( mkdir -p $SODALITE_GLOBAL_CONFIG_DIR $SODALITE_DATA_DIR $SODALITE_BOOKMARK_DIR &2> /dev/null )
+
+# setup database
 export SODALITE_DB_PATH=${SODALITE_DATA_DIR}/db.sqlite
 [ -f $SODALITE_DB_PATH ] || \
     echo "CREATE TABLE IF NOT EXISTS files (
@@ -24,8 +29,9 @@ export SODALITE_DB_PATH=${SODALITE_DATA_DIR}/db.sqlite
 export SODALITE_STARTING_DIR=${1:-$HOME}
 
 # handle config
-SODALITE_CONFIG_PATH=${SODALITE_CONFIG_DIR}/${APPNAME}.rc
-[ -f $SODALITE_CONFIG_PATH ] || SODALITE_CONFIG_PATH=/etc/${APPNAME}.rc
+# fallback to user config file if exists
+SODALITE_CONFIG_PATH=${SODALITE_CONFIG_DIR}/${APPNAME}.conf
+[ -f $SODALITE_CONFIG_PATH ] || SODALITE_CONFIG_PATH=$CONFIG_FILE
 export SODALITE_CONFIG_PATH
 
 
@@ -37,6 +43,6 @@ export SODALITE_OUTPUT_PIPE=$(mktemp -u "${TMPDIR:-/tmp/}$(basename $0).XXXXXXXX
 mkfifo $SODALITE_OUTPUT_PIPE
 trap "rm -f $SODALITE_OUTPUT_PIPE" EXIT
 exec 3< <(read line <$SODALITE_OUTPUT_PIPE; echo $line)
-python $(dirname $(readlink -f "$(which sodalite)"))/src/main.py
+python $LIB_DIR/main.py
 read <&3 line
 cd "$line"

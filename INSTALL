@@ -1,0 +1,14 @@
+Installation Instructions
+*************************
+
+Run the 'install' script in order to install sodalite.
+
+ ENVIRONMENT VARIABLES for customization of the installation:
+.__________________________________________________________________.
+|# ENV             |  DESCRIPTION               |  DEFAULT         |
+|------------------|----------------------------|------------------|
+|- DATA_DIR        |  system data dir           |  /usr/bin        |
+|- CONFIG_DIR      |  system config dir         |  /etc            |
+|- DATA_DIR        |  system data dir           |  /usr/bin        |
+|- DOC_DIR         |  documentation dir         |  /usr/share/doc  |
+.__________________________________________________________________.
