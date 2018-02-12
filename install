@@ -16,23 +16,21 @@ PROJECT_NAME=sodalite
 [ -z $CONFIG_DIR ] && CONFIG_DIR=/etc
 [ -z $LIB_DIR ] && LIB_DIR=/usr/lib
 
-CONFIG_DIR=${FAKE_ROOT}${CONFIG_DIR}
-CONFIG_FILE=$CONFIG_DIR/${PROJECT_NAME}.conf
-BIN_DIR=${FAKE_ROOT}${BIN_DIR}
-LIB_DIR=${FAKE_ROOT}${LIB_DIR}/${PROJECT_NAME}
-DATA_DIR=${FAKE_ROOT}${DATA_DIR}/${PROJECT_NAME}
-DOC_DIR=${FAKE_ROOT}${DOC_DIR}/${PROJECT_NAME}
+FAKE_CONFIG_DIR=${FAKE_ROOT}${CONFIG_DIR}
+FAKE_CONFIG_FILE=$CONFIG_DIR/${PROJECT_NAME}.conf
+FAKE_BIN_DIR=${FAKE_ROOT}${BIN_DIR}
+FAKE_LIB_DIR=${FAKE_ROOT}${LIB_DIR}/${PROJECT_NAME}
+FAKE_DATA_DIR=${FAKE_ROOT}${DATA_DIR}/${PROJECT_NAME}
+FAKE_DOC_DIR=${FAKE_ROOT}${DOC_DIR}/${PROJECT_NAME}
 
-install -d $LIB_DIR
-install -D src/* $LIB_DIR
+install -d $FAKE_LIB_DIR
+install -D src/* $FAKE_LIB_DIR
 
-install -d $DATA_DIR
-install -D util/shell-integration.sh $DATA_DIR/shell-integration.sh
+install -d $FAKE_DATA_DIR
+install -D util/shell-integration.sh $FAKE_DATA_DIR/shell-integration.sh
 
 mkdir -p $BIN_DIR
-awk 'NR==1 {print; print "LIB_DIR='"$LIB_DIR"'"; print "CONFIG_FILE='"$CONFIG_FILE"'"} NR!=1'  $PROJECT_NAME > "$BIN_DIR/$PROJECT_NAME"
+awk 'NR==1 {print; print "LIB_DIR='"$LIB_DIR"'"; print "CONFIG_FILE='"$CONFIG_FILE"'"} NR!=1'  $PROJECT_NAME > "$FAKE_BIN_DIR/$PROJECT_NAME"
 chmod 755 $BIN_DIR/$PROJECT_NAME
 
-install -D --backup -m644 "docs/example.conf" $CONFIG_FILE
-
-popd
+install -D --backup -m644 "docs/example.conf" $FAKE_CONFIG_FILE
