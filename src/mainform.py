@@ -100,7 +100,7 @@ class MainForm(npyscreen.FormBaseNew):
 
 
     def t_input_is_exit_key(self, input):
-        return input == curses.ascii.ESC
+        return input == curses.ascii.ESC or input == curses.ascii.NL
 
     def h_exit(self, input):
         if self.in_assign_mode:
