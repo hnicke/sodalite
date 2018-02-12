@@ -35,6 +35,4 @@ chmod 755 $BIN_DIR/$PROJECT_NAME
 
 install -D --backup -m644 "docs/example.conf" $CONFIG_FILE
 
-[ -L "$BIN_DIR/sl" ] || ln -s "${FAKE_ROOT}/usr/bin/sodalite" ${FAKE_ROOT}/usr/bin/sl
-
 popd
