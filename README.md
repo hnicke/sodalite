@@ -2,26 +2,10 @@
 
 
 ### Usage
-For efficient usage, sodalite needs to get integrated into your shell. 
 
-#### bash
+Coming soon.
 
-
-#### zsh
-Add to `.zprofile`:
-```bash
-# make 'source' behave more like in bash
-source() {
-  alias shopt=':'
-  alias _expand=_bash_expand
-  alias _complete=_bash_comp
-  emulate -L sh
-  setopt kshglob noshglob braceexpand
-  builtin source "$@"
-}
-alias .='source'
-# add keybinding (ctrl+space)
-# TODO add bindings for emacs mode
-bindkey -as 'f' 'ddisource sodalite^M'
-```
-
+### Shell integration
+For efficient usage, sodalite needs to be integrated into your shell. 
+Currently, integration for bash and zsh is supported.  
+Source this [script](util/shell-integration.sh) in your .zprofile/.zshrc.
