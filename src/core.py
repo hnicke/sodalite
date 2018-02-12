@@ -136,8 +136,11 @@ class Core:
             matches = [x for x in self.current_entry.children if x.key.value == key]
             if len(matches) > 0:
                 new_dir = matches[0]
-                self.dir_service.travel_to( new_dir.path )
-                self.__visit_entry( new_dir )
+                if (os.access(new_dir.path, os.R_OK)):
+                    self.dir_service.travel_to( new_dir.path )
+                    self.__visit_entry( new_dir )
+                else:
+                    logger.info("Cannot visit entry {}: Permission denied".format(new_dir))
             else:
                 logger.debug("no match found for key '{}'".format(key))
         return
