@@ -7,6 +7,11 @@ CONFIG_FILE="${CONFIG_FILE:-$(dirname $(readlink -f "$0"))/docs/example.conf}"
 
 # TODO externalize LOG_DIR
 export SODALITE_LOG=/var/log/sodalite.log
+touch $SODALITE_LOG || { 
+    echo Missing write permissions for file \'$SODALITE_LOG\'
+    exit 1
+}
+
 
 XDG_CONFIG=${XDG_CONFIG_HOME:-$HOME/.config}
 XDG_DATA=${XDG_DATA_HOME:-$HOME/.local/share}
