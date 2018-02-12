@@ -17,11 +17,14 @@ class AssignPane(theme.LinePrinter,entrypane.EntryPane,npyscreen.MultiLineAction
         self.handlers = {}
 
     def t_input_is_assign_key(self, input):
-        char = chr(input)
-        if not self.parent.in_assign_mode:
+        try: 
+            char = chr(input)
+            if not self.parent.in_assign_mode:
+                return False
+            is_assign_key = char in key.get_all_keys() or char == "."
+            return is_assign_key
+        except ValueError:
             return False
-        is_assign_key = char in key.get_all_keys() or char == "."
-        return is_assign_key
 
     def h_assign_key(self, input):
         char = chr(input)

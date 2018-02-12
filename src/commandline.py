@@ -14,8 +14,11 @@ class Commandline(npyscreen.Textfield):
                 })
 
     def t_filter( self, input ):
-        char = chr(input)
-        return char == '/'
+        try: 
+            char = chr(input)
+            return char == '/'
+        except ValueError:
+            return False
 
     def when_value_edited( self ):
         self.data.filter( self.value[1:] )

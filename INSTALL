@@ -10,5 +10,6 @@ Run the 'install' script in order to install sodalite.
 |- DATA_DIR        |  system data dir           |  /usr/bin        |
 |- CONFIG_DIR      |  system config dir         |  /etc            |
 |- DATA_DIR        |  system data dir           |  /usr/bin        |
+|- DATA_DIR        |  data dir                  |  /usr/share      |
 |- DOC_DIR         |  documentation dir         |  /usr/share/doc  |
 .__________________________________________________________________.

@@ -12,6 +12,7 @@ PROJECT_NAME=sodalite
 # providing fallbacks
 [ -z $BIN_DIR ] && BIN_DIR=/usr/bin
 [ -z $DOC_DIR ] && DOC_DIR=/usr/share/doc
+[ -z $DATA_DIR ] && DATA_DIR=/usr/share
 [ -z $CONFIG_DIR ] && CONFIG_DIR=/etc
 [ -z $LIB_DIR ] && LIB_DIR=/usr/lib
 
@@ -19,10 +20,14 @@ CONFIG_DIR=${FAKE_ROOT}${CONFIG_DIR}
 CONFIG_FILE=$CONFIG_DIR/${PROJECT_NAME}.conf
 BIN_DIR=${FAKE_ROOT}${BIN_DIR}
 LIB_DIR=${FAKE_ROOT}${LIB_DIR}/${PROJECT_NAME}
+DATA_DIR=${FAKE_ROOT}${DATA_DIR}/${PROJECT_NAME}
 DOC_DIR=${FAKE_ROOT}${DOC_DIR}/${PROJECT_NAME}
 
 install -d $LIB_DIR
 install -D src/* $LIB_DIR
+
+install -d $DATA_DIR
+install -D util/shell-integration.sh $DATA_DIR/shell-integration.sh
 
 mkdir -p $BIN_DIR
 awk 'NR==1 {print; print "LIB_DIR='"$LIB_DIR"'"; print "CONFIG_FILE='"$CONFIG_FILE"'"} NR!=1'  $PROJECT_NAME > "$BIN_DIR/$PROJECT_NAME"
