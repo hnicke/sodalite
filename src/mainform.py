@@ -12,9 +12,6 @@ import datamodel
 
 class MainForm(npyscreen.FormBaseNew):
 
-    def after_editing( self ):
-        self.parentApp.setNextForm(None)
-
     def __init__(self, cycle_widgets = True, *args, **keywords):
         super(MainForm, self).__init__(cycle_widgets=cycle_widgets, *args, **keywords)
 
@@ -106,8 +103,7 @@ class MainForm(npyscreen.FormBaseNew):
             self.h_toggle_assign_mode("_")
         else:
             logger.info("call to h_exit")
-            self.parentApp.setNextForm(None)
-            self.navigationpane.editing = False
+            self.parentApp.switchForm(None)
 
     def h_toggle_assign_mode(self, input):
         self.in_assign_mode = not self.in_assign_mode
