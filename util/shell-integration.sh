@@ -16,7 +16,7 @@ function sodalite-widget {
     zle -K viins
 }
 
-shell=$(basename $SHELL)
+shell=$(ps -p $$ | tail -n1 | rev | cut -d" " -f1 | rev)
 if [ $shell = 'zsh' ]; then
     zle     -N      sodalite-widget
     bindkey -a 'f'  sodalite-widget
