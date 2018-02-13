@@ -49,7 +49,7 @@ class Core:
             entries.add(new_entry)
         return entries
 
-    def get_entries_from_db_for_criteria( self, criteria ):
+    def read_matching_entries_from_db( self, criteria ):
         entries = set()
         cursor = self.conn.cursor().execute( "SELECT path,key,frequency FROM files WHERE path REGEXP ?", (criteria,) )
         for row in cursor:
@@ -67,10 +67,10 @@ class Core:
         # fix regexp for root
         if basedir == '/':
             basedir = '';
-        entries.update(self.get_entries_from_db_for_criteria( "^"+ basedir + "/[^/]+$" ))
+        entries.update(self.read_matching_entries_from_db( "^"+ basedir + "/[^/]+$" ))
         for entry in entries_fs:
             if entry.issymlink:
-                entries.update(self.get_entries_from_db_for_criteria( entry.path ))
+                entries.update(self.read_matching_entries_from_db( "^" + entry.path + "$"))
         return entries
 
 
