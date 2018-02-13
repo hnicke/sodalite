@@ -34,7 +34,6 @@ class MainForm(npyscreen.FormBaseNew):
         self.entry_for_assignment = None
         self.statusbar.handlers={}
         self.redraw()
-        self.navigationpane.edit()
 
     def setup_handlers( self ):
         self.common_handlers = {
