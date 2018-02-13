@@ -28,6 +28,6 @@ if [ $shell = 'zsh' ]; then
     bindkey -M vicmd 'f'  sodalite-vim-widget
     bindkey -M emacs '^f' sodalite-emacs-widget
 elif [ $shell = 'bash' ]; then
-    bind -m vi-command '"f":"ddisource sodalite; tput cuu1; tput ed\n"'
-    bind -m emacs '"\C-f":"\C-k\C-usource sodalite; tput cuu1; tput ed\n"'
+    bind -m vi-command '"f":"ddicd $(sodalite); tput cuu1; tput ed\n"'
+    bind -m emacs '"\C-f":"\C-k\C-ucd $(sodalite); tput cuu1; tput ed\n"'
 fi

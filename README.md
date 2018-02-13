@@ -28,7 +28,7 @@ The keybinding depends on the active keymap of your shell. Therefore make sure t
 * Vim keymap:       `f` in command (aka normal) mode
 
 #### fish
-Create the function `fish_user_key_bindings` in `~/$XDG_CONFIG_HOME/fish/functions/fish_user_key_bindings.fish` (if not already exists). 
+Create the function `fish_user_key_bindings` in your 'config.fish' (if not already exists). 
 Then, insert following line into the function:
 ```bash
 source /usr/share/sodalite/shell-integration.fish
