@@ -14,7 +14,9 @@ For customization of the destination directories, consult [INSTALL](../INSTALL).
 
 
 ## Configuration
-`sodalite` needs to get integrated into your favourite shell (supported: `bash`, `zsh`).  
+`sodalite` needs to get integrated into your favourite shell (supported: `bash`, `zsh`, `fish`).  
+
+#### bash / zsh
 Simply add following line to your `.bashrc` / `.zshrc`:
 
 ```bash
@@ -24,6 +26,13 @@ The script will set up a keybinding which launches `sodalite`.
 The keybinding depends on the active keymap of your shell. Therefore make sure to source the script after you set up your shell keymap.
 * Emacs keymap:     `Control + f`
 * Vim keymap:       `f` in command (aka normal) mode
+
+#### fish
+Create the function `fish_user_key_bindings` in `~/$XDG_CONFIG_HOME/fish/functions/fish_user_key_bindings.fish` (if not already exists). 
+Then, insert following line into the function:
+```bash
+source /usr/share/sodalite/shell-integration.fish
+```
 
 *If your favourite shell is not supported, feel free to open an issue.*
 

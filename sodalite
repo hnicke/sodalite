@@ -50,6 +50,6 @@ export SODALITE_OUTPUT_PIPE=$(mktemp -u "${TMPDIR:-/tmp/}$(basename $0).XXXXXXXX
 mkfifo $SODALITE_OUTPUT_PIPE
 trap "rm -f $SODALITE_OUTPUT_PIPE" EXIT
 exec 3< <(read line <$SODALITE_OUTPUT_PIPE; echo $line)
-python $LIB_DIR/main.py
+python $LIB_DIR/main.py < /dev/tty > /dev/tty
 read <&3 line
-cd "$line"
+echo "$line"

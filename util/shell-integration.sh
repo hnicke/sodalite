@@ -2,25 +2,24 @@
 
 # source that behaves like in bash
 function _source {
-  alias shopt=':'
-  alias _expand=_bash_expand
-  alias _complete=_bash_comp
-  emulate -L sh
-  setopt kshglob noshglob braceexpand
-  builtin source "$@"
+    alias shopt=':'
+    alias _expand=_bash_expand
+    alias _complete=_bash_comp
+    emulate -L sh
+    setopt kshglob noshglob braceexpand
+    builtin source "$@"
+}
+
+
+function sodalite-emacs-widget {
+    cd $(sodalite)
+    zle reset-prompt
 }
 
 function sodalite-vim-widget {
-    _source sodalite < /dev/tty
-    zle reset-prompt
+    sodalite-emacs-widget
     zle -K viins
 }
-
-function sodalite-emacs-widget {
-    _source sodalite < /dev/tty
-    zle reset-prompt
-}
-
 
 shell=$(ps -p $$ | tail -n1 | rev | cut -d" " -f1 | rev)
 if [ $shell = 'zsh' ]; then
