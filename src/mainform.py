@@ -43,6 +43,7 @@ class MainForm(npyscreen.FormBaseNew):
                 "=":                    self.h_toggle_assign_mode,
                 ord('~'):               self.h_navigate_to_home,
                 ord('`'):               self.h_navigate_to_home,
+                curses.ascii.DEL:       self.h_navigate_to_previous,
                 curses.KEY_HOME:        self.h_navigate_to_home,
                 }
         self.navigation_mode_handlers.update(self.common_handlers)
@@ -135,6 +136,11 @@ class MainForm(npyscreen.FormBaseNew):
         home = os.getenv('HOME')
         self.core.change_to_dir( home )
         self.after_navigation()
+
+    def h_navigate_to_previous(self, input):
+        self.core.change_to_previous()
+        self.after_navigation()
+
 
     def after_navigation( self ):
         self.data.set_entries( self.core.current_entry.children )

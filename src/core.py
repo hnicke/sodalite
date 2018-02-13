@@ -66,8 +66,8 @@ class Core:
         entries = set()
         # fix regexp for root
         if basedir == '/':
-            basedir = '';
-        entries.update(self.read_matching_entries_from_db( "^"+ basedir + "/[^/]+$" ))
+            basedir = ''
+        entries.update(self.read_matching_entries_from_db( "^" + basedir + "/[^/]+$" ))
         for entry in entries_fs:
             if entry.issymlink:
                 entries.update(self.read_matching_entries_from_db( "^" + entry.path + "$"))
@@ -129,9 +129,9 @@ class Core:
 
     def change_to_key( self, key ):
         if key == '.':
-            precessor_path = self.dir_service.travel_back();
-            precessor = self.get_entry( precessor_path );
-            self.__visit_entry( precessor )
+            self.dir_service.travel_to( '..' )
+            parent = self.get_entry( os.getcwd() );
+            self.__visit_entry( parent )
         else:
             matches = [x for x in self.current_entry.children if x.key.value == key]
             if len(matches) > 0:
@@ -150,9 +150,10 @@ class Core:
         self.dir_service.travel_to ( path )
         self.__visit_entry( entry )
 
-
-
-
+    def change_to_previous( self ):
+        precessor_path = self.dir_service.travel_back();
+        precessor = self.get_entry( precessor_path );
+        self.__visit_entry( precessor )
 
     # assigns given entry the new key. if the new key is already taken by another entry on the same level,
     # keys are swapped
