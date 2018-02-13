@@ -10,16 +10,24 @@ function _source {
   builtin source "$@"
 }
 
-function sodalite-widget {
+function sodalite-vim-widget {
     _source sodalite < /dev/tty
     zle reset-prompt
     zle -K viins
 }
 
+function sodalite-emacs-widget {
+    _source sodalite < /dev/tty
+    zle reset-prompt
+}
+
+
 shell=$(ps -p $$ | tail -n1 | rev | cut -d" " -f1 | rev)
 if [ $shell = 'zsh' ]; then
-    zle     -N      sodalite-widget
-    bindkey -a 'f'  sodalite-widget
+    zle     -N      sodalite-vim-widget
+    zle     -N      sodalite-emacs-widget
+    bindkey -a 'f'  sodalite-vim-widget
+    bindkey -e '^f' sodalite-emacs-widget
 elif [ $shell = 'bash' ]; then
     bind -m vi-command '"f":"ddisource sodalite; tput cuu1; tput ed\n"'
     bind -m emacs '"\C-f":"\C-k\C-usource sodalite; tput cuu1; tput ed\n"'
