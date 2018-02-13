@@ -29,12 +29,16 @@ FAKE_BIN_DIR=${FAKE_ROOT}${BIN_DIR}
 FAKE_LIB_DIR=${FAKE_ROOT}${LIB_DIR}
 FAKE_DATA_DIR=${FAKE_ROOT}${DATA_DIR}
 FAKE_DOC_DIR=${FAKE_ROOT}${DOC_DIR}
+FAKE_LOG_FILE=${FAKE_ROOT}/var/log/sodalite.log
 
 install -d $FAKE_LIB_DIR
 install -D src/* $FAKE_LIB_DIR
 
 install -d $FAKE_DATA_DIR
 install -D util/shell-integration.sh $FAKE_DATA_DIR/shell-integration.sh
+
+mkdir -p $(dirname $FAKE_LOG_FILE)
+touch $FAKE_LOG_FILE && chmod 666 $FAKE_LOG_FILE
 
 mkdir -p $FAKE_BIN_DIR
 awk 'NR==1 {print; print "LIB_DIR='"$LIB_DIR"'"; print "CONFIG_FILE='"$CONFIG_FILE"'"} NR!=1'  $PROJECT_NAME > "$FAKE_BIN_DIR/$PROJECT_NAME"
