@@ -73,7 +73,6 @@ class Core:
             if entry.issymlink:
                 query += '|{}'.format(entry.path)
         query += ')$'
-        logger.info('query: {}'.format(query))
         entries.update(self.read_matching_entries_from_db( query ))
         return entries
 
@@ -82,7 +81,7 @@ class Core:
     def add_new_entries_to_db( self, entries_fs, entries_db ):
         new_entries = entries_fs - entries_db
         for entry in new_entries:
-            logger.info("not yet persisted entry: {}".format(entry))
+            logger.info("Persisting new entry: {}".format(entry))
         key.assign_keys(new_entries, entries_db)
         for entry in new_entries:
             try:
@@ -100,23 +99,8 @@ class Core:
         self.conn.commit()
         return
 
-    # attention: this method changes entries_filesystem. after calling, this variable does not reflect the entries of the filesystem anymore!! Use the returned value.
     def unite_data( self, entries_filesystem, entries_db ):
-        entries = set()
-        for entry_fs in entries_filesystem:
-            matches = [ x for x in entries_db if x == entry_fs ]
-            if len(matches) == 1:
-                entry_db = matches[0]
-                entries_db.remove(entry_db)
-                entry_fs.key = entry_db.key
-                entry_fs.frequency = entry_db.frequency
-                entries.add(entry_fs)
-            elif len(matches) > 1:
-                logger.error(matches)
-                raise ValueError('Error, multiple matches found. constraint: uniqueness of entries') 
-            else:
-                logger.error('couldnt find match for entry_fs: {}'.format(entry_fs))
-        return entries
+        return entries_filesystem.intersection( entries_db )
 
     def __visit_entry( self, entry ):
         logger.info("visitting entry {}".format(entry))
