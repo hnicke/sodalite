@@ -12,7 +12,7 @@ class Entry:
     # path: the absolute, cannonical file path
     def __init__( self, path, issymlink=False ):
         self.path = path
-        self.name = os.path.basename( path )
+        self.dir, self.name = os.path.split( path )
         self.isdir = os.path.isdir( path )
         self.issymlink = issymlink
         self.key = key.Key("")

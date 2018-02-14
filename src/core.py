@@ -70,9 +70,10 @@ class Core:
         direct_children = '{}/[^/]+'.format(basedir)
         query = '^({}'.format(direct_children)
         for entry in entries_fs:
-            if entry.issymlink:
+            if entry.issymlink and entry.dir != basedir:
                 query += '|{}'.format(entry.path)
         query += ')$'
+        logger.info(query)
         entries.update(self.read_matching_entries_from_db( query ))
         return entries
 
