@@ -84,13 +84,18 @@ class Core:
         for entry in new_entries:
             logger.info("Persisting new entry: {}".format(entry))
         key.assign_keys(new_entries, entries_db)
+        if not new_entries:
+            return
+        query = "INSERT INTO files VALUES "
         for entry in new_entries:
-            try:
-                self.conn.cursor().execute("INSERT INTO files VALUES (?,?,?)", (entry.path, entry.key.value, entry.frequency))
-                self.conn.commit()
-                entries_db.add(entry)
-            except sqlite3.IntegrityError:
-                logger.error("Integrity error. failed to insert " + str(entry))
+            query += "('{}','{}','{}'),".format(entry.path, entry.key.value, entry.frequency)
+            entries_db.add(entry)
+        query = query[:-1] + ';'
+        try:
+            self.conn.cursor().execute( query )
+            self.conn.commit()
+        except sqlite3.IntegrityError:
+            logger.error("Integrity error. failed to insert at least one of " + str(new_entries))
 
     # deletes obsolete entries in the db
     def remove_old_entries( self, entries_filesystem, entries_db ):
