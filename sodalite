@@ -53,4 +53,4 @@ trap "rm -f $SODALITE_OUTPUT_PIPE" EXIT
 exec 3< <(read line <$SODALITE_OUTPUT_PIPE; echo $line)
 python $LIB_DIR/main.py < /dev/tty > /dev/tty
 read <&3 line
-echo "$line"
+[ $line ] && echo "$line"

@@ -37,6 +37,5 @@ if __name__ == "__main__":
     try:
         app.run()
     except KeyboardInterrupt:
-        logger.info('got interrupted')
-        _append_to_cwd_pipe( "." )
-
+        logger.info('received SIGINT')
+        # not writing to cwd_pipe: pipe might be closed already
