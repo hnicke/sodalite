@@ -67,10 +67,14 @@ class Core:
         # fix regexp for root
         if basedir == '/':
             basedir = ''
-        entries.update(self.read_matching_entries_from_db( "^" + basedir + "/[^/]+$" ))
+        direct_children = '{}/[^/]+'.format(basedir)
+        query = '^({}'.format(direct_children)
         for entry in entries_fs:
             if entry.issymlink:
-                entries.update(self.read_matching_entries_from_db( "^" + entry.path + "$"))
+                query += '|{}'.format(entry.path)
+        query += ')$'
+        logger.info('query: {}'.format(query))
+        entries.update(self.read_matching_entries_from_db( query ))
         return entries
 
 
