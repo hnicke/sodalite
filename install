@@ -15,12 +15,15 @@ PROJECT_NAME=sodalite
 [ -z $DATA_DIR ] && DATA_DIR=/usr/share
 [ -z $CONFIG_DIR ] && CONFIG_DIR=/etc
 [ -z $LIB_DIR ] && LIB_DIR=/usr/lib
+[ -z $LOG_DIR ] && LOG_DIR=/var/log
 
 # add project suffix
 CONFIG_FILE=${CONFIG_DIR}/${PROJECT_NAME}.conf
 LIB_DIR=${LIB_DIR}/${PROJECT_NAME}
 DATA_DIR=${DATA_DIR}/${PROJECT_NAME}
 DOC_DIR=${DOC_DIR}/${PROJECT_NAME}
+
+LOG_FILE=$LOG_DIR/sodalite.log
 
 # add prefix fakeroot
 FAKE_CONFIG_DIR=${FAKE_ROOT}${CONFIG_DIR}
@@ -29,7 +32,7 @@ FAKE_BIN_DIR=${FAKE_ROOT}${BIN_DIR}
 FAKE_LIB_DIR=${FAKE_ROOT}${LIB_DIR}
 FAKE_DATA_DIR=${FAKE_ROOT}${DATA_DIR}
 FAKE_DOC_DIR=${FAKE_ROOT}${DOC_DIR}
-FAKE_LOG_FILE=${FAKE_ROOT}/var/log/sodalite.log
+FAKE_LOG_FILE=${FAKE_ROOT}${LOG_FILE}
 
 install -d $FAKE_LIB_DIR
 install -D src/* $FAKE_LIB_DIR
@@ -42,7 +45,12 @@ mkdir -p $(dirname $FAKE_LOG_FILE)
 touch $FAKE_LOG_FILE && chmod 666 $FAKE_LOG_FILE
 
 mkdir -p $FAKE_BIN_DIR
-awk 'NR==1 {print; print "LIB_DIR='"$LIB_DIR"'"; print "CONFIG_FILE='"$CONFIG_FILE"'"} NR!=1'  $PROJECT_NAME > "$FAKE_BIN_DIR/$PROJECT_NAME"
+awk 'NR==1 {print; 
+    print "LIB_DIR='"$LIB_DIR"'"; 
+    print "LOG_FILE='"$LOG_FILE"'"; 
+    print "CONFIG_FILE='"$CONFIG_FILE"'"} 
+    NR!=1'  \
+        $PROJECT_NAME > "$FAKE_BIN_DIR/$PROJECT_NAME"
 chmod 755 $FAKE_BIN_DIR/$PROJECT_NAME
 
 install -D --backup -m644 "docs/example.conf" $FAKE_CONFIG_FILE
