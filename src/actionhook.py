@@ -1,12 +1,14 @@
-import config
-import os
-from mylogger import logger
 import curses
-import npyscreen
+import os
 import sys
 
-special_keys= { 'ENTER': '^J'
-        }
+import npyscreen
+
+from mylogger import logger
+
+special_keys = {'ENTER': '^J'
+                }
+
 
 class ActionEngine:
 
@@ -14,7 +16,7 @@ class ActionEngine:
         self.app = app
         self.config = app.config
         self.core = app.core
-        actionmap = self.config.get_actionmap() 
+        actionmap = self.config.get_actionmap()
         self.general_actions = self.extract_actions(actionmap.general)
         self.dir_actions = self.extract_actions(actionmap.dir)
         self.text_actions = self.extract_actions(actionmap.text)
@@ -39,12 +41,13 @@ class ActionEngine:
         os.system("{}".format(hook))
         if finally_exit:
             self.app.onCleanExit()
-            sys.exit(0)            
+            sys.exit(0)
 
-    # this is what would happen if npyscreen app would shutdown. 
+            # this is what would happen if npyscreen app would shutdown.
+
     # these calls make sure to reset the terminal
     # note: somehow, undoing these changes on resume is not necessary, everything seems to work
-    def reset_terminal( self ):
+    def reset_terminal(self):
         screen = npyscreen.npyssafewrapper._SCREEN
         screen.keypad(0)
         curses.echo()
@@ -52,7 +55,7 @@ class ActionEngine:
         curses.endwin()
 
     # returns list of possible actions for given entry
-    def get_actions( self, entry ):
+    def get_actions(self, entry):
         actions = []
         extension = os.path.splitext(entry.name)[1].lower().replace(".", "")
         actions.extend(self.general_actions)
@@ -74,6 +77,7 @@ class ActionEngine:
             dir_actions.append(action)
         return dir_actions
 
+
 class ActionMap:
     def __init__(self):
         self.general = {}
@@ -85,7 +89,9 @@ class ActionMap:
         return str(self)
 
     def __str__(self):
-        return "general: {}, dir: {}, text: {}, extensions: {}".format(self.general, self.dir, self.text, self.extensions)
+        return "general: {}, dir: {}, text: {}, extensions: {}".format(self.general, self.dir, self.text,
+                                                                       self.extensions)
+
 
 class Action:
 

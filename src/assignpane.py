@@ -1,11 +1,12 @@
 import npyscreen
+
 import entrypane
-import theme
 import key
+import theme
 from mylogger import logger
 
-class AssignPane(theme.LinePrinter,entrypane.EntryPane,npyscreen.MultiLineAction):
 
+class AssignPane(theme.LinePrinter, entrypane.EntryPane, npyscreen.MultiLineAction):
 
     def __init__(self, *args, **keywords):
         npyscreen.MultiLineAction.__init__(self, *args, **keywords)
@@ -17,7 +18,7 @@ class AssignPane(theme.LinePrinter,entrypane.EntryPane,npyscreen.MultiLineAction
         self.handlers = {}
 
     def t_input_is_assign_key(self, input):
-        try: 
+        try:
             char = chr(input)
             if not self.parent.in_assign_mode:
                 return False
@@ -29,7 +30,7 @@ class AssignPane(theme.LinePrinter,entrypane.EntryPane,npyscreen.MultiLineAction
     def h_assign_key(self, input):
         char = chr(input)
         if self.assign_mode_progress == 'choose-entry':
-            matches = [ x for x in self.values if x.key.value == char]
+            matches = [x for x in self.values if x.key.value == char]
             if len(matches) == 1:
                 entry = matches[0]
                 self.cursor_line = self.values.index(entry)
@@ -38,21 +39,22 @@ class AssignPane(theme.LinePrinter,entrypane.EntryPane,npyscreen.MultiLineAction
             elif len(matches) < 0:
                 pass
             else:
-                logger.error("While assigning an entry for key change, found '{}'entries for given key '{}'".format(len(matches),char))
+                logger.error(
+                    "While assigning an entry for key change, found '{}'entries for given key '{}'".format(len(matches),
+                                                                                                           char))
         elif self.assign_mode_progress == 'choose-key':
-           char = chr(input)
-           self.core.assign_key ( self.entry_for_assignment, char )
-           self.assign_mode_progress == 'choose-entry'
-           self.cursor_line = 0
-           self.parent.h_toggle_assign_mode("_")
+            char = chr(input)
+            self.core.assign_key(self.entry_for_assignment, char)
+            self.assign_mode_progress == 'choose-entry'
+            self.cursor_line = 0
+            self.parent.h_toggle_assign_mode("_")
         return
 
-    def h_choose_selection( self, input):
+    def h_choose_selection(self, input):
         entry = self.values[self.cursor_line]
-        self.choose_entry( entry )
+        self.choose_entry(entry)
 
-
-    def choose_entry(self, entry ):
+    def choose_entry(self, entry):
         if self.assign_mode_progress == 'choose-entry':
             self.entry_for_assignment = entry
             self.assign_mode_progress = 'choose-key'
@@ -68,5 +70,5 @@ class AssignPane(theme.LinePrinter,entrypane.EntryPane,npyscreen.MultiLineAction
             npyscreen.MultiLineAction.h_cursor_line_down(self, input)
             self.display()
 
-    def when_parent_changes_value( self ):
+    def when_parent_changes_value(self):
         self.values = self.parent.value

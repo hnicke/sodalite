@@ -1,8 +1,9 @@
-import yaml
 import os
-import sys
-from mylogger import logger
+
+import yaml
+
 import actionhook
+from mylogger import logger
 
 
 class Config:
@@ -36,5 +37,3 @@ class Config:
                 actionhooks.extensions[extension] = extension_dict
 
         return actionhooks
-
-

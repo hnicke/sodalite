@@ -1,26 +1,27 @@
 import npyscreen
 
+
 class Theme(npyscreen.ThemeManager):
     default_colors = {
-    'DEFAULT'     : 'WHITE_BLACK',
-    'FORMDEFAULT' : 'WHITE_BLACK',
-    'NO_EDIT'     : 'BLUE_BLACK',
-    'STANDOUT'    : 'YELLOW_BLACK',
-    'CURSOR'      : 'BLACK_YELLOW',
-    'CURSOR_INVERSE': 'BLACK_WHITE',
-    'LABEL'       : 'GREEN_BLACK',
-    'LABELBOLD'   : 'GREEN_BLACK',
-    'CONTROL'     : 'YELLOW_BLACK',
-    'IMPORTANT'   : 'YELLOW_BLACK',
-    'SAFE'        : 'GREEN_BLACK',
-    'WARNING'     : 'YELLOW_BLACK',
-    'DANGER'      : 'RED_BLACK',
-    'CRITICAL'    : 'BLACK_RED',
-    'GOOD'        : 'GREEN_BLACK',
-    'GOODHL'      : 'GREEN_BLACK',
-    'VERYGOOD'    : 'BLACK_GREEN',
-    'CAUTION'     : 'YELLOW_BLACK',
-    'CAUTIONHL'   : 'BLACK_YELLOW',
+        'DEFAULT': 'WHITE_BLACK',
+        'FORMDEFAULT': 'WHITE_BLACK',
+        'NO_EDIT': 'BLUE_BLACK',
+        'STANDOUT': 'YELLOW_BLACK',
+        'CURSOR': 'BLACK_YELLOW',
+        'CURSOR_INVERSE': 'BLACK_WHITE',
+        'LABEL': 'GREEN_BLACK',
+        'LABELBOLD': 'GREEN_BLACK',
+        'CONTROL': 'YELLOW_BLACK',
+        'IMPORTANT': 'YELLOW_BLACK',
+        'SAFE': 'GREEN_BLACK',
+        'WARNING': 'YELLOW_BLACK',
+        'DANGER': 'RED_BLACK',
+        'CRITICAL': 'BLACK_RED',
+        'GOOD': 'GREEN_BLACK',
+        'GOODHL': 'GREEN_BLACK',
+        'VERYGOOD': 'BLACK_GREEN',
+        'CAUTION': 'YELLOW_BLACK',
+        'CAUTIONHL': 'BLACK_YELLOW',
     }
 
 

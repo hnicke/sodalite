@@ -1,9 +1,10 @@
-import npyscreen
-import theme
-import entrypane
-from mylogger import logger 
 import curses
+
+import npyscreen
+
 import actionhook
+import entrypane
+
 
 class ActionPane(entrypane.EntryPane, npyscreen.Pager):
 
@@ -16,7 +17,6 @@ class ActionPane(entrypane.EntryPane, npyscreen.Pager):
 
         self.handlers = {}
 
-
     def is_action_trigger(self, input):
         key = curses.ascii.unctrl(input)
         return key in [action.key for action in self.values]
@@ -24,7 +24,7 @@ class ActionPane(entrypane.EntryPane, npyscreen.Pager):
     def trigger_action(self, input):
         key = curses.ascii.unctrl(input)
         current_entry = self.core.current_entry
-        self.action_engine.trigger_action( key, current_entry )
+        self.action_engine.trigger_action(key, current_entry)
 
     def adjust_handlers(self):
         for action in self.values:
@@ -38,8 +38,8 @@ class ActionPane(entrypane.EntryPane, npyscreen.Pager):
             if key == action.key:
                 print_key = name
                 break
-        return "{}{}".format(print_key.ljust(7),action.description.ljust(30))
+        return "{}{}".format(print_key.ljust(7), action.description.ljust(30))
 
-    def when_parent_changes_value( self ):
+    def when_parent_changes_value(self):
         current_entry = self.parent.core.current_entry
-        self.values = self.parent.parentApp.action_engine.get_actions( current_entry )
+        self.values = self.parent.parentApp.action_engine.get_actions(current_entry)
