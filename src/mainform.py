@@ -110,7 +110,6 @@ class MainForm(npyscreen.FormBaseNew):
         self.in_assign_mode = not self.in_assign_mode
         self.navigationpane.hidden = self.in_assign_mode
         self.assignpane.hidden = not self.in_assign_mode
-        self.display()
         if self.in_assign_mode:
             self.handlers = self.assign_mode_handlers
         else:
@@ -118,10 +117,6 @@ class MainForm(npyscreen.FormBaseNew):
             self.set_title_to_cwd()
             self.assignpane.assign_mode_progress = 'choose-entry'
             self.entry_for_assignment = None
-
-
-        self.navigationpane.display()
-        self.assignpane.display()
         self.redraw()
 
 
@@ -149,9 +144,7 @@ class MainForm(npyscreen.FormBaseNew):
 
 
     def redraw(self):
-        self.navigationpane.values = self.data.get_filtered_entries()
-        self.assignpane.values = self.data.get_filtered_entries()
-        self.actionpane.values = self.parentApp.action_engine.get_actions(self.core.current_entry)
+        self.set_value( self.data.get_filtered_entries() )
         self.redraw_statusbar()
         self.display()
         return

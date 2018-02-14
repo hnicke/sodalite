@@ -10,7 +10,7 @@ class Commandline(npyscreen.Textfield):
         self.data = data
         self.search_mode = False
         self.add_handlers({
-                curses.ascii.ESC: self.clear_search
+                curses.ascii.ESC: self.__reset
                 })
 
     def t_filter( self, input ):
@@ -28,13 +28,16 @@ class Commandline(npyscreen.Textfield):
         self.value = "/"
         self.edit()
 
+    def __reset( self, _ ):
+        self.clear_search( _ )
+        self.parent.redraw()
+
     # clears the search and also any applied filter on data
     def clear_search( self, _ ):
         self.important = False
         self.value = ""
         self.data.filter( "" )
         self.editing = False
-        self.parent.redraw()
 
 
 

@@ -67,3 +67,6 @@ class AssignPane(theme.LinePrinter,entrypane.EntryPane,npyscreen.MultiLineAction
         if self.assign_mode_progress == 'choose-entry':
             npyscreen.MultiLineAction.h_cursor_line_down(self, input)
             self.display()
+
+    def when_parent_changes_value( self ):
+        self.values = self.parent.value

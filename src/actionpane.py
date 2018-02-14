@@ -40,5 +40,6 @@ class ActionPane(entrypane.EntryPane, npyscreen.Pager):
                 break
         return "{}{}".format(print_key.ljust(7),action.description.ljust(30))
 
-
-
+    def when_parent_changes_value( self ):
+        current_entry = self.parent.core.current_entry
+        self.values = self.parent.parentApp.action_engine.get_actions( current_entry )

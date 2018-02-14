@@ -26,6 +26,7 @@ class App(npyscreen.NPSAppManaged):
 # cwd: new working dir after exiting this process
 def _append_to_cwd_pipe( cwd ):
     pipe = os.getenv("SODALITE_OUTPUT_PIPE")
+    logger.info("pipe is '{}'".format(pipe))
     with open(pipe, 'w') as p:
         p.write(cwd)
         p.close()
