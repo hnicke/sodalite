@@ -73,7 +73,6 @@ class Core:
             if entry.issymlink and entry.dir != basedir:
                 query += '|{}'.format(entry.path)
         query += ')$'
-        logger.info(query)
         entries.update(self.read_matching_entries_from_db( query ))
         return entries
 

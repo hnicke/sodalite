@@ -23,7 +23,6 @@ Simply add following line to your `.bashrc` / `.zshrc`:
 source /usr/share/sodalite/shell-integration.sh
 ```
 The script will set up a keybinding which launches `sodalite`.
-The keybinding depends on the active keymap of your shell. Therefore make sure to source the script after you set up your shell keymap.
 * Emacs keymap:     `Control + f`
 * Vim keymap:       `f` in command (aka normal) mode
 

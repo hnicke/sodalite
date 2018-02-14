@@ -22,7 +22,7 @@ All actions are freely configurable.
 Whenever `sodalite` encounters an entry the first time, it will automatically assign a free key to this entry.  
 If you'd rather like to assign a specific key to an entry, you can do that in `assign mode`.  
 > **TIP:** Assign the most intuitive and/or reachable keys to your most frequently used entries, and stick with this assignment. 
-Once setup, and muscle memory kicks in, all directories will be reachable in blink of an eye.
+Once setup, and muscle memory kicks in, all directories will be reachable in a blink of an eye.
 
 #### Keybindings
 | Action            | Description                                  | Key              |
