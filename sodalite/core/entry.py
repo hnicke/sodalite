@@ -10,7 +10,7 @@ from binaryornot.check import is_binary
 
 class Entry:
 
-    # path: the absolute, cannonical file path
+    # path: the absolute, canonical file path
     def __init__(self, path, issymlink=False):
         self.path = path
         self.dir, self.name = os.path.split(path)

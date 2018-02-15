@@ -23,15 +23,15 @@ export SODALITE_BOOKMARK_DIR=${SODALITE_CONFIG_DIR}/bookmarks
 ( mkdir -p $SODALITE_DATA_DIR $SODALITE_BOOKMARK_DIR &2> /dev/null )
 
 # setup database
-export SODALITE_DB_PATH=${SODALITE_DATA_DIR}/db.sqlite
-[ -f $SODALITE_DB_PATH ] || {
+export DB_PATH=${SODALITE_DATA_DIR}/db.sqlite
+[ -f $DB_PATH ] || {
     echo "CREATE TABLE IF NOT EXISTS files (
     path text NOT NULL,
     key text NOT NULL,
     frequency INTEGER NOT NULL DEFAULT 0,
     PRIMARY KEY ( path )
-    );" | sqlite3 $SODALITE_DB_PATH
-    chmod 600 $SODALITE_DB_PATH
+    );" | sqlite3 $DB_PATH
+    chmod 600 $DB_PATH
 }
 
 # $1: starting directory

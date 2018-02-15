@@ -1,4 +1,5 @@
 .log
 tags
 .idea
-sodalite/__pycache__
+*.pyc
+tmp/

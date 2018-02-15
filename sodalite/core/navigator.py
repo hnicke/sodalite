@@ -16,7 +16,7 @@ class Navigator:
 
     def __init__(self, cwd="/"):
         self.dir_service = dirservice_module.DirService()
-        self.conn = sqlite3.connect(os.environ['SODALITE_DB_PATH'])
+        self.conn = sqlite3.connect(os.environ['DB_PATH'])
         self.conn.create_function("REGEXP", 2, regexp)
         self.current_entry = self.get_entry(self.dir_service.getcwd())
         self.__visit_entry(self.current_entry)

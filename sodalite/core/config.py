@@ -18,7 +18,7 @@ class Config:
             logger.exception("Error while parsing config file '{}'".format(config_file))
             raise
 
-    # exension: string containing an extension (e.g.: 'txt')
+    # extension: string containing an extension (e.g.: 'txt')
     # returns: actionhook.ActionHooks object
     def get_actionmap(self):
         actionhooks = actionhook.ActionMap()
