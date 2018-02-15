@@ -33,12 +33,19 @@ class MainForm(npyscreen.FormBaseNew):
         self.redraw()
 
     def setup_handlers(self):
+        self.disable_key_handlers = {
+            curses.KEY_UP: self.nop,
+            curses.KEY_DOWN: self.nop,
+            curses.KEY_LEFT: self.nop,
+            curses.KEY_RIGHT: self.nop
+        }
         self.common_handlers = {
             curses.ascii.SP: self.navigationpane.h_scroll_page_down,
             "^B": self.navigationpane.h_scroll_page_up,
             "^U": self.navigationpane.h_scroll_half_page_up,
             "^D": self.navigationpane.h_scroll_half_page_down,
         }
+        self.common_handlers.update(self.disable_key_handlers)
         self.navigation_mode_handlers = {
             "=": self.h_toggle_assign_mode,
             ord('~'): self.h_navigate_to_home,
@@ -61,6 +68,13 @@ class MainForm(npyscreen.FormBaseNew):
             (self.assignpane.t_input_is_assign_key, self.assignpane.h_assign_key),
             (self.actionpane.is_action_trigger, self.actionpane.trigger_action)
         ]
+
+    def nop(self, input):
+        """
+        no operation
+        is needed to "disable" keys
+        """
+        return
 
     def populate(self):
         MAXY, MAXX = self.lines, self.columns
