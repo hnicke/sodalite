@@ -1,7 +1,6 @@
 import npyscreen
 
-import entrypane
-import theme
+from ui import entrypane, theme
 
 
 class NavigationPane(theme.LinePrinter, entrypane.EntryPane, npyscreen.Pager):

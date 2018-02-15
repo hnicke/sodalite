@@ -4,7 +4,7 @@
 
 from random import shuffle
 
-import entry as entry_module
+from core import entry as entry_module
 
 all_keys = []
 all_keys.append(['a', 's', 'd', 'f', 'j', 'k', 'l'])

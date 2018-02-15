@@ -4,7 +4,7 @@ import sys
 
 import npyscreen
 
-from mylogger import logger
+from core.mylogger import logger
 
 special_keys = {'ENTER': '^J'
                 }
@@ -15,7 +15,7 @@ class ActionEngine:
     def __init__(self, app):
         self.app = app
         self.config = app.config
-        self.core = app.core
+        self.navigator = app.navigator
         actionmap = self.config.get_actionmap()
         self.general_actions = self.extract_actions(actionmap.general)
         self.dir_actions = self.extract_actions(actionmap.dir)

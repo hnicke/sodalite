@@ -1,10 +1,10 @@
 # defines the entry class which represents a file or directiory
-import key
 import os
+
+from core import key
 
 if os.name == 'nt':
     pass
-from mylogger import logger
 from binaryornot.check import is_binary
 
 

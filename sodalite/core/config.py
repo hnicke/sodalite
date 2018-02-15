@@ -2,8 +2,8 @@ import os
 
 import yaml
 
-import actionhook
-from mylogger import logger
+from core import actionhook
+from core.mylogger import logger
 
 
 class Config:

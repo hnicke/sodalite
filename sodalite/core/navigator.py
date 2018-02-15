@@ -3,10 +3,8 @@ import os
 import re
 import sqlite3
 
-import dirservice as dirservice_module
-import entry as entry_module
-import key
-from mylogger import logger
+from core import entry as entry_module, dirservice as dirservice_module, key
+from core.mylogger import logger
 
 
 def regexp(expr, item):
@@ -14,7 +12,7 @@ def regexp(expr, item):
     return reg.search(item) is not None
 
 
-class Core:
+class Navigator:
 
     def __init__(self, cwd="/"):
         self.dir_service = dirservice_module.DirService()

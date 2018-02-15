@@ -2,8 +2,8 @@ import curses
 
 import npyscreen
 
-import actionhook
-import entrypane
+from core import actionhook
+from ui import entrypane
 
 
 class ActionPane(entrypane.EntryPane, npyscreen.Pager):
@@ -12,7 +12,7 @@ class ActionPane(entrypane.EntryPane, npyscreen.Pager):
         npyscreen.Pager.__init__(self, *args, **keywords)
         entrypane.EntryPane.__init__(self)
 
-        self.core = self.parent.parentApp.core
+        self.navigator = self.parent.parentApp.navigator
         self.action_engine = self.parent.parentApp.action_engine
 
         self.handlers = {}
@@ -23,7 +23,7 @@ class ActionPane(entrypane.EntryPane, npyscreen.Pager):
 
     def trigger_action(self, input):
         key = curses.ascii.unctrl(input)
-        current_entry = self.core.current_entry
+        current_entry = self.navigator.current_entry
         self.action_engine.trigger_action(key, current_entry)
 
     def adjust_handlers(self):
@@ -41,5 +41,5 @@ class ActionPane(entrypane.EntryPane, npyscreen.Pager):
         return "{}{}".format(print_key.ljust(7), action.description.ljust(30))
 
     def when_parent_changes_value(self):
-        current_entry = self.parent.core.current_entry
+        current_entry = self.parent.navigator.current_entry
         self.values = self.parent.parentApp.action_engine.get_actions(current_entry)

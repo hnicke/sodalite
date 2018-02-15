@@ -1,9 +1,8 @@
 import npyscreen
 
-import entrypane
-import key
-import theme
-from mylogger import logger
+from core import key
+from core.mylogger import logger
+from ui import entrypane, theme
 
 
 class AssignPane(theme.LinePrinter, entrypane.EntryPane, npyscreen.MultiLineAction):
@@ -12,7 +11,7 @@ class AssignPane(theme.LinePrinter, entrypane.EntryPane, npyscreen.MultiLineActi
         npyscreen.MultiLineAction.__init__(self, *args, **keywords)
         entrypane.EntryPane.__init__(self)
 
-        self.core = self.parent.core
+        self.navigator = self.parent.navigator
         # valid values: 'choose-entry' and 'choose-key'
         self.assign_mode_progress = 'choose-entry'
         self.handlers = {}
@@ -44,7 +43,7 @@ class AssignPane(theme.LinePrinter, entrypane.EntryPane, npyscreen.MultiLineActi
                                                                                                            char))
         elif self.assign_mode_progress == 'choose-key':
             char = chr(input)
-            self.core.assign_key(self.entry_for_assignment, char)
+            self.navigator.assign_key(self.entry_for_assignment, char)
             self.assign_mode_progress == 'choose-entry'
             self.cursor_line = 0
             self.parent.h_toggle_assign_mode("_")

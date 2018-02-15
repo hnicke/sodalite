@@ -1,6 +1,6 @@
 import os
 
-from mylogger import logger
+from core.mylogger import logger
 
 
 # emulates functionality of unix calls pushd and popd,

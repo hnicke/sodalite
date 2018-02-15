@@ -2,25 +2,23 @@ import os
 
 import npyscreen
 
-import actionhook
-import config as config_module
-import core
-import mainform
-import theme
-from mylogger import logger
+from core import config as config_module, actionhook
+from core import navigator
+from core.mylogger import logger
+from ui import theme, mainform
 
 
 class App(npyscreen.NPSAppManaged):
     def onStart(self):
         npyscreen.setTheme(theme.Theme)
-        self.core = core.Core()
+        self.navigator = navigator.Navigator()
         self.config = config_module.Config()
         self.action_engine = actionhook.ActionEngine(self)
         self.addForm('MAIN', mainform.MainForm, name="main")
 
     def onCleanExit(self):
-        self.core.shutdown()
-        _append_to_cwd_pipe(self.core.dir_service.getcwd())
+        self.navigator.shutdown()
+        _append_to_cwd_pipe(self.navigator.dir_service.getcwd())
         logger.info("shutdown")
 
 

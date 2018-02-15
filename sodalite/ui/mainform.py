@@ -3,12 +3,8 @@ import os
 
 import npyscreen
 
-import actionpane
-import assignpane
-import commandline
-import datamodel
-import navigationpane
-from mylogger import logger
+from core.mylogger import logger
+from ui import commandline, navigationpane, assignpane, actionpane, datamodel
 
 
 class MainForm(npyscreen.FormBaseNew):
@@ -22,8 +18,8 @@ class MainForm(npyscreen.FormBaseNew):
         self.curses_pad.hline(MAXY - 2, 0, curses.ACS_HLINE, MAXX - 1)
 
     def create(self):
-        self.core = self.parentApp.core
-        self.data = datamodel.DataModel(self.core.current_entry.children)
+        self.navigator = self.parentApp.navigator
+        self.data = datamodel.DataModel(self.navigator.current_entry.children)
         self.populate()
         self.setup_handlers()
 
@@ -135,21 +131,21 @@ class MainForm(npyscreen.FormBaseNew):
 
     def h_navigate_to_key(self, input):
         char = chr(input)
-        self.core.change_to_key(char)
+        self.navigator.change_to_key(char)
         self.after_navigation()
         return
 
     def h_navigate_to_home(self, input):
         home = os.getenv('HOME')
-        self.core.change_to_dir(home)
+        self.navigator.change_to_dir(home)
         self.after_navigation()
 
     def h_navigate_to_previous(self, input):
-        self.core.change_to_previous()
+        self.navigator.change_to_previous()
         self.after_navigation()
 
     def after_navigation(self):
-        self.data.set_entries(self.core.current_entry.children)
+        self.data.set_entries(self.navigator.current_entry.children)
         self.commandline.clear_search("")
         self.redraw()
 
@@ -174,7 +170,7 @@ class MainForm(npyscreen.FormBaseNew):
             self.set_title_to_cwd()
 
     def set_title_to_cwd(self):
-        self.set_title(self.parentApp.core.current_entry.path)
+        self.set_title(self.parentApp.navigator.current_entry.path)
 
     def set_title(self, title):
         self.statusbar.value = " " + title
