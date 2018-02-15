@@ -50,6 +50,7 @@ class MainForm(npyscreen.FormBaseNew):
             "=": self.h_toggle_assign_mode,
             ord('~'): self.h_navigate_to_home,
             ord('`'): self.h_navigate_to_home,
+            curses.KEY_BACKSPACE: self.h_navigate_to_previous,
             curses.ascii.DEL: self.h_navigate_to_previous,
             curses.KEY_HOME: self.h_navigate_to_home,
         }
