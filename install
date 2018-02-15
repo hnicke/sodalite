@@ -35,11 +35,11 @@ FAKE_DOC_DIR=${FAKE_ROOT}${DOC_DIR}
 FAKE_LOG_FILE=${FAKE_ROOT}${LOG_FILE}
 
 install -d $FAKE_LIB_DIR
-install -D src/* $FAKE_LIB_DIR
+install -D sodalite/* $FAKE_LIB_DIR
 
 install -d $FAKE_DATA_DIR
-install -D util/shell-integration.sh $FAKE_DATA_DIR/shell-integration.sh
-install -D util/shell-integration.fish $FAKE_DATA_DIR/shell-integration.fish
+install -D bin/shell-integration.sh $FAKE_DATA_DIR/shell-integration.sh
+install -D bin/shell-integration.fish $FAKE_DATA_DIR/shell-integration.fish
 
 mkdir -p $(dirname $FAKE_LOG_FILE)
 touch $FAKE_LOG_FILE && chmod 666 $FAKE_LOG_FILE
@@ -50,7 +50,7 @@ awk 'NR==1 {print;
     print "LOG_FILE='"$LOG_FILE"'"; 
     print "CONFIG_FILE='"$CONFIG_FILE"'"} 
     NR!=1'  \
-        $PROJECT_NAME > "$FAKE_BIN_DIR/$PROJECT_NAME"
+        bin/$PROJECT_NAME > "$FAKE_BIN_DIR/$PROJECT_NAME"
 chmod 755 $FAKE_BIN_DIR/$PROJECT_NAME
 
 install -D --backup -m644 "docs/example.conf" $FAKE_CONFIG_FILE
