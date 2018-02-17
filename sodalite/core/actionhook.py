@@ -1,10 +1,10 @@
 import curses
 import os
-import sys
 
 import npyscreen
 
-from core.mylogger import logger
+from core.config import Config
+from mylogger import logger
 
 special_keys = {'ENTER': '^J'
                 }
@@ -12,17 +12,15 @@ special_keys = {'ENTER': '^J'
 
 class ActionEngine:
 
-    def __init__(self, app):
-        self.app = app
-        self.config = app.config
-        self.navigator = app.navigator
-        actionmap = self.config.get_actionmap()
-        self.general_actions = self.extract_actions(actionmap.general)
-        self.dir_actions = self.extract_actions(actionmap.dir)
-        self.text_actions = self.extract_actions(actionmap.text)
+    def __init__(self, config: Config):
+        self.config = config
+        action_map = self.config.get_actionmap()
+        self.general_actions = self.extract_actions(action_map.general)
+        self.dir_actions = self.extract_actions(action_map.dir)
+        self.text_actions = self.extract_actions(action_map.text)
         self.extension_actions = {}
-        for extension in actionmap.extensions.keys():
-            self.extension_actions[extension] = self.extract_actions(actionmap.extensions[extension])
+        for extension in action_map.extensions.keys():
+            self.extension_actions[extension] = self.extract_actions(action_map.extensions[extension])
 
     def trigger_action(self, key, entry):
         matches = [action.hook for action in self.get_actions(entry) if action.key.lower() == key.lower()]
@@ -32,22 +30,17 @@ class ActionEngine:
         if hook.endswith("#q"):
             finally_exit = True
             hook = hook[:-2]
-        if not entry.isdir:
-            cwd = os.path.dirname(entry.path)
-        else:
-            cwd = entry.path
         logger.info("hook is {}".format(hook))
         self.reset_terminal()
         os.system("{}".format(hook))
         if finally_exit:
-            self.app.onCleanExit()
-            sys.exit(0)
+            import main
+            main.clean_exit()
 
-            # this is what would happen if npyscreen app would shutdown.
-
-    # these calls make sure to reset the terminal
-    # note: somehow, undoing these changes on resume is not necessary, everything seems to work
     def reset_terminal(self):
+        """These directives make sure to reset the terminal
+        note: somehow, undoing these changes on resume is not necessary, everything seems to work
+        """
         screen = npyscreen.npyssafewrapper._SCREEN
         screen.keypad(0)
         curses.echo()

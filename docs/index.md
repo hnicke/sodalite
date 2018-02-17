@@ -30,12 +30,13 @@ Once setup, and muscle memory kicks in, all directories will be reachable in a b
 | go to             | navigate to directory with key               | `a-zA-Z`         |
 | go to home        | navigate to $HOME                            | `` ` ``, `~`     |
 | go to parent      | equivalent to `cd ..`                        | `.`              |
-| go to previous    | Go to previous entry (backwards in history)  | `DEL`            |
+| go to previous    | Go to previous entry (backward in history)   | `Control + H`    |
+| go to next        | Go to next entry (forward in history)        | `Control + L`    |
 | exit              | exit `sodalite` and `cd` into current dir    | `ESC`, `ENTER`   |
 | abort             | exit `sodalite` without changing current dir | `Control + c`    |
 | assign mode       | Reassign keys of entries                     | `=`              |
 | filter            | Search for entries                           | `/`              |
-| page down         | Scroll to next page                          | `SPACE`          |
+| page down         | Scroll to next page                          | `Control + f`    |
 | page up           | Scroll to previous page                      | `Control + b`    |
 | half page down    | Scrolls down half a page                     | `Control + d`    |
 | half page up      | Scrolls down half a page                     | `Control + u`    |

@@ -4,54 +4,14 @@
 APPNAME=sodalite
 PROJECT_ROOT=$(dirname $(readlink -f "$0"))/..
 LIB_DIR="${LIB_DIR:-$PROJECT_ROOT/sodalite}"
-CONFIG_FILE="${CONFIG_FILE:-$PROJECT_ROOT/docs/example.conf}"
-LOG_FILE=${LOG_FILE:-/var/log/sodalite.log}
 
-# TODO externalize LOG_DIR
-export LOG_FILE
-touch $LOG_FILE || { 
-    echo Missing write permissions for file \'$LOG_FILE\'
-    exit 1
-}
+CWD_PIPE=$(mktemp -u "${TMPDIR:-/tmp/}$(basename $0).XXXXXXXX")
+mkfifo $CWD_PIPE
+trap "rm -f $CWD_PIPE" EXIT
+exec 3< <(read line <$CWD_PIPE; echo $line)
 
-
-XDG_CONFIG=${XDG_CONFIG_HOME:-$HOME/.config}
-XDG_DATA=${XDG_DATA_HOME:-$HOME/.local/share}
-SODALITE_CONFIG_DIR=${XDG_CONFIG}/$APPNAME
-SODALITE_DATA_DIR=${XDG_DATA}/$APPNAME
-export SODALITE_BOOKMARK_DIR=${SODALITE_CONFIG_DIR}/bookmarks
-( mkdir -p $SODALITE_DATA_DIR $SODALITE_BOOKMARK_DIR &2> /dev/null )
-
-# setup database
-export DB_PATH=${SODALITE_DATA_DIR}/db.sqlite
-[ -f $DB_PATH ] || {
-    echo "CREATE TABLE IF NOT EXISTS files (
-    path text NOT NULL,
-    key text NOT NULL,
-    frequency INTEGER NOT NULL DEFAULT 0,
-    PRIMARY KEY ( path )
-    );" | sqlite3 $DB_PATH
-    chmod 600 $DB_PATH
-}
-
-# $1: starting directory
-export SODALITE_STARTING_DIR=${1:-$HOME}
-
-# handle config
-# fallback to user config file if exists
-SODALITE_CONFIG_PATH=${SODALITE_CONFIG_DIR}/${APPNAME}.conf
-[ -f $SODALITE_CONFIG_PATH ] || SODALITE_CONFIG_PATH=$CONFIG_FILE
-export SODALITE_CONFIG_PATH
-
-
-# adjust the delay time in ms curses waits for an escape sequence to happen after pressing ESC
-export ESCDELAY=0
-
-export SODALITE_OUTPUT_PIPE=$(mktemp -u "${TMPDIR:-/tmp/}$(basename $0).XXXXXXXX")
-
-mkfifo $SODALITE_OUTPUT_PIPE
-trap "rm -f $SODALITE_OUTPUT_PIPE" EXIT
-exec 3< <(read line <$SODALITE_OUTPUT_PIPE; echo $line)
+export CWD_PIPE
 python $LIB_DIR/main.py < /dev/tty > /dev/tty
+
 read <&3 line
 [ $line ] && echo "$line"

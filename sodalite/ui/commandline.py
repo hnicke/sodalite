@@ -17,7 +17,7 @@ class Commandline(npyscreen.Textfield):
         try:
             char = chr(input)
             return char == '/'
-        except ValueError:
+        except (ValueError, TypeError):
             return False
 
     def when_value_edited(self):

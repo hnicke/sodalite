@@ -2,20 +2,20 @@ import os
 
 import yaml
 
+import environment
 from core import actionhook
-from core.mylogger import logger
+from mylogger import logger
 
 
 class Config:
     def __init__(self):
-        config_file = os.getenv('SODALITE_CONFIG_PATH')
         try:
-            with open(config_file) as f:
+            with open(environment.config_path) as f:
                 # use safe_load instead load
                 self.config = yaml.safe_load(f)
                 self.actions = self.config['actions']
         except yaml.scanner.ScannerError:
-            logger.exception("Error while parsing config file '{}'".format(config_file))
+            logger.exception("Error while parsing config file '{}'".format(environment.config_path))
             raise
 
     # extension: string containing an extension (e.g.: 'txt')

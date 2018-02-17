@@ -18,9 +18,8 @@ class NavigationPane(theme.LinePrinter, entrypane.EntryPane, npyscreen.Pager):
             if self.parent.in_assign_mode:
                 return False
             char = chr(input)
-            is_navigation_key = char == "." or char in [entry.key.value for entry in self.values]
-            return is_navigation_key
-        except ValueError:
+            return self.parent.navigator.is_navigation_key(char)
+        except (ValueError, TypeError):
             return False
 
     def when_parent_changes_value(self):

@@ -1,5 +1,6 @@
-# baseclass which specifies common behaviour
 class EntryPane:
+    """base class which specifies common behaviour
+    """
 
     def __init__(self):
         self.handlers = {

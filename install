@@ -35,7 +35,7 @@ FAKE_DOC_DIR=${FAKE_ROOT}${DOC_DIR}
 FAKE_LOG_FILE=${FAKE_ROOT}${LOG_FILE}
 
 install -d $FAKE_LIB_DIR
-install -D sodalite/* $FAKE_LIB_DIR
+cp -r sodalite/* $FAKE_LIB_DIR
 
 install -d $FAKE_DATA_DIR
 install -D bin/shell-integration.sh $FAKE_DATA_DIR/shell-integration.sh

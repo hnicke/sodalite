@@ -1,172 +1,88 @@
-#!/bin/env python
-import os
-import re
-import sqlite3
-
-from core import entry as entry_module, dirservice as dirservice_module, key
-from core.mylogger import logger
-
-
-def regexp(expr, item):
-    reg = re.compile(expr)
-    return reg.search(item) is not None
+from core import key as key_module
+from core.key import Key
+from mylogger import logger
+from .dirhistory import DirHistory
+from .entry import Entry
+from .entryaccess import EntryAccess
 
 
 class Navigator:
+    """Public interface of the core package.
+    Clients (e.g., GUI) may use the navigator class for interaction
+    """
 
-    def __init__(self, cwd="/"):
-        self.dir_service = dirservice_module.DirService()
-        self.conn = sqlite3.connect(os.environ['DB_PATH'])
-        self.conn.create_function("REGEXP", 2, regexp)
-        self.current_entry = self.get_entry(self.dir_service.getcwd())
-        self.__visit_entry(self.current_entry)
+    def __init__(self, history: DirHistory, entry_access: EntryAccess):
+        self.history = history
+        self.entry_access = entry_access
 
-    # clean shutdown of application
-    def shutdown(self):
-        self.conn.close()
-
-    def update_entry(self, entry):
-        self.conn.cursor().execute("UPDATE files SET frequency=?, key=?  WHERE path=?",
-                                   (entry.frequency, entry.key.value, entry.path))
-        self.conn.commit()
-
-    def retrieve_entries_from_filesystem(self, entry):
-        entries = set()
-        if not entry.isdir:
-            return entries
-        filenames = os.listdir(entry.path)
-        for name in filenames:
-            absolute_path = os.path.join(entry.path, name)
-            realpath = os.path.realpath(absolute_path)
-            new_entry = entry_module.Entry(realpath)
-            if realpath != absolute_path:
-                new_entry.issymlink = True
-            entries.add(new_entry)
-        return entries
-
-    def read_matching_entries_from_db(self, criteria):
-        entries = set()
-        cursor = self.conn.cursor().execute("SELECT path,key,frequency FROM files WHERE path REGEXP ?", (criteria,))
-        for row in cursor:
-            new_entry = entry_module.Entry(row[0])
-            new_entry.key = key.Key(row[1])
-            new_entry.frequency = row[2]
-            entries.add(new_entry)
-        return entries
-
-    # for every absolute (real) path in files, tries to 
-    # basedir: the basedir which needs to match entries in databse
-    # returns: all entries matching basedir and symlinks
-    def retrieve_entries_from_db(self, basedir, entries_fs):
-        entries = set()
-        # fix regexp for root
-        if basedir == '/':
-            basedir = ''
-        direct_children = '{}/[^/]+'.format(basedir)
-        query = '^({}'.format(direct_children)
-        for entry in entries_fs:
-            if entry.issymlink and entry.dir != basedir:
-                query += '|{}'.format(entry.path)
-        query += ')$'
-        entries.update(self.read_matching_entries_from_db(query))
-        return entries
-
-    def add_new_entries_to_db(self, entries_fs, entries_db):
-        new_entries = entries_fs - entries_db
-        for entry in new_entries:
-            logger.info("Persisting new entry: {}".format(entry))
-        key.assign_keys(new_entries, entries_db)
-        if not new_entries:
-            return
-        query = "INSERT INTO files VALUES "
-        for entry in new_entries:
-            query += "('{}','{}','{}'),".format(entry.path, entry.key.value, entry.frequency)
-            entries_db.add(entry)
-        query = query[:-1] + ';'
-        try:
-            self.conn.cursor().execute(query)
-            self.conn.commit()
-        except sqlite3.IntegrityError:
-            logger.error("Integrity error. failed to insert at least one of " + str(new_entries))
-
-    # deletes obsolete entries in the db
-    def remove_old_entries(self, entries_filesystem, entries_db):
-        obsolete_entries = entries_db - entries_filesystem
-        for entry in obsolete_entries:
-            self.conn.cursor().execute("DELETE FROM files WHERE path=?", (entry.path,))
-        self.conn.commit()
-        return
-
-    def unite_data(self, entries_filesystem, entries_db):
-        return entries_filesystem.intersection(entries_db)
-
-    def __visit_entry(self, entry):
-        logger.info("visitting entry {}".format(entry))
-        self.current_entry = entry
-        entry.frequency += 1
-        self.update_entry(entry)
-        entries_fs = self.retrieve_entries_from_filesystem(entry)
-        entries_db = self.retrieve_entries_from_db(entry.path, entries_fs)
-        self.add_new_entries_to_db(entries_fs, entries_db)
-        self.remove_old_entries(entries_fs, entries_db)
-        entries = self.unite_data(entries_fs, entries_db)
-        sorted_entries = entry_module.sort(entries)
-        self.current_entry.children = sorted_entries
-
-    def change_to_key(self, key):
-        if key == '.':
-            self.dir_service.travel_to('..')
-            parent = self.get_entry(os.getcwd());
-            self.__visit_entry(parent)
-        else:
-            matches = [x for x in self.current_entry.children if x.key.value == key]
-            if len(matches) > 0:
-                new_dir = matches[0]
-                if (os.access(new_dir.path, os.R_OK)):
-                    self.dir_service.travel_to(new_dir.path)
-                    self.__visit_entry(new_dir)
-                else:
-                    logger.info("Cannot visit entry {}: Permission denied".format(new_dir))
-            else:
-                logger.debug("no match found for key '{}'".format(key))
-        return
-
-    def change_to_dir(self, path):
-        entry = self.get_entry(path)
-        self.dir_service.travel_to(path)
-        self.__visit_entry(entry)
-
-    def change_to_previous(self):
-        precessor_path = self.dir_service.travel_back();
-        precessor = self.get_entry(precessor_path);
-        self.__visit_entry(precessor)
-
-    # assigns given entry the new key. if the new key is already taken by another entry on the same level,
-    # keys are swapped
-    def assign_key(self, entry, char):
-        new_key = key.Key(char)
-        old_key = entry.key
-        entry.key = new_key
-        self.update_entry(entry)
-        conflicts = [x for x in self.current_entry.children if x.key == new_key and x != entry]
-        if len(conflicts) == 1:
-            conflict = conflicts[0]
-            conflict.key = old_key
-            self.update_entry(conflict)
-            logger.debug("Swapped key of conflicting entry '{}'".format(conflict))
-        elif len(conflicts) > 1:
-            logger.error("While swapping keys, encountered too many conflicts. Database is corrupted")
-        else:
-            pass
-        return
-
-    # returns an entry object which matches given absolute path
-    # connects to db to retrieve frequency and key of entry, if exists
-    def get_entry(self, path):
-        entry = entry_module.Entry(path)
-        cursor = self.conn.execute("SELECT key,frequency FROM files WHERE path=?", (entry.path,))
-        match = cursor.fetchone()
-        if match is not None:
-            entry.key = key.Key(match[0])
-            entry.frequency = match[1]
+    def current(self) -> Entry:
+        """
+        :return: The entry belonging to the current directory,
+        or None in case the current directory does not exist anymore
+        """
+        path = self.history.cwd()
+        entry = self.entry_access.retrieve_entry(path)
         return entry
+
+    def is_navigation_key(self, key: str) -> bool:
+        if key_module.is_navigation_key(key):
+            return self.entry_access.is_possible(Key(key))
+        return False
+
+    def visit_child(self, key: str) -> Entry:
+        """
+        Visit entry that is child of current entry and whose key matches given key.
+        :param key:
+        :return: matching entry or current entry, if no match was found
+        :raises: PermissionError
+        """
+        entry = self.entry_access.get_entry_for_key(Key(key))
+        if entry is None:
+            entry = self.current()
+        self.history.visit(entry.path)
+        return entry
+
+    def visit_path(self, path: str) -> Entry:
+        """
+        Visit the file matching given path
+        :param path: An absolute, canonical path describing a file
+        :return:the matching entry
+        :raises: PermissionError
+        """
+        entry = self.entry_access.retrieve_entry(path)
+        self.history.visit(entry.path)
+        return entry
+
+    def visit_previous(self) -> Entry:
+        path = self.history.backward()
+        return self.entry_access.retrieve_entry(path)
+
+    def visit_next(self) -> Entry:
+        path = self.history.forward()
+        return self.entry_access.retrieve_entry(path)
+
+    def visit_parent(self) -> Entry:
+        path = self.history.visit_parent()
+        entry = self.entry_access.retrieve_entry(path)
+        return entry
+
+    def is_action(self, key: str) -> bool:
+        return False
+
+    def trigger_action(self, key: str):
+        pass
+
+    def assign_key(self, key: Key, path: str):
+        """Assigns given key to given entry.
+        if the new key is already taken by another entry on the same level, keys are swapped"""
+        logger.info("Assigning key '{}' to entry '{}'".format(key, path))
+        parent = self.entry_access.get_current()
+        entry = parent.get_child_for_path(path)
+        conflicting_entry = parent.get_child_for_key(key)
+        old_key = entry.key
+        entry.key = key
+        self.entry_access.update_entry(entry)
+        if conflicting_entry is not None:
+            conflicting_entry.key = old_key
+            self.entry_access.update_entry(conflicting_entry)
+            logger.debug("Swapped key of conflicting entry '{}'".format(conflicting_entry))

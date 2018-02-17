@@ -11,6 +11,7 @@ For customization of the destination directories, consult [INSTALL](../INSTALL).
 > **Dependencies**:  
 > - [npyscreen](https://github.com/npcole/npyscreen)
 > - [binaryornot](https://github.com/audreyr/binaryornot)
+> - [sqlite](https://www.sqlite.org/index.html)
 
 
 ## Configuration

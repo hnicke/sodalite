@@ -3,60 +3,69 @@ import os
 
 import npyscreen
 
-from core.mylogger import logger
-from ui import commandline, navigationpane, assignpane, actionpane, datamodel
+from core.entry import Entry
+from core.navigator import Navigator
+from ui import commandline, navigationpane, assignpane, actionpane
+from ui.viewmodel import ViewModel
 
 
 class MainForm(npyscreen.FormBaseNew):
 
     def __init__(self, cycle_widgets=True, *args, **keywords):
+        self.navigator: Navigator = None
+        self.data = None
+        self.in_assign_mode = False
+        self.entry_for_assignment = None
+        self.navigation_mode_handlers = None
+        self.assign_mode_handlers = None
+        self.handlers = None
+        self.complex_handlers = None
         super(MainForm, self).__init__(cycle_widgets=cycle_widgets, *args, **keywords)
 
     def draw_form(self):
-        MAXY, MAXX = self.lines, self.columns
-        self.curses_pad.hline(0, 0, curses.ACS_HLINE, MAXX - 1)
-        self.curses_pad.hline(MAXY - 2, 0, curses.ACS_HLINE, MAXX - 1)
+        max_y, max_x = self.lines, self.columns
+        self.curses_pad.hline(0, 0, curses.ACS_HLINE, max_x - 1)
+        self.curses_pad.hline(max_y - 2, 0, curses.ACS_HLINE, max_x - 1)
 
     def create(self):
         self.navigator = self.parentApp.navigator
-        self.data = datamodel.DataModel(self.navigator.current_entry.children)
+        self.data = ViewModel(self.navigator.current())
         self.populate()
         self.setup_handlers()
-
-        self.in_assign_mode = False
-        self.entry_for_assignment = None
-        self.statusbar.handlers = {}
         self.redraw()
 
     def setup_handlers(self):
-        self.disable_key_handlers = {
+        disable_key_handlers = {
             curses.KEY_UP: self.nop,
             curses.KEY_DOWN: self.nop,
             curses.KEY_LEFT: self.nop,
             curses.KEY_RIGHT: self.nop
         }
-        self.common_handlers = {
-            curses.ascii.SP: self.navigationpane.h_scroll_page_down,
+        common_handlers = {
+            "^F": self.navigationpane.h_scroll_page_down,
             "^B": self.navigationpane.h_scroll_page_up,
             "^U": self.navigationpane.h_scroll_half_page_up,
             "^D": self.navigationpane.h_scroll_half_page_down,
         }
-        self.common_handlers.update(self.disable_key_handlers)
+        common_handlers.update(disable_key_handlers)
         self.navigation_mode_handlers = {
             "=": self.h_toggle_assign_mode,
             ord('~'): self.h_navigate_to_home,
             ord('`'): self.h_navigate_to_home,
-            curses.KEY_BACKSPACE: self.h_navigate_to_previous,
-            curses.ascii.DEL: self.h_navigate_to_previous,
             curses.KEY_HOME: self.h_navigate_to_home,
+            ord('.'): self.h_navigate_to_parent,
+            "^L": self.h_navigate_forward,
+            "^H": self.h_navigate_backward,
+            curses.KEY_BACKSPACE: self.h_navigate_backward,
+            curses.ascii.DEL: self.h_navigate_backward,
         }
-        self.navigation_mode_handlers.update(self.common_handlers)
+        self.navigation_mode_handlers.update(common_handlers)
         self.assign_mode_handlers = {
             "^N": self.assignpane.h_cursor_line_down,
             "^P": self.assignpane.h_cursor_line_up,
             curses.ascii.NL: self.assignpane.h_choose_selection,
         }
-        self.assign_mode_handlers.update(self.common_handlers)
+        self.assign_mode_handlers.update(common_handlers)
         self.handlers = self.navigation_mode_handlers
         self.complex_handlers = [
             (self.commandline.t_filter, self.commandline.trigger),
@@ -65,6 +74,7 @@ class MainForm(npyscreen.FormBaseNew):
             (self.assignpane.t_input_is_assign_key, self.assignpane.h_assign_key),
             (self.actionpane.is_action_trigger, self.actionpane.trigger_action)
         ]
+        self.statusbar.handlers = {}
 
     def nop(self, input):
         """
@@ -113,7 +123,6 @@ class MainForm(npyscreen.FormBaseNew):
         if self.in_assign_mode:
             self.h_toggle_assign_mode("_")
         else:
-            logger.info("call to h_exit")
             self.parentApp.switchForm(None)
 
     def h_toggle_assign_mode(self, input):
@@ -131,21 +140,29 @@ class MainForm(npyscreen.FormBaseNew):
 
     def h_navigate_to_key(self, input):
         char = chr(input)
-        self.navigator.change_to_key(char)
-        self.after_navigation()
+        entry = self.navigator.visit_child(char)
+        self.after_navigation(entry)
         return
+
+    def h_navigate_to_parent(self, input):
+        entry = self.navigator.visit_parent()
+        self.after_navigation(entry)
 
     def h_navigate_to_home(self, input):
         home = os.getenv('HOME')
-        self.navigator.change_to_dir(home)
-        self.after_navigation()
+        entry = self.navigator.visit_path(home)
+        self.after_navigation(entry)
 
-    def h_navigate_to_previous(self, input):
-        self.navigator.change_to_previous()
-        self.after_navigation()
+    def h_navigate_forward(self, input):
+        entry = self.navigator.visit_next()
+        self.after_navigation(entry)
 
-    def after_navigation(self):
-        self.data.set_entries(self.navigator.current_entry.children)
+    def h_navigate_backward(self, input):
+        entry = self.navigator.visit_previous()
+        self.after_navigation(entry)
+
+    def after_navigation(self, entry: Entry):
+        self.data.update(entry)
         self.commandline.clear_search("")
         self.redraw()
 
@@ -170,7 +187,7 @@ class MainForm(npyscreen.FormBaseNew):
             self.set_title_to_cwd()
 
     def set_title_to_cwd(self):
-        self.set_title(self.parentApp.navigator.current_entry.path)
+        self.set_title(self.data.current_entry.realpath)
 
     def set_title(self, title):
         self.statusbar.value = " " + title

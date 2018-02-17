@@ -2,4 +2,6 @@
 tags
 .idea
 *.pyc
+.pytest_cache
 tmp/
+tests/tmp_data
