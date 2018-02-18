@@ -1,6 +1,6 @@
 import os
 
-from core.dbaccess import DbAccess
+from core.entrydao import EntryDao
 from core.key import Key
 from mylogger import logger
 from .entry import Entry
@@ -8,10 +8,10 @@ from .entry import Entry
 
 class EntryAccess:
 
-    def __init__(self, db_access: DbAccess):
+    def __init__(self, entry_dao: EntryDao):
 
         self.__current_entry = None
-        self.db_access = db_access
+        self.db_access = entry_dao
 
     def get_current(self):
         return self.__current_entry

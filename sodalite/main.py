@@ -1,63 +1,53 @@
 import _curses
-
+import atexit
 import os
 
 import environment
-from core.actionhook import ActionEngine
+from core.action import ActionEngine
 from core.config import Config
-from core.navigator import Navigator
-from core.dbaccess import DbAccess
 from core.dirhistory import DirHistory
 from core.entryaccess import EntryAccess
+from core.entrydao import EntryDao
+from core.navigator import Navigator
 from mylogger import logger
 from ui.app import App
 
 
-def __append_to_cwd_pipe(cwd):
+def __append_to_cwd_pipe():
     """Before exiting, this needs to be called once, or the wrapping script won't stop
-    :param cwd: a path, will get written to output pipe
+    :param cwd: a path, will get written to output pipe if pipe exists
     """
     pipe = environment.cwd_pipe
     if pipe is not None and os.path.exists(pipe):
+        cwd = history.cwd()
         logger.info("Writing '{}' to cwd_pipe '{}'".format(cwd, environment.cwd_pipe))
         with open(environment.cwd_pipe, 'w') as p:
             p.write(cwd)
             p.close()
-    else:
-        logger.info("musch")
-
-
-def clean_exit():
-    db_access.close()
-    __append_to_cwd_pipe(history.cwd())
-    exit(0)
 
 
 if __name__ == "__main__":
-    global db_access
+    global entry_dao
     global history
     logger.info('Starting sodalite')
 
-    db_access = DbAccess()
-    access = EntryAccess(db_access)
+    entry_dao = EntryDao()
+    access = EntryAccess(entry_dao)
     history = DirHistory()
     navigator = Navigator(history, access)
     app = App(navigator)
     config = Config()
     action_engine = ActionEngine(config)
 
+    atexit.register(__append_to_cwd_pipe)
+
     try:
         app.run()
-        clean_exit()
         logger.info("Shutting down")
-    except KeyboardInterrupt:
-        db_access.close()
+    except KeyboardInterrupt as e:
         logger.info('Received SIGINT')
-        # not writing to cwd_pipe: pipe might be closed already
+        atexit.unregister(__append_to_cwd_pipe)
         exit(1)
-    except _curses.error:
-        # pycharm not stopping program correctly
-        # TODO cleanup terminal
+    except _curses.error as e:
+        logger.error(f"Ncurses error: {e}")
         exit(1)
-    finally:
-        db_access.close()

@@ -2,6 +2,8 @@ import re
 import sqlite3
 from typing import Dict, Iterable
 
+import atexit
+
 import environment
 from core import key as key_module
 from core.entry import Entry
@@ -22,7 +24,7 @@ CREATE TABLE IF NOT EXISTS {TABLE_FILES} (
 )"""
 
 
-class DbAccess:
+class EntryDao:
     class DbEntry:
         def __init__(self, path: str, key: Key, frequency: int):
             self.path = path
@@ -34,8 +36,9 @@ class DbAccess:
         Handles database access
         """
         self.conn = sqlite3.connect(environment.db_path)
-        self.conn.cursor().execute(CREATE_TABLE)
+        atexit.register(self.conn.close)
         self.conn.create_function("REGEXP", 2, regexp)
+        self.conn.cursor().execute(CREATE_TABLE)
 
     def inject_data(self, entry):
         """
@@ -55,7 +58,7 @@ class DbAccess:
 
     def get_db_entries(self, parent: Entry) -> Dict[str, DbEntry]:
         """
-        Queries the database for all child entries belonging to given entry
+        Queries the database for all child entries belonging to given entry            atexit.register(self.close())
         """
         basedir = parent.realpath
         # fix regexp for root
@@ -106,9 +109,6 @@ class DbAccess:
             self.conn.cursor().execute(query, (path,))
         self.conn.commit()
         return
-
-    def close(self):
-        self.conn.close()
 
     def update_entry(self, entry):
         """Updates given entry in database"""

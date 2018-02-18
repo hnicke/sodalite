@@ -7,7 +7,7 @@ import pytest
 import environment
 from core import entry as entry_module
 from core.navigator import Navigator
-from core.dbaccess import DbAccess
+from core.entrydao import EntryDao
 from core.dirhistory import DirHistory
 from core.entry import Entry
 from core.entryaccess import EntryAccess
@@ -66,6 +66,6 @@ def fixture():
         pass
     setup_test_data()
     environment.db_path = os.path.join(test_dir, "tmp_db.sqlite")
-    navigator = Navigator(DirHistory(), EntryAccess(DbAccess()))
+    navigator = Navigator(DirHistory(), EntryAccess(EntryDao()))
     yield
     shutil.rmtree(test_dir)

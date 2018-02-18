@@ -14,7 +14,7 @@ class ActionEngine:
 
     def __init__(self, config: Config):
         self.config = config
-        action_map = self.config.get_actionmap()
+        action_map = self.get_actionmap()
         self.general_actions = self.extract_actions(action_map.general)
         self.dir_actions = self.extract_actions(action_map.dir)
         self.text_actions = self.extract_actions(action_map.text)
@@ -31,24 +31,15 @@ class ActionEngine:
             finally_exit = True
             hook = hook[:-2]
         logger.info("hook is {}".format(hook))
-        self.reset_terminal()
+        reset_terminal()
         os.system("{}".format(hook))
         if finally_exit:
-            import main
-            main.clean_exit()
+            exit(0)
 
-    def reset_terminal(self):
-        """These directives make sure to reset the terminal
-        note: somehow, undoing these changes on resume is not necessary, everything seems to work
-        """
-        screen = npyscreen.npyssafewrapper._SCREEN
-        screen.keypad(0)
-        curses.echo()
-        curses.nocbreak()
-        curses.endwin()
-
-    # returns list of possible actions for given entry
     def get_actions(self, entry):
+        """
+        :return: list of possible actions for given entry
+        """
         actions = []
         extension = os.path.splitext(entry.name)[1].lower().replace(".", "")
         actions.extend(self.general_actions)
@@ -61,14 +52,35 @@ class ActionEngine:
             actions.extend(self.dir_actions)
         return actions
 
-    def extract_actions(self, map):
+    def extract_actions(self, action_map):
         dir_actions = []
-        for key in map.keys():
-            hook = map[key][0]
-            description = map[key][1]
+        for key in action_map.keys():
+            hook = action_map[key][0]
+            description = action_map[key][1]
             action = Action(key, hook, description)
             dir_actions.append(action)
         return dir_actions
+
+    def get_actionmap(self):
+        """
+        :return: actionhook.ActionHooks object
+        """
+        actionhooks = ActionMap()
+        actionhooks.general = self.config.actions['general']
+        actionhooks.dir = self.config.actions['dir']
+        actionhooks.text = self.config.actions['text']
+
+        customs = self.config.actions['custom']
+        for custom_key in customs.keys():
+            custom_entries = customs[custom_key]
+            extensions = custom_entries['extensions']
+            hooks = custom_entries['hooks']
+            for extension in extensions:
+                extension_dict = actionhooks.extensions.get(extension, {})
+                extension_dict.update(hooks)
+                actionhooks.extensions[extension] = extension_dict
+
+        return actionhooks
 
 
 class ActionMap:
@@ -98,3 +110,15 @@ class Action:
 
     def __repr__(self):
         return str(self)
+
+
+def reset_terminal():
+    """
+    These directives make sure to reset the terminal correctly
+    note: somehow, undoing these changes on resume is not necessary, everything seems to work
+    """
+    screen = npyscreen.npyssafewrapper._SCREEN
+    screen.keypad(0)
+    curses.echo()
+    curses.nocbreak()
+    curses.endwin()

@@ -2,7 +2,7 @@ import curses
 
 import npyscreen
 
-from core import actionhook
+from core import action
 from core.navigator import Navigator
 from ui import entrypane
 
@@ -34,7 +34,7 @@ class ActionPane(entrypane.EntryPane, npyscreen.Pager):
 
     def display_value(self, action):
         print_key = action.key
-        for name, key in actionhook.special_keys.items():
+        for name, key in action.special_keys.items():
             if key == action.key:
                 print_key = name
                 break

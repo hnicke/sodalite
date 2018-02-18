@@ -6,7 +6,7 @@ from typing import Dict, Iterable
 
 from binaryornot.check import is_binary
 
-from core.actionhook import Action
+from core.action import Action
 from .key import Key
 
 
