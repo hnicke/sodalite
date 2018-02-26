@@ -1,16 +1,20 @@
 import _curses
 import atexit
+import logging
 import os
 
-import environment
-from core.hook import HookEngine
 from core.config import Config
 from core.dirhistory import DirHistory
 from core.entryaccess import EntryAccess
 from core.entrydao import EntryDao
+from core.hook import HookEngine
 from core.navigator import Navigator
-from mylogger import logger
 from ui.app import App
+from util import environment
+
+logging.basicConfig(filename=environment.log_file, level=logging.DEBUG,
+                    format='%(asctime)s - %(name)-18s - %(levelname)-5s - %(message)s')
+logger = logging.getLogger(__name__)
 
 
 def __append_to_cwd_pipe():
@@ -30,6 +34,7 @@ if __name__ == "__main__":
     global entry_dao
     global history
     logger.info('Starting sodalite')
+    logger.info(f"Using {environment.config_path} as configuration file")
 
     config = Config()
     hook_engine = HookEngine(config)

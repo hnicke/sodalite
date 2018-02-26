@@ -4,14 +4,14 @@ from typing import Dict, List
 
 import pytest
 
-import environment
 from core import entry as entry_module
-from core.navigator import Navigator
-from core.entrydao import EntryDao
 from core.dirhistory import DirHistory
 from core.entry import Entry
 from core.entryaccess import EntryAccess
+from core.entrydao import EntryDao
 from core.key import Key
+from core.navigator import Navigator
+from util import environment
 
 test_dir = os.path.join(os.getcwd(), "tmp_data")
 
@@ -31,7 +31,6 @@ def test_assign_key_conflict_swap():
     key = Key('a')
     other_key = Key('b')
     navigator.assign_key(key.value, intermediate_entries[other_key].path)
-
 
 
 def setup_test_data():

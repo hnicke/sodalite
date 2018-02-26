@@ -3,7 +3,6 @@ from typing import List
 
 from core.entry import Entry
 from core.navigator import Navigator
-from mylogger import logger
 from util.observer import Observable
 
 

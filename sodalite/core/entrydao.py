@@ -1,13 +1,15 @@
 import atexit
+import logging
 import re
 import sqlite3
 from typing import Dict, Iterable
 
-import environment
 from core import key as key_module
 from core.entry import Entry
 from core.key import Key
-from mylogger import logger
+from util import environment
+
+logger = logging.getLogger(__name__)
 
 TABLE_FILES = 'files'
 COLUMN_PATH = 'path'

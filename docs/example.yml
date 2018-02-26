@@ -10,49 +10,46 @@
 ##############
 # variables ################################################################
 # following variables can be used within hooks. they are expanded at runtime:
-# #f    current entry (filename or dirname)
-# #q    if hook ends with #q, sodalite will execute the hook and exit
-#       example: vim #f#q
-#       this is useful if the hook is designed to serve as launcher>
-#       If the app spawns in another window (like all x apps),
-#       consider spawning the process in the background
-#       (in order for sodalite to exit immediately)
-#       example: zathura #f &#q
+# $entry    current entry (filename or dirname)
+# #q        if hook ends with #q, sodalite will execute the hook and exit
+#           example: vim "$entry"#q
+#           this is useful if the hook is designed to serve as a launcher.
+#           If the app spawns in another window (like all x apps),
+#           consider spawning the process in the background
+#           in order for sodalite to exit immediately.
+#           Example: zathura "$entry" &#q
 
 hooks:
   general:
   dir:
-    ^S:
-      action: 'terminator --working-directory="#f"'
-      label: spawn shell
-    ^E:
-      action: 'vifm "#f" #f#q'
+    ^S: 'terminator --working-directory="$entry"'
+    ^E: 'vifm "$entry"'
   plain_text:
     o:
-      action: 'vim "#f"'
-      label: drop to vim
+      action: 'vim "$entry"'
+      label: edit with vim
   custom:
     image:
       extensions: [png, jpg]
       hooks:
         o:
-          action: 'feh "#f" &'
+          action: 'feh "$entry" &'
           label: open with feh
     pdf:
       extensions: [pdf]
       hooks:
         o:
-          action: 'zathura "#f"#q'
+          action: 'zathura "$entry"#q'
           label: open with zathura
     hypertext:
       extensions: [html]
       hooks:
         v:
-          action: '$BROWSER "#f"#q'
+          action: '$BROWSER "$entry"#q'
           label: open with chromium
     archive:
       extensions: [xz]
       hooks:
         u:
-          action: 'tar xpvf #f'
+          action: 'tar xpvf "$entry"'
           label: extract

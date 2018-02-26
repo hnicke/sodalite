@@ -1,11 +1,13 @@
+import logging
+
 from core import key as key_module
 from core.key import Key
-from mylogger import logger
 from util.observer import Observable
 from .dirhistory import DirHistory
 from .entry import Entry
 from .entryaccess import EntryAccess
 
+logger = logging.getLogger(__name__)
 
 class Navigator:
     """Public interface of the core package.

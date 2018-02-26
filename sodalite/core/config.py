@@ -1,9 +1,11 @@
+import logging
 from _yaml import ScannerError
 
 import yaml
 
-import environment
-from mylogger import logger
+from util import environment
+
+logger = logging.getLogger(__name__)
 
 
 class InvalidConfiguration(Exception):

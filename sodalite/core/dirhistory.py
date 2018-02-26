@@ -1,6 +1,7 @@
+import logging
 import os
 
-from mylogger import logger
+logger = logging.getLogger(__name__)
 
 
 class DirHistory:

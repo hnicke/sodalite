@@ -1,9 +1,11 @@
 import curses
+import logging
 import os
 from typing import List, Dict
 
 from core.config import Config
-from mylogger import logger
+
+logger = logging.getLogger(__name__)
 
 special_keys = {'ENTER': '^J'
                 }
@@ -80,13 +82,16 @@ class HookMap:
                                                                          self.custom)
 
 
-def _extract_hook(key: str, hook_definition: dict) -> 'Hook':
-    return Hook(key, hook_definition['action'], hook_definition.get('label'))
+def _extract_hook(key: str, hook_definition: [dict, str]) -> 'Hook':
+    if type(hook_definition) is dict:
+        hook = Hook(key, hook_definition['action'], label=hook_definition.get('label'))
+    else:
+        hook = Hook(key, hook_definition)
+    return hook
 
 
 class Hook:
-
-    def __init__(self, key: str, action: str, label: str):
+    def __init__(self, key: str, action: str, label=None):
         self.key = special_keys.get(key, key)
         self.label = label
         self.finally_exit = False
@@ -102,10 +107,10 @@ class Hook:
         return str(self)
 
     def trigger(self, entry):
-        action = self.action.replace("#f", entry.path)
-        logger.info("Executing command: {}".format(action))
+        os.environ['entry'] = entry.path
+        logger.info("Executing command: {}".format(self.action))
         entry.chdir()
-        os.system(action)
+        os.system(self.action)
         if self.finally_exit:
             exit(0)
         else:

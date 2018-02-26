@@ -1,5 +1,8 @@
 # program will read following environment variables
+import logging
 import os
+
+logger = logging.getLogger(__name__)
 
 ENV_BOOKMARK_DIR = 'BOOKMARK_DIR'
 ENV_LOG_FILE = 'LOG_FILE'
@@ -29,6 +32,10 @@ if db_path is None:
 # might be None
 cwd_pipe = os.getenv(ENV_CWD_PIPE)
 
+log_file = os.getenv(ENV_LOG_FILE)
+if log_file is None:
+    log_file = "/var/log/sodalite.log"
+
 config_path = os.getenv(ENV_CONFIG_FILE)
 if config_path is None:
     config_path = os.path.join(user_config, "sodalite/sodalite.yml")
@@ -40,7 +47,3 @@ if bookmark_dir is None:
     bookmark_dir = os.path.join(user_data, "bookmarks")
     if not os.path.exists(bookmark_dir):
         os.mkdir(bookmark_dir)
-
-log_file = os.getenv(ENV_LOG_FILE)
-if log_file is None:
-    log_file = "/var/log/sodalite.log"

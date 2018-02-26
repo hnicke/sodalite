@@ -1,10 +1,12 @@
+import logging
 import os
 
 from core.entrydao import EntryDao
 from core.hook import HookEngine
 from core.key import Key
-from mylogger import logger
 from .entry import Entry
+
+logger = logging.getLogger(__name__)
 
 
 class EntryAccess:
