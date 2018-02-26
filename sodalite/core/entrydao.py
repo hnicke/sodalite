@@ -1,8 +1,7 @@
+import atexit
 import re
 import sqlite3
 from typing import Dict, Iterable
-
-import atexit
 
 import environment
 from core import key as key_module
@@ -49,6 +48,7 @@ class EntryDao:
         # remove obsolete entries
         obsolete_paths = entries_db.keys() - entries_fs.keys()
         self.remove_entries(obsolete_paths)
+        entries_db = {path: entry_db for (path, entry_db) in entries_db.items() if path not in obsolete_paths}
         # inject values
         for db_entry in entries_db.values():
             child = entry.get_child_for_path(db_entry.path)
@@ -58,7 +58,7 @@ class EntryDao:
 
     def get_db_entries(self, parent: Entry) -> Dict[str, DbEntry]:
         """
-        Queries the database for all child entries belonging to given entry            atexit.register(self.close())
+        Queries the database for all child entries belonging to given entry
         """
         basedir = parent.realpath
         # fix regexp for root

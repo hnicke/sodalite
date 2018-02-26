@@ -1,6 +1,7 @@
 import os
 
 from core.entrydao import EntryDao
+from core.hook import HookEngine
 from core.key import Key
 from mylogger import logger
 from .entry import Entry
@@ -8,10 +9,10 @@ from .entry import Entry
 
 class EntryAccess:
 
-    def __init__(self, entry_dao: EntryDao):
-
+    def __init__(self, entry_dao: EntryDao, hook_engine: HookEngine):
         self.__current_entry = None
         self.db_access = entry_dao
+        self.hook_engine = hook_engine
 
     def get_current(self):
         return self.__current_entry
@@ -27,6 +28,7 @@ class EntryAccess:
             return self.__current_entry
         try:
             entry = Entry(path)
+            entry.hooks = self.hook_engine.get_hooks(entry)
             if populate_children:
                 check_permission(entry)
                 self.__populate_children(entry)
@@ -55,6 +57,7 @@ class EntryAccess:
         :return: the matching entry on None, if no entry with given key exists
         """
         entry = self.__current_entry.get_child_for_key(key)
+        entry.hooks = self.hook_engine.get_hooks(entry)
         check_permission(entry)
         entry.frequency += 1
         self.db_access.update_entry(entry)

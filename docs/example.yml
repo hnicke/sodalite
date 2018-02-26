@@ -1,6 +1,6 @@
 ## meta keys
 # Control-A must be written as ^A
-# Alt-A must be wrtten as !a
+# Alt-A must be written as !a
 # Mind the casing.
 
 ## special keys
@@ -19,30 +19,40 @@
 #       (in order for sodalite to exit immediately)
 #       example: zathura #f &#q
 
-# mind the indentation, this is YAML
-actions:
+hooks:
   general:
-    "^B": ['ln -s "#f" "$SODALITE_BOOKMARK_DIR/$(basename "#f")"', add to bookmarks]
-    "!b": ['rm "$SODALITE_BOOKMARK_DIR/$(basename "#f")"', delete from bookmarks]
   dir:
-    "^S": ['terminator --working-directory="#f"', open shell]
-    "^E": ['vifm "#f" #f#q', drop to file manager]
-  text:
-    "o": ['vim "#f" #q', open with vim]
+    ^S:
+      action: 'terminator --working-directory="#f"'
+      label: spawn shell
+    ^E:
+      action: 'vifm "#f" #f#q'
+  plain_text:
+    o:
+      action: 'vim "#f"'
+      label: drop to vim
   custom:
     image:
       extensions: [png, jpg]
       hooks:
-        "o": ['feh "#f" &', open with feh]
+        o:
+          action: 'feh "#f" &'
+          label: open with feh
     pdf:
       extensions: [pdf]
       hooks:
-        "o": ['zathura "#f"#q', open with zathura]
+        o:
+          action: 'zathura "#f"#q'
+          label: open with zathura
     hypertext:
       extensions: [html]
       hooks:
-        "v": ['firefox "#f"#q', open with firefox]
+        v:
+          action: '$BROWSER "#f"#q'
+          label: open with chromium
     archive:
       extensions: [xz]
       hooks:
-        "u": ['tar xpvf #f #q', extract]
+        u:
+          action: 'tar xpvf #f'
+          label: extract

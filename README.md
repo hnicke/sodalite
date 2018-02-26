@@ -1,4 +1,4 @@
-# Sodalite: a quick file navigator
+# Sodalite: Exploration at the speed of thought
 
 ## Installation
 * Arch Linux: AUR package [sodalite-git](https://aur.archlinux.org/packages/sodalite-git/)  

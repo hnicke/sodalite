@@ -7,7 +7,6 @@ class DirHistory:
     """
     Keeps a history of visited files and offers methods for navigation within this history.
     Will never check if a file path is a valid file path.
-    Will not update the process environment -- e.g., 'os.getcwd(os.getenv('HOME')' will NOT reflect this history.
     """
 
     def __init__(self):

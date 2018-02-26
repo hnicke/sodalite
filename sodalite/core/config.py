@@ -1,3 +1,5 @@
+from _yaml import ScannerError
+
 import yaml
 
 import environment
@@ -14,7 +16,7 @@ class Config:
             with open(environment.config_path) as f:
                 # use safe_load instead load
                 config = yaml.safe_load(f)
-                self.actions = config['actions']
-        except yaml.scanner.ScannerError:
+                self.hooks = config['hooks']
+        except ScannerError:
             logger.exception("Error while parsing config file '{}'".format(environment.config_path))
             raise InvalidConfiguration

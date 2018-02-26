@@ -1,7 +1,9 @@
 # sodalite integration into fish
 
 function sodalite-widget 
-  cd (sodalite)
+  set target (sodalite)
+  [ -d $target ] ;or set target (dirname $target)
+  cd $target
   commandline -f repaint
 end
 

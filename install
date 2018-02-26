@@ -18,7 +18,7 @@ PROJECT_NAME=sodalite
 [ -z $LOG_DIR ] && LOG_DIR=/var/log
 
 # add project suffix
-CONFIG_FILE=${CONFIG_DIR}/${PROJECT_NAME}.conf
+CONFIG_FILE=${CONFIG_DIR}/${PROJECT_NAME}.yml
 LIB_DIR=${LIB_DIR}/${PROJECT_NAME}
 DATA_DIR=${DATA_DIR}/${PROJECT_NAME}
 DOC_DIR=${DOC_DIR}/${PROJECT_NAME}
@@ -53,4 +53,4 @@ awk 'NR==1 {print;
         bin/$PROJECT_NAME > "$FAKE_BIN_DIR/$PROJECT_NAME"
 chmod 755 $FAKE_BIN_DIR/$PROJECT_NAME
 
-install -D --backup -m644 "docs/example.conf" $FAKE_CONFIG_FILE
+install -D --backup -m644 "docs/example.yml" $FAKE_CONFIG_FILE

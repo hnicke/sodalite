@@ -1,6 +1,7 @@
 from core import key as key_module
 from core.key import Key
 from mylogger import logger
+from util.observer import Observable
 from .dirhistory import DirHistory
 from .entry import Entry
 from .entryaccess import EntryAccess
@@ -14,6 +15,8 @@ class Navigator:
     def __init__(self, history: DirHistory, entry_access: EntryAccess):
         self.history = history
         self.entry_access = entry_access
+        self.entry_notifier = Observable()
+        self.current_entry = self.current()
 
     def current(self) -> Entry:
         """
@@ -40,6 +43,7 @@ class Navigator:
         if entry is None:
             entry = self.current()
         self.history.visit(entry.path)
+        self.current_entry = entry
         return entry
 
     def visit_path(self, path: str) -> Entry:
@@ -49,28 +53,28 @@ class Navigator:
         :return:the matching entry
         :raises: PermissionError
         """
+        self.history.visit(path)
         entry = self.entry_access.retrieve_entry(path)
-        self.history.visit(entry.path)
+        self.current_entry = entry
         return entry
 
     def visit_previous(self) -> Entry:
         path = self.history.backward()
-        return self.entry_access.retrieve_entry(path)
+        entry = self.entry_access.retrieve_entry(path)
+        self.current_entry = entry
+        return entry
 
     def visit_next(self) -> Entry:
         path = self.history.forward()
-        return self.entry_access.retrieve_entry(path)
+        entry = self.entry_access.retrieve_entry(path)
+        self.current_entry = entry
+        return entry
 
     def visit_parent(self) -> Entry:
         path = self.history.visit_parent()
         entry = self.entry_access.retrieve_entry(path)
+        self.current_entry = entry
         return entry
-
-    def is_action(self, key: str) -> bool:
-        return False
-
-    def trigger_action(self, key: str):
-        pass
 
     def assign_key(self, key: Key, path: str):
         """Assigns given key to given entry.
@@ -86,3 +90,12 @@ class Navigator:
             conflicting_entry.key = old_key
             self.entry_access.update_entry(conflicting_entry)
             logger.debug("Swapped key of conflicting entry '{}'".format(conflicting_entry))
+
+    @property
+    def current_entry(self):
+        return self._current_entry
+
+    @current_entry.setter
+    def current_entry(self, entry: Entry):
+        self._current_entry = entry
+        self.entry_notifier.notify_all()

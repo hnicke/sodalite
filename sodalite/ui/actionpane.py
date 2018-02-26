@@ -2,29 +2,29 @@ import curses
 
 import npyscreen
 
-from core import action
-from core.navigator import Navigator
+from core import hook as hook_module
+from core.hook import HookEngine
 from ui import entrypane
 
 
 class ActionPane(entrypane.EntryPane, npyscreen.Pager):
 
-    def __init__(self, *args, **keywords):
+    def __init__(self, *args, data, **keywords):
+        self.data = data
         npyscreen.Pager.__init__(self, *args, **keywords)
         entrypane.EntryPane.__init__(self)
 
-        self.navigator: Navigator = self.parent.navigator
-        self.data = self.parent.data
+        self.hook_engine: HookEngine = self.parent.hook_engine
 
         self.handlers = {}
 
     def is_action_trigger(self, input):
         key = curses.ascii.unctrl(input)
-        return self.navigator.is_action(key)
+        return self.hook_engine.is_hook(key, self.data.current_entry)
 
-    def trigger_action(self, input):
+    def trigger_hook(self, input):
         key = curses.ascii.unctrl(input)
-        self.navigator.trigger_action(key)
+        self.hook_engine.trigger_hook(key, self.data.current_entry)
 
     def adjust_handlers(self):
         for action in self.values:
@@ -32,13 +32,13 @@ class ActionPane(entrypane.EntryPane, npyscreen.Pager):
             handler = (action.key, trigger)
             self.handlers[action.key] = trigger
 
-    def display_value(self, action):
-        print_key = action.key
-        for name, key in action.special_keys.items():
-            if key == action.key:
+    def display_value(self, hook):
+        print_key = hook.key
+        for name, key in hook_module.special_keys.items():
+            if key == hook.key:
                 print_key = name
                 break
-        return "{}{}".format(print_key.ljust(7), action.description.ljust(30))
+        return "{}{}".format(print_key.ljust(7), hook.label.ljust(30))
 
     def when_parent_changes_value(self):
-        self.values = self.data.actions
+        self.values = self.data.hooks

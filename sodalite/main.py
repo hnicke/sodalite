@@ -3,7 +3,7 @@ import atexit
 import os
 
 import environment
-from core.action import ActionEngine
+from core.hook import HookEngine
 from core.config import Config
 from core.dirhistory import DirHistory
 from core.entryaccess import EntryAccess
@@ -31,13 +31,13 @@ if __name__ == "__main__":
     global history
     logger.info('Starting sodalite')
 
+    config = Config()
+    hook_engine = HookEngine(config)
     entry_dao = EntryDao()
-    access = EntryAccess(entry_dao)
+    access = EntryAccess(entry_dao, hook_engine)
     history = DirHistory()
     navigator = Navigator(history, access)
-    app = App(navigator)
-    config = Config()
-    action_engine = ActionEngine(config)
+    app = App(navigator, hook_engine)
 
     atexit.register(__append_to_cwd_pipe)
 

@@ -22,7 +22,6 @@ class Commandline(npyscreen.Textfield):
 
     def when_value_edited(self):
         self.data.filter(self.value[1:])
-        self.parent.redraw()
 
     def trigger(self, input):
         self.value = "/"
@@ -30,7 +29,6 @@ class Commandline(npyscreen.Textfield):
 
     def __reset(self, _):
         self.clear_search(_)
-        self.parent.redraw()
 
     # clears the search and also any applied filter on data
     def clear_search(self, _):

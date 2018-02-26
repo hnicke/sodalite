@@ -31,9 +31,9 @@ cwd_pipe = os.getenv(ENV_CWD_PIPE)
 
 config_path = os.getenv(ENV_CONFIG_FILE)
 if config_path is None:
-    config_path = os.path.join(user_config, "sodalite/sodalite.conf")
+    config_path = os.path.join(user_config, "sodalite/sodalite.yml")
 if not os.path.exists(config_path):
-    config_path = "/etc/sodalite.conf"
+    config_path = "/etc/sodalite.yml"
 
 bookmark_dir = os.getenv(ENV_BOOKMARK_DIR)
 if bookmark_dir is None:

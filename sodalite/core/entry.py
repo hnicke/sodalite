@@ -6,7 +6,6 @@ from typing import Dict, Iterable
 
 from binaryornot.check import is_binary
 
-from core.action import Action
 from .key import Key
 
 
@@ -41,7 +40,7 @@ class Entry:
 
         self.frequency = frequency
         self.__is_plain_text_file = None
-        self.actions: List[Action] = []
+        self.hooks: list = []
         self.stat = os.lstat(path)
         self.size = self.stat.st_size >> 10
         self.permissions = oct(self.stat.st_mode)[-3:]
@@ -50,6 +49,16 @@ class Entry:
             self.realpath = os.readlink(path)
         else:
             self.realpath = path
+
+    def chdir(self):
+        """
+        Change current (os) directory to this entry. If this entry is not a directory, changes to the parent directory.
+        """
+        if self.is_dir():
+            cwd = self.realpath
+        else:
+            cwd = os.path.dirname(self.realpath)
+        os.chdir(cwd)
 
     @property
     def children(self):

@@ -1,18 +1,9 @@
 # sodalite shell integration
 
-# source that behaves like in bash
-function _source {
-    alias shopt=':'
-    alias _expand=_bash_expand
-    alias _complete=_bash_comp
-    emulate -L sh
-    setopt kshglob noshglob braceexpand
-    builtin source "$@"
-}
-
-
 function sodalite-emacs-widget {
-    cd $(sodalite)
+    target="$(sodalite)"
+    [ -d "$target" ] || target="$(dirname $target)"
+    cd "$target"
     zle reset-prompt
 }
 
