@@ -1,7 +1,30 @@
 # Sodalite: Exploration at the speed of thought
 
+## Yet another file explorer
+Have you ever played [crawl](https://crawl.develz.org/)?
+That's a terminal based roguelike dungeon crawler.  
+What makes it stand out is it's extremely efficient menu navigation philsophy. 
+
+![dcss inventar management](docs/crawl.png)
+
+*Dungeon Crawl Stone Soup: For selecting an item, press it's automatically assigned key.*
+
+After a while, the keys burn into one's muscle memory - using the game's interface feels extremely efficient.  
+`sodalite` brings the same asset to your file system: Navigation at the speed of thought.
+
+## Navigate the file system
+When opening `sodalite`, you will see the listing of the current directory.   
+Pressing one of the keys displayed in front of the entries will navigate there.
+![Sodalite](docs/sodalite.png)
+
+On the right side, the current possible actions with their corresponding keybindings are displayed. 
+All actions are freely configurable. 
+
+Assign the most intuitive and/or reachable keys to your most frequently used entries, and stick with this assignment. 
+Once setup, and muscle memory kicks in, all directories will be reachable in a blink of an eye!
+
 ## Installation
-* Arch Linux: AUR package [sodalite-git](https://aur.archlinux.org/packages/sodalite-git/)  
+* Arch Linux: AUR package [sodalite](https://aur.archlinux.org/packages/sodalite/)  
 
 In order to manually install `sodalite`, clone this repository, `cd` to the project root and execute:
 ```bash
@@ -11,8 +34,6 @@ For customization of the destination directories, consult [INSTALL](../INSTALL).
 > **Dependencies**:  
 > - [npyscreen](https://github.com/npcole/npyscreen)
 > - [binaryornot](https://github.com/audreyr/binaryornot)
-> - [sqlite](https://www.sqlite.org/index.html)
-
 
 ## Configuration
 `sodalite` needs to get integrated into your favourite shell (supported: `bash`, `zsh`, `fish`).  
@@ -28,7 +49,7 @@ The script will set up a keybinding which launches `sodalite`.
 * Vim keymap:       `f` in command (aka normal) mode
 
 #### fish
-Create the function `fish_user_key_bindings` in your 'config.fish' (if not already exists). 
+Create the function `fish_user_key_bindings` in your `config.fish` (if not already exists). 
 Then, insert following line into the function:
 ```bash
 source /usr/share/sodalite/shell-integration.fish
@@ -37,6 +58,16 @@ source /usr/share/sodalite/shell-integration.fish
 *If your favourite shell is not supported, feel free to open an issue.*
 
 ## Getting started
-See [here](docs/index.md) for usage information.
+See [here](docs/usage.md) for detailed usage information.
+
+## Changelog
+Don't miss out on what has changed: Read the [changelog](changelog.md).
+
+## What the future might bring
+Current plans for the future involve (in roughly this order):
+- Make exploring the file system more awesome
+- Add `tabbing`
+- Add an `operation` mode which allows for `yanking`, `deleting`, `renaming` and `moving` files
+
 ## License
-See [COPYING](COPYING)
+See [COPYING](COPYING).

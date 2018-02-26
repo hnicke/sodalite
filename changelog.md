@@ -1,12 +1,14 @@
 # Changelog
 
-## v0.7.0: February 26, 2018
+## v0.7.0: February 27, 2018
 Mostly internal refactoring.
 #### Features
 - Introduce 'go to previous' (`C-h`) and 'go to next' (`C-l`) commands
 - rename configuration file from `sodalite.conf` to `sodalite.yml`
 - Action hooks can be made invisible when omitting the `label` property
+- Hook action definitions now use `$entry` instead of `#f` to refer to current entry
 - Add this changelog
+- Add detailed [usage guide](docs/usage.md)
 
 #### Bugfixes
 - Fix 'go to parent' command (#15)
