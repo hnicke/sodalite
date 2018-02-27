@@ -24,6 +24,9 @@ hooks:
   dir:
     ^S: 'terminator --working-directory="$entry"'
     ^E: 'vifm "$entry"'
+  file:
+    e: 'exec "$entry"'
+#    label: execute
   plain_text:
     o:
       action: 'vim "$entry"'

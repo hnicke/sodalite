@@ -1,3 +1,4 @@
+import curses
 import os
 
 import npyscreen

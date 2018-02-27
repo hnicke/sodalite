@@ -161,6 +161,9 @@ hooks:
   dir:
     <hook>
     ...
+  file:
+    <hook>
+    ...
   plain_text:
     <hook>
     ...
@@ -175,5 +178,6 @@ hooks:
 ```
 
 - **dir**: (optional) Declared hooks within this map are available whenever the current entry is a directory.
+- **file**: (optional) Declared hooks within this map are available whenever the current entry is a file.
 - **plain_text**: (optional) Declared hooks within this map are available whenever the current entry is a plain text file.
 - **custom**: (optional) Declare one or more custom hooks and attach them to one or multiple extensions, and repeat this if you want. This makes the hooks available whenever the current entry has one of its attached extension.

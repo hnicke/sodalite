@@ -3,6 +3,7 @@
 ## Unreleased
 
 ##### Features
+- execute files with `e` (default hook)
 - Add OSX support
 
 ## v0.7.0: February 27, 2018

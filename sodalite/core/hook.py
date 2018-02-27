@@ -24,9 +24,10 @@ class HookEngine:
         hooks.extend(self.hooks.get_general_hooks())
         if entry.is_dir():
             hooks.extend(self.hooks.get_dir_hooks())
-        else:
+        elif entry.is_file():
             extension = os.path.splitext(entry.name)[1].lower().replace(".", "")
             hooks.extend(self.hooks.get_custom_hooks().get(extension, []))
+            hooks.extend(self.hooks.get_file_hooks())
             if entry.is_plain_text_file():
                 hooks.extend(self.hooks.get_plain_text_hooks())
         return hooks
@@ -45,7 +46,7 @@ class HookMap:
         self.map: Dict[str, List[Hook]] = {}
         self.custom: Dict[str, List[Hook]] = {}
 
-        for category in ['general', 'dir', 'plain_text']:
+        for category in ['general', 'dir', 'file', 'plain_text']:
             self.map[category] = []
             if hooks[category] is None:
                 continue
@@ -68,6 +69,9 @@ class HookMap:
     def get_dir_hooks(self) -> List['Hook']:
         return self.map['dir']
 
+    def get_file_hooks(self) -> List['Hook']:
+        return self.map['file']
+
     def get_plain_text_hooks(self) -> List['Hook']:
         return self.map['plain_text']
 
@@ -78,8 +82,11 @@ class HookMap:
         return str(self)
 
     def __str__(self):
-        return "general: {}, dir: {}, plain_text: {}, custom: {}".format(self.general, self.dir, self.plain_text,
-                                                                         self.custom)
+        return "general: {}, dir: {}, file: {} plain_text: {}, custom: {}".format(self.get_general_hooks(),
+                                                                                  self.get_dir_hooks(),
+                                                                                  self.get_file_hooks(),
+                                                                                  self.get_plain_text_hooks(),
+                                                                                  self.custom)
 
 
 def _extract_hook(key: str, hook_definition: [dict, str]) -> 'Hook':
@@ -110,8 +117,9 @@ class Hook:
         os.environ['entry'] = entry.path
         logger.info("Executing command: {}".format(self.action))
         entry.chdir()
-        os.system(self.action)
+        curses.endwin()
+        result = os.system(self.action)
+        logger.info(f"Result is {result}")
         if self.finally_exit:
             exit(0)
-        else:
-            curses.endwin()
+
