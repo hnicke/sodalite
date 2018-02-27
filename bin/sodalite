@@ -2,8 +2,7 @@
 
 ## set up environment
 APPNAME=sodalite
-PROJECT_ROOT=$(dirname $(readlink -f "$0"))/..
-LIB_DIR="${LIB_DIR:-$PROJECT_ROOT/sodalite}"
+LIB_DIR="${LIB_DIR:-$(dirname $(readlink -f "$0"))/../sodalite}"
 
 CWD_PIPE=$(mktemp -u "${TMPDIR:-/tmp/}$(basename $0).XXXXXXXX")
 mkfifo $CWD_PIPE
@@ -11,7 +10,7 @@ trap "rm -f $CWD_PIPE" EXIT
 exec 3< <(read line <$CWD_PIPE; echo $line)
 
 export CWD_PIPE
-python $LIB_DIR/main.py < /dev/tty > /dev/tty
+python3 $LIB_DIR/main.py < /dev/tty > /dev/tty
 
 read <&3 line
 [ $line ] && echo "$line"

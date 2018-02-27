@@ -1,7 +1,7 @@
 import logging
-from _yaml import ScannerError
 
 import yaml
+from yaml.scanner import ScannerError
 
 from util import environment
 

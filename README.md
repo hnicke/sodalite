@@ -24,14 +24,29 @@ Assign the most intuitive and/or reachable keys to your most frequently used ent
 Once setup, and muscle memory kicks in, all directories will be reachable in a blink of an eye!
 
 ## Installation
-* Arch Linux: AUR package [sodalite](https://aur.archlinux.org/packages/sodalite/)  
 
+#### Arch Linux
+AUR package [sodalite](https://aur.archlinux.org/packages/sodalite/):
+> `yaourt -S sodalite`
+
+
+#### OSX
+1. Install [brew](https://brew.sh/):
+> `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
+2. Install dependencies:
+    1. python3: `brew install python3`
+    1. other: `pip3 install npyscreen binaryornot pyyaml`
+3. Proceed with `Manual installation`
+
+#### Manual Installation
 In order to manually install `sodalite`, clone this repository, `cd` to the project root and execute:
 ```bash
 sudo ./install
 ````
 For customization of the destination directories, consult [INSTALL](../INSTALL).
-> **Dependencies**:  
+> **Necessary dependencies**:  
+> - [python3](https://www.python.org/downloads/release/python-364/) 
+> - [PyYAML](https://github.com/yaml/pyyaml)
 > - [npyscreen](https://github.com/npcole/npyscreen)
 > - [binaryornot](https://github.com/audreyr/binaryornot)
 

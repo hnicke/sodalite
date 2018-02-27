@@ -2,5 +2,5 @@
 rm -rf /var/log/sodalite.log
 rm -rf /usr/lib/sodalite
 rm /usr/bin/sodalite
-rm /etc/sodalite.conf
+rm /etc/sodalite.yml
 rm -rf /usr/share/sodalite

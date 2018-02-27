@@ -1,8 +1,13 @@
 # Changelog
 
+## Unreleased
+
+##### Features
+- Add OSX support
+
 ## v0.7.0: February 27, 2018
 Mostly internal refactoring.
-#### Features
+##### Features
 - Introduce 'go to previous' (`C-h`) and 'go to next' (`C-l`) commands
 - rename configuration file from `sodalite.conf` to `sodalite.yml`
 - Action hooks can be made invisible when omitting the `label` property
@@ -10,7 +15,7 @@ Mostly internal refactoring.
 - Add this changelog
 - Add detailed [usage guide](docs/usage.md)
 
-#### Bugfixes
+##### Bugfixes
 - Fix 'go to parent' command (#15)
 
 ## v0.6.0: February 20, 2018

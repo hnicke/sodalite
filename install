@@ -38,8 +38,7 @@ install -d $FAKE_LIB_DIR
 cp -r sodalite/* $FAKE_LIB_DIR
 
 install -d $FAKE_DATA_DIR
-install -D bin/shell-integration.sh $FAKE_DATA_DIR/shell-integration.sh
-install -D bin/shell-integration.fish $FAKE_DATA_DIR/shell-integration.fish
+install bin/shell-integration.sh bin/shell-integration.fish $FAKE_DATA_DIR
 
 mkdir -p $(dirname $FAKE_LOG_FILE)
 touch $FAKE_LOG_FILE && chmod 666 $FAKE_LOG_FILE
@@ -53,4 +52,6 @@ awk 'NR==1 {print;
         bin/$PROJECT_NAME > "$FAKE_BIN_DIR/$PROJECT_NAME"
 chmod 755 $FAKE_BIN_DIR/$PROJECT_NAME
 
-install -D --backup -m644 "docs/example.yml" $FAKE_CONFIG_FILE
+mkdir -p $FAKE_CONFIG_DIR
+[ -f $FAKE_CONFIG_FILE ] && mv $FAKE_CONFIG_FILE ${FAKE_CONFIG_FILE}.bak
+cp docs/example.yml $FAKE_CONFIG_FILE
