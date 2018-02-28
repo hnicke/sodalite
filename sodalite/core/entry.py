@@ -42,7 +42,7 @@ class Entry:
         self.__is_plain_text_file = None
         self.hooks: list = []
         self.stat = os.lstat(path)
-        self.size = self.stat.st_size >> 10
+        self.size = self.stat.st_size
         self.permissions = oct(self.stat.st_mode)[-3:]
         self.type = detect_type(self.stat.st_mode)
         if self.is_link():

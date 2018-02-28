@@ -1,4 +1,5 @@
 import re
+from enum import Enum
 from typing import List
 
 from core.entry import Entry
@@ -6,23 +7,27 @@ from core.navigator import Navigator
 from util.observer import Observable
 
 
+class Mode(Enum):
+    NORMAL = 1
+    ASSIGN_CHOOSE_ENTRY = 2
+    ASSIGN_CHOOSE_KEY = 3
+
+
 class ViewModel(Observable):
     def __init__(self, navigator: Navigator):
         super().__init__()
-        self.in_assign_mode = False
+        self.mode = Mode.NORMAL
         self.current_entry = None
         self.children = None
-        self.hooks = None
         self.filter_string = ""
         self.filtered_children = []
         self.sorted_children = []
         self.navigator = navigator
         navigator.entry_notifier.register(self)
 
-    def update(self):
+    def on_update(self):
         self.current_entry = self.navigator.current_entry
         self.children = list(self.current_entry.children)
-        self.hooks = [hook for hook in self.current_entry.hooks if hook.label is not None]
 
         self.sorted_children = sort(self.children)
         self.filter_string = ""
@@ -38,6 +43,7 @@ class ViewModel(Observable):
                 self.filtered_children.append(entry)
         self.filter_string = filter_string
         self.notify_all()
+
 
 def sort(entries: List[Entry]):
     sorted_entries = sorted(entries, key=lambda x: x.name)

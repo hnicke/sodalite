@@ -3,14 +3,17 @@
 ## Unreleased
 
 ##### Features
-- execute files with `e` (default hook)
+- Execute files with `e` (default hook)
 - Add OSX support
+- Redesign user interface: 
+    - Action hooks are now displayed on bottom
+    - Applicition now is dynamically rezisable
 
 ## v0.7.0: February 27, 2018
 Mostly internal refactoring.
 ##### Features
 - Introduce 'go to previous' (`C-h`) and 'go to next' (`C-l`) commands
-- rename configuration file from `sodalite.conf` to `sodalite.yml`
+- Rename configuration file from `sodalite.conf` to `sodalite.yml`
 - Action hooks can be made invisible when omitting the `label` property
 - Hook action definitions now use `$entry` instead of `#f` to refer to current entry
 - Add this changelog
