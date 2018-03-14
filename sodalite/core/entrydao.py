@@ -116,11 +116,11 @@ def insert_new_entries(entries_fs: Dict[str, Entry], entries_db: Dict[str, DbEnt
 
 def remove_entries(obsolete_paths: Iterable[str]):
     """Deletes obsolete entries in the db"""
-    query = f"DELETE FROM {TABLE_FILES} WHERE {COLUMN_PATH}=?"
+    query = f"DELETE FROM {TABLE_FILES} WHERE {COLUMN_PATH} REGEXP ?"
     for path in obsolete_paths:
-        conn.cursor().execute(query, (path,))
+        regexp = '^' + path + '(/.*)*$'
+        conn.cursor().execute(query, (regexp,))
     conn.commit()
-    return
 
 
 def update_entry(entry):
