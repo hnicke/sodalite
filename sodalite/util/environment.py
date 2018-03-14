@@ -17,12 +17,12 @@ user_config = os.getenv('XDG_CONFIG_HOME')
 if user_data is None:
     user_data = os.path.join(home, '.local/share/sodalite/')
     if not os.path.exists(user_data):
-        os.mkdir(user_data)
+        os.makedirs(user_data, exist_ok=True)
 
 if user_config is None:
     user_config = os.path.join(home, '.config/sodalite')
     if not os.path.exists(user_config):
-        os.mkdir(user_config)
+        os.makedirs(user_config, exist_ok=True)
 
 
 db_path = os.getenv(ENV_DB_PATH)
@@ -46,4 +46,4 @@ bookmark_dir = os.getenv(ENV_BOOKMARK_DIR)
 if bookmark_dir is None:
     bookmark_dir = os.path.join(user_data, "bookmarks")
     if not os.path.exists(bookmark_dir):
-        os.mkdir(bookmark_dir)
+        os.makedirs(bookmark_dir, exist_ok=True)
