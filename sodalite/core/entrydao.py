@@ -106,9 +106,11 @@ class EntryDao:
 
     def remove_entries(self, obsolete_paths: Iterable[str]):
         """Deletes obsolete entries in the db"""
-        query = f"DELETE FROM {TABLE_FILES} WHERE {COLUMN_PATH}=?"
+        query = f"DELETE FROM {TABLE_FILES} WHERE {COLUMN_PATH} REGEXP ?"
         for path in obsolete_paths:
-            self.conn.cursor().execute(query, (path,))
+            regexp = '^' + path + '(/.*)*$'
+            logger.info(regexp)
+            self.conn.cursor().execute(query, (regexp,))
         self.conn.commit()
         return
 

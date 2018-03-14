@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.7.1: March 14, 2018
+Hotfix release.
+####  Bugfixes
+- Fix crash on startup in case certain directories were not existent #42
+- Recursively delete obsolete database entries #48
+
 ## v0.7.0: February 27, 2018
 Mostly internal refactoring.
 #### Features
