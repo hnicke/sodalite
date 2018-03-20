@@ -57,6 +57,8 @@ Navigate back in history one step. Does nothing if history does not contain a pr
 #### normal.go_to_next `C-l`
 Navigate forward in history. Does nothing if history does not contain a next entry.
 
+#### normal.yank_current_entry `C-y`
+Copy current entry's path to the system's clipboard.
 
 #### normal.assign_mode `=`
 Enter assign mode.

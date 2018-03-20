@@ -3,6 +3,8 @@ import logging
 
 import os
 
+import pyperclip
+
 from core import hook, key
 from core.key import Key
 from core.navigator import Navigator
@@ -61,6 +63,7 @@ class EntryControl:
             curses.KEY_BACKSPACE: self.h_navigate_backward,
             curses.ascii.DEL: self.h_navigate_backward,
             curses.ascii.NL: self.h_exit,
+            "^Y": self.copy_to_clipboard
         }
 
     def setup_complex_handlers(self):
@@ -119,6 +122,9 @@ class EntryControl:
 
     def h_enter_assign_mode(self, input):
         assign_control = AssignControl(self.view, self.data, self.main_control, self.navigator)
+
+    def copy_to_clipboard(self, ch):
+        pyperclip.copy(self.data.current_entry.path)
 
 
 class AssignControl:

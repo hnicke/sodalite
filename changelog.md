@@ -7,6 +7,7 @@
 - Redesign user interface: 
     - Action hooks are now displayed on bottom
     - Applicition now is dynamically rezisable
+- Yank path to current entry with `C-y`
     
     
 ## v0.7.1: March 14, 2018
