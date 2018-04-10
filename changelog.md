@@ -5,8 +5,9 @@
 - Execute files with `e` (default hook)
 - Add OSX support
 - Redesign user interface: 
-    - Action hooks are now displayed on bottom
-    - Applicition now is dynamically rezisable
+    - Action hooks are now displayed at the bottom
+    - Applicition now is dynamically resizable
+    - Entries are displayed in color (which depends on type and frequency)
 - Yank path to current entry with `C-y`
     
     

@@ -49,6 +49,8 @@ class Entry:
             self.realpath = os.readlink(path)
         else:
             self.realpath = path
+        self._executable = None
+        self._readable = None
 
     def chdir(self):
         """
@@ -119,6 +121,20 @@ class Entry:
 
     def is_link(self) -> bool:
         return self.type == EntryType.SYMLINK
+
+    @property
+    def executable(self) -> bool:
+        if not self._executable:
+            owner = self.permissions[0]
+            self._executable = owner == '1' or owner == '5' or owner == '7'
+        return self._executable
+
+    @property
+    def readable(self):
+        if not self._executable:
+            owner = int(self.permissions[0])
+            self._readable = owner >= 4
+        return self._readable
 
 
 def detect_type(mode) -> EntryType:

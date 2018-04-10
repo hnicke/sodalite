@@ -3,6 +3,7 @@ import os
 
 import npyscreen
 
+from ui import theme
 from ui.control import MainControl
 from ui.entryview import EntrySplitter
 from ui.hookpane import HookBox
@@ -19,8 +20,9 @@ class App(npyscreen.NPSAppManaged):
         os.environ['ESCDELAY'] = '0'
 
     def onStart(self):
-        npyscreen.setTheme(npyscreen.Themes.TransparentThemeLightText)
+        npyscreen.setTheme(theme.Theme)
         self.addForm('MAIN', MainForm)
+
 
 
 class MainForm(npyscreen.FormBaseNew):

@@ -1,16 +1,19 @@
+import curses
 import logging
+import math
+import os
 from enum import Enum
 
 import npyscreen
-import os
 from npyscreen import Form
 from npyscreen.wgwidget import Widget
 
+from core.entry import Entry, EntryType
 from core.navigator import Navigator
-from ui import formatting
+from ui import formatting, theme
 from ui.control import EntryControl, MainControl, SplitControl
-from ui.viewmodel import ViewModel, Mode
 from ui.filter import Filter
+from ui.viewmodel import ViewModel, Mode
 
 logger = logging.getLogger(__name__)
 
@@ -20,25 +23,56 @@ class Position(Enum):
     RIGHT = 2
 
 
+class EntryLine(npyscreen.Textfield):
+
+    def __init__(self, screen, **keywords):
+        self.dim = False
+        super().__init__(screen, **keywords)
+
 class EntryPager(npyscreen.MultiLineEditable):
+    _contained_widgets = EntryLine
 
     def display_value(self, entry):
         spacing = min((1 + (self.width // 25)), 3)
         spacing_left = ' ' * (spacing - 1)
         spacing_right = ' ' * spacing
-        return "{}{}{}{}".format(spacing_left, entry.key.value, spacing_right, entry.name)
+        key = " " if entry.key.value == "" else entry.key.value
+        return "{}{}{}{}".format(spacing_left, key, spacing_right, entry.name)
 
     def _print_line(self, line, value_indexer):
-        """copied from npyscreen. added feature: dirs are printed bold"""
-        line.color = self.color
-        self._set_line_values(line, value_indexer)
-        self._set_line_highlighting(line, value_indexer)
-        # print dir entries bold
+        """overwrites npyscreen function"""
         try:
-            if self.values[value_indexer].is_dir():
-                line.show_bold = True
+            entry = self.values[value_indexer]
+            self._set_line_values(line, value_indexer)
+            self.set_format(line, entry)
         except IndexError:
             pass
+
+    def set_format(self, line, entry: Entry):
+        if not entry.readable:
+            color = theme.COLOR_FORBIDDEN
+        elif entry.frequency == 0:
+            color = theme.COLOR_UNUSED
+            line.dim = True
+        else:
+            if entry.frequency < 5:
+                line.dim = True
+                line.show_bold = False
+            elif entry.frequency < 10:
+                line.dim = False
+                line.show_bold = False
+            else:
+                line.show_bold = True
+
+            if entry.type == EntryType.DIRECTORY:
+                color = theme.COLOR_DIR
+            elif entry.type == EntryType.SYMLINK:
+                color = theme.COLOR_SYMLINK
+            elif entry.executable:
+                color = theme.COLOR_EXECUTABLE
+            else:
+                color = theme.COLOR_FILE
+        line.color = color
 
     def h_scroll_page_down(self, ch):
         self.h_cursor_page_down(ch)
@@ -160,7 +194,6 @@ class EntryBox(npyscreen.MultiLineEditableBoxed):
         super().update()
         self.filter.update()
         self.info.update()
-
 
 
 class EntrySplitter(Widget):

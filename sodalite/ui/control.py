@@ -3,11 +3,13 @@ import logging
 
 import os
 
+import npyscreen
 import pyperclip
 
 from core import hook, key
 from core.key import Key
 from core.navigator import Navigator
+from ui import theme
 from ui.viewmodel import ViewModel, Mode
 from util import environment
 
@@ -53,6 +55,7 @@ class EntryControl:
             "^B": self.view.multiline.h_scroll_page_up,
             "^U": self.view.multiline.h_scroll_half_page_up,
             "^D": self.view.multiline.h_scroll_half_page_down,
+            "6": self.while_waiting,
             ord('.'): self.h_navigate_to_parent,
             "=": self.h_enter_assign_mode,
             ord('~'): self.h_navigate_to_home,
@@ -65,6 +68,11 @@ class EntryControl:
             curses.ascii.NL: self.h_exit,
             "^Y": self.copy_to_clipboard
         }
+
+    def while_waiting(self, input):
+        npyscreen.setTheme(theme.Theme)
+        self.view.update()
+        logger.info("waiting")
 
     def setup_complex_handlers(self):
         return [
