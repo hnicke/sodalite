@@ -51,7 +51,7 @@ class HookMap:
         self.map: Dict[str, List[Hook]] = {}
         self.custom: Dict[str, List[Hook]] = {}
 
-        for category in ['general', 'dir', 'file', 'plain_text']:
+        for category in ['general', 'dir', 'file', 'plain_text', 'executable']:
             self.map[category] = []
             if hooks.get(category) is None:
                 continue
@@ -80,6 +80,9 @@ class HookMap:
     def get_plain_text_hooks(self) -> List['Hook']:
         return self.map['plain_text']
 
+    def get_executable_hooks(self) -> List['Hook']:
+        return self.map['executable']
+
     def get_custom_hooks(self) -> Dict[str, List['Hook']]:
         return self.custom
 
@@ -87,11 +90,13 @@ class HookMap:
         return str(self)
 
     def __str__(self):
-        return "general: {}, dir: {}, file: {} plain_text: {}, custom: {}".format(self.get_general_hooks(),
-                                                                                  self.get_dir_hooks(),
-                                                                                  self.get_file_hooks(),
-                                                                                  self.get_plain_text_hooks(),
-                                                                                  self.custom)
+        return "general: {}, dir: {}, file: {} plain_text: {}, executable: {}, custom: {}".format(
+            self.get_general_hooks(),
+            self.get_dir_hooks(),
+            self.get_file_hooks(),
+            self.get_plain_text_hooks(),
+            self.get_executable_hooks(),
+            self.custom)
 
 
 hooks = HookMap(config.hooks)
@@ -111,6 +116,8 @@ def get_hooks(entry) -> List['Hook']:
         matching_hooks.extend(hooks.get_file_hooks())
         if entry.is_plain_text_file():
             matching_hooks.extend(hooks.get_plain_text_hooks())
+        if entry.executable:
+            matching_hooks.extend(hooks.get_executable_hooks())
     return matching_hooks
 
 

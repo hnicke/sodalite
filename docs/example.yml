@@ -25,12 +25,14 @@ hooks:
     ^S: 'terminator --working-directory="$entry"'
     ^E: 'vifm "$entry"'
   file:
-    e: 'exec "$entry"'
-#    label: execute
   plain_text:
     o:
       action: 'vim "$entry"'
       label: edit with vim
+  executable:
+    e:
+      action: 'exec "$entry"'
+      label: execute
   custom:
     image:
       extensions: [png, jpg]
@@ -43,16 +45,16 @@ hooks:
       hooks:
         o:
           action: 'zathura "$entry"#q'
-          label: open with zathura
+          label: pdf viewer
     hypertext:
       extensions: [html]
       hooks:
         v:
           action: '$BROWSER "$entry"#q'
-          label: open with chromium
+          label: browser
     archive:
       extensions: [xz]
       hooks:
         u:
-          action: 'tar xpvf "$entry"'
+          action: 'tar xvzf "$entry"'
           label: extract
