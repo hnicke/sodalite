@@ -29,6 +29,7 @@ class EntryLine(npyscreen.Textfield):
         self.dim = False
         super().__init__(screen, **keywords)
 
+
 class EntryPager(npyscreen.MultiLineEditable):
     _contained_widgets = EntryLine
 
@@ -45,6 +46,7 @@ class EntryPager(npyscreen.MultiLineEditable):
             entry = self.values[value_indexer]
             self._set_line_values(line, value_indexer)
             self.set_format(line, entry)
+            self._set_line_highlighting(line, value_indexer)
         except IndexError:
             pass
 
