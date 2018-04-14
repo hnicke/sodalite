@@ -1,5 +1,4 @@
 import logging
-import os
 
 from ui.app import App
 from util import environment

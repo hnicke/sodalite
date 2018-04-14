@@ -1,7 +1,7 @@
 import curses
 import logging
-
 import os
+import time
 
 import npyscreen
 import pyperclip
@@ -9,7 +9,6 @@ import pyperclip
 from core import hook, key
 from core.key import Key
 from core.navigator import Navigator
-from ui import theme
 from ui.viewmodel import ViewModel, Mode
 from util import environment
 

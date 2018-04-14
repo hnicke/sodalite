@@ -24,7 +24,6 @@ class App(npyscreen.NPSAppManaged):
         self.addForm('MAIN', MainForm)
 
 
-
 class MainForm(npyscreen.FormBaseNew):
     BLANK_LINES_BASE = 0
     BLANK_COLUMNS_RIGHT = 0

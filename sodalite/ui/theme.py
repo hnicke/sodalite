@@ -14,6 +14,7 @@ COLOR_UNUSED = 'UNUSED'
 COLOR_SYMLINK = 'SYMLINK'
 COLOR_FORBIDDEN = 'FORBIDDEN'
 
+
 class Theme(npyscreen.Themes.TransparentThemeLightText):
 
     def __init__(self, *args, **keywords):
@@ -39,5 +40,3 @@ class Theme(npyscreen.Themes.TransparentThemeLightText):
             if caller.dim:
                 color = color | curses.A_DIM
         return color
-
-

@@ -1,6 +1,4 @@
-import curses
 import logging
-import math
 import os
 from enum import Enum
 

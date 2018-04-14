@@ -47,7 +47,6 @@ class Filter(npyscreen.Textfield):
         self.value = ""
         self.data.filter("")
 
-
     def h_delete_left(self, ch):
         if len(self.value) != 1:
             super().h_delete_left(ch)

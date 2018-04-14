@@ -1,10 +1,9 @@
 import logging
 import os
 
+from core import entrydao
 from core import hook
 from core.key import Key
-
-from core import entrydao
 from .entry import Entry
 
 logger = logging.getLogger(__name__)

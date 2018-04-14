@@ -24,7 +24,6 @@ if user_config is None:
     if not os.path.exists(user_config):
         os.makedirs(user_config, exist_ok=True)
 
-
 db_path = os.getenv(ENV_DB_PATH)
 if db_path is None:
     db_path = os.path.join(user_data, 'db.sqlite')
