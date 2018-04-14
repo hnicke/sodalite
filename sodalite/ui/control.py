@@ -24,18 +24,15 @@ class MainControl:
 
         self.disable_arrow_keys()
 
-    def test_focus(self, input):
-        logger.info("got focus on main, yeeah")
-
     def disable_arrow_keys(self):
-        self.view.handlers.update({
+        self.handlers.update({
             curses.KEY_UP: self.nop,
             curses.KEY_DOWN: self.nop,
             curses.KEY_LEFT: self.nop,
             curses.KEY_RIGHT: self.nop
         })
 
-    def nop(self):
+    def nop(self, _):
         pass
 
 
@@ -55,7 +52,6 @@ class EntryControl:
             "^B": self.view.multiline.h_scroll_page_up,
             "^U": self.view.multiline.h_scroll_half_page_up,
             "^D": self.view.multiline.h_scroll_half_page_down,
-            "6": self.while_waiting,
             ord('.'): self.h_navigate_to_parent,
             "=": self.h_enter_assign_mode,
             ord('~'): self.h_navigate_to_home,
@@ -68,11 +64,6 @@ class EntryControl:
             curses.ascii.NL: self.h_exit,
             "^Y": self.copy_to_clipboard
         }
-
-    def while_waiting(self, input):
-        npyscreen.setTheme(theme.Theme)
-        self.view.update()
-        logger.info("waiting")
 
     def setup_complex_handlers(self):
         return [
@@ -147,6 +138,7 @@ class AssignControl:
         self.chosen_entry = None
         self.main_control.view.complex_handlers = [
             (self.t_input_is_assign_key, self.h_assign_key),
+            (self.view.filter.t_filter, self.view.filter.trigger),
         ]
         self.main_control.view.handlers = {
             "^N": self.h_cursor_line_down,
