@@ -1,9 +1,7 @@
 import curses
 import logging
 import os
-import time
 
-import npyscreen
 import pyperclip
 
 from core import hook, key

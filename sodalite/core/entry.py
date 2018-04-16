@@ -30,7 +30,7 @@ class Entry:
         :param path: the absolute, canonical path of this entry
         """
         self.path = path
-        self.__parent = parent
+        self._parent = parent
         self.dir, self.name = os.path.split(path)
         self._key = key
 
@@ -80,9 +80,11 @@ class Entry:
 
     @key.setter
     def key(self, key: Key):
+        if self._parent and self._key in self._parent.key_to_child:
+            del self._parent.key_to_child[self._key]
         self._key = key
-        if self.__parent is not None:
-            self.__parent.key_to_child[key] = self
+        if self._parent:
+            self._parent.key_to_child[key] = self
 
     def get_child_for_key(self, key: Key) -> 'Entry' or None:
         return self.key_to_child.get(key, None)
