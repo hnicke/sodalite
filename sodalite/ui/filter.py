@@ -27,7 +27,6 @@ class Filter(npyscreen.Textfield):
 
     def when_value_edited(self):
         self.data.filter(self.value[1:])
-        logger.info(self.height)
         # somehow hookpane is glitching: update 'solves' this
         self.parent.hookpane.update()
 

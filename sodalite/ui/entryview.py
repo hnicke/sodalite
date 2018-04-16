@@ -118,6 +118,7 @@ class EntryBox(npyscreen.MultiLineEditableBoxed):
         self.multiline = self._my_widgets[0]
         self.navigator = Navigator()
         self.data = ViewModel(self.navigator)
+        self.values = self.data.filtered_children
         self.position = position
         self.filter = self.parent.add(Filter,
                                       data=self.data,
@@ -136,10 +137,12 @@ class EntryBox(npyscreen.MultiLineEditableBoxed):
         """
         callback: data changed
         """
-        self.multiline.reset_cursor()
-        self.set_title()
-        self.set_size_label()
-        self.update()
+        if not self.hidden:
+            logger.info(f"{self.position} entrybox: Received new data")
+            self.multiline.reset_cursor()
+            self.set_title()
+            self.set_size_label()
+            self.update()
 
     def set_title(self):
         mode = self.data.mode
@@ -154,7 +157,7 @@ class EntryBox(npyscreen.MultiLineEditableBoxed):
         cwd = self.data.current_entry.path
         if cwd.startswith(EntryBox.user_home):
             cwd = "~" + cwd[len(EntryBox.user_home):]
-        max_length = self.width - 8  # this is how npyscreen renders titles
+        max_length = self.width - 9  # this is how npyscreen renders titles
         if len(cwd) > max_length:
             cutoff = len(cwd) - max_length + 2
             cwd = cwd[cutoff:]
@@ -170,9 +173,13 @@ class EntryBox(npyscreen.MultiLineEditableBoxed):
         self.hidden = not visible
         self.info.hidden = not visible
         self.filter.hidden = not visible
+        if not visible:
+            self.data.unregister(self)
+        if visible:
+            self.data.register(self)
 
     def resize(self):
-        resize(self, self.parent, self.splitter.split)
+        calculate_sizes(self, self.parent, self.splitter.split)
         self.multiline.rely = self.rely + 1
         self.multiline.height = self.height - 3
         self.multiline.relx = self.relx + 2
@@ -185,15 +192,17 @@ class EntryBox(npyscreen.MultiLineEditableBoxed):
         self.info.relx = self.relx + self.width - len(self.info.value) - 2
         self.info.width = len(self.info.value)
         super().resize()
-        self.multiline.update()
+        self.multiline.resize()
 
     def update(self, clear=True):
-        self.values = self.data.filtered_children
-        self.resize()  # hookpane height could have changed..
-        self.set_title()
-        super().update()
-        self.filter.update()
-        self.info.update()
+        if not self.hidden:
+            logger.info(f"updating {self.position} entrybox")
+            self.resize()  # hookpane height could have changed..
+            self.set_title()
+            super().update(clear)
+            self.filter.update()
+            self.info.update()
+
 
 class EntrySplitter(Widget):
 
@@ -212,11 +221,12 @@ class EntrySplitter(Widget):
                                             main_control=main_control,
                                             splitter=self,
                                             rely=0,
+                                            hidden=True
                                             )
+        self.right_window.visible(False)
         self.left_window.controller.activate()
         SplitControl(self, main_control)
 
-        self.right_window.visible(False)
 
     def h_toggle_split(self, input):
         self.toggle_split()
@@ -239,14 +249,14 @@ def get_max_height(screen: Form) -> int:
     return screen.lines - screen.hookpane.height + 1
 
 
-def resize(widget, screen: Form, split: bool):
+def calculate_sizes(widget, screen: Form, split: bool):
     if widget.position == Position.LEFT:
-        resize_left(widget, screen, split)
+        calculate_left_size(widget, screen, split)
     else:
-        resize_right(widget, screen, split)
+        calculate_right_size(widget, screen, split)
 
 
-def resize_left(widget: Widget, screen: Form, split: bool):
+def calculate_left_size(widget: Widget, screen: Form, split: bool):
     if split:
         width = get_split_x(screen)
     else:
@@ -258,7 +268,7 @@ def resize_left(widget: Widget, screen: Form, split: bool):
     widget.height = height
 
 
-def resize_right(widget: Widget, screen: Form, split: bool):
+def calculate_right_size(widget: Widget, screen: Form, split: bool):
     if split:
         width = screen.columns - get_split_x(screen)
         height = get_max_height(screen)

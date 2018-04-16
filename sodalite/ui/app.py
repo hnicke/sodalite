@@ -35,25 +35,16 @@ class MainForm(npyscreen.FormBaseNew):
     FRAMED = False
 
     def __init__(self, *args, **keywords):
-        self.splitter = None
         self.notify_lock = threading.Lock()
         super().__init__(*args, **keywords)
 
     def create(self):
-        values = []
-        for x in range(5):
-            row = []
-            row.append(f'C-{x}')
-            row.append(f'hook{x}')
-            values.append(row)
-
-        self.main_control = MainControl(self)
-        self.hookpane = self.add(HookBox, main_control=self.main_control)
-        self.notifypane = self.add(NotifyBox, main_control=self.main_control)
-        self.splitter = self.add(EntrySplitter, main_control=self.main_control)
-
         self.min_c = 28
         self.min_l = 10
+        self.main_control = MainControl(self)
+        self.hookpane = self.add(HookBox, main_control=self.main_control)
+        self.notifypane = self.add(NotifyBox)
+        self.splitter = self.add(EntrySplitter, main_control=self.main_control)
 
     def notify(self, message: str, duration: float, attr=curses.A_NORMAL):
         thread = threading.Thread(target=self._notify, args=(message, duration, attr,))
