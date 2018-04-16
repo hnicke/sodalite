@@ -1,15 +1,15 @@
 # Changelog
 
-## Unreleased
+## v0.8: April 16, 2018
 ##### Features
-- Execute files with `e` (default hook)
+- Execute executables with `e` (default action hook)
 - Add OSX support
 - Redesign user interface: 
+    - Entries are displayed in color (which depends on type and frequency)
     - Action hooks are now displayed at the bottom
     - Applicition now is dynamically resizable
-    - Entries are displayed in color (which depends on type and frequency)
-- Yank path to current entry with `C-y`
-- When traversing an entry without permissions, the notification 'PERMISSION DENIED' is emitted
+- Yank path of current entry with `C-y`
+- When encountering problems (e.g., missing file or permission), notifications get emitted (and app does not crash)
     
     
 ## v0.7.1: March 14, 2018

@@ -17,9 +17,6 @@ When opening `sodalite`, you will see the listing of the current directory.
 Pressing one of the keys displayed in front of the entries will navigate there.
 ![Sodalite](docs/sodalite.png)
 
-On the right side, the current possible actions with their corresponding keybindings are displayed. 
-All actions are freely configurable. 
-
 Assign the most intuitive and/or reachable keys to your most frequently used entries, and stick with this assignment. 
 Once setup, and muscle memory kicks in, all directories will be reachable in a blink of an eye!
 
