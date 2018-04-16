@@ -46,8 +46,9 @@ class MainForm(npyscreen.FormBaseNew):
         self.notifypane = self.add(NotifyBox)
         self.splitter = self.add(EntrySplitter, main_control=self.main_control)
 
-    def notify(self, message: str, duration: float, attr=curses.A_NORMAL):
+    def notify(self, message: str, duration=1.5, attr=curses.A_BOLD):
         thread = threading.Thread(target=self._notify, args=(message, duration, attr,))
+        thread.daemon = True
         thread.start()
 
     def _notify(self, message: str, duration: float, attr: int):

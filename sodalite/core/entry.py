@@ -2,6 +2,7 @@ import os
 import stat
 from _ast import List
 from enum import Enum
+from pathlib import Path
 from typing import Dict, Iterable
 
 from binaryornot.check import is_binary
@@ -123,6 +124,9 @@ class Entry:
 
     def is_link(self) -> bool:
         return self.type == EntryType.SYMLINK
+
+    def exists(self) -> bool:
+        return Path(self.path).exists()
 
     @property
     def executable(self) -> bool:

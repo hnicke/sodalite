@@ -78,12 +78,17 @@ class EntryControl:
         try:
             self.navigator.visit_child(chr(ch))
             self.view.filter.clear_search("")
+        except FileNotFoundError:
+            self.view.parent.notify("NO SUCH FILE")
         except PermissionError:
-            self.view.parent.notify(f"PERMISSION DENIED", 1.5, curses.A_BOLD)
+            self.view.parent.notify("PERMISSION DENIED")
 
 
     def h_navigate_to_parent(self, ch):
-        self.navigator.visit_parent()
+        try:
+            self.navigator.visit_parent()
+        except FileNotFoundError:
+            self.view.parent.notify("NO SUCH FILE")
 
     def h_navigate_to_home(self, ch):
         home = os.getenv('HOME')

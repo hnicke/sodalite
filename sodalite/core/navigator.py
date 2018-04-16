@@ -40,9 +40,14 @@ class Navigator:
         Visit entry that is child of current entry and whose key matches given key.
         :param key:
         :return: matching entry or current entry, if no match was found
-        :raises: PermissionError
+        :raises: FileNotFoundError, PermissionError
         """
-        entry = self.entry_access.get_entry_for_key(Key(key))
+        try:
+            entry = self.entry_access.get_entry_for_key(Key(key))
+        except FileNotFoundError:
+            # try to rescan dir
+            self.current_entry = self.entry_access.retrieve_entry(self.history.cwd(), cache=False)
+            raise FileNotFoundError
         if entry is None:
             entry = self.current()
         self.history.visit(entry.path)
@@ -75,9 +80,13 @@ class Navigator:
 
     def visit_parent(self) -> Entry:
         path = self.history.visit_parent()
-        entry = self.entry_access.retrieve_entry(path)
-        self.current_entry = entry
-        return entry
+        try:
+            entry = self.entry_access.retrieve_entry(path)
+            self.current_entry = entry
+            return entry
+        except FileNotFoundError:
+            self.visit_previous()
+            raise FileNotFoundError
 
     def assign_key(self, key: Key, path: str):
         """Assigns given key to given entry.

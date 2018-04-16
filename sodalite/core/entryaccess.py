@@ -17,25 +17,23 @@ class EntryAccess:
     def get_current(self):
         return self.__current_entry
 
-    def retrieve_entry(self, path: str, populate_children=True) -> [Entry, None]:
+    def retrieve_entry(self, path: str, populate_children=True, cache=True) -> Entry:
         """
         Returns an entry matching given path.
         :param path: the absolute, canonical path to a file
-        :return: the matching entry or None, if file does not exist
+        :return: the matching entry
+        :raise: FileNotFoundError
         """
 
-        if self.is_cached(path):
+        if cache and self.is_cached(path):
             return self.__current_entry
-        try:
-            entry = Entry(path)
-            entry.hooks = hook.get_hooks(entry)
-            if populate_children:
-                check_permission(entry)
-                self.__populate_children(entry)
-                self.__current_entry = entry
-            return entry
-        except FileNotFoundError:
-            return None
+        entry = Entry(path)
+        entry.hooks = hook.get_hooks(entry)
+        if populate_children:
+            check_permission(entry)
+            self.__populate_children(entry)
+            self.__current_entry = entry
+        return entry
 
     def is_cached(self, path: str):
         return self.__current_entry is not None and path == self.__current_entry
@@ -55,8 +53,11 @@ class EntryAccess:
         If a match was found, updates the entries frequency.
         :param key: the key of the target entry
         :return: the matching entry on None, if no entry with given key exists
+        :raise: FileNotFoundError, PermissionError
         """
         entry = self.__current_entry.get_child_for_key(key)
+        if not entry.exists():
+            raise FileNotFoundError
         check_permission(entry)
         entry.hooks = hook.get_hooks(entry)
         entry.frequency += 1
