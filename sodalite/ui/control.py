@@ -75,8 +75,12 @@ class EntryControl:
         self.view.parent.hookpane.data = self.data
 
     def h_navigate_to_key(self, ch):
-        self.navigator.visit_child(chr(ch))
-        self.view.filter.clear_search("")
+        try:
+            self.navigator.visit_child(chr(ch))
+            self.view.filter.clear_search("")
+        except PermissionError:
+            self.view.parent.notify(f"PERMISSION DENIED", 1.5, curses.A_BOLD)
+
 
     def h_navigate_to_parent(self, ch):
         self.navigator.visit_parent()
@@ -101,8 +105,6 @@ class EntryControl:
 
     def is_navigation_key(self, ch):
         try:
-            # if self.data.in_assign_mode:
-            #     return False
             char = chr(ch)
             return self.navigator.is_navigation_key(char)
         except (ValueError, TypeError):

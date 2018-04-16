@@ -9,6 +9,7 @@
     - Applicition now is dynamically resizable
     - Entries are displayed in color (which depends on type and frequency)
 - Yank path to current entry with `C-y`
+- When traversing an entry without permissions, the notification 'PERMISSION DENIED' is emitted
     
     
 ## v0.7.1: March 14, 2018

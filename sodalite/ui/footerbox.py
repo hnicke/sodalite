@@ -10,14 +10,41 @@ from ui.viewmodel import ViewModel
 logger = logging.getLogger(__name__)
 
 
-class HookBox(npyscreen.BoxBasic):
-
+class FooterBox(npyscreen.BoxBasic):
     def __init__(self, screen, *args, **keywords):
         super().__init__(screen, height=3, *args, **keywords)
-        self.values: List[Hook] = []
         self.padding = 4
-        self._data: ViewModel = None
         self.handlers = {}
+
+    def resize(self):
+        self.rely = self.parent.lines - self.height
+        super().resize()
+
+
+class NotifyBox(FooterBox):
+
+    def __init__(self, screen, *args, **keywords):
+        super().__init__(screen, *args, **keywords)
+        self.message = ""
+        self.attributes = []
+
+    def notify(self, message: str, attr=curses.A_NORMAL):
+        self.message = message
+        self.attributes = [attr] * len(message)
+
+    def update(self, clear=True):
+        super().update(clear)
+        if not self.hidden:
+            center = (self.width - len(self.message)) // 2
+            self.add_line(self.rely + 1, center, self.message, self.attributes, self.width - 2)
+
+
+class HookBox(FooterBox):
+
+    def __init__(self, screen, *args, **keywords):
+        super().__init__(screen, *args, **keywords)
+        self.values: List[Hook] = []
+        self._data: ViewModel = None
 
     def data(self, data: ViewModel):
         if self._data is not None:
@@ -31,12 +58,11 @@ class HookBox(npyscreen.BoxBasic):
         self.values = [hook for hook in self._data.current_entry.hooks if hook.label is not None]
         pass
 
-    def resize(self):
-        self.rely = self.parent.lines - self.height
-        super().resize()
-
     def update(self, clear=True):
-        super().update()
+        super().update(clear)
+        if self.hidden:
+            self.clear()
+            return
         self.resize()
 
         hooks = [get_hook_representation(hook) for hook in self.values]

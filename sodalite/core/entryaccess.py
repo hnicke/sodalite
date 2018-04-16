@@ -57,8 +57,8 @@ class EntryAccess:
         :return: the matching entry on None, if no entry with given key exists
         """
         entry = self.__current_entry.get_child_for_key(key)
-        entry.hooks = hook.get_hooks(entry)
         check_permission(entry)
+        entry.hooks = hook.get_hooks(entry)
         entry.frequency += 1
         entrydao.update_entry(entry)
         self.__populate_children(entry)

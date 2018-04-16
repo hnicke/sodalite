@@ -195,7 +195,6 @@ class EntryBox(npyscreen.MultiLineEditableBoxed):
         self.filter.update()
         self.info.update()
 
-
 class EntrySplitter(Widget):
 
     def __init__(self, screen, main_control: MainControl, **keywords):
