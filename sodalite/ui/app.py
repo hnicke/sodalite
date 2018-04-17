@@ -35,8 +35,17 @@ class MainForm(npyscreen.FormBaseNew):
     FRAMED = False
 
     def __init__(self, *args, **keywords):
+        self.init_counter = 0
         self.notify_lock = threading.Lock()
         super().__init__(*args, **keywords)
+
+    def display(self, clear=False):
+        # on startup, app gets displayed to often, which results in flickering
+        # this hack cures it
+        if self.init_counter <= 1:
+            self.init_counter += 1
+            return
+        super().display(clear=clear)
 
     def create(self):
         self.min_c = 28

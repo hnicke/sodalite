@@ -10,9 +10,10 @@ class Observable:
     def __init__(self):
         self._observers: Set[Observer] = set()
 
-    def register(self, observer):
+    def register(self, observer, immediate_update=True):
         self._observers.add(observer)
-        observer.on_update()
+        if immediate_update:
+            observer.on_update()
 
     def unregister(self, observer):
         self._observers.remove(observer)

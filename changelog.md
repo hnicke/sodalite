@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+##### Fixes
+- Increase startup performance and reduce screen flickering
+
+
 ## v0.8: April 16, 2018
 ##### Features
 - Execute executables with `e` (default action hook)
@@ -9,6 +14,7 @@
     - Action hooks are now displayed at the bottom
     - Applicition now is dynamically resizable
 - Yank path of current entry with `C-y`
+##### Fixes
 - When encountering problems (e.g., missing file or permission), notifications get emitted (and app does not crash)
     
     

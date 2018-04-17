@@ -1,5 +1,6 @@
 import logging
 import os
+import time
 from enum import Enum
 
 import npyscreen
@@ -130,7 +131,7 @@ class EntryBox(npyscreen.MultiLineEditableBoxed):
                                     value=info_value,
                                     editable=False
                                     )
-        self.data.register(self)
+        self.data.register(self, immediate_update=False)
         self.controller = EntryControl(self, self.navigator, self.data, main_control)
 
     def on_update(self):
@@ -138,7 +139,6 @@ class EntryBox(npyscreen.MultiLineEditableBoxed):
         callback: data changed
         """
         if not self.hidden:
-            logger.info(f"{self.position} entrybox: Received new data")
             self.multiline.reset_cursor()
             self.set_title()
             self.set_size_label()
@@ -196,7 +196,6 @@ class EntryBox(npyscreen.MultiLineEditableBoxed):
 
     def update(self, clear=True):
         if not self.hidden:
-            logger.info(f"updating {self.position} entrybox")
             self.resize()  # hookpane height could have changed..
             self.set_title()
             super().update(clear)

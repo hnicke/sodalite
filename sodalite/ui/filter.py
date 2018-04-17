@@ -38,13 +38,13 @@ class Filter(npyscreen.Textfield):
     def __reset(self, _):
         self.clear_search()
 
-    # clears the search and also any applied filter on data
+    # clears the search
     def clear_search(self, *args):
         self.important = False
         self.editing = False
         self.editable = False
         self.value = ""
-        self.data.filter("")
+        self.update()
 
     def h_delete_left(self, ch):
         if len(self.value) != 1:
