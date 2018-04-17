@@ -1,6 +1,6 @@
 # Sodalite: Usage
 
-[####](####) Following general actions can be triggered everywhere in `sodalite`:
+Following general actions can be triggered everywhere in `sodalite`:
 
 #### exit `ENTER`
 Exit `sodalite`. Prints the current entry to `stdout`.
