@@ -1,9 +1,9 @@
 import os
 import stat
-from _ast import List
 from enum import Enum
+from io import UnsupportedOperation
 from pathlib import Path
-from typing import Dict, Iterable
+from typing import Dict, Iterable, List
 
 from binaryornot.check import is_binary
 
@@ -52,6 +52,7 @@ class Entry:
             self.realpath = path
         self._executable = None
         self._readable = None
+        self._content = None
 
     def chdir(self):
         """
@@ -143,6 +144,16 @@ class Entry:
             owner = int(self.permissions[0])
             self._readable = owner >= 4
         return self._readable
+
+    @property
+    def content(self):
+        if not self.is_plain_text_file():
+            raise UnsupportedOperation
+        if not self._content:
+            with open(self.path) as f:
+                content = f.readlines()
+                self._content = [x.strip() for x in content]
+        return self._content
 
 
 def detect_type(mode) -> EntryType:

@@ -19,6 +19,7 @@ class ViewModel(Observable):
         self.mode = Mode.NORMAL
         self.current_entry = None
         self.children = None
+        self.file_content = None
         self.filter_string = ""
         self.filtered_children = []
         self.sorted_children = []
@@ -28,6 +29,8 @@ class ViewModel(Observable):
     def on_update(self):
         self.current_entry = self.navigator.current_entry
         self.children = list(self.current_entry.children)
+        if self.current_entry.is_plain_text_file():
+            self.file_content = self.current_entry.content
 
         self.sorted_children = sort(self.children)
         self.filter_string = ""
