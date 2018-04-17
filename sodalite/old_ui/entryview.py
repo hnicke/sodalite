@@ -9,10 +9,10 @@ from npyscreen.wgwidget import Widget
 
 from core.entry import Entry, EntryType
 from core.navigator import Navigator
-from ui import formatting, theme
-from ui.control import EntryControl, MainControl, SplitControl
-from ui.filter import Filter
-from ui.viewmodel import ViewModel, Mode
+from old_ui import formatting, theme
+from old_ui.control import EntryControl, MainControl, SplitControl
+from old_ui.filter import Filter
+from old_ui.viewmodel import ViewModel, Mode
 
 logger = logging.getLogger(__name__)
 

@@ -5,7 +5,7 @@ from typing import List
 import npyscreen
 
 from core.hook import Hook
-from ui.viewmodel import ViewModel
+from old_ui.viewmodel import ViewModel
 
 logger = logging.getLogger(__name__)
 

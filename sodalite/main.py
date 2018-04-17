@@ -1,6 +1,6 @@
 import logging
 
-from ui.app import App
+from ui import app
 from util import environment
 
 logging.basicConfig(filename=environment.log_file, level=logging.DEBUG,
@@ -11,14 +11,9 @@ if __name__ == "__main__":
     logger.info('Starting sodalite')
     logger.info(f"Using {environment.config_path} as configuration file")
 
-    app = App()
-
     try:
         app.run()
         logger.info("Shutting down")
     except KeyboardInterrupt as e:
         logger.info('Received SIGINT')
         exit(1)
-    # except _curses.error as e:
-    #     logger.error(f"Ncurses error: {e}")
-    #     exit(1)

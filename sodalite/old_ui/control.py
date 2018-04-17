@@ -7,7 +7,7 @@ import pyperclip
 from core import hook, key
 from core.key import Key
 from core.navigator import Navigator
-from ui.viewmodel import ViewModel, Mode
+from old_ui.viewmodel import ViewModel, Mode
 from util import environment
 
 logger = logging.getLogger(__name__)

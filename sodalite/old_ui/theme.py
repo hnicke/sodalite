@@ -3,7 +3,7 @@ import logging
 
 import npyscreen
 
-from ui.entryview import EntryLine
+from old_ui.entryview import EntryLine
 
 logger = logging.getLogger(__name__)
 
