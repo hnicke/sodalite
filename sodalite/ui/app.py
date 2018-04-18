@@ -14,13 +14,15 @@ from ui.hookbox import HookBox
 class MainFrame(urwid.Frame):
 
     def __init__(self):
-        model = ViewModel(Navigator())
-        self.file_list = FileList(model)
+        self.model = ViewModel(Navigator())
+        self.file_list = FileList(self.model)
         super().__init__(self.file_list)
-        self.hookbox = HookBox(model, self)
+        self.hookbox = HookBox(self.model, self)
 
     def keypress(self, size, key):
         (maxcol, maxrow) = size
+        if self.file_list.frame.focus_part == 'footer':
+            return self.file_list.frame.footer.keypress((maxcol,), key)
         if self.file_list.keypress((maxcol,), key):
             return self.hookbox.keypress((maxcol,), key)
 

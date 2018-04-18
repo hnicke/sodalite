@@ -10,6 +10,7 @@ executable = urwid.LIGHT_GREEN
 executable_unimportant = urwid.DARK_GREEN
 
 reverse='reverse'
+bold='bold'
 
 unimportant = {
     file: file_unimportant,
@@ -22,6 +23,6 @@ forbidden = urwid.LIGHT_RED
 
 palette = (
     ('underline', 'underline', ''),
-    ('bold', 'bold', ''),
+    (bold, 'bold', ''),
     (reverse, 'standout', ''),
 )

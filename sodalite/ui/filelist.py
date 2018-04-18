@@ -9,6 +9,7 @@ from core.entry import Entry, EntryType
 from core.navigator import logger
 from old_ui.viewmodel import ViewModel, Mode
 from ui import theme, app
+from ui.filter import Filter
 from util import environment
 
 
@@ -19,7 +20,8 @@ class FileList(urwid.WidgetWrap):
         self.navigator = self.model.navigator
         self.walker = urwid.SimpleFocusListWalker([])
         file_list = urwid.ListBox(self.walker)
-        self.box = urwid.LineBox(file_list, title_align='left')
+        self.frame = urwid.Frame(file_list)
+        self.box = urwid.LineBox(self.frame, title_align='left')
         self.box.title_widget.set_layout('right', 'clip')
         self.model.register(self)
         self.entry_for_assignment = None
@@ -28,7 +30,7 @@ class FileList(urwid.WidgetWrap):
     def on_update(self):
         self.walker.clear()
         self.walker.extend(
-            [urwid.Padding(ListEntry(entry, self.model), left=4) for entry in self.model.sorted_children])
+            [urwid.Padding(ListEntry(entry, self.model), left=4) for entry in self.model.filtered_children])
         self.walker.set_focus(0)
         self.update_title()
 
@@ -50,7 +52,11 @@ class FileList(urwid.WidgetWrap):
     def keypress(self, size, key):
         try:
             logger.info(str(key))
-            if self.model.mode == Mode.NORMAL:
+            if key == '/':
+                if not self.frame.footer:
+                    self.frame.footer = Filter(self.model, self.frame)
+                self.frame.focus_position = 'footer'
+            elif self.model.mode == Mode.NORMAL:
                 return self.handle_normal_keypress(key)
             else:
                 return self.handle_assign_keypress(key)
@@ -64,14 +70,19 @@ class FileList(urwid.WidgetWrap):
     def handle_normal_keypress(self, key):
         if key == '.':
             self.navigator.visit_parent()
+            self.clear_filter()
         elif key == '~' or key == '`':
             self.navigator.visit_path(environment.home)
+            self.clear_filter()
         elif key == 'backspace':  # also matches ctrl h
             self.navigator.visit_previous()
+            self.clear_filter()
         elif key == 'ctrl l':
             self.navigator.visit_next()
+            self.clear_filter()
         elif self.navigator.is_navigation_key(key):
             self.navigator.visit_child(key)
+            self.clear_filter()
         elif key == 'enter':
             append_to_cwd_pipe(self.navigator.history.cwd())
             raise urwid.ExitMainLoop()
@@ -82,6 +93,10 @@ class FileList(urwid.WidgetWrap):
         else:
             return key
         return None
+
+    def clear_filter(self):
+        if self.frame.footer:
+            self.frame.footer.clear_filter()
 
     def handle_assign_keypress(self, key):
         if key == 'esc':
