@@ -1,4 +1,3 @@
-import curses
 import logging
 import os
 from typing import List, Dict
@@ -31,8 +30,8 @@ class Hook:
         os.environ['entry'] = entry.path
         logger.info("Executing command: {}".format(self.action))
         entry.chdir()
-        curses.endwin()
         result = os.system(self.action)
+        # TODO refresh
         logger.info(f"Result is {result}")
         if self.finally_exit:
             exit(0)
