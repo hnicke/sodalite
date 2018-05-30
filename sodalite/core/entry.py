@@ -74,6 +74,7 @@ class Entry:
         self.key_to_child.clear()
         for entry in children:
             self.path_to_child[entry.path] = entry
+            self.key_to_child[entry.key] = entry
 
     @property
     def key(self):
@@ -82,7 +83,8 @@ class Entry:
     @key.setter
     def key(self, key: Key):
         if self._parent and self._key in self._parent.key_to_child:
-            del self._parent.key_to_child[self._key]
+            if self._parent.key_to_child[self._key] == self:
+                del self._parent.key_to_child[self._key]
         self._key = key
         if self._parent:
             self._parent.key_to_child[key] = self
