@@ -103,11 +103,14 @@ class FileList(urwid.WidgetWrap):
             self.exit_assign_mode()
         elif self.model.mode == Mode.ASSIGN_CHOOSE_ENTRY:
             if key in key_module.get_all_keys():
-                self.select_entry(key)
+                self.select_entry_with_key(key)
             elif key == 'ctrl n':
                 self.scroll(1)
             elif key == 'ctrl p':
                 self.scroll(-1)
+            elif key == 'enter':
+                if self.walker.focus:
+                    self.select_widget(self.walker[self.walker.focus])
             else:
                 return key
         elif self.model.mode == Mode.ASSIGN_CHOOSE_KEY:
@@ -119,22 +122,26 @@ class FileList(urwid.WidgetWrap):
 
     def scroll(self, offset: int):
         try:
-            self._w.base_widget.set_focus(self._w.base_widget.focus_position + offset)
+            self.walker.set_focus(self.walker.focus + offset)
         except IndexError:
             pass
 
     def enter_assign_mode(self):
         self.model.mode = Mode.ASSIGN_CHOOSE_ENTRY
+        self.walker.focus = 0
         self.update_title()
 
-    def select_entry(self, key):
+    def select_entry_with_key(self, key):
         match = self.navigator.current_entry.get_child_for_key(key_module.Key(key))
         if match:
-            self.entry_for_assignment = match
             chosen_widget = [x for x in self.walker if x.base_widget.entry == match][0]
-            self._w.base_widget.focus_position = self.walker.index(chosen_widget)
-            self.model.mode = Mode.ASSIGN_CHOOSE_KEY
-            self.update_title()
+            self.select_widget(chosen_widget)
+
+    def select_widget(self, entry_widget):
+        self.walker.set_focus(self.walker.index(entry_widget))
+        self.entry_for_assignment = self.walker[self.walker.focus].base_widget.entry
+        self.model.mode = Mode.ASSIGN_CHOOSE_KEY
+        self.update_title()
 
     def exit_assign_mode(self):
         self.model.mode = Mode.NORMAL
