@@ -31,6 +31,8 @@ class ViewModel(Observable):
         self.children = list(self.current_entry.children)
         if self.current_entry.is_plain_text_file():
             self.file_content = self.current_entry.content
+        else:
+            self.file_content = None
 
         self.sorted_children = sort(self.children)
         self.filter_string = ""
