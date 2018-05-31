@@ -1,5 +1,4 @@
 import logging
-import os
 
 import pyperclip
 import urwid
@@ -7,9 +6,9 @@ from urwid import AttrSpec
 
 import core.key as key_module
 from core.entry import Entry, EntryType
-from ui.viewmodel import ViewModel, Mode
 from ui import theme, app
 from ui.filter import Filter
+from ui.viewmodel import ViewModel, Mode
 from util import environment
 
 logger = logging.getLogger(__name__)
@@ -98,7 +97,7 @@ class FileList(urwid.WidgetWrap):
             self.navigator.visit_child(key)
             self.clear_filter()
         elif key == 'enter':
-            append_to_cwd_pipe(self.navigator.history.cwd())
+            environment.append_to_cwd_pipe(self.navigator.history.cwd())
             raise urwid.ExitMainLoop()
         elif key == 'ctrl y':
             pyperclip.copy(self.model.current_entry.path)
@@ -224,16 +223,3 @@ def compute_color(entry: Entry) -> AttrSpec:
     if bold:
         color = color + ',bold'
     return AttrSpec(color, '', colors=16)
-
-
-# TODO move somewhere else
-def append_to_cwd_pipe(cwd: str):
-    """Before exiting, this needs to be called once, or the wrapping script won't stop
-    :param cwd: a path, will get written to output pipe if pipe exists
-    """
-    pipe = environment.cwd_pipe
-    if pipe is not None and os.path.exists(pipe):
-        logger.info("Writing '{}' to cwd_pipe '{}'".format(cwd, environment.cwd_pipe))
-        with open(environment.cwd_pipe, 'w') as p:
-            p.write(cwd)
-            p.close()

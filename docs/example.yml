@@ -44,13 +44,13 @@ hooks:
       extensions: [pdf]
       hooks:
         o:
-          action: 'zathura "$entry"#q'
+          action: 'zathura "$entry" &#q'
           label: pdf viewer
     hypertext:
       extensions: [html]
       hooks:
         v:
-          action: '$BROWSER "$entry"#q'
+          action: '$BROWSER "$entry" &#q'
           label: browser
     archive:
       extensions: [xz]

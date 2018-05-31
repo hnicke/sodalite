@@ -40,9 +40,21 @@ if config_path is None:
     config_path = os.path.join(user_config, "sodalite/sodalite.yml")
 if not os.path.exists(config_path):
     config_path = "/etc/sodalite.yml"
+logger.info(f"Using {config_path} as configuration file")
 
 bookmark_dir = os.getenv(ENV_BOOKMARK_DIR)
 if bookmark_dir is None:
     bookmark_dir = os.path.join(user_data, "bookmarks")
     if not os.path.exists(bookmark_dir):
         os.makedirs(bookmark_dir, exist_ok=True)
+
+
+def append_to_cwd_pipe(cwd: str):
+    """Before exiting, this needs to be called once, or the wrapping script won't stop
+    :param cwd: a path, will get written to output pipe if pipe exists
+    """
+    if cwd_pipe is not None and os.path.exists(cwd_pipe):
+        logger.info("Writing '{}' to cwd_pipe '{}'".format(cwd, cwd_pipe))
+        with open(cwd_pipe, 'w') as p:
+            p.write(cwd)
+            p.close()

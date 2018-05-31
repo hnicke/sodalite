@@ -9,7 +9,6 @@ logger = logging.getLogger(__name__)
 
 if __name__ == "__main__":
     logger.info('Starting sodalite')
-    logger.info(f"Using {environment.config_path} as configuration file")
 
     try:
         app.run()

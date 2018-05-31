@@ -1,9 +1,11 @@
 import logging
 import os
+import urwid
 from typing import List, Dict
 
 from core import config
 from ui import app
+from util import environment
 
 logger = logging.getLogger(__name__)
 
@@ -36,8 +38,8 @@ class Hook:
         app.loop.start()
         logger.info(f"Result is {result}")
         if self.finally_exit:
-            exit(0)
-
+            environment.append_to_cwd_pipe(entry.path)
+            raise urwid.ExitMainLoop()
 
 def _extract_hook(key: str, hook_definition: [dict, str]) -> 'Hook':
     if type(hook_definition) is dict:
