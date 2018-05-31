@@ -151,8 +151,7 @@ class Entry:
             raise UnsupportedOperation
         if not self._content:
             with open(self.path) as f:
-                content = f.readlines()
-                self._content = [x.strip() for x in content]
+                self._content = f.read()
         return self._content
 
 

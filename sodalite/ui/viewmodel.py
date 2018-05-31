@@ -17,7 +17,7 @@ class ViewModel(Observable):
     def __init__(self, navigator: Navigator):
         super().__init__()
         self.mode = Mode.NORMAL
-        self.current_entry = None
+        self.current_entry: Entry = None
         self.children = None
         self.file_content = None
         self.filter_string = ""

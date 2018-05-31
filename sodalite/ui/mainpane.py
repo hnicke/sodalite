@@ -6,6 +6,7 @@ from urwid import AttrSpec
 
 from ui import theme, app
 from ui.entrylist import EntryList
+from ui.filepreview import FilePreview
 from ui.filter import Filter
 from ui.viewmodel import ViewModel, Mode
 from util import environment
@@ -18,14 +19,23 @@ class MainPane(urwid.WidgetWrap):
     def __init__(self, model: ViewModel):
         self.model = model
         self.navigator = self.model.navigator
-        self.body = EntryList(self, self.model, self.navigator)
+        self.entry_list = EntryList(self, self.model, self.navigator)
+        self.file_preview = FilePreview(model)
+        self.body = self.entry_list
         self.frame = urwid.Frame(self.body)
         self.box = urwid.LineBox(self.frame, title_align='left')
         self.box.title_widget.set_layout('right', 'clip')
         self.model.register(self)
+
         super().__init__(self.box)
 
     def on_update(self):
+        if self.model.current_entry.is_dir():
+            self.body = self.entry_list
+            self.frame.set_body(self.entry_list)
+        else:
+            self.body = self.file_preview
+            self.frame.set_body(self.file_preview)
         self.update_title()
 
     def update_title(self):
