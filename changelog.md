@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+##### Bugfixes
+- When batch-assigning new keys, non-hidden entries take precedence over hidden files again
 ##### Misc
 - Exchange ui library 'npyscreen' with 'urwid'. This enhances the user experience by increasing the startup performance and and fixing screen flickering.
 

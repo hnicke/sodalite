@@ -72,10 +72,9 @@ def assign_keys(new_entries: dict, old_entries: dict):
     :param new_entries: entries without key, these will receive a key
     :param old_entries: all entries of this domain which already have a key"""
     free_keys = get_available_keys(old_entries)
-    # TODO fix
-    # entry_module.sort(new_entries)
+    sorted_new_entries = _sort(new_entries.values())
     entries_assign_later = []
-    for entry in new_entries.values():
+    for entry in sorted_new_entries:
         if len(free_keys) > 0:
             # try to assign starting character as key
             start_char = entry.name[0].lower()
@@ -105,3 +104,10 @@ def is_navigation_key(key: str):
         if key in key_rank:
             return True
     return False
+
+
+def _sort(entries):
+    sorted_entries = sorted(entries, key=lambda x: x.name)
+    sorted_entries.sort(key=lambda x: x.is_dir(), reverse=True)
+    sorted_entries.sort(key=lambda x: x.is_hidden())
+    return sorted_entries
