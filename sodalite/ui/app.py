@@ -21,10 +21,12 @@ class MainFrame(urwid.Frame):
 
     def keypress(self, size, key):
         (maxcol, maxrow) = size
+        remaining = maxrow
+        remaining -= self.hookbox.rows((maxcol,))
         if self.file_list.frame.focus_part == 'footer':
             return self.file_list.frame.footer.keypress((maxcol,), key)
-        if self.file_list.keypress((maxcol,), key):
-            return self.hookbox.keypress((maxcol,), key)
+        if self.file_list.keypress((maxcol,remaining), key):
+            return self.hookbox.keypress((maxcol, remaining), key)
 
 
 os.environ['ESCDELAY'] = '0'

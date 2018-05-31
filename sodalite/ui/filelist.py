@@ -1,3 +1,4 @@
+import logging
 import os
 
 import pyperclip
@@ -6,11 +7,12 @@ from urwid import AttrSpec
 
 import core.key as key_module
 from core.entry import Entry, EntryType
-from core.navigator import logger
 from old_ui.viewmodel import ViewModel, Mode
 from ui import theme, app
 from ui.filter import Filter
 from util import environment
+
+logger = logging.getLogger(__name__)
 
 
 class FileList(urwid.WidgetWrap):
@@ -19,8 +21,8 @@ class FileList(urwid.WidgetWrap):
         self.model = model
         self.navigator = self.model.navigator
         self.walker = urwid.SimpleFocusListWalker([])
-        file_list = urwid.ListBox(self.walker)
-        self.frame = urwid.Frame(file_list)
+        self.file_list = urwid.ListBox(self.walker)
+        self.frame = urwid.Frame(self.file_list)
         self.box = urwid.LineBox(self.frame, title_align='left')
         self.box.title_widget.set_layout('right', 'clip')
         self.model.register(self)
@@ -53,16 +55,25 @@ class FileList(urwid.WidgetWrap):
         self.box.set_title(cwd)
 
     def keypress(self, size, key):
+        maxcol, maxrow = size
         try:
-            logger.info(str(key))
             if key == '/':
                 if not self.frame.footer:
                     self.frame.footer = Filter(self.model, self.frame)
                 self.frame.focus_position = 'footer'
+            elif key == 'ctrl f':
+                self.scroll(maxrow, valign='top')
+            elif key == 'ctrl b':
+                self.scroll(-maxrow, valign='top')
+            elif key == 'ctrl d':
+                self.scroll(maxrow // 2, valign='top')
+            elif key == 'ctrl u':
+                self.scroll(-(maxrow // 2), valign='top')
+
             elif self.model.mode == Mode.NORMAL:
-                return self.handle_normal_keypress(key)
+                return self.handle_normal_keypress(size, key)
             else:
-                return self.handle_assign_keypress(key)
+                return self.handle_assign_keypress(size, key)
         except PermissionError:
             app.notify((AttrSpec(theme.forbidden + ',bold', '', colors=16), "PERMISSION DENIED"))
             return key
@@ -70,7 +81,7 @@ class FileList(urwid.WidgetWrap):
             app.notify((AttrSpec(theme.forbidden + ',bold', '', colors=16), "FILE NOT FOUND"))
             return key
 
-    def handle_normal_keypress(self, key):
+    def handle_normal_keypress(self, size, key):
         if key == '.':
             self.navigator.visit_parent()
             self.clear_filter()
@@ -92,47 +103,48 @@ class FileList(urwid.WidgetWrap):
         elif key == 'ctrl y':
             pyperclip.copy(self.model.current_entry.path)
         elif key == '=':
-            self.enter_assign_mode()
+            self.enter_assign_mode(size)
         else:
             return key
-        return None
 
     def clear_filter(self):
         if self.frame.footer:
             self.frame.footer.clear_filter()
 
-    def handle_assign_keypress(self, key):
+    def handle_assign_keypress(self, size, key):
         if key == 'esc':
-            self.exit_assign_mode()
+            self.exit_assign_mode(size)
         elif self.model.mode == Mode.ASSIGN_CHOOSE_ENTRY:
             if key in key_module.get_all_keys():
                 self.select_entry_with_key(key)
             elif key == 'ctrl n':
-                self.scroll(1)
+                self.scroll(1, coming_from='above')
             elif key == 'ctrl p':
-                self.scroll(-1)
+                self.scroll(-1, coming_from='below')
             elif key == 'enter':
-                if self.walker.focus:
-                    self.select_widget(self.walker[self.walker.focus])
+                self.select_widget(self.walker[self.file_list.focus_position])
             else:
                 return key
         elif self.model.mode == Mode.ASSIGN_CHOOSE_KEY:
             if key in key_module.get_all_keys():
-                self.assign_key(key)
+                self.assign_key(key, size)
             else:
                 return key
         return None
 
-    def scroll(self, offset: int):
+    def scroll(self, offset: int, coming_from=None, valign=None):
         try:
-            self.walker.set_focus(self.walker.focus + offset)
+            index = self.file_list.focus_position + offset
+            self.file_list.set_focus(index, coming_from=coming_from)
+            if valign:
+                self.file_list.set_focus_valign(valign)
         except IndexError:
             pass
 
-    def enter_assign_mode(self):
+    def enter_assign_mode(self, size):
         self.model.mode = Mode.ASSIGN_CHOOSE_ENTRY
-        self.walker.focus = 0
         self.update_title()
+        self.file_list.render(size, True)
 
     def select_entry_with_key(self, key):
         match = self.navigator.current_entry.get_child_for_key(key_module.Key(key))
@@ -152,15 +164,15 @@ class FileList(urwid.WidgetWrap):
         self.model.mode = Mode.ASSIGN_CHOOSE_KEY
         self.update_title()
 
-    def exit_assign_mode(self):
+    def exit_assign_mode(self, size):
         self.model.mode = Mode.NORMAL
         self.update_title()
-        self.walker.set_focus(0)
+        self.file_list.render(size, True)
 
-    def assign_key(self, key: str):
+    def assign_key(self, key: str, size):
         if key in key_module.get_all_keys():
             self.navigator.assign_key(key_module.Key(key), self.entry_for_assignment.path)
-            self.exit_assign_mode()
+            self.exit_assign_mode(size)
             self.on_update()
 
 
