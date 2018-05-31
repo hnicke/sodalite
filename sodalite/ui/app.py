@@ -7,7 +7,7 @@ import urwid.curses_display
 from core.navigator import Navigator
 from ui.viewmodel import ViewModel
 from ui import theme
-from ui.filelist import FileList
+from ui.mainpane import MainPane
 from ui.hookbox import HookBox
 
 
@@ -15,17 +15,17 @@ class MainFrame(urwid.Frame):
 
     def __init__(self):
         self.model = ViewModel(Navigator())
-        self.file_list = FileList(self.model)
-        super().__init__(self.file_list)
+        self.mainpane = MainPane(self.model)
+        super().__init__(self.mainpane)
         self.hookbox = HookBox(self.model, self)
 
     def keypress(self, size, key):
         (maxcol, maxrow) = size
         remaining = maxrow
         remaining -= self.hookbox.rows((maxcol,))
-        if self.file_list.frame.focus_part == 'footer':
-            return self.file_list.frame.footer.keypress((maxcol,), key)
-        if self.file_list.keypress((maxcol,remaining), key):
+        if self.mainpane.frame.focus_part == 'footer':
+            return self.mainpane.frame.footer.keypress((maxcol,), key)
+        if self.mainpane.keypress((maxcol, remaining), key):
             return self.hookbox.keypress((maxcol, remaining), key)
 
 
