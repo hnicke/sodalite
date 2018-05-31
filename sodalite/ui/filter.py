@@ -1,51 +1,37 @@
-import curses
-import logging
+import urwid
+from urwid import Frame
 
-import npyscreen
-
-logger = logging.getLogger(__name__)
+from ui.viewmodel import ViewModel
 
 
-class Filter(npyscreen.Textfield):
+class Filter(urwid.Edit):
+    def __init__(self, model: ViewModel, parent: Frame):
+        self.model = model
+        self.parent = parent
+        self.cursor_col = 1
+        urwid.connect_signal(self, 'postchange', self.update_filter)
+        super().__init__(caption=u'/')
 
-    def __init__(self, screen, data, *args, **keywords):
-        super(Filter, self).__init__(screen, *args, **keywords)
-        self.data = data
-        self.search_mode = False
-        self.add_handlers({
-            curses.ascii.ESC: self.__reset,
-            curses.KEY_BACKSPACE: self.h_delete_left,
-        })
-        self.editable = False
+    def keypress(self, size, key):
+        if key == 'esc':
+            self.clear_filter()
+        elif key == 'enter':
+            self.parent.focus_part = 'body'
+            self._invalidate()
+        else:
+            super().keypress(size, key)
 
-    def t_filter(self, input):
-        try:
-            char = chr(input)
-            return char == '/'
-        except (ValueError, TypeError):
-            return False
+    def update_filter(self, *args, **keywords):
+        self.model.filter(self.edit_text)
 
-    def when_value_edited(self):
-        self.data.filter(self.value[1:])
-        # somehow hookpane is glitching: update 'solves' this
-        self.parent.hookpane.update()
+    def clear_filter(self):
+        self.model.filter('')
+        self.parent.footer = None
 
-    def trigger(self, input):
-        self.editable = True
-        self.value = "/"
-        self.edit()
-
-    def __reset(self, _):
-        self.clear_search()
-
-    # clears the search
-    def clear_search(self, *args):
-        self.important = False
-        self.editing = False
-        self.editable = False
-        self.value = ""
-        self.update()
-
-    def h_delete_left(self, ch):
-        if len(self.value) != 1:
-            super().h_delete_left(ch)
+    def render(self, size, focus=False):
+        # hide cursor if not editing
+        canvas = super().render(size, focus=focus)
+        if not focus:
+            canvas = urwid.CompositeCanvas(canvas)
+            canvas.cursor = None
+        return canvas

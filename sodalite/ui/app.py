@@ -1,74 +1,64 @@
-import curses
-import logging
 import os
 import threading
 import time
 
-import npyscreen
+import urwid.curses_display
 
+from core.navigator import Navigator
+from ui.viewmodel import ViewModel
 from ui import theme
-from ui.control import MainControl
-from ui.entryview import EntrySplitter
-from ui.footerbox import NotifyBox, HookBox
-
-logger = logging.getLogger(__name__)
+from ui.filelist import FileList
+from ui.hookbox import HookBox
 
 
-class App(npyscreen.NPSAppManaged):
+class MainFrame(urwid.Frame):
 
     def __init__(self):
-        super().__init__()
+        self.model = ViewModel(Navigator())
+        self.file_list = FileList(self.model)
+        super().__init__(self.file_list)
+        self.hookbox = HookBox(self.model, self)
 
-        # disable delay when 'ESC' is pressed
-        os.environ['ESCDELAY'] = '0'
+    def keypress(self, size, key):
+        (maxcol, maxrow) = size
+        remaining = maxrow
+        remaining -= self.hookbox.rows((maxcol,))
+        if self.file_list.frame.focus_part == 'footer':
+            return self.file_list.frame.footer.keypress((maxcol,), key)
+        if self.file_list.keypress((maxcol,remaining), key):
+            return self.hookbox.keypress((maxcol, remaining), key)
 
-    def onStart(self):
-        npyscreen.setTheme(theme.Theme)
-        self.main = self.addForm('MAIN', MainForm)
+
+os.environ['ESCDELAY'] = '0'
+frame = MainFrame()
+loop = urwid.MainLoop(frame, palette=theme.palette, handle_mouse=False)
+
+notify_box = urwid.LineBox(urwid.Text('', align='center'), tline='')
+notify_lock = threading.Lock()
+_last_message = ''
 
 
-class MainForm(npyscreen.FormBaseNew):
-    BLANK_LINES_BASE = 0
-    BLANK_COLUMNS_RIGHT = 0
-    DEFAULT_X_OFFSET = 0
-    FIX_MINIMUM_SIZE_WHEN_CREATED = False
-    FRAMED = False
+def run():
+    loop.run()
 
-    def __init__(self, *args, **keywords):
-        self.init_counter = 0
-        self.notify_lock = threading.Lock()
-        super().__init__(*args, **keywords)
 
-    def display(self, clear=False):
-        # on startup, app gets displayed to often, which results in flickering
-        # this hack cures it
-        if self.init_counter <= 1:
-            self.init_counter += 1
-            return
-        super().display(clear=clear)
+def notify(message, duration=1.5):
+    thread = threading.Thread(target=_notify, args=(message, duration,))
+    thread.daemon = True
+    thread.start()
 
-    def create(self):
-        self.min_c = 28
-        self.min_l = 10
-        self.main_control = MainControl(self)
-        self.hookpane = self.add(HookBox, main_control=self.main_control)
-        self.notifypane = self.add(NotifyBox)
-        self.splitter = self.add(EntrySplitter, main_control=self.main_control)
 
-    def notify(self, message: str, duration=1.5, attr=curses.A_BOLD):
-        thread = threading.Thread(target=self._notify, args=(message, duration, attr,))
-        thread.daemon = True
-        thread.start()
-
-    def _notify(self, message: str, duration: float, attr: int):
-        self.hookpane.display()
-        self.notifypane.display()
-        self.notify_lock.acquire()
-        try:
-            logger.info(f"Show notification: '{message}'")
-            self.notifypane.notify(message, attr)
-            self.notifypane.display()
-            time.sleep(duration)
-            self.hookpane.display()
-        finally:
-            self.notify_lock.release()
+def _notify(message, duration):
+    global _last_message
+    if notify_lock.locked() and _last_message == message:
+        return
+    notify_lock.acquire()
+    original_footer = frame.footer
+    frame.footer = notify_box
+    notify_box.base_widget.set_text(message)
+    loop.draw_screen()
+    _last_message = message
+    time.sleep(duration)
+    frame.footer = original_footer
+    notify_lock.release()
+    loop.draw_screen()

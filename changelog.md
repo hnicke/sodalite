@@ -1,8 +1,8 @@
 # Changelog
 
 ## Unreleased
-##### Fixes
-- Increase startup performance and reduce screen flickering
+##### Misc
+- Exchange ui library 'npyscreen' with 'urwid'. This enhances the user experience by increasing the startup performance and and fixing screen flickering.
 
 
 ## v0.8: April 16, 2018

@@ -1,9 +1,9 @@
-import curses
 import logging
 import os
 from typing import List, Dict
 
 from core import config
+from ui import app
 
 logger = logging.getLogger(__name__)
 
@@ -31,8 +31,9 @@ class Hook:
         os.environ['entry'] = entry.path
         logger.info("Executing command: {}".format(self.action))
         entry.chdir()
-        curses.endwin()
+        app.loop.stop()
         result = os.system(self.action)
+        app.loop.start()
         logger.info(f"Result is {result}")
         if self.finally_exit:
             exit(0)
