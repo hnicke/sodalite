@@ -32,7 +32,7 @@ AUR package [sodalite](https://aur.archlinux.org/packages/sodalite/):
 > `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 2. Install dependencies:
     1. python3: `brew install python3`
-    1. other: `pip3 install npyscreen binaryornot pyyaml pyperclip`
+    1. other: `pip3 install urwid binaryornot pyyaml pyperclip`
 3. Proceed with `Manual installation`
 
 #### Manual Installation
@@ -44,7 +44,7 @@ For customization of the destination directories, consult [INSTALL](../INSTALL).
 > **Necessary dependencies**:  
 > - [python3](https://www.python.org/downloads/release/python-364/) 
 > - [PyYAML](https://github.com/yaml/pyyaml)
-> - [npyscreen](https://github.com/npcole/npyscreen)
+> - [urwid](http://urwid.org)
 > - [binaryornot](https://github.com/audreyr/binaryornot)
 > - [pyperclip](https://github.com/asweigart/pyperclip)
 
