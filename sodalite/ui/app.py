@@ -5,7 +5,7 @@ import time
 import urwid.curses_display
 
 from core.navigator import Navigator
-from old_ui.viewmodel import ViewModel
+from ui.viewmodel import ViewModel
 from ui import theme
 from ui.filelist import FileList
 from ui.hookbox import HookBox

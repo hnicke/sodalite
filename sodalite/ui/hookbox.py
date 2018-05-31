@@ -2,7 +2,7 @@ import urwid
 
 from core import hook
 from core.hook import Hook
-from old_ui.viewmodel import ViewModel
+from ui.viewmodel import ViewModel
 
 
 class HookBox(urwid.WidgetWrap):

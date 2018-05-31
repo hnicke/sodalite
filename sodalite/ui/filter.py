@@ -1,7 +1,7 @@
 import urwid
 from urwid import Frame
 
-from old_ui.viewmodel import ViewModel
+from ui.viewmodel import ViewModel
 
 
 class Filter(urwid.Edit):

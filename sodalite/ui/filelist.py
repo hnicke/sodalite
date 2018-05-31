@@ -7,7 +7,7 @@ from urwid import AttrSpec
 
 import core.key as key_module
 from core.entry import Entry, EntryType
-from old_ui.viewmodel import ViewModel, Mode
+from ui.viewmodel import ViewModel, Mode
 from ui import theme, app
 from ui.filter import Filter
 from util import environment
