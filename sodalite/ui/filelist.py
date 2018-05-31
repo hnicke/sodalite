@@ -30,9 +30,12 @@ class FileList(urwid.WidgetWrap):
     def on_update(self):
         self.walker.clear()
         self.walker.extend(
-            [urwid.Padding(ListEntry(entry, self.model), left=4) for entry in self.model.filtered_children])
+            [self.create_list_entry(entry) for entry in self.model.filtered_children])
         self.walker.set_focus(0)
         self.update_title()
+
+    def create_list_entry(self, entry):
+        return urwid.Padding(ListEntry(entry, self.model), left=4)
 
     def update_title(self):
         mode = self.model.mode
@@ -134,8 +137,14 @@ class FileList(urwid.WidgetWrap):
     def select_entry_with_key(self, key):
         match = self.navigator.current_entry.get_child_for_key(key_module.Key(key))
         if match:
-            chosen_widget = [x for x in self.walker if x.base_widget.entry == match][0]
-            self.select_widget(chosen_widget)
+            results = [x for x in self.walker if x.base_widget.entry == match]
+            if len(results) > 0:
+                chosen_widget = results[0]
+                self.select_widget(chosen_widget)
+            else:
+                # entry is not displayed, probably filtered
+                self.walker.append(self.create_list_entry(match))
+                self.select_entry_with_key(key)
 
     def select_widget(self, entry_widget):
         self.walker.set_focus(self.walker.index(entry_widget))
