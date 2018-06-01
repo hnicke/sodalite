@@ -1,5 +1,5 @@
 import urwid
-from urwid import AttrSpec
+from urwid import AttrSpec, ListBox
 
 from core import key as key_module
 from core.entry import Entry, EntryType
@@ -7,17 +7,32 @@ from ui import theme
 from ui.viewmodel import ViewModel, Mode
 
 
-class EntryList(urwid.ListBox):
+class List(ListBox):
+
+    def __init__(self):
+        self.walker = urwid.SimpleFocusListWalker([])
+        super().__init__(self.walker)
+
+    def scroll(self, offset: int, coming_from=None, valign=None):
+        try:
+            index = self.focus_position + offset
+            self.set_focus(index, coming_from=coming_from)
+            if valign:
+                self.set_focus_valign(valign)
+        except IndexError:
+            pass
+
+
+class EntryList(List):
 
     def __init__(self, mainpane, model, navigator):
+        super().__init__()
         self.mainpane = mainpane
         self.box = None
         self.model = model
         self.navigator = navigator
         self.entry_for_assignment = None
-        self.walker = urwid.SimpleFocusListWalker([])
         self.model.register(self)
-        super().__init__(self.walker)
 
     def on_update(self):
         self.walker.clear()
@@ -48,15 +63,6 @@ class EntryList(urwid.ListBox):
             else:
                 return key
         return None
-
-    def scroll(self, offset: int, coming_from=None, valign=None):
-        try:
-            index = self.focus_position + offset
-            self.set_focus(index, coming_from=coming_from)
-            if valign:
-                self.set_focus_valign(valign)
-        except IndexError:
-            pass
 
     def enter_assign_mode(self, size):
         self.model.mode = Mode.ASSIGN_CHOOSE_ENTRY
