@@ -34,7 +34,7 @@ FAKE_LIB_DIR=${FAKE_ROOT}${LIB_DIR}
 FAKE_DATA_DIR=${FAKE_ROOT}${DATA_DIR}
 FAKE_DOC_DIR=${FAKE_ROOT}${DOC_DIR}
 FAKE_LOG_FILE=${FAKE_ROOT}${LOG_FILE}
-FAKE_MIM_DIR=${FAKE_ROOT}${MIME_DIR}
+FAKE_MIME_DIR=${FAKE_ROOT}${MIME_DIR}
 
 install -d $FAKE_LIB_DIR
 cp -r sodalite/* $FAKE_LIB_DIR
@@ -43,7 +43,7 @@ install -d $FAKE_DATA_DIR
 install bin/shell-integration.sh bin/shell-integration.fish $FAKE_DATA_DIR
 
 install -d $FAKE_MIME_DIR
-install sodalite.desktop $FAKE_MIME_DIR
+install -m 644 sodalite.desktop $FAKE_MIME_DIR
 
 mkdir -p $(dirname $FAKE_LOG_FILE)
 touch $FAKE_LOG_FILE && chmod 666 $FAKE_LOG_FILE
