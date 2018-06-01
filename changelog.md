@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+##### Features
+- Add filepreview with syntax highlighting
 ##### Bugfixes
 - When batch-assigning new keys, non-hidden entries take precedence over hidden files again
 ##### Misc
