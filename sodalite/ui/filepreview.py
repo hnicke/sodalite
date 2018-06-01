@@ -60,6 +60,7 @@ def inject_linenumbers(tokens):
         if token:
             line.append((attr, token))
 
+
 def bold_headings(lines):
     for line in lines:
         heading = False
@@ -71,5 +72,3 @@ def bold_headings(lines):
                 attr = 'bold'
             new_line.append((attr, word))
         yield new_line
-
-

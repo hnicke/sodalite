@@ -5,10 +5,10 @@ import time
 import urwid.curses_display
 
 from core.navigator import Navigator
-from ui.viewmodel import ViewModel
 from ui import theme
-from ui.mainpane import MainPane
 from ui.hookbox import HookBox
+from ui.mainpane import MainPane
+from ui.viewmodel import ViewModel
 
 
 class MainFrame(urwid.Frame):

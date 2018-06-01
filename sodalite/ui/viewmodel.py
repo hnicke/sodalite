@@ -54,6 +54,6 @@ def sort(entries: List[Entry]):
     sorted_entries = sorted(entries, key=lambda x: x.name)
     sorted_entries.sort(key=lambda x: x.is_dir(), reverse=True)
     sorted_entries.sort(key=lambda x: x.is_hidden())
-    sorted_entries.sort(key=lambda x: x.key.value == "")
     sorted_entries.sort(key=lambda x: x.frequency, reverse=True)
+    sorted_entries.sort(key=lambda x: x.key.value == "")
     return sorted_entries

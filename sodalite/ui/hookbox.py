@@ -33,7 +33,6 @@ class HookBox(urwid.WidgetWrap):
         else:
             self.parent.footer = None
 
-
     def update_cell_width(self):
         max_width = 0
         for width in [cell.width for cell, option in self._w.base_widget.contents]:

@@ -1,7 +1,8 @@
 import logging
 import os
-import urwid
 from typing import List, Dict
+
+import urwid
 
 from core import config
 from ui import app
@@ -40,6 +41,7 @@ class Hook:
         if self.finally_exit:
             environment.append_to_cwd_pipe(entry.path)
             raise urwid.ExitMainLoop()
+
 
 def _extract_hook(key: str, hook_definition: [dict, str]) -> 'Hook':
     if type(hook_definition) is dict:
