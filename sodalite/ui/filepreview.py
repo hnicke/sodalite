@@ -40,10 +40,12 @@ def inject_linenumbers(tokens):
             index = token.index('\n')
             begin = token[:index]
             token = token[index + 1:]
-            splitted[pos].append((format, begin))
+            if begin:
+                splitted[pos].append((format, begin))
             pos += 1
             splitted.append([])
             splitted[pos].append((theme.line_number, u'{:>2} '.format(pos + 1)))
-        splitted[pos].append((format, token))
+        if token:
+            splitted[pos].append((format, token))
     del splitted[pos]
     return splitted
