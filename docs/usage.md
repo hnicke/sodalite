@@ -133,7 +133,7 @@ keymap:
 ```
 If <built-in> matches the name of a built-in action, given <keybinding> is bound to this action.
     
-- **<keybinding>**: (String, required) The keybinding which is used to trigger the action. Use `C-a` and `M-A`to define the binding `Control-a` and `Meta-A`. Other special keys: `ESC`, `ENTER`, `F1`
+- **<keybinding>**: (String, required) The keybinding which is used to trigger the action. Use `ctrl a` and `meta a` to define the keys `Control a` and `Meta a`. Other special keys: `esc`, `enter`, `f1`
 - **<built-in>** (String, required) The name of a built-in function (e.g., `normal.toggle_bookmark`)
     
     

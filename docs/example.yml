@@ -1,11 +1,14 @@
-## meta keys
-# Control-A must be written as ^A
-# Alt-A must be written as !a
-# Mind the casing.
+##############################
+### sodalite configuration ###
+##############################
+
+## modifier keys
+# Control-a must be written as ctrl a
+# Alt-a must be written as meta a
 
 ## special keys
-# these special keys  can be specified:
-# ENTER
+# these special keys can be specified:
+# - enter
 
 ##############
 # variables ################################################################
@@ -22,8 +25,8 @@
 hooks:
   general:
   dir:
-    ^S: 'terminator --working-directory="$entry"'
-    ^E: 'vifm "$entry"'
+    ctrl s: 'terminator --working-directory="$entry"'
+    ctrl e: 'vifm "$entry"'
   file:
   plain_text:
     o:

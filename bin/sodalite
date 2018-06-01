@@ -1,5 +1,8 @@
 #!/bin/bash  
 
+# disable control flow keys
+stty -ixon
+
 ## set up environment
 APPNAME=sodalite
 LIB_DIR="${LIB_DIR:-$(dirname $(readlink -f "$0"))/../sodalite}"
@@ -14,3 +17,6 @@ python3 $LIB_DIR/main.py < /dev/tty > /dev/tty
 
 read <&3 line
 [ $line ] && echo "$line"
+
+# enable control flow keys
+stty ixany
