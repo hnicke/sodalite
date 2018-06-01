@@ -1,5 +1,5 @@
-from pygments import token
 import urwid
+from pygments import token
 
 file = urwid.WHITE
 file_unimportant = urwid.LIGHT_GRAY
@@ -32,21 +32,24 @@ palette = (
     (line_number, urwid.DARK_GRAY, ''),
     (token.Comment, urwid.DARK_GRAY, ''),
     (token.Comment.Single, urwid.DARK_GRAY, ''),
-    (token.Literal.String.Doc, urwid.DARK_GREEN, ''),
-    (token.Name.Namespace, '', ''),
-    (token.Name.Builtin, urwid.DARK_CYAN, ''),
-    (token.Text, urwid.WHITE, ''),
-    (token.Operator.Word, urwid.DARK_GREEN, ''),
-    (token.Name, urwid.WHITE, ''),
-    (token.Punctuation, urwid.WHITE, ''),
-    (token.Keyword, urwid.LIGHT_BLUE, ''),
-    (token.Name.Function, urwid.LIGHT_BLUE, ''),
-    (token.Name.Class, urwid.YELLOW, ''),
-    (token.Keyword.Namespace, urwid.DARK_BLUE, ''),
-    (token.Name.Builtin.Pseudo, urwid.YELLOW, ''),
-    (token.Operator, urwid.WHITE, ''),
+    (token.Comment.Hashbang, urwid.DARK_GRAY, ''),
+    (token.Literal.Number, urwid.DARK_RED, ''),
     (token.Literal.Number.Integer, urwid.DARK_RED, ''),
     (token.Literal.Number.Float, urwid.DARK_RED, ''),
     (token.Literal.String, urwid.LIGHT_RED, ''),
+    (token.Literal.String.Doc, urwid.DARK_GREEN, ''),
     (token.Literal.String.Double, urwid.LIGHT_GREEN, ''),
+    (token.Keyword, urwid.DARK_BLUE, ''),
+    (token.Keyword.Namespace, urwid.DARK_BLUE, ''),
+    (token.Name, urwid.WHITE, ''),
+    (token.Name.Builtin, urwid.DARK_CYAN, ''),
+    (token.Name.Builtin.Pseudo, urwid.YELLOW, ''),
+    (token.Name.Class, urwid.YELLOW, ''),
+    (token.Name.Function, urwid.LIGHT_BLUE, ''),
+    (token.Name.Namespace, '', ''),
+    (token.Name.Variable, urwid.DARK_CYAN, ''),
+    (token.Operator, urwid.WHITE, ''),
+    (token.Operator.Word, urwid.DARK_GREEN, ''),
+    (token.Punctuation, urwid.WHITE, ''),
+    (token.Text, urwid.WHITE, ''),
 )
