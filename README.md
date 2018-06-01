@@ -32,20 +32,21 @@ AUR package [sodalite](https://aur.archlinux.org/packages/sodalite/):
 > `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 2. Install dependencies:
     1. python3: `brew install python3`
-    1. other: `pip3 install urwid binaryornot pyyaml pyperclip`
+    1. other: `pip3 install urwid pygments binaryornot pyyaml pyperclip`
 3. Proceed with `Manual installation`
 
 #### Manual Installation
 In order to manually install `sodalite`, clone this repository, `cd` to the project root and execute:
 ```bash
 sudo ./install
-````
+```
 For customization of the destination directories, consult [INSTALL](../INSTALL).
 > **Necessary dependencies**:  
 > - [python3](https://www.python.org/downloads/release/python-364/) 
-> - [PyYAML](https://github.com/yaml/pyyaml)
 > - [urwid](http://urwid.org)
+> - [pygments](http://pygments.org)
 > - [binaryornot](https://github.com/audreyr/binaryornot)
+> - [PyYAML](https://github.com/yaml/pyyaml)
 > - [pyperclip](https://github.com/asweigart/pyperclip)
 
 ## Configuration

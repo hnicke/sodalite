@@ -1,7 +1,7 @@
 import logging
 
 import pygments
-from pygments import lexers
+from pygments import lexers, token
 from pygments.lexers.shell import BashLexer
 from urwid import Text
 
@@ -24,8 +24,7 @@ class FilePreview(List):
             lexer = find_lexer(self.model.current_entry.path, content)
             logger.info("Viewing file content - using {} for highlighting".format(type(lexer).__name__))
             tokens = list(lexer.get_tokens(self.model.file_content))
-            tokens_with_line_numbers = inject_linenumbers(tokens)
-            self.body.extend([Text(line) for line in tokens_with_line_numbers])
+            self.body.extend([Text(line) for line in bold_headings(inject_linenumbers(tokens))])
             self.focus_position = 0
 
 
@@ -60,3 +59,17 @@ def inject_linenumbers(tokens):
             line = [(theme.line_number, u'{:>2} '.format(pos + 1))]
         if token:
             line.append((attr, token))
+
+def bold_headings(lines):
+    for line in lines:
+        heading = False
+        new_line = []
+        for attr, word in line:
+            if attr is token.Generic.Heading or attr is token.Generic.Subheading:
+                heading = True
+            if heading and attr in token.Text:
+                attr = 'bold'
+            new_line.append((attr, word))
+        yield new_line
+
+
