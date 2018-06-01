@@ -10,12 +10,12 @@ from util import environment
 
 logger = logging.getLogger(__name__)
 
-special_keys = {'ENTER': '^J'
-                }
+special_keys = {}
 
 
 class Hook:
     def __init__(self, key: str, action: str, label=None):
+        key = str(key)
         self.key = special_keys.get(key, key)
         self.label = label
         self.finally_exit = False
