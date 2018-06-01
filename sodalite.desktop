@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=sodalite
+GenericName=File Navigator
+Exec=sodalite
+Terminal=true
+Type=Application
+Categories=FileManager;FileTools;Utiliy;System

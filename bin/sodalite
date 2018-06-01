@@ -1,7 +1,7 @@
 #!/bin/bash  
 
 # disable control flow keys
-stty -ixon
+stty -ixon 2> /dev/null
 
 ## set up environment
 APPNAME=sodalite

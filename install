@@ -5,6 +5,7 @@
 # LIB_DIR: system libraries
 # CONFIG_DIR: system configuration dir
 # DOC_DIR: documentation dir
+# MIME_DIR: desktop entry dir
 pushd $(dirname $0)
 
 PROJECT_NAME=sodalite
@@ -16,14 +17,14 @@ PROJECT_NAME=sodalite
 [ -z $CONFIG_DIR ] && CONFIG_DIR=/etc
 [ -z $LIB_DIR ] && LIB_DIR=/usr/lib
 [ -z $LOG_DIR ] && LOG_DIR=/var/log
+[ -z $MIME_DIR ] && MIME_DIR=/usr/share/applications
 
 # add project suffix
 CONFIG_FILE=${CONFIG_DIR}/${PROJECT_NAME}.yml
 LIB_DIR=${LIB_DIR}/${PROJECT_NAME}
 DATA_DIR=${DATA_DIR}/${PROJECT_NAME}
 DOC_DIR=${DOC_DIR}/${PROJECT_NAME}
-
-LOG_FILE=$LOG_DIR/sodalite.log
+LOG_FILE=$LOG_DIR/${PROJECT_NAME}.log
 
 # add prefix fakeroot
 FAKE_CONFIG_DIR=${FAKE_ROOT}${CONFIG_DIR}
@@ -33,12 +34,16 @@ FAKE_LIB_DIR=${FAKE_ROOT}${LIB_DIR}
 FAKE_DATA_DIR=${FAKE_ROOT}${DATA_DIR}
 FAKE_DOC_DIR=${FAKE_ROOT}${DOC_DIR}
 FAKE_LOG_FILE=${FAKE_ROOT}${LOG_FILE}
+FAKE_MIM_DIR=${FAKE_ROOT}${MIME_DIR}
 
 install -d $FAKE_LIB_DIR
 cp -r sodalite/* $FAKE_LIB_DIR
 
 install -d $FAKE_DATA_DIR
 install bin/shell-integration.sh bin/shell-integration.fish $FAKE_DATA_DIR
+
+install -d $FAKE_MIME_DIR
+install sodalite.desktop $FAKE_MIME_DIR
 
 mkdir -p $(dirname $FAKE_LOG_FILE)
 touch $FAKE_LOG_FILE && chmod 666 $FAKE_LOG_FILE
