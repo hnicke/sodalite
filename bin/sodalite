@@ -19,4 +19,4 @@ read <&3 line
 [ $line ] && echo "$line"
 
 # enable control flow keys
-stty ixany
+stty ixany 2> /dev/null
