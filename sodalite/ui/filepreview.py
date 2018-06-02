@@ -59,6 +59,8 @@ def inject_linenumbers(tokens):
             line = [(theme.line_number, u'{:>2} '.format(pos + 1))]
         if token:
             line.append((attr, token))
+    if len(line) > 1:
+        yield line
 
 
 def bold_headings(lines):
