@@ -1,0 +1,43 @@
+#!/bin/bash
+# wrapper around xdg-open.
+# Execute xdg-open in background if the launching application is a graphical (i.e., non-terminal) app.
+# In case it's a terminal app, launches xdg-open in foreground.
+
+# $1: desktop entry name, e.g. 'vim.desktop'
+function is_terminal_app {
+    desktop_entry=$1
+    for location in $locations; do
+        entry=$location/$desktop_entry
+        [ -f $entry ] && break
+    done
+
+    [ -f $entry ] || echo 1
+
+    is_terminal=$(cat $entry | grep ^Terminal= | cut -d"=" -f2)
+    if [ $is_terminal = 'true' ]; then
+        echo 0
+    else
+        echo 1
+    fi
+}
+
+[ $1 ] || { echo Which file?; exit 1; }
+
+target_file=$1
+
+locations='~/.local/share/applications /usr/share/applications /usr/local/share/applications'
+filetype=$(xdg-mime query filetype $target_file)
+desktop_entry=$(xdg-mime query default $filetype)
+
+launch_in_background=0
+
+[ $desktop_entry ] || background="true"
+
+[ $(is_terminal_app $desktop_entry) -eq 0 ] || background="true"
+
+if [ $background ]; then
+    xdg-open $target_file &
+else
+    xdg-open $target_file
+fi
+

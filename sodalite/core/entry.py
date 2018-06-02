@@ -116,14 +116,14 @@ class Entry:
 
     def is_plain_text_file(self):
         if self.__is_plain_text_file is None:
-            self.__is_plain_text_file = self.is_file() and not is_binary(self.path)
+            self.__is_plain_text_file = self.is_file() and not self.name.endswith('.pdf') and not is_binary(self.path)
         return self.__is_plain_text_file
 
     def is_dir(self) -> bool:
         return self.type == EntryType.DIRECTORY or self.is_link() and os.path.isdir(self.realpath)
 
     def is_file(self) -> bool:
-        return self.type == EntryType.FILE or self.is_link() and os.path.islink(self.realpath)
+        return self.type == EntryType.FILE or self.is_link() and os.path.isfile(self.realpath)
 
     def is_link(self) -> bool:
         return self.type == EntryType.SYMLINK

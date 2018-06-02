@@ -1,4 +1,5 @@
 import logging
+import os
 
 from core import key as key_module
 from core.key import Key
@@ -19,6 +20,7 @@ class Navigator:
         self.history = history
         self.entry_access = entry_access
         self.entry_notifier = Observable()
+        self._current_entry = None
         self.current_entry = self.current()
 
     def current(self) -> Entry:
@@ -28,6 +30,7 @@ class Navigator:
         """
         path = self.history.cwd()
         entry = self.entry_access.retrieve_entry(path)
+        _chdir(entry)
         return entry
 
     def is_navigation_key(self, key: str) -> bool:
@@ -52,6 +55,7 @@ class Navigator:
             entry = self.current()
         self.history.visit(entry.path)
         self.current_entry = entry
+        _chdir(entry)
         return entry
 
     def visit_path(self, path: str) -> Entry:
@@ -64,18 +68,21 @@ class Navigator:
         self.history.visit(path)
         entry = self.entry_access.retrieve_entry(path)
         self.current_entry = entry
+        _chdir(entry)
         return entry
 
     def visit_previous(self) -> Entry:
         path = self.history.backward()
         entry = self.entry_access.retrieve_entry(path)
         self.current_entry = entry
+        _chdir(entry)
         return entry
 
     def visit_next(self) -> Entry:
         path = self.history.forward()
         entry = self.entry_access.retrieve_entry(path)
         self.current_entry = entry
+        _chdir(entry)
         return entry
 
     def visit_parent(self) -> Entry:
@@ -83,6 +90,7 @@ class Navigator:
         try:
             entry = self.entry_access.retrieve_entry(path)
             self.current_entry = entry
+            _chdir(entry)
             return entry
         except FileNotFoundError:
             self.visit_previous()
@@ -111,3 +119,11 @@ class Navigator:
     def current_entry(self, entry: Entry):
         self._current_entry = entry
         self.entry_notifier.notify_all()
+
+
+def _chdir(entry):
+    if entry.is_dir():
+        pwd = entry.path
+    else:
+        pwd = entry.dir
+    os.chdir(pwd)

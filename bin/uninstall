@@ -2,6 +2,7 @@
 rm -rf /var/log/sodalite.log
 rm -rf /usr/lib/sodalite
 rm /usr/bin/sodalite
+rm /usr/bin/sodalite-open
 rm /etc/sodalite.yml
 rm -rf /usr/share/sodalite
-rm -rf /usr/share/applications/sodalite.desktop
+rm /usr/share/applications/sodalite.desktop

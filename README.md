@@ -23,8 +23,10 @@ Once setup, and muscle memory kicks in, all directories will be reachable in a b
 ## Installation
 
 #### Arch Linux
-AUR package [sodalite](https://aur.archlinux.org/packages/sodalite/):
+AUR package [sodalite](https://aur.archlinux.org/packages/sodalite/) (newest release):
 > `yaourt -S sodalite`
+AUR package [sodalite-git](https://aur.archlinux.org/packages/sodalite-git/) (master branch):
+> `yaourt -S sodalite-git`
 
 
 #### OSX
@@ -32,7 +34,8 @@ AUR package [sodalite](https://aur.archlinux.org/packages/sodalite/):
 > `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 2. Install dependencies:
     1. python3: `brew install python3`
-    1. other: `pip3 install -r requirements.txt
+    2. xdg-utils: `brew install xdg-utils`
+    3. other: `pip3 install -r requirements.txt`
 3. Proceed with `Manual installation`
 
 #### Manual Installation
@@ -49,6 +52,7 @@ For customization of the destination directories, consult [INSTALL](../INSTALL).
 > - [binaryornot](https://github.com/audreyr/binaryornot)
 > - [PyYAML](https://github.com/yaml/pyyaml)
 > - [pyperclip](https://github.com/asweigart/pyperclip)
+> - [xdg-utils](https://www.freedesktop.org/wiki/Software/xdg-utils/)
 
 ## Configuration
 `sodalite` needs to get integrated into your favourite shell (supported: `bash`, `zsh`, `fish`).  

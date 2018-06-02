@@ -56,6 +56,7 @@ awk 'NR==1 {print;
     NR!=1'  \
         bin/$PROJECT_NAME > "$FAKE_BIN_DIR/$PROJECT_NAME"
 chmod 755 $FAKE_BIN_DIR/$PROJECT_NAME
+install bin/sodalite-open $FAKE_BIN_DIR
 
 mkdir -p $FAKE_CONFIG_DIR
 [ -f $FAKE_CONFIG_FILE ] && mv $FAKE_CONFIG_FILE ${FAKE_CONFIG_FILE}.bak

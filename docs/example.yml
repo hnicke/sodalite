@@ -28,36 +28,24 @@ hooks:
     ctrl s: 'termite --directory="$entry"&'
     ctrl e: 'vifm "$entry"'
   file:
-  plain_text:
     o:
-      action: 'vim "$entry"'
-      label: edit with vim
+      action: 'sodalite-open "$entry" 2> /dev/null'
+      label: open
+  plain_text:
   executable:
     e:
       action: 'exec "$entry"'
       label: execute
   custom:
-    image:
-      extensions: [png, jpg]
-      hooks:
-        o:
-          action: 'feh "$entry" &'
-          label: open with feh
-    pdf:
-      extensions: [pdf]
-      hooks:
-        o:
-          action: 'zathura "$entry" &#q'
-          label: pdf viewer
-    hypertext:
-      extensions: [html]
-      hooks:
-        v:
-          action: '$BROWSER "$entry" &#q'
-          label: browser
     archive:
       extensions: [xz]
       hooks:
         u:
           action: 'tar xvzf "$entry"'
           label: extract
+    zip-archive:
+      extensions: [zip]
+      hooks:
+        u:
+          action: 'unzip "$entry"'
+          label: unzip

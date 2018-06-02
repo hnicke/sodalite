@@ -3,6 +3,7 @@
 ## Unreleased
 ##### Features
 - Add filepreview with syntax highlighting
+- In default configuration, Replace launcher hooks with one generic launcher hook which uses mimetypes
 ##### Bugfixes
 - When batch-assigning new keys, non-hidden entries take precedence over hidden files again
 - Entries without keys do not get displayed before entries with keys
@@ -41,7 +42,6 @@ Mostly internal refactoring.
 - Hook action definitions now use `$entry` instead of `#f` to refer to current entry
 - Add this changelog
 - Add detailed [usage guide](docs/usage.md)
-
 ##### Bugfixes
 - Fix 'go to parent' command (#15)
 
