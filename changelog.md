@@ -4,6 +4,7 @@
 ##### Features
 - Add filepreview with syntax highlighting
 - In default configuration, Replace launcher hooks with one generic launcher hook which uses mimetypes
+- Automatically reflect external modifications of current entry
 ##### Bugfixes
 - When batch-assigning new keys, non-hidden entries take precedence over hidden files again
 - Entries without keys do not get displayed before entries with keys

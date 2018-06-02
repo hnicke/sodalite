@@ -37,6 +37,7 @@ class MainPane(urwid.WidgetWrap):
             self.body = self.file_preview
             self.frame.set_body(self.file_preview)
         self.update_title()
+        app.redraw_if_external()
 
     def update_title(self):
         mode = self.model.mode
@@ -54,7 +55,6 @@ class MainPane(urwid.WidgetWrap):
         self.box.set_title(cwd)
 
     def keypress(self, size, key):
-        maxcol, maxrow = size
         try:
             if key == '/':
                 if not self.frame.footer:

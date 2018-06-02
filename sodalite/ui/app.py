@@ -1,3 +1,4 @@
+import logging
 import os
 import threading
 import time
@@ -9,6 +10,8 @@ from ui import theme
 from ui.hookbox import HookBox
 from ui.mainpane import MainPane
 from ui.viewmodel import ViewModel
+
+logger = logging.getLogger(__name__)
 
 
 class MainFrame(urwid.Frame):
@@ -33,9 +36,11 @@ def _create_loop(main):
     return urwid.MainLoop(main, palette=theme.palette, handle_mouse=False)
 
 
+MAIN_LOOP = 'MainLoop'
+threading.current_thread().setName(MAIN_LOOP)
 os.environ['ESCDELAY'] = '0'
-frame = MainFrame()
-loop = _create_loop(frame)
+frame = None
+loop = None
 
 notify_box = urwid.LineBox(urwid.Text('', align='center'), tline='')
 notify_lock = threading.Lock()
@@ -43,6 +48,10 @@ _last_message = ''
 
 
 def run():
+    global frame
+    global loop
+    frame = MainFrame()
+    loop = _create_loop(frame)
     loop.run()
 
 
@@ -79,3 +88,15 @@ def resume():
 
 def exit():
     raise urwid.ExitMainLoop()
+
+
+def redraw_if_external():
+    """
+    Redraws the screen if and only if the current thread is NOT the main event loop.
+    Use this function in case you need to redraw the screen from outside the main event loop.
+    It's safe to call the function from inside the main event loop: nothing will happen.
+    :return:
+    """
+    if not threading.current_thread().getName() == MAIN_LOOP:
+        if loop:
+            loop.draw_screen()

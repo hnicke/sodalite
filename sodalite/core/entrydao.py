@@ -1,4 +1,3 @@
-import atexit
 import logging
 import re
 import sqlite3
@@ -41,10 +40,19 @@ def regexp(expr, item):
     return reg.search(item) is not None
 
 
-conn = sqlite3.connect(environment.db_path)
-atexit.register(conn.close)
-conn.create_function("REGEXP", 2, regexp)
-conn.cursor().execute(CREATE_TABLE)
+def open_connection():
+    conn = sqlite3.connect(environment.db_path)
+    conn.create_function("REGEXP", 2, regexp)
+    return conn
+
+
+def init():
+    conn = open_connection()
+    conn.cursor().execute(CREATE_TABLE)
+    conn.close()
+
+
+init()
 
 
 def inject_data(entry):
@@ -84,15 +92,19 @@ def read_entries_from_db(regexp: str) -> Dict[str, DbEntry]:
     :return: Dict: path -> (key, frequency)
     """
     query = f"SELECT {COLUMN_PATH},{COLUMN_KEY},{COLUMN_FREQUENCY} FROM {TABLE_FILES} WHERE {COLUMN_PATH} REGEXP ?"
-    cursor = conn.cursor().execute(query, (regexp,))
-    result = {}
-    for row in cursor:
-        path = (row[0])
-        key = Key(row[1])
-        frequency = row[2]
-        entry = DbEntry(path, key, frequency)
-        result[path] = entry
-    return result
+    conn = open_connection()
+    try:
+        cursor = conn.cursor().execute(query, (regexp,))
+        result = {}
+        for row in cursor:
+            path = (row[0])
+            key = Key(row[1])
+            frequency = row[2]
+            entry = DbEntry(path, key, frequency)
+            result[path] = entry
+        return result
+    finally:
+        conn.close()
 
 
 def insert_new_entries(entries_fs: Dict[str, Entry], entries_db: Dict[str, DbEntry]):
@@ -107,24 +119,35 @@ def insert_new_entries(entries_fs: Dict[str, Entry], entries_db: Dict[str, DbEnt
     for entry in new_entries.values():
         query += "('{}','{}','{}'),".format(entry.path, entry.key.value, entry.frequency)
     query = query[:-1] + ';'
+    conn = open_connection()
     try:
         conn.cursor().execute(query)
         conn.commit()
     except sqlite3.IntegrityError:
         logger.error("Integrity error. failed to insert at least one of " + str(new_paths))
+    finally:
+        conn.close()
 
 
 def remove_entries(obsolete_paths: Iterable[str]):
     """Deletes obsolete entries in the db"""
     query = f"DELETE FROM {TABLE_FILES} WHERE {COLUMN_PATH} REGEXP ?"
-    for path in obsolete_paths:
-        regexp = '^' + path + '(/.*)*$'
-        conn.cursor().execute(query, (regexp,))
-    conn.commit()
+    conn = open_connection()
+    try:
+        for path in obsolete_paths:
+            regexp = '^' + path + '(/.*)*$'
+            conn.cursor().execute(query, (regexp,))
+        conn.commit()
+    finally:
+        conn.close()
 
 
 def update_entry(entry):
     """Updates given entry in database"""
     query = f"UPDATE {TABLE_FILES} SET {COLUMN_FREQUENCY}=?, {COLUMN_KEY}=? WHERE {COLUMN_PATH}=?"
-    conn.cursor().execute(query, (entry.frequency, entry.key.value, entry.path))
-    conn.commit()
+    conn = open_connection()
+    try:
+        conn.cursor().execute(query, (entry.frequency, entry.key.value, entry.path))
+        conn.commit()
+    finally:
+        conn.close()

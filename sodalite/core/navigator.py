@@ -2,6 +2,7 @@ import logging
 import os
 
 from core import key as key_module
+from core.entrywatcher import EntryWatcher
 from core.key import Key
 from util.observer import Observable
 from .dirhistory import DirHistory
@@ -21,6 +22,7 @@ class Navigator:
         self.entry_access = entry_access
         self.entry_notifier = Observable()
         self._current_entry = None
+        self.entry_notifier.register(EntryWatcher(self), immediate_update=False)
         self.current_entry = self.current()
 
     def current(self) -> Entry:
@@ -119,6 +121,9 @@ class Navigator:
     def current_entry(self, entry: Entry):
         self._current_entry = entry
         self.entry_notifier.notify_all()
+
+    def reload_current_entry(self):
+        self.current_entry = self.entry_access.retrieve_entry(self.current_entry.path, cache=False)
 
 
 def _chdir(entry):

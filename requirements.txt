@@ -6,3 +6,4 @@ pygments
 pyperclip
 pyyaml
 urwid
+watchdog
