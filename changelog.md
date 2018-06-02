@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## v0.9: June 02, 2018
 ##### Features
 - Add filepreview with syntax highlighting
 - In default configuration, Replace launcher hooks with one generic launcher hook which uses mimetypes
@@ -13,7 +13,7 @@
 - Fix resizing after returning from hook
 - Fix detection of whether a symlink is executable or not
 ##### Misc
-- Exchange ui library 'npyscreen' with 'urwid'. This enhances the user experience by increasing the startup performance and and fixing screen flickering.
+- Exchange ui library 'npyscreen' with 'urwid'. This enhances the user experience by increasing the startup performance and fixing screen flickering.
 
 
 ## v0.8: April 16, 2018
