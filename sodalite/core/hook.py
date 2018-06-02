@@ -31,7 +31,6 @@ class Hook:
     def trigger(self, entry):
         os.environ['entry'] = entry.path
         logger.info("Executing command: {}".format(self.action))
-        app.pause()
         result = os.system(self.action)
         app.resume()
         logger.info(f"Result is {result}")

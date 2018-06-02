@@ -68,10 +68,6 @@ def _notify(message, duration):
     loop.draw_screen()
 
 
-def pause():
-    loop.stop()
-
-
 def resume():
     global loop
     # this is a hack. could not figure out how to redraw/refresh the old screen
