@@ -61,14 +61,13 @@ class MainPane(urwid.WidgetWrap):
                     self.frame.footer = Filter(self.model, self.frame)
                 self.frame.focus_position = 'footer'
             elif key == 'ctrl f':
-                self.body.scroll(maxrow, valign='top')
+                self.body.scroll_page_down(size)
             elif key == 'ctrl b':
-                self.body.scroll(-maxrow, valign='top')
+                self.body.scroll_page_up(size)
             elif key == 'ctrl d':
-                self.body.scroll(maxrow // 2, valign='top')
+                self.body.scroll_half_page_down(size)
             elif key == 'ctrl u':
-                self.body.scroll(-(maxrow // 2), valign='top')
-
+                self.body.scroll_half_page_up(size)
             elif self.model.mode == Mode.NORMAL:
                 return self.handle_normal_keypress(size, key)
             else:

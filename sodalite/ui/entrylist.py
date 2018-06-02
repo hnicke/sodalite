@@ -22,6 +22,53 @@ class List(ListBox):
         except IndexError:
             pass
 
+    def render(self, size, focus=False):
+        tes = super().render(size, focus=focus)
+        return tes
+
+    def scroll_page_down(self, size):
+        maxrow, _ = size
+        self._scroll_down(size, maxrow)
+
+    def scroll_page_up(self, size):
+        maxrow, _ = size
+        self._scroll_up(size, maxrow)
+
+    def scroll_half_page_down(self, size):
+        maxrow, _ = size
+        self._scroll_down(size, maxrow // 2)
+
+    def scroll_half_page_up(self, size):
+        maxrow, _ = size
+        self._scroll_up(size, maxrow // 2)
+
+    def _scroll_down(self, size, amount):
+        middle, top, bottom = self.calculate_visible(size)
+        relative_position = (len(top[1]) / (len(top[1]) + 1 + len(bottom[1]))) * 100
+        max_line = len(self.body) - 1
+        new_focus = min(self.focus_position + amount, max_line)
+        self.set_focus(new_focus)
+        self.set_focus_valign(('relative', relative_position))
+
+    def _scroll_up(self, size, amount):
+        middle, top, bottom = self.calculate_visible(size)
+        relative_position = ((len(top[1]) + 1) / (len(top[1]) + 1 + len(bottom[1]))) * 100
+        new_focus = max(self.focus_position - amount, 0)
+        self.set_focus(new_focus)
+        self.set_focus_valign(('relative', relative_position))
+
+    def selection_up(self):
+        try:
+            self.set_focus(self.focus_position - 1, coming_from='above')
+        except IndexError:
+            pass
+
+    def selection_down(self):
+        try:
+            self.set_focus(self.focus_position + 1, coming_from='below')
+        except IndexError:
+            pass
+
 
 class EntryList(List):
 
@@ -50,9 +97,9 @@ class EntryList(List):
             if key in key_module.get_all_keys():
                 self.select_entry_with_key(key)
             elif key == 'ctrl n':
-                self.scroll(1, coming_from='above')
+                self.selection_down()
             elif key == 'ctrl p':
-                self.scroll(-1, coming_from='below')
+                self.selection_up()
             elif key == 'enter':
                 self.select_widget(self.walker[self.focus_position])
             else:
