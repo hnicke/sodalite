@@ -52,6 +52,7 @@ For customization of the destination directories, consult [INSTALL](../INSTALL).
 > - [binaryornot](https://github.com/audreyr/binaryornot)
 > - [PyYAML](https://github.com/yaml/pyyaml)
 > - [pyperclip](https://github.com/asweigart/pyperclip)
+> - [watchdog](https://github.com/gorakhargosh/watchdog)
 > - [xdg-utils](https://www.freedesktop.org/wiki/Software/xdg-utils/)
 
 ## Configuration
