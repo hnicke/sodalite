@@ -9,6 +9,7 @@
 - Entries without keys do not get displayed before entries with keys
 - Fix crash when using `0-9` as hook key
 - Disable control flow keys in sodalite. This means that keys like `ctrl-s` or `ctrl-z` do not lock the screen or pause the application and can therefore be used as hook keys
+- Fix resizing after returning from hook
 ##### Misc
 - Exchange ui library 'npyscreen' with 'urwid'. This enhances the user experience by increasing the startup performance and and fixing screen flickering.
 

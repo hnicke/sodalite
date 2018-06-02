@@ -29,9 +29,13 @@ class MainFrame(urwid.Frame):
             return self.hookbox.keypress((maxcol, remaining), key)
 
 
+def _create_loop(main):
+    return urwid.MainLoop(main, palette=theme.palette, handle_mouse=False)
+
+
 os.environ['ESCDELAY'] = '0'
 frame = MainFrame()
-loop = urwid.MainLoop(frame, palette=theme.palette, handle_mouse=False)
+loop = _create_loop(frame)
 
 notify_box = urwid.LineBox(urwid.Text('', align='center'), tline='')
 notify_lock = threading.Lock()
@@ -62,3 +66,20 @@ def _notify(message, duration):
     frame.footer = original_footer
     notify_lock.release()
     loop.draw_screen()
+
+
+def pause():
+    loop.stop()
+
+
+def resume():
+    global loop
+    # this is a hack. could not figure out how to redraw/refresh the old screen
+    # (during pause, app might have missed resizing events)
+    # so crudely use new loop
+    loop = _create_loop(frame)
+    loop.run()
+
+
+def exit():
+    raise urwid.ExitMainLoop()

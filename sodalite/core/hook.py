@@ -33,13 +33,13 @@ class Hook:
     def trigger(self, entry):
         os.environ['entry'] = entry.path
         logger.info("Executing command: {}".format(self.action))
-        app.loop.stop()
+        app.pause()
         result = os.system(self.action)
-        app.loop.start()
+        app.resume()
         logger.info(f"Result is {result}")
         if self.finally_exit:
             environment.append_to_cwd_pipe(entry.path)
-            raise urwid.ExitMainLoop()
+            app.exit()
 
 
 def _extract_hook(key: str, hook_definition: [dict, str]) -> 'Hook':
