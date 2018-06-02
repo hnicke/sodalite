@@ -3,6 +3,7 @@
 ## Unreleased
 ##### Bugfixes
 - Prevent race conditions while drawing to screen
+- Make sodalite-open script (xdg-open wrapper) more robust
 
 
 ## v0.9: June 02, 2018
