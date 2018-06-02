@@ -134,8 +134,11 @@ class Entry:
     @property
     def executable(self) -> bool:
         if not self._executable:
-            owner = self.permissions[0]
-            self._executable = owner == '1' or owner == '5' or owner == '7'
+            if self.is_link():
+                self._executable = os.access(self.realpath, os.X_OK)
+            else:
+                owner = self.permissions[0]
+                self._executable = owner == '1' or owner == '5' or owner == '7'
         return self._executable
 
     @property
