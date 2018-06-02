@@ -15,6 +15,10 @@ class DirHandler(FileSystemEventHandler):
         logger.debug('Event (entry created): {}'.format(event.src_path))
         self.navigator.reload_current_entry()
 
+    def on_modified(self, event):
+        logger.debug('Event (entry modifiedl): {}'.format(event.src_path))
+        self.navigator.reload_current_entry()
+
     def on_deleted(self, event):
         logger.debug('Event (entry deleted): {}'.format(event.src_path))
         self.navigator.reload_current_entry()

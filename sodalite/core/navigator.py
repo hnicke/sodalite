@@ -123,7 +123,17 @@ class Navigator:
         self.entry_notifier.notify_all()
 
     def reload_current_entry(self):
-        self.current_entry = self.entry_access.retrieve_entry(self.current_entry.path, cache=False)
+        try:
+            self.current_entry = self.entry_access.retrieve_entry(self.current_entry.path, cache=False)
+        except FileNotFoundError:
+            self.recursive_try_visit(self.current_entry.dir)
+
+    def recursive_try_visit(self, path):
+        try:
+            self.visit_path(path)
+        except FileNotFoundError:
+            self.recursive_try_visit(os.path.pardir(path))
+
 
 
 def _chdir(entry):

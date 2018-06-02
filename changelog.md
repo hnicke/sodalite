@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+##### Bugfixes
+- Prevent race conditions while drawing to screen
+
+
 ## v0.9: June 02, 2018
 ##### Features
 - Add filepreview with syntax highlighting
@@ -47,6 +52,7 @@ Mostly internal refactoring.
 - Add detailed [usage guide](docs/usage.md)
 ##### Bugfixes
 - Fix 'go to parent' command (#15)
+
 
 ## v0.6.0: February 20, 2018
 Initial release.
