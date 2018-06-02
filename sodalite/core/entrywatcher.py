@@ -1,22 +1,37 @@
 import logging
 
-from watchdog.events import FileSystemEventHandler
+from watchdog.events import FileSystemEventHandler, PatternMatchingEventHandler
 from watchdog.observers import Observer
 
 logger = logging.getLogger(__name__)
 
 
-class Handler(FileSystemEventHandler):
+class DirHandler(FileSystemEventHandler):
 
     def __init__(self, navigator: 'Navigator'):
         self.navigator = navigator
 
     def on_created(self, event):
-        logger.info('Event (entry created): {}'.format(event.src_path))
+        logger.debug('Event (entry created): {}'.format(event.src_path))
         self.navigator.reload_current_entry()
 
     def on_deleted(self, event):
-        logger.info('Event (entry deleted): {}'.format(event.src_path))
+        logger.debug('Event (entry deleted): {}'.format(event.src_path))
+        self.navigator.reload_current_entry()
+
+
+class FileHandler(PatternMatchingEventHandler):
+
+    def __init__(self, navigator: 'Navigator', path: str):
+        self.navigator = navigator
+        super().__init__(patterns=[path], case_sensitive=True)
+
+    def on_deleted(self, event):
+        logger.debug('Event (file deleted): {}'.format(event.src_path))
+        self.navigator.visit_parent()
+
+    def on_modified(self, event):
+        logger.debug('Event (file modified): {}'.format(event.src_path))
         self.navigator.reload_current_entry()
 
 
@@ -27,25 +42,30 @@ class EntryWatcher:
         self.observer = Observer()
         self.observer.start()
 
-        self.watching = None
+        self.entry = None
+        self.watch = None
 
     def on_update(self):
-        if self.watching and self.watching[2] == self.navigator.current_entry:
+        if self.watch and self.entry == self.navigator.current_entry:
             return
-        if self.watching:
-            self.unregister(*self.watching)
-        self.watching = None
-        self.watching = self.register()
+        if self.watch:
+            self.unregister(self.watch)
+        self.watch = None
+        self.entry = self.navigator.current_entry
+        self.watch = self.register()
 
-    def unregister(self, handler, watch, entry):
-        if self.watching:
-            self.observer.remove_handler_for_watch(handler, watch)
-            logger.debug('Stop watching {}'.format(entry.path))
+    def unregister(self, watch):
+        if self.watch:
+            self.observer.unschedule(watch)
 
     def register(self):
         entry = self.navigator.current_entry
         if entry.is_dir():
-            handler = Handler(self.navigator)
-            watch = self.observer.schedule(handler, entry.path, recursive=False)
+            path = entry.path
+            handler = DirHandler(self.navigator)
             logger.debug('Watching {} for changes'.format(entry.path))
-            return handler, watch, entry
+        else:
+            path = entry.dir
+            handler = FileHandler(self.navigator, entry.path)
+        watch = self.observer.schedule(handler, path, recursive=False)
+        return watch
