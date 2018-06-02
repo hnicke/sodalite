@@ -3,7 +3,7 @@ from urwid import AttrSpec, ListBox
 
 from core import key as key_module
 from core.entry import Entry, EntryType
-from ui import theme
+from ui import theme, app
 from ui.viewmodel import ViewModel, Mode
 
 
@@ -82,10 +82,11 @@ class EntryList(List):
         self.model.register(self)
 
     def on_update(self):
-        self.walker.clear()
-        self.walker.extend(
-            [self.create_list_entry(entry) for entry in self.model.filtered_children])
-        self.walker.set_focus(0)
+        with app.DRAW_LOCK:
+            self.walker.clear()
+            self.walker.extend(
+                [self.create_list_entry(entry) for entry in self.model.filtered_children])
+            self.walker.set_focus(0)
 
     def create_list_entry(self, entry):
         return urwid.Padding(ListEntry(entry, self.model), left=4)

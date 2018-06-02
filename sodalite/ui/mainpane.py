@@ -30,14 +30,15 @@ class MainPane(urwid.WidgetWrap):
         super().__init__(self.box)
 
     def on_update(self):
-        if self.model.current_entry.is_dir():
-            self.body = self.entry_list
-            self.frame.set_body(self.entry_list)
-        else:
-            self.body = self.file_preview
-            self.frame.set_body(self.file_preview)
-        self.update_title()
-        app.redraw_if_external()
+        with app.DRAW_LOCK:
+            if self.model.current_entry.is_dir():
+                self.body = self.entry_list
+                self.frame.set_body(self.entry_list)
+            else:
+                self.body = self.file_preview
+                self.frame.set_body(self.file_preview)
+            self.update_title()
+            app.redraw_if_external()
 
     def update_title(self):
         mode = self.model.mode

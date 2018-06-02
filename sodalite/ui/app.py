@@ -23,17 +23,28 @@ class MainFrame(urwid.Frame):
         self.hookbox = HookBox(self.model, self)
 
     def keypress(self, size, key):
-        (maxcol, maxrow) = size
-        remaining = maxrow
-        remaining -= self.hookbox.rows((maxcol,))
-        if self.mainpane.frame.focus_part == 'footer':
-            return self.mainpane.frame.footer.keypress((maxcol,), key)
-        if self.mainpane.keypress((maxcol, remaining), key):
-            return self.hookbox.keypress((maxcol, remaining), key)
+        with DRAW_LOCK:
+            (maxcol, maxrow) = size
+            remaining = maxrow
+            remaining -= self.hookbox.rows((maxcol,))
+            if self.mainpane.frame.focus_part == 'footer':
+                return self.mainpane.frame.footer.keypress((maxcol,), key)
+            if self.mainpane.keypress((maxcol, remaining), key):
+                return self.hookbox.keypress((maxcol, remaining), key)
+
+
+DRAW_LOCK = threading.RLock()
+
+
+class MainLoop(urwid.MainLoop):
+
+    def draw_screen(self):
+        with DRAW_LOCK:
+            super(MainLoop, self).draw_screen()
 
 
 def _create_loop(main):
-    return urwid.MainLoop(main, palette=theme.palette, handle_mouse=False)
+    return MainLoop(main, palette=theme.palette, handle_mouse=False)
 
 
 MAIN_LOOP = 'MainLoop'

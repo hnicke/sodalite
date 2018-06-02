@@ -5,7 +5,7 @@ from pygments import lexers, token
 from pygments.lexers.shell import BashLexer
 from urwid import Text
 
-from ui import theme
+from ui import theme, app
 from ui.entrylist import List
 
 logger = logging.getLogger(__name__)
@@ -18,14 +18,15 @@ class FilePreview(List):
         self.model.register(self)
 
     def on_update(self):
-        self.body.clear()
-        content = self.model.file_content
-        if content:
-            lexer = find_lexer(self.model.current_entry.path, content)
-            logger.info("Viewing file content - using {} for highlighting".format(type(lexer).__name__))
-            tokens = list(lexer.get_tokens(self.model.file_content))
-            self.body.extend([Text(line) for line in bold_headings(inject_linenumbers(tokens))])
-            self.focus_position = 0
+        with app.DRAW_LOCK:
+            self.body.clear()
+            content = self.model.file_content
+            if content:
+                lexer = find_lexer(self.model.current_entry.path, content)
+                logger.info("Viewing file content - using {} for highlighting".format(type(lexer).__name__))
+                tokens = list(lexer.get_tokens(self.model.file_content))
+                self.body.extend([Text(line) for line in bold_headings(inject_linenumbers(tokens))])
+                self.focus_position = 0
 
 
 def find_lexer(filename: str, content: str):
