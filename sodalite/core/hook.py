@@ -1,8 +1,6 @@
 import logging
 import os
-from typing import List, Dict
-
-import urwid
+from typing import List, Dict, Collection
 
 from core import config
 from ui import app
@@ -106,23 +104,30 @@ class HookMap:
 hooks = HookMap(config.hooks)
 
 
-def get_hooks(entry) -> List['Hook']:
+def get_hooks(entry) -> Collection['Hook']:
     """
     :return: list of possible actions for given entry
     """
-    matching_hooks = []
-    matching_hooks.extend(hooks.get_general_hooks())
+    matching_hooks = {}
+    matching_hooks.update(as_dict(hooks.get_general_hooks()))
     if entry.is_dir():
-        matching_hooks.extend(hooks.get_dir_hooks())
+        matching_hooks.update(as_dict(hooks.get_dir_hooks()))
     elif entry.is_file():
         extension = os.path.splitext(entry.name)[1].lower().replace(".", "")
-        matching_hooks.extend(hooks.get_custom_hooks().get(extension, []))
-        matching_hooks.extend(hooks.get_file_hooks())
+        matching_hooks.update(as_dict(hooks.get_custom_hooks().get(extension, [])))
+        matching_hooks.update(as_dict(hooks.get_file_hooks()))
         if entry.is_plain_text_file():
-            matching_hooks.extend(hooks.get_plain_text_hooks())
+            matching_hooks.update(as_dict(hooks.get_plain_text_hooks()))
         if entry.executable:
-            matching_hooks.extend(hooks.get_executable_hooks())
-    return matching_hooks
+            matching_hooks.update(as_dict(hooks.get_executable_hooks()))
+    return matching_hooks.values()
+
+
+def as_dict(hook_list: List['Hook']) -> Dict[str, 'Hook']:
+    dict = {}
+    for hook in hook_list:
+        dict[hook.key] = hook
+    return dict
 
 
 def is_hook(key: str, entry) -> bool:
