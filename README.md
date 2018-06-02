@@ -23,8 +23,9 @@ Once setup, and muscle memory kicks in, all directories will be reachable in a b
 ## Installation
 
 #### Arch Linux
-AUR package [sodalite](https://aur.archlinux.org/packages/sodalite/) (newest release):
+AUR package [sodalite](https://aur.archlinux.org/packages/sodalite/) (stable release):
 > `yaourt -S sodalite`
+
 AUR package [sodalite-git](https://aur.archlinux.org/packages/sodalite-git/) (master branch):
 > `yaourt -S sodalite-git`
 
