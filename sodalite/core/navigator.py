@@ -91,8 +91,9 @@ class Navigator:
         path = self.history.visit_parent()
         try:
             entry = self.entry_access.retrieve_entry(path)
-            self.current_entry = entry
-            _chdir(entry)
+            if not entry.path == self.current_entry.path:
+                self.current_entry = entry
+                _chdir(entry)
             return entry
         except FileNotFoundError:
             self.visit_previous()
@@ -133,7 +134,6 @@ class Navigator:
             self.visit_path(path)
         except FileNotFoundError:
             self.recursive_try_visit(os.path.pardir(path))
-
 
 
 def _chdir(entry):
