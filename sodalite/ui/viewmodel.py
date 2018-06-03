@@ -18,36 +18,67 @@ class ViewModel(Observable):
         super().__init__()
         self.mode = Mode.NORMAL
         self.current_entry: Entry = None
-        self.children = None
+        self._unprocessed_children = None
         self.file_content = None
-        self.filter_string = ""
-        self.filtered_children = []
-        self.sorted_children = []
+        self._filter_string = ""
         self.navigator = navigator
+        self._show_hidden_files = True
+        self.entries = []
         navigator.entry_notifier.register(self)
 
     def on_update(self):
         self.current_entry = self.navigator.current_entry
-        self.children = list(self.current_entry.children)
+        self._unprocessed_children = self.current_entry.children
         if self.current_entry.is_plain_text_file():
             self.file_content = self.current_entry.content
         else:
             self.file_content = None
 
-        self.sorted_children = sort(self.children)
-        self.filter_string = ""
-        self.filter("")
+        self._filter_string = ""
+        self.process()
 
-    def filter(self, filter_string: str):
-        if filter_string[-1:] == "\\":
-            return
-        self.filtered_children.clear()
-        p = re.compile(filter_string, re.IGNORECASE)
-        for entry in self.sorted_children:
-            if p.search(entry.name):
-                self.filtered_children.append(entry)
-        self.filter_string = filter_string
+    def process(self):
+        entries = list(self._unprocessed_children)
+        entries = self.filter_regexp(entries)
+        entries = self.filter_hidden_files(entries)
+        entries = sort(entries)
+        self.entries = entries
         self.notify_all()
+
+    def filter_regexp(self, entries: List[Entry]) -> List[Entry]:
+        if self.filter_string[-1:] == "\\":
+            return entries
+        filtered = []
+        p = re.compile(self.filter_string, re.IGNORECASE)
+        for entry in entries:
+            if p.search(entry.name):
+                filtered.append(entry)
+        return filtered
+
+    def filter_hidden_files(self, entries: List[Entry]) -> List[Entry]:
+        if self.show_hidden_files:
+            return entries
+        else:
+            return [x for x in entries if x.is_hidden() is False]
+
+    @property
+    def show_hidden_files(self) -> bool:
+        return self._show_hidden_files
+
+    @show_hidden_files.setter
+    def show_hidden_files(self, show: bool):
+        if show != self._show_hidden_files:
+            self._show_hidden_files = show
+            self.process()
+
+    @property
+    def filter_string(self) -> str:
+        return self._filter_string
+
+    @filter_string.setter
+    def filter_string(self, string: str):
+        self._filter_string = string
+        self.process()
 
 
 def sort(entries: List[Entry]):

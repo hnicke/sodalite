@@ -16,6 +16,9 @@ Enter normal mode.
 #### filter `/`
 Focuses the filter bar on the bottom. Use regular expressions to filter displayed entries. Case is ignored. Press `CR` to submit or `ESC` to dismiss the filter.
 
+#### toggle_dotfiles  `M-h`
+Toggles visiblity of dotfiles.
+
 #### scroll_page_down `C-f`
 Scroll down one page.
 
@@ -27,6 +30,7 @@ Scroll down half a page.
 
 #### scroll_half_page_down `C-u`
 Scroll up half a page.
+
 
 ## Modi
 

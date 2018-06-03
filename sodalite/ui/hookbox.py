@@ -44,7 +44,6 @@ class HookBox(urwid.WidgetWrap):
     def keypress(self, size, key):
         if hook.is_hook(key, self._data.current_entry):
             hook.trigger_hook(key, self._data.current_entry)
-            return None
         else:
             return key
 

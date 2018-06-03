@@ -5,6 +5,7 @@ from urwid import AttrSpec, ListBox
 
 from core import key as key_module
 from core.entry import Entry, EntryType
+from core.navigator import Navigator
 from ui import theme, app
 from ui.viewmodel import ViewModel, Mode
 
@@ -35,6 +36,8 @@ class List(ListBox):
             self.scroll_half_page_down(size)
         elif key == 'ctrl u':
             self.scroll_half_page_up(size)
+        else:
+            return key
 
     def scroll_page_down(self, size):
         maxrow, _ = size
@@ -70,7 +73,7 @@ class List(ListBox):
 
 class EntryList(List):
 
-    def __init__(self, mainpane, model, navigator):
+    def __init__(self, mainpane, model: ViewModel, navigator: Navigator):
         super().__init__()
         self.mainpane = mainpane
         self.box = None
@@ -83,7 +86,7 @@ class EntryList(List):
         with app.DRAW_LOCK:
             self.walker.clear()
             self.walker.extend(
-                [self.create_list_entry(entry) for entry in self.model.filtered_children])
+                [self.create_list_entry(entry) for entry in self.model.entries])
             self.walker.set_focus(0)
 
     def create_list_entry(self, entry):
@@ -91,7 +94,9 @@ class EntryList(List):
 
     def keypress(self, size, key):
         mode = self.model.mode
-        if key == 'esc' and (mode == Mode.ASSIGN_CHOOSE_KEY or mode == Mode.ASSIGN_CHOOSE_ENTRY):
+        if key == 'meta h':
+            self.toggle_hidden_files()
+        elif key == 'esc' and (mode == Mode.ASSIGN_CHOOSE_KEY or mode == Mode.ASSIGN_CHOOSE_ENTRY):
             self.exit_assign_mode(size)
         elif mode == Mode.ASSIGN_CHOOSE_ENTRY:
             return self.keypress_choose_entry(size, key)
@@ -99,6 +104,14 @@ class EntryList(List):
             return self.keypress_choose_entry(size, key)
         else:
             return super().keypress(size, key)
+
+    def toggle_hidden_files(self):
+        self.model.show_hidden_files = not self.model.show_hidden_files
+        if self.model.show_hidden_files:
+            message = 'show dotfiles'
+        else:
+            message = 'hide dotfiles'
+        app.notify(message, duration=0.7)
 
     def keypress_choose_entry(self, size, key):
         if key in key_module.get_all_keys():

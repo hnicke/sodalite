@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+##### Features
+- Toggle visibility of dotfiles with `M-h`
 ##### Bugfixes
 - Prevent race conditions while drawing to screen
 - Make sodalite-open script (xdg-open wrapper) more robust
