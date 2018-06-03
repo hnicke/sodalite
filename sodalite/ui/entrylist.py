@@ -1,3 +1,5 @@
+import logging
+
 import urwid
 from urwid import AttrSpec, ListBox
 
@@ -5,6 +7,8 @@ from core import key as key_module
 from core.entry import Entry, EntryType
 from ui import theme, app
 from ui.viewmodel import ViewModel, Mode
+
+logger = logging.getLogger(__name__)
 
 
 class List(ListBox):
@@ -22,9 +26,15 @@ class List(ListBox):
         except IndexError:
             pass
 
-    def render(self, size, focus=False):
-        tes = super().render(size, focus=focus)
-        return tes
+    def keypress(self, size, key):
+        if key == 'ctrl f':
+            self.scroll_page_down(size)
+        elif key == 'ctrl b':
+            self.scroll_page_up(size)
+        elif key == 'ctrl d':
+            self.scroll_half_page_down(size)
+        elif key == 'ctrl u':
+            self.scroll_half_page_up(size)
 
     def scroll_page_down(self, size):
         maxrow, _ = size
@@ -57,18 +67,6 @@ class List(ListBox):
         self.set_focus(new_focus)
         self.set_focus_valign(('relative', relative_position))
 
-    def selection_up(self):
-        try:
-            self.set_focus(self.focus_position - 1, coming_from='above')
-        except IndexError:
-            pass
-
-    def selection_down(self):
-        try:
-            self.set_focus(self.focus_position + 1, coming_from='below')
-        except IndexError:
-            pass
-
 
 class EntryList(List):
 
@@ -91,26 +89,34 @@ class EntryList(List):
     def create_list_entry(self, entry):
         return urwid.Padding(ListEntry(entry, self.model), left=4)
 
-    def handle_assign_keypress(self, size, key):
-        if key == 'esc':
+    def keypress(self, size, key):
+        mode = self.model.mode
+        if key == 'esc' and (mode == Mode.ASSIGN_CHOOSE_KEY or mode == Mode.ASSIGN_CHOOSE_ENTRY):
             self.exit_assign_mode(size)
-        elif self.model.mode == Mode.ASSIGN_CHOOSE_ENTRY:
-            if key in key_module.get_all_keys():
-                self.select_entry_with_key(key)
-            elif key == 'ctrl n':
-                self.selection_down()
-            elif key == 'ctrl p':
-                self.selection_up()
-            elif key == 'enter':
-                self.select_widget(self.walker[self.focus_position])
-            else:
-                return key
-        elif self.model.mode == Mode.ASSIGN_CHOOSE_KEY:
-            if key in key_module.get_all_keys():
-                self.assign_key(key, size)
-            else:
-                return key
-        return None
+        elif mode == Mode.ASSIGN_CHOOSE_ENTRY:
+            return self.keypress_choose_entry(size, key)
+        elif mode == Mode.ASSIGN_CHOOSE_ENTRY:
+            return self.keypress_choose_entry(size, key)
+        else:
+            return super().keypress(size, key)
+
+    def keypress_choose_entry(self, size, key):
+        if key in key_module.get_all_keys():
+            self.select_entry_with_key(key)
+        elif key == 'ctrl n':
+            self.selection_down()
+        elif key == 'ctrl p':
+            self.selection_up()
+        elif key == 'enter':
+            self.select_widget(self.walker[self.focus_position])
+        else:
+            return key
+
+    def keypress_choose_key(self, size, key):
+        if key in key_module.get_all_keys():
+            self.assign_key(key, size)
+        else:
+            return key
 
     def enter_assign_mode(self, size):
         self.model.mode = Mode.ASSIGN_CHOOSE_ENTRY
@@ -145,6 +151,18 @@ class EntryList(List):
             self.navigator.assign_key(key_module.Key(key), self.entry_for_assignment.path)
             self.exit_assign_mode(size)
             self.on_update()
+
+    def selection_up(self):
+        try:
+            self.set_focus(self.focus_position - 1, coming_from='above')
+        except IndexError:
+            pass
+
+    def selection_down(self):
+        try:
+            self.set_focus(self.focus_position + 1, coming_from='below')
+        except IndexError:
+            pass
 
 
 class ListEntry(urwid.Text):

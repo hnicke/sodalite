@@ -61,26 +61,16 @@ class MainPane(urwid.WidgetWrap):
                 if not self.frame.footer:
                     self.frame.footer = Filter(self.model, self.frame)
                 self.frame.focus_position = 'footer'
-            elif key == 'ctrl f':
-                self.body.scroll_page_down(size)
-            elif key == 'ctrl b':
-                self.body.scroll_page_up(size)
-            elif key == 'ctrl d':
-                self.body.scroll_half_page_down(size)
-            elif key == 'ctrl u':
-                self.body.scroll_half_page_up(size)
             elif self.model.mode == Mode.NORMAL:
-                return self.handle_normal_keypress(size, key)
-            else:
-                return self.body.handle_assign_keypress(size, key)
+                unhandled = self.keypress_normal(size, key)
+                if unhandled:
+                    return self.body.keypress(size, key)
         except PermissionError:
             app.notify((AttrSpec(theme.forbidden + ',bold', '', colors=16), "PERMISSION DENIED"))
-            return key
         except FileNotFoundError:
             app.notify((AttrSpec(theme.forbidden + ',bold', '', colors=16), "FILE NOT FOUND"))
-            return key
 
-    def handle_normal_keypress(self, size, key):
+    def keypress_normal(self, size, key):
         if key == '.':
             self.navigator.visit_parent()
             self.clear_filter()

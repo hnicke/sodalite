@@ -54,7 +54,7 @@ frame = None
 loop = None
 
 notify_box = urwid.LineBox(urwid.Text('', align='center'), tline='')
-notify_lock = threading.Lock()
+_notify_lock = threading.Lock()
 _last_message = ''
 
 
@@ -74,9 +74,9 @@ def notify(message, duration=1.5):
 
 def _notify(message, duration):
     global _last_message
-    if notify_lock.locked() and _last_message == message:
+    if _notify_lock.locked() and _last_message == message:
         return
-    notify_lock.acquire()
+    _notify_lock.acquire()
     original_footer = frame.footer
     frame.footer = notify_box
     notify_box.base_widget.set_text(message)
@@ -84,7 +84,7 @@ def _notify(message, duration):
     _last_message = message
     time.sleep(duration)
     frame.footer = original_footer
-    notify_lock.release()
+    _notify_lock.release()
     loop.draw_screen()
 
 
