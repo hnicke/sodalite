@@ -1,6 +1,11 @@
 # Changelog
 
-## Unreleased
+## v0.9.2: June 05: 2018
+##### Bugfixes
+- Fix shell integration
+- Fix application freeze when returning from hook
+
+## v0.9.1: June 05, 2018
 ##### Features
 - Toggle visibility of dotfiles with `M-h`
 ##### Bugfixes
