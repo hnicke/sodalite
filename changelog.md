@@ -3,6 +3,7 @@
 ## Unreleased
 ##### Features
 - Use key `0` to navigate to root directory
+- Navigation history is remembered between sessions
 ##### Unreleased
 - Fix file launcher in graphics mode
 

@@ -28,6 +28,8 @@ db_path = os.getenv(ENV_DB_PATH)
 if db_path is None:
     db_path = os.path.join(user_data, 'db.sqlite')
 
+history_path = os.path.join(user_data, 'history')
+
 # might be None
 cwd_pipe = os.getenv(ENV_CWD_PIPE)
 

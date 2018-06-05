@@ -5,6 +5,7 @@ import time
 
 import urwid.curses_display
 
+from core import dirhistory
 from core.navigator import Navigator
 from ui import theme
 from ui.hookbox import HookBox
@@ -17,7 +18,8 @@ logger = logging.getLogger(__name__)
 class MainFrame(urwid.Frame):
 
     def __init__(self):
-        self.model = ViewModel(Navigator())
+        history = dirhistory.load()
+        self.model = ViewModel(Navigator(history=history))
         self.mainpane = MainPane(self.model)
         super().__init__(self.mainpane)
         self.hookbox = HookBox(self.model, self)

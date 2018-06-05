@@ -1,7 +1,14 @@
+import atexit
+import json
 import logging
 import os
+from json import JSONDecodeError
+
+from util import environment
 
 logger = logging.getLogger(__name__)
+
+MAX_LENGTH = 50
 
 
 class DirHistory:
@@ -10,16 +17,25 @@ class DirHistory:
     Will never check if a file path is a valid file path.
     """
 
-    def __init__(self):
-        self.__history = []
-        self.__history.append(os.getcwd())
-        self.__current_index = 0
+    def __init__(self, history=None, index=0, persist=False):
+        if not history:
+            history = []
+        self._history = history
+        self._current_index = index
+        cwd = os.getcwd()
+        if len(self._history) < 1:
+            self._history.append(cwd)
+        elif not self.cwd() == cwd:
+            self._history.insert(self._current_index + 1, cwd)
+            self._current_index += 1
+        if persist:
+            atexit.register(save, self)
 
     def cwd(self) -> str:
         """
         :return: The current absolute, canonical path
         """
-        return self.__history[self.__current_index]
+        return self._history[self._current_index]
 
     def visit(self, path: str):
         """
@@ -30,11 +46,11 @@ class DirHistory:
         if self.cwd() != path:
             logger.info("Visiting '{}'".format(path))
             self.__discard_future()
-            self.__history.append(path)
-            self.__current_index += 1
+            self._history.append(path)
+            self._current_index += 1
 
     def __discard_future(self):
-        del self.__history[self.__current_index + 1:]
+        del self._history[self._current_index + 1:]
 
     def visit_parent(self) -> str:
         """
@@ -51,8 +67,8 @@ class DirHistory:
         Goes one step backwards in history
         :return: The previously visited file path.
         If there is no previously visited file path, returns the current file path."""
-        if self.__current_index > 0:
-            self.__current_index -= 1
+        if self._current_index > 0:
+            self._current_index -= 1
             path = self.cwd()
             logger.info("Going back to '{}'".format(path))
             return path
@@ -64,10 +80,54 @@ class DirHistory:
         Replays one step in history (redo). Returns current file path, if this is not possible
         :return: The next file path, if exists - or the current file path
         """
-        if len(self.__history) > self.__current_index + 1:
-            self.__current_index += 1
+        if len(self._history) > self._current_index + 1:
+            self._current_index += 1
             path = self.cwd()
             logger.info("Going forward to '{}'".format(path))
             return path
         else:
             return self.cwd()
+
+    def _truncate(self):
+        """
+        In case the history is longer than MAX_LENGTH, discards parts of it.
+        """
+        if len(self._history) > MAX_LENGTH:
+            half = MAX_LENGTH // 2
+            lower = max(self._current_index - half, 0)
+            upper = min(lower + MAX_LENGTH, len(self._history))
+            lower = min(upper - MAX_LENGTH, lower)
+            self._history = self._history[lower:upper]
+            self._current_index -= lower
+
+
+
+
+
+def load() -> DirHistory:
+    logger.info('Load navigation history')
+    if not os.path.isfile(environment.history_path):
+        return DirHistory(persist=True)
+    with open(environment.history_path, 'r') as file:
+        text = file.read()
+        try:
+            history = json.loads(text, object_hook=object_decoder)
+            return history
+        except JSONDecodeError:
+            return DirHistory(persist=True)
+
+
+def object_decoder(obj) -> DirHistory:
+    try:
+        return DirHistory(obj['_history'], obj['_current_index'], persist=True)
+    except KeyError:
+        logger.warning("Failed to load navigation history")
+        raise JSONDecodeError
+
+
+def save(history: DirHistory):
+    history._truncate()
+    logger.info('Persist navigation history')
+    text = json.dumps(history.__dict__, indent=4)
+    with open(environment.history_path, 'w') as file:
+        file.write(text)
