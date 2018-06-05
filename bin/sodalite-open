@@ -2,6 +2,20 @@
 # wrapper around xdg-open.
 # Execute xdg-open in background if the launching application is a graphical (i.e., non-terminal) app.
 # In case it's a terminal app, launches xdg-open in foreground.
+# If launched headless, will always fallback to a text editor
+
+function set_fallback_editor {
+    editor=${VISUAL:-$EDITOR}
+    if [ ! $editor ]; then
+        if type vim; then
+            editor=vim
+        elif type nano; then
+            editor=nano
+        else
+            echo "Could not find a suitable editor"; exit 1
+        fi
+    fi
+}
 
 # $1: desktop entry name, e.g. 'vim.desktop'
 function is_terminal_app {
@@ -24,6 +38,12 @@ function is_terminal_app {
 [ $1 ] || { echo Which file?; exit 1; }
 
 target_file=$1
+
+if [ ! $DESKTOP ]; then
+    set_fallback_editor
+    $editor $target_file
+    exit
+fi
 
 locations='~/.local/share/applications /usr/share/applications /usr/local/share/applications'
 filetype=$(xdg-mime query filetype $target_file)
