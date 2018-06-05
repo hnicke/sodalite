@@ -2,8 +2,13 @@
 
 function sodalite-widget 
   set target (sodalite)
-  [ -d $target ] ;or set target (dirname $target)
-  cd $target
+  if [ $target ]
+      [ -d $target ] ;or set target (dirname $target)
+      cd $target
+  end
+  if not [ $DESKTOP ]
+    clear
+  end
   commandline -f repaint
 end
 

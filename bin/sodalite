@@ -1,5 +1,13 @@
 #!/bin/bash  
 
+
+function reset {
+    # enable control flow keys
+    stty ixany 2> /dev/null
+}
+
+trap reset SIGINT SIGTERM
+
 # disable control flow keys
 stty -ixon 2> /dev/null
 
@@ -18,5 +26,3 @@ python3 $LIB_DIR/main.py < /dev/tty > /dev/tty
 read <&3 line
 [ $line ] && echo "$line"
 
-# enable control flow keys
-stty ixany 2> /dev/null

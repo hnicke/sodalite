@@ -1,9 +1,20 @@
 # sodalite shell integration
 
+function headless_clear {
+    [ $DESKTOP ] || clear
+}
+
+function setup_cleanup {
+    trap headless_clear EXIT SIGTERM SIGINT
+}
+
 function sodalite-emacs-widget {
+    setup_cleanup
     target="$(sodalite)"
-    [ -d "$target" ] || target="$(dirname $target)"
-    cd "$target"
+    if [ $target ]; then
+        [ -d "$target" ] || target="$(dirname $target)"
+        cd "$target"
+    fi
     zle reset-prompt
 }
 
@@ -19,6 +30,6 @@ if [ $shell = 'zsh' ]; then
     bindkey -M vicmd 'f'  sodalite-vim-widget
     bindkey -M emacs '^f' sodalite-emacs-widget
 elif [ $shell = 'bash' ]; then
-    bind -m vi-command '"f":"ddicd $(sodalite); tput cuu1; tput ed\n"'
-    bind -m emacs '"\C-f":"\C-k\C-ucd $(sodalite); tput cuu1; tput ed\n"'
+    bind -m vi-command '"f":"ddisetup_cleanup; cd $(sodalite); tput cuu1; tput ed\n"'
+    bind -m emacs '"\C-f":"\C-k\C-usetup_cleanup; cd $(sodalite); tput cuu1; tput ed\n"'
 fi

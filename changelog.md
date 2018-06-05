@@ -6,7 +6,8 @@
 ##### Bugfixes
 - Prevent race conditions while drawing to screen
 - Make sodalite-open script (xdg-open wrapper) more robust
-
+- Fix opening files when running headless
+- Enhance shell integration when running headless
 
 ## v0.9: June 02, 2018
 ##### Features
