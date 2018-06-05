@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+##### Features
+- Use key `0` to navigate to root directory
 ##### Unreleased
 - Fix file launcher in graphics mode
 

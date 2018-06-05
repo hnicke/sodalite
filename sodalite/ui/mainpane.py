@@ -86,6 +86,8 @@ class MainPane(urwid.WidgetWrap):
         elif self.navigator.is_navigation_key(key):
             self.navigator.visit_child(key)
             self.clear_filter()
+        elif key == '0':
+            self.navigator.visit_path('/')
         elif key == 'enter':
             environment.append_to_cwd_pipe(self.navigator.history.cwd())
             raise urwid.ExitMainLoop()

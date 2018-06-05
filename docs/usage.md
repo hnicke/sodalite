@@ -52,6 +52,9 @@ Navigate to the entry matching pressed key.
 #### normal.go_to_home ``[`~]``
 Navigate to the `$HOME` directory.
 
+#### normal.go_to_root `0`
+Navigate to the root directory.
+
 #### normal.go_to_parent `.`
 Navigate to the parent directory. Does nothing if parent directory does not exist.
 
