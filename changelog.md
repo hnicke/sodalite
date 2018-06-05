@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+##### Unreleased
+- Fix file launcher in graphics mode
+
 ## v0.9.2: June 05: 2018
 ##### Bugfixes
 - Fix shell integration

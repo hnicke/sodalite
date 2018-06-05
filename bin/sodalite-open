@@ -39,7 +39,8 @@ function is_terminal_app {
 
 target_file=$1
 
-if [ ! $DESKTOP ]; then
+# if running headless just launch editor
+if [ ! $DISPLAY ]; then
     set_fallback_editor
     $editor $target_file
     exit
