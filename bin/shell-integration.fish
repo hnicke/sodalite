@@ -6,7 +6,7 @@ function sodalite-widget
       [ -d $target ] ;or set target (dirname $target)
       cd $target
   end
-  if not [ $DESKTOP ]
+  if not [ $DISPLAY ]
     clear
   end
   commandline -f repaint

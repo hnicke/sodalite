@@ -1,7 +1,9 @@
 # sodalite shell integration
 
 function headless_clear {
-    [ $DESKTOP ] || clear
+    [ $DISPLAY ] || clear
+    # untrap
+    trap - EXIT SIGTERM SIGINT
 }
 
 function setup_cleanup {
