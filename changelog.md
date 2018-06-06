@@ -1,11 +1,12 @@
 # Changelog
 
-## Unreleased
+## v0.10: June 06, 2018
 ##### Features
 - Use key `0` to navigate to root directory
 - Navigation history is remembered between sessions
-##### Unreleased
+##### Bugfixes
 - Fix file launcher in graphics mode
+- Fix broken assign mode
 
 ## v0.9.2: June 05: 2018
 ##### Bugfixes
