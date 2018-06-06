@@ -65,6 +65,8 @@ class MainPane(urwid.WidgetWrap):
                 unhandled = self.keypress_normal(size, key)
                 if unhandled:
                     return self.body.keypress(size, key)
+            else:
+                return self.body.keypress(size, key)
         except PermissionError:
             app.notify((AttrSpec(theme.forbidden + ',bold', '', colors=16), "PERMISSION DENIED"))
         except FileNotFoundError:

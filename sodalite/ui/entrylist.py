@@ -100,8 +100,8 @@ class EntryList(List):
             self.exit_assign_mode(size)
         elif mode == Mode.ASSIGN_CHOOSE_ENTRY:
             return self.keypress_choose_entry(size, key)
-        elif mode == Mode.ASSIGN_CHOOSE_ENTRY:
-            return self.keypress_choose_entry(size, key)
+        elif mode == Mode.ASSIGN_CHOOSE_KEY:
+            return self.keypress_choose_key(size, key)
         else:
             return super().keypress(size, key)
 
