@@ -13,7 +13,7 @@ function setup_cleanup {
 function sodalite-emacs-widget {
     setup_cleanup
     target="$(sodalite)"
-    if [ $target ]; then
+    if [ "$target" ]; then
         [ -d "$target" ] || target="$(dirname $target)"
         cd "$target"
     fi
