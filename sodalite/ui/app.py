@@ -96,6 +96,7 @@ def resume():
     # this is a hack. could not figure out how to redraw/refresh the old screen
     # (during pause, app might have missed resizing events)
     # so crudely use new loop
+    DRAW_LOCK.release()
     loop.stop()
     DRAW_LOCK = threading.RLock()
     loop = _create_loop(frame)
