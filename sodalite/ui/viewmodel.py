@@ -1,3 +1,4 @@
+import logging
 import re
 from enum import Enum
 from typing import List
@@ -5,6 +6,8 @@ from typing import List
 from core.entry import Entry
 from core.navigator import Navigator
 from util.observer import Observable
+
+logger = logging.getLogger(__name__)
 
 
 class Mode(Enum):
@@ -85,6 +88,6 @@ def sort(entries: List[Entry]):
     sorted_entries = sorted(entries, key=lambda x: x.name)
     sorted_entries.sort(key=lambda x: x.is_dir(), reverse=True)
     sorted_entries.sort(key=lambda x: x.is_hidden())
-    sorted_entries.sort(key=lambda x: x.frequency, reverse=True)
+    sorted_entries.sort(key=lambda x: x.rating, reverse=True)
     sorted_entries.sort(key=lambda x: x.key.value == "")
     return sorted_entries

@@ -1,7 +1,8 @@
 import logging
 import os
+import time
 
-from core import entrydao
+from core import dao
 from core import hook
 from core.key import Key
 from .entry import Entry
@@ -45,12 +46,11 @@ class EntryAccess:
         with os.scandir(entry.realpath) as dir_entries:
             entry.__path_to_child = {}
             entry.children = list(map(lambda x: Entry(x.path, parent=entry), dir_entries))
-        entrydao.inject_data(entry)
+        dao.inject_data(entry)
 
-    def get_entry_for_key(self, key: Key) -> Entry:
+    def retrieve_entry_for_key(self, key: Key) -> Entry:
         """
         Returns an entry matching given key.
-        If a match was found, updates the entries frequency.
         :param key: the key of the target entry
         :return: the matching entry on None, if no entry with given key exists
         :raise: FileNotFoundError, PermissionError
@@ -60,17 +60,22 @@ class EntryAccess:
             raise FileNotFoundError
         check_permission(entry)
         entry.hooks = hook.get_hooks(entry)
-        entry.frequency += 1
-        entrydao.update_entry(entry)
+        # TODO removed update of frequency. add again somewhere else!
         self.__populate_children(entry)
         self.__current_entry = entry
         return entry
 
     def update_entry(self, entry: Entry):
-        entrydao.update_entry(entry)
+        dao.update_entry(entry)
 
     def is_possible(self, key: Key):
         return self.__current_entry.get_child_for_key(key) is not None
+
+    def access_now(self, entry):
+        """Adds a new access to given entry"""
+        access = int(time.time() * 1000)
+        entry.access_history.append(access)
+        dao.insert_access(entry.path, access)
 
 
 def check_permission(entry: Entry):

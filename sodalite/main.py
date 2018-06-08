@@ -1,12 +1,8 @@
 import logging
 
 from ui import app
-from util import environment
 
-logging.basicConfig(filename=environment.log_file, level=logging.DEBUG,
-                    format='%(asctime)s - %(name)-18s - %(levelname)-5s - %(message)s')
 logger = logging.getLogger(__name__)
-logging.getLogger('watchdog').setLevel(logging.INFO)
 
 if __name__ == "__main__":
     logger.info('Starting sodalite')

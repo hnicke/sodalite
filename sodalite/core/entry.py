@@ -7,6 +7,7 @@ from typing import Dict, Iterable, List
 
 from binaryornot.check import is_binary
 
+from core import rating
 from .key import Key
 
 
@@ -25,12 +26,15 @@ class Entry:
     defines the entry class which represents a file or directory
     """
 
-    def __init__(self, path: str, parent: 'Entry' = None, key: Key = Key(''),
-                 frequency=0):
+    def __init__(self, path: str, access_history: List[int] = None, parent: 'Entry' = None, key: Key = Key('')):
         """
         :param path: the absolute, canonical path of this entry
         """
         self.path = path
+        if not access_history:
+            access_history = []
+        self.access_history: List[int] = access_history
+        self._rating = None
         self._parent = parent
         self.dir, self.name = os.path.split(path)
         self._key = key
@@ -39,7 +43,6 @@ class Entry:
         self.path_to_child: Dict[str, Entry] = {}
         self.key_to_child: Dict[Key, Entry] = {}
 
-        self.frequency = frequency
         self.__is_plain_text_file = None
         self.hooks: list = []
         self.stat = os.lstat(path)
@@ -97,7 +100,7 @@ class Entry:
         return self.path_to_child.get(path, None)
 
     def __str__(self):
-        return "[path:{}, key:{}, type:{}, frequency:{}]".format(self.path, self.key, self.type, self.frequency)
+        return "[path:{}, key:{}, type:{}]".format(self.path, self.key, self.type)
 
     def __repr__(self):
         return str(self)
@@ -130,6 +133,19 @@ class Entry:
 
     def exists(self) -> bool:
         return Path(self.path).exists()
+
+    @property
+    def rating(self):
+        if not self._rating:
+            if not self._parent:
+                raise ValueError("Trying to get rating of entry which parent is not set")
+            rating.populate_ratings(self._parent.children)
+        assert self._rating is not None
+        return self._rating
+
+    @rating.setter
+    def rating(self, rating):
+        self._rating = rating
 
     @property
     def executable(self) -> bool:
