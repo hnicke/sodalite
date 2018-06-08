@@ -113,11 +113,15 @@ def read_entries_from_db(regexp: str) -> Dict[str, DbEntry]:
         for row in cursor:
             path = row[0]
             access = row[2]
-            if path in result:
+            if access is not None and path in result:
                 result[path].access_history.append(access)
+
             else:
                 key = Key(row[1])
-                entry = DbEntry(path, key, [access])
+                entry_history = []
+                if access is not None:
+                    entry_history.append(access)
+                entry = DbEntry(path, key, entry_history)
                 result[path] = entry
         return result
     finally:

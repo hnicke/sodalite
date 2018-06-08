@@ -207,12 +207,12 @@ def compute_color(entry: Entry) -> AttrSpec:
     unimportant = False
     if not entry.readable:
         color = theme.forbidden
-    elif entry.frecency < 2:
+    elif entry.rating < 0.05:
         color = theme.unused
     else:
-        if entry.frecency >= 10:
+        if entry.rating >= 0.6:
             bold = True
-        elif entry.frecency < 4:
+        elif entry.rating < 0.2:
             unimportant = True
         if entry.type == EntryType.DIRECTORY:
             color = theme.directory

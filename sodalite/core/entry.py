@@ -7,6 +7,7 @@ from typing import Dict, Iterable, List
 
 from binaryornot.check import is_binary
 
+from core import rating
 from .key import Key
 
 
@@ -25,16 +26,15 @@ class Entry:
     defines the entry class which represents a file or directory
     """
 
-    def __init__(self, path: str, access_history: List[int]= None, parent: 'Entry' = None, key: Key = Key('')):
+    def __init__(self, path: str, access_history: List[int] = None, parent: 'Entry' = None, key: Key = Key('')):
         """
         :param path: the absolute, canonical path of this entry
         """
         self.path = path
         if not access_history:
             access_history = []
-        # TODO set frecency
-        self.frecency = 0
         self.access_history: List[int] = access_history
+        self._rating = None
         self._parent = parent
         self.dir, self.name = os.path.split(path)
         self._key = key
@@ -79,19 +79,6 @@ class Entry:
         for entry in children:
             self.path_to_child[entry.path] = entry
             self.key_to_child[entry.key] = entry
-
-    # TODO remove
-    # @property
-    # def children_biggest_frequency(self) -> int:
-    #     if not self._children_biggest_frequency:
-    #         self._children_biggest_frequency = max(self._children, key=lambda x: x.frequency)
-    #     return self._children_biggest_frequency.frequency
-    #
-    # @property
-    # def relative_frequency(self) -> float:
-    #     if not self._relative_frequency:
-    #         self._relative_frequency = self.frequency / max(self._parent.children_biggest_frequency, 1)
-    #     return self._relative_frequency
 
     @property
     def key(self):
@@ -146,6 +133,19 @@ class Entry:
 
     def exists(self) -> bool:
         return Path(self.path).exists()
+
+    @property
+    def rating(self):
+        if not self._rating:
+            if not self._parent:
+                raise ValueError("Trying to get rating of entry which parent is not set")
+            rating.populate_ratings(self._parent.children)
+        assert self._rating is not None
+        return self._rating
+
+    @rating.setter
+    def rating(self, rating):
+        self._rating = rating
 
     @property
     def executable(self) -> bool:
