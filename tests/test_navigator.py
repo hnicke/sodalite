@@ -2,13 +2,10 @@ import os
 import shutil
 from typing import Dict, List
 
-import pytest
-
 from core import entry as entry_module
 from core.dirhistory import DirHistory
 from core.entry import Entry
 from core.entryaccess import EntryAccess
-from core.entrydao import EntryDao
 from core.key import Key
 from core.navigator import Navigator
 from util import environment
@@ -26,8 +23,8 @@ file_entries: List[Dict[Key, Entry]] = []
 
 def test_assign_key_conflict_swap():
     """When assigning a key to an entry and the key is already assigned to another entry, keys are swapped"""
-    entry = navigator.visit_path(test_dir)
-    entry.get_child(key)
+    # entry = navigator.visit_path(test_dir)
+    # entry.get_child(key)
     key = Key('a')
     other_key = Key('b')
     navigator.assign_key(key.value, intermediate_entries[other_key].path)

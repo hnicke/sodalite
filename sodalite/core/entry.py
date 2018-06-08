@@ -7,6 +7,7 @@ from typing import Dict, Iterable, List
 
 from binaryornot.check import is_binary
 
+from core.frecency import AccessHistory
 from .key import Key
 
 
@@ -18,19 +19,6 @@ class EntryType(Enum):
     SOCKET = 5
     BLOCK_DEVICE = 6
     CHARACTER_DEVICE = 7
-
-
-class Access:
-    def __init__(self, timestamp):
-        self.timestamp = timestamp
-
-
-class AccessHistory:
-    def __init__(self, access_list: List[Access]):
-        self.access_list: List[Access] = access_list
-
-    def append(self, access: Access):
-        self.access_list.append(access)
 
 
 class Entry:

@@ -4,7 +4,8 @@ import sqlite3
 from typing import Dict, Iterable
 
 from core import key as key_module
-from core.entry import Entry, AccessHistory, Access
+from core.entry import Entry
+from core.frecency import Access, AccessHistory
 from core.key import Key
 from util import environment
 

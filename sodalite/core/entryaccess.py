@@ -2,10 +2,11 @@ import logging
 import os
 import time
 
-from core import entrydao
+from core import dao
 from core import hook
 from core.key import Key
-from .entry import Entry, Access
+from .entry import Entry
+from core.frecency import Access
 
 logger = logging.getLogger(__name__)
 
@@ -46,7 +47,7 @@ class EntryAccess:
         with os.scandir(entry.realpath) as dir_entries:
             entry.__path_to_child = {}
             entry.children = list(map(lambda x: Entry(x.path, parent=entry), dir_entries))
-        entrydao.inject_data(entry)
+        dao.inject_data(entry)
 
     def retrieve_entry_for_key(self, key: Key) -> Entry:
         """
@@ -66,7 +67,7 @@ class EntryAccess:
         return entry
 
     def update_entry(self, entry: Entry):
-        entrydao.update_entry(entry)
+        dao.update_entry(entry)
 
     def is_possible(self, key: Key):
         return self.__current_entry.get_child_for_key(key) is not None
@@ -75,7 +76,7 @@ class EntryAccess:
         """Adds a new access to given entry"""
         access = Access(time.time())
         entry.access_history.append(access)
-        entrydao.insert_access(entry.path, access)
+        dao.insert_access(entry.path, access)
 
 
 def check_permission(entry: Entry):
