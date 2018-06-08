@@ -26,7 +26,8 @@ hooks:
   general:
   dir:
     ctrl s: 'termite --directory="$entry"&'
-    ctrl e: 'vifm "$entry"'
+    ctrl o:
+      action: 'sodalite-open "$entry" 2> /dev/null'
   file:
     o:
       action: 'sodalite-open "$entry" 2> /dev/null'
