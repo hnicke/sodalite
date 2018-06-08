@@ -32,11 +32,12 @@ class Hook:
         os.environ['entry'] = entry.path
         logger.info("Executing command: {}".format(self.action))
         result = os.system(self.action)
-        app.resume()
         logger.info(f"Result is {result}")
         if self.finally_exit:
             environment.append_to_cwd_pipe(entry.path)
             app.exit()
+        else:
+            app.resume()
 
 
 def _extract_hook(key: str, hook_definition: [dict, str]) -> 'Hook':
