@@ -4,7 +4,7 @@ import sqlite3
 from typing import Dict, Iterable
 
 from core import key as key_module
-from core.entry import Entry
+from core.entry import Entry, AccessHistory, Access
 from core.key import Key
 from util import environment
 
@@ -14,25 +14,34 @@ Handles database access
 
 logger = logging.getLogger(__name__)
 
-TABLE_FILES = 'files'
-COLUMN_PATH = 'path'
-COLUMN_KEY = 'key'
-COLUMN_FREQUENCY = 'frequency'
+TABLE_ENTRY = 'entry'
+ENTRY_PATH = 'path'
+ENTRY_KEY = 'key'
 
-CREATE_TABLE = f"""
-CREATE TABLE IF NOT EXISTS {TABLE_FILES} (
-    {COLUMN_PATH} text NOT NULL,
-    {COLUMN_KEY} text NOT NULL,
-    {COLUMN_FREQUENCY} INTEGER NOT NULL DEFAULT 0,
-    PRIMARY KEY ( {COLUMN_PATH} )
-)"""
+TABLE_ACCESS = 'access'
+ACCESS_PATH = 'path'
+ACCESS_TIMESTAMP = 'timestamp'
+
+CREATE_SCHEMA = f"""
+CREATE TABLE IF NOT EXISTS {TABLE_ENTRY} (
+    {ENTRY_PATH} TEXT PRIMARY KEY,
+    {ENTRY_KEY} TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS {TABLE_ACCESS} (
+    {ACCESS_PATH} TEXT,
+    {ACCESS_TIMESTAMP} INTEGER,
+    CONSTRAINT fk_entry
+        FOREIGN KEY({ACCESS_PATH})
+        REFERENCES {TABLE_ENTRY}({ENTRY_PATH})
+        ON DELETE CASCADE
+);"""
 
 
 class DbEntry:
-    def __init__(self, path: str, key: Key, frequency: int):
+    def __init__(self, path: str, key: Key, access_history):
         self.path = path
         self.key = key
-        self.frequency = frequency
+        self.access_history = access_history
 
 
 def regexp(expr, item):
@@ -48,7 +57,7 @@ def open_connection():
 
 def init():
     conn = open_connection()
-    conn.cursor().execute(CREATE_TABLE)
+    conn.cursor().executescript(CREATE_SCHEMA)
     conn.close()
 
 
@@ -91,17 +100,25 @@ def read_entries_from_db(regexp: str) -> Dict[str, DbEntry]:
     :param regexp:
     :return: Dict: path -> (key, frequency)
     """
-    query = f"SELECT {COLUMN_PATH},{COLUMN_KEY},{COLUMN_FREQUENCY} FROM {TABLE_FILES} WHERE {COLUMN_PATH} REGEXP ?"
+    query = f"""
+    SELECT {TABLE_ENTRY}.{ENTRY_PATH}, {TABLE_ENTRY}.{ENTRY_KEY}, {TABLE_ACCESS}.{ACCESS_TIMESTAMP}
+    FROM {TABLE_ENTRY} 
+    LEFT JOIN {TABLE_ACCESS} ON {TABLE_ENTRY}.{ENTRY_PATH}={TABLE_ACCESS}.{ACCESS_PATH}
+    WHERE {ENTRY_PATH} REGEXP ?
+    """
     conn = open_connection()
     try:
         cursor = conn.cursor().execute(query, (regexp,))
         result = {}
         for row in cursor:
-            path = (row[0])
-            key = Key(row[1])
-            frequency = row[2]
-            entry = DbEntry(path, key, frequency)
-            result[path] = entry
+            path = row[0]
+            access = Access(row[2])
+            if path in result:
+                result[path].access_history.append(access)
+            else:
+                key = Key(row[1])
+                entry = DbEntry(path, key, AccessHistory([access]))
+                result[path] = entry
         return result
     finally:
         conn.close()
@@ -115,7 +132,7 @@ def insert_new_entries(entries_fs: Dict[str, Entry], entries_db: Dict[str, DbEnt
     for path in new_paths:
         logger.info("Persisting new entry: {}".format(path))
     key_module.assign_keys(new_entries, entries_db)
-    query = f"INSERT INTO {TABLE_FILES} VALUES "
+    query = f"INSERT INTO {TABLE_ENTRY} VALUES "
     for entry in new_entries.values():
         query += "('{}','{}','{}'),".format(entry.path, entry.key.value, entry.frequency)
     query = query[:-1] + ';'
@@ -131,7 +148,7 @@ def insert_new_entries(entries_fs: Dict[str, Entry], entries_db: Dict[str, DbEnt
 
 def remove_entries(obsolete_paths: Iterable[str]):
     """Deletes obsolete entries in the db"""
-    query = f"DELETE FROM {TABLE_FILES} WHERE {COLUMN_PATH} REGEXP ?"
+    query = f"DELETE FROM {TABLE_ENTRY} WHERE {ENTRY_PATH} REGEXP ?"
     conn = open_connection()
     try:
         for path in obsolete_paths:
@@ -144,10 +161,19 @@ def remove_entries(obsolete_paths: Iterable[str]):
 
 def update_entry(entry):
     """Updates given entry in database"""
-    query = f"UPDATE {TABLE_FILES} SET {COLUMN_FREQUENCY}=?, {COLUMN_KEY}=? WHERE {COLUMN_PATH}=?"
+    query = f"UPDATE {TABLE_ENTRY} SET {ENTRY_KEY}=? WHERE {ENTRY_PATH}=?"
     conn = open_connection()
     try:
-        conn.cursor().execute(query, (entry.frequency, entry.key.value, entry.path))
+        conn.cursor().execute(query, (entry.key.value, entry.path))
         conn.commit()
+    finally:
+        conn.close()
+
+
+def insert_access(path: str, access: Access):
+    query = f"INSERT INTO {TABLE_ACCESS} VALUES ({path},{access.timestamp})"
+    conn = open_connection()
+    try:
+        conn.cursor().execute(query, (path, access.timestamp))
     finally:
         conn.close()

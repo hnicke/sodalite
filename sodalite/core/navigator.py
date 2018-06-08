@@ -32,7 +32,7 @@ class Navigator:
         """
         path = self.history.cwd()
         entry = self.entry_access.retrieve_entry(path)
-        _chdir(entry)
+        self._chdir(entry)
         return entry
 
     def is_navigation_key(self, key: str) -> bool:
@@ -48,7 +48,7 @@ class Navigator:
         :raises: FileNotFoundError, PermissionError
         """
         try:
-            entry = self.entry_access.get_entry_for_key(Key(key))
+            entry = self.entry_access.retrieve_entry_for_key(Key(key))
         except FileNotFoundError:
             # try to rescan dir
             self.current_entry = self.entry_access.retrieve_entry(self.history.cwd(), cache=False)
@@ -57,7 +57,8 @@ class Navigator:
             entry = self.current()
         self.history.visit(entry.path)
         self.current_entry = entry
-        _chdir(entry)
+        self._access(entry)
+        self._chdir(entry)
         return entry
 
     def visit_path(self, path: str) -> Entry:
@@ -70,21 +71,22 @@ class Navigator:
         self.history.visit(path)
         entry = self.entry_access.retrieve_entry(path)
         self.current_entry = entry
-        _chdir(entry)
+        self._access(entry)
+        self._chdir(entry)
         return entry
 
     def visit_previous(self) -> Entry:
         path = self.history.backward()
         entry = self.entry_access.retrieve_entry(path)
         self.current_entry = entry
-        _chdir(entry)
+        self._chdir(entry)
         return entry
 
     def visit_next(self) -> Entry:
         path = self.history.forward()
         entry = self.entry_access.retrieve_entry(path)
         self.current_entry = entry
-        _chdir(entry)
+        self._chdir(entry)
         return entry
 
     def visit_parent(self) -> Entry:
@@ -114,6 +116,17 @@ class Navigator:
             self.entry_access.update_entry(conflicting_entry)
             logger.debug("Swapped key of conflicting entry '{}'".format(conflicting_entry))
 
+    def _access(self, entry: Entry):
+        """Adds an access to given entry"""
+        self.entry_access.access_now(entry)
+
+    def _chdir(self, entry):
+        if entry.is_dir():
+            pwd = entry.path
+        else:
+            pwd = entry.dir
+        os.chdir(pwd)
+
     @property
     def current_entry(self):
         return self._current_entry
@@ -134,11 +147,3 @@ class Navigator:
             self.visit_path(path)
         except FileNotFoundError:
             self.recursive_try_visit(os.path.pardir(path))
-
-
-def _chdir(entry):
-    if entry.is_dir():
-        pwd = entry.path
-    else:
-        pwd = entry.dir
-    os.chdir(pwd)

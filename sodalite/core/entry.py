@@ -20,17 +20,30 @@ class EntryType(Enum):
     CHARACTER_DEVICE = 7
 
 
+class Access:
+    def __init__(self, timestamp):
+        self.timestamp = timestamp
+
+
+class AccessHistory:
+    def __init__(self, access_list: List[Access]):
+        self.access_list: List[Access] = access_list
+
+    def append(self, access: Access):
+        self.access_list.append(access)
+
+
 class Entry:
     """
     defines the entry class which represents a file or directory
     """
 
-    def __init__(self, path: str, parent: 'Entry' = None, key: Key = Key(''),
-                 frequency=0):
+    def __init__(self, path: str, access_history: AccessHistory, parent: 'Entry' = None, key: Key = Key('')):
         """
         :param path: the absolute, canonical path of this entry
         """
         self.path = path
+        self.access_history: AccessHistory = access_history
         self._parent = parent
         self.dir, self.name = os.path.split(path)
         self._key = key
@@ -39,7 +52,6 @@ class Entry:
         self.path_to_child: Dict[str, Entry] = {}
         self.key_to_child: Dict[Key, Entry] = {}
 
-        self.frequency = frequency
         self.__is_plain_text_file = None
         self.hooks: list = []
         self.stat = os.lstat(path)
@@ -77,6 +89,19 @@ class Entry:
             self.path_to_child[entry.path] = entry
             self.key_to_child[entry.key] = entry
 
+    # TODO remove
+    # @property
+    # def children_biggest_frequency(self) -> int:
+    #     if not self._children_biggest_frequency:
+    #         self._children_biggest_frequency = max(self._children, key=lambda x: x.frequency)
+    #     return self._children_biggest_frequency.frequency
+    #
+    # @property
+    # def relative_frequency(self) -> float:
+    #     if not self._relative_frequency:
+    #         self._relative_frequency = self.frequency / max(self._parent.children_biggest_frequency, 1)
+    #     return self._relative_frequency
+
     @property
     def key(self):
         return self._key
@@ -97,7 +122,7 @@ class Entry:
         return self.path_to_child.get(path, None)
 
     def __str__(self):
-        return "[path:{}, key:{}, type:{}, frequency:{}]".format(self.path, self.key, self.type, self.frequency)
+        return "[path:{}, key:{}, type:{}]".format(self.path, self.key, self.type)
 
     def __repr__(self):
         return str(self)
