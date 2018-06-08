@@ -7,7 +7,6 @@ from typing import Dict, Iterable, List
 
 from binaryornot.check import is_binary
 
-from core.frecency import AccessHistory
 from .key import Key
 
 
@@ -26,12 +25,16 @@ class Entry:
     defines the entry class which represents a file or directory
     """
 
-    def __init__(self, path: str, access_history: AccessHistory, parent: 'Entry' = None, key: Key = Key('')):
+    def __init__(self, path: str, access_history: List[int]= None, parent: 'Entry' = None, key: Key = Key('')):
         """
         :param path: the absolute, canonical path of this entry
         """
         self.path = path
-        self.access_history: AccessHistory = access_history
+        if not access_history:
+            access_history = []
+        # TODO set frecency
+        self.frecency = 0
+        self.access_history: List[int] = access_history
         self._parent = parent
         self.dir, self.name = os.path.split(path)
         self._key = key

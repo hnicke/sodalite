@@ -1,11 +1,10 @@
 import logging
 import re
 import sqlite3
-from typing import Dict, Iterable
+from typing import Dict, Iterable, List
 
 from core import key as key_module
 from core.entry import Entry
-from core.frecency import Access, AccessHistory
 from core.key import Key
 from util import environment
 
@@ -39,10 +38,10 @@ CREATE TABLE IF NOT EXISTS {TABLE_ACCESS} (
 
 
 class DbEntry:
-    def __init__(self, path: str, key: Key, access_history):
-        self.path = path
-        self.key = key
-        self.access_history = access_history
+    def __init__(self, path: str, key: Key, access_history: List[int]):
+        self.path: str = path
+        self.key: Key = key
+        self.access_history: List[int] = access_history
 
 
 def regexp(expr, item):
@@ -77,9 +76,9 @@ def inject_data(entry):
     entries_db = {path: entry_db for (path, entry_db) in entries_db.items() if path not in obsolete_paths}
     # inject values
     for db_entry in entries_db.values():
-        child = entry.get_child_for_path(db_entry.path)
+        child: Entry = entry.get_child_for_path(db_entry.path)
         child.key = db_entry.key
-        child.frequency = db_entry.frequency
+        child.access_history = db_entry.access_history
     insert_new_entries(entries_fs, entries_db)
 
 
@@ -105,7 +104,7 @@ def read_entries_from_db(regexp: str) -> Dict[str, DbEntry]:
     SELECT {TABLE_ENTRY}.{ENTRY_PATH}, {TABLE_ENTRY}.{ENTRY_KEY}, {TABLE_ACCESS}.{ACCESS_TIMESTAMP}
     FROM {TABLE_ENTRY} 
     LEFT JOIN {TABLE_ACCESS} ON {TABLE_ENTRY}.{ENTRY_PATH}={TABLE_ACCESS}.{ACCESS_PATH}
-    WHERE {ENTRY_PATH} REGEXP ?
+    WHERE {TABLE_ENTRY}.{ENTRY_PATH} REGEXP ?
     """
     conn = open_connection()
     try:
@@ -113,12 +112,12 @@ def read_entries_from_db(regexp: str) -> Dict[str, DbEntry]:
         result = {}
         for row in cursor:
             path = row[0]
-            access = Access(row[2])
+            access = row[2]
             if path in result:
                 result[path].access_history.append(access)
             else:
                 key = Key(row[1])
-                entry = DbEntry(path, key, AccessHistory([access]))
+                entry = DbEntry(path, key, [access])
                 result[path] = entry
         return result
     finally:
@@ -135,7 +134,7 @@ def insert_new_entries(entries_fs: Dict[str, Entry], entries_db: Dict[str, DbEnt
     key_module.assign_keys(new_entries, entries_db)
     query = f"INSERT INTO {TABLE_ENTRY} VALUES "
     for entry in new_entries.values():
-        query += "('{}','{}','{}'),".format(entry.path, entry.key.value, entry.frequency)
+        query += "('{}','{}'),".format(entry.path, entry.key.value)
     query = query[:-1] + ';'
     conn = open_connection()
     try:
@@ -171,10 +170,11 @@ def update_entry(entry):
         conn.close()
 
 
-def insert_access(path: str, access: Access):
-    query = f"INSERT INTO {TABLE_ACCESS} VALUES ({path},{access.timestamp})"
+def insert_access(path: str, access: int):
+    query = f"INSERT INTO {TABLE_ACCESS} VALUES (?,?)"
     conn = open_connection()
     try:
-        conn.cursor().execute(query, (path, access.timestamp))
+        conn.cursor().execute(query, (path, access))
+        conn.commit()
     finally:
         conn.close()

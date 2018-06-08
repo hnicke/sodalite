@@ -1,3 +1,4 @@
+import logging
 import re
 from enum import Enum
 from typing import List
@@ -5,6 +6,8 @@ from typing import List
 from core.entry import Entry
 from core.navigator import Navigator
 from util.observer import Observable
+
+logger = logging.getLogger(__name__)
 
 
 class Mode(Enum):
@@ -28,6 +31,7 @@ class ViewModel(Observable):
 
     def on_update(self):
         self.current_entry = self.navigator.current_entry
+        logger.info(f"Access history: {self.current_entry.access_history}")
         self._unprocessed_children = self.current_entry.children
         if self.current_entry.is_plain_text_file():
             self.file_content = self.current_entry.content
@@ -85,6 +89,6 @@ def sort(entries: List[Entry]):
     sorted_entries = sorted(entries, key=lambda x: x.name)
     sorted_entries.sort(key=lambda x: x.is_dir(), reverse=True)
     sorted_entries.sort(key=lambda x: x.is_hidden())
-    sorted_entries.sort(key=lambda x: x.frequency, reverse=True)
+    sorted_entries.sort(key=lambda x: x.frecency, reverse=True)
     sorted_entries.sort(key=lambda x: x.key.value == "")
     return sorted_entries

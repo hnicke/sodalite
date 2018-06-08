@@ -6,7 +6,6 @@ from core import dao
 from core import hook
 from core.key import Key
 from .entry import Entry
-from core.frecency import Access
 
 logger = logging.getLogger(__name__)
 
@@ -74,7 +73,7 @@ class EntryAccess:
 
     def access_now(self, entry):
         """Adds a new access to given entry"""
-        access = Access(time.time())
+        access = int(time.time() * 1000)
         entry.access_history.append(access)
         dao.insert_access(entry.path, access)
 

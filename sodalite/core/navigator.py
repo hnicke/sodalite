@@ -95,7 +95,7 @@ class Navigator:
             entry = self.entry_access.retrieve_entry(path)
             if not entry.path == self.current_entry.path:
                 self.current_entry = entry
-                _chdir(entry)
+                self._chdir(entry)
             return entry
         except FileNotFoundError:
             self.visit_previous()
