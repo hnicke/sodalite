@@ -4,6 +4,7 @@
 ##### Features
 - Use key `0` to navigate to root directory
 - Navigation history is remembered between sessions
+- Now using the concept of frecency instead of frequency for sorting entries. This results in a much better, more dynamic sorting strategy.
 ##### Bugfixes
 - Fix file launcher in graphics mode
 - Fix broken assign mode

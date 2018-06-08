@@ -10,7 +10,7 @@ _MILLIS_TO_HOURS = 1000 * 60 * 60 * 24
 
 
 def populate_ratings(entries: List['Entry']):
-    dict = relativate(calculate_frecency(entries))
+    dict = normalize(calculate_frecency(entries))
     for entry, rating in dict.items():
         entry.rating = rating
 
@@ -24,7 +24,7 @@ def calculate_frecency(entries: List['Entry']) -> Dict['Entry', int]:
     return entries_to_rating
 
 
-def relativate(entries: Dict['Entry', int]) -> Dict['Entry', int]:
+def normalize(entries: Dict['Entry', int]) -> Dict['Entry', int]:
     """Maps all frecencies in a way that the max frequency equals 1, in a linear fashion"""
     entries_to_ranking = {}
     biggest = max(entries.values())
