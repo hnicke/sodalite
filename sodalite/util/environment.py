@@ -21,6 +21,8 @@ logging.basicConfig(filename=log_file, level=logging.DEBUG,
 logger = logging.getLogger(__name__)
 logging.getLogger('watchdog').setLevel(logging.INFO)
 
+exit_cwd = None
+
 if user_data is None:
     user_data = os.path.join(home, '.local/share/sodalite/')
     if not os.path.exists(user_data):
@@ -53,14 +55,3 @@ if bookmark_dir is None:
     bookmark_dir = os.path.join(user_data, "bookmarks")
     if not os.path.exists(bookmark_dir):
         os.makedirs(bookmark_dir, exist_ok=True)
-
-
-def append_to_cwd_pipe(cwd: str):
-    """Before exiting, this needs to be called once, or the wrapping script won't stop
-    :param cwd: a path, will get written to output pipe if pipe exists
-    """
-    if cwd_pipe is not None and os.path.exists(cwd_pipe):
-        logger.info("Writing '{}' to cwd_pipe '{}'".format(cwd, cwd_pipe))
-        with open(cwd_pipe, 'w') as p:
-            p.write(cwd)
-            p.close()

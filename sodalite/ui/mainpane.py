@@ -91,8 +91,7 @@ class MainPane(urwid.WidgetWrap):
         elif key == '0':
             self.navigator.visit_path('/')
         elif key == 'enter':
-            environment.append_to_cwd_pipe(self.navigator.history.cwd())
-            app.exit()
+            app.exit(cwd=self.navigator.history.cwd())
         elif key == 'ctrl y':
             pyperclip.copy(self.model.current_entry.path)
         elif key == '=':

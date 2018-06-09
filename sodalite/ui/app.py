@@ -11,6 +11,7 @@ from ui import theme
 from ui.hookbox import HookBox
 from ui.mainpane import MainPane
 from ui.viewmodel import ViewModel
+from util import environment
 
 logger = logging.getLogger(__name__)
 
@@ -95,8 +96,10 @@ def resume():
     loop.start()
 
 
-def exit():
+def exit(cwd=None):
+    environment.exit_cwd = cwd
     raise urwid.ExitMainLoop()
+
 
 
 def redraw_if_external():

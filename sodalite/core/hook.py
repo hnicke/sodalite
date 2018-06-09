@@ -34,8 +34,7 @@ class Hook:
         result = os.system(self.action)
         logger.info(f"Result is {result}")
         if self.finally_exit:
-            environment.append_to_cwd_pipe(entry.path)
-            app.exit()
+            app.exit(cwd=entry.path)
         else:
             app.resume()
 
