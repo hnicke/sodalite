@@ -18,7 +18,6 @@ def _io_to_tty():
     _old_stdout = sys.stdout
     sys.__stdin__ = sys.stdin = open('/dev/tty', 'r')
     sys.__stdout__ = sys.stdout = open('/dev/tty', 'w')
-    logger.info('Starting sodalite')
 
 
 def _io_to_std():
@@ -26,11 +25,16 @@ def _io_to_std():
     sys.__stdout__ = sys.stdout = _old_stdout
 
 
-if __name__ == "__main__":
+def parse_arguments():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--update-access", help='Persist an access to the current working directory and exit')
-    # TODO adjust help
-    args = parser.parse_args()
+    parser.add_argument("--update-access", metavar='<path>',
+                        help='Store access to given relative or absolute <path> in database and exit.')
+    parser.prog = 'sodalite'
+    return parser.parse_args()
+
+
+if __name__ == "__main__":
+    args = parse_arguments()
     if args.update_access:
         # make the update run as nicely as possible
         os.nice(20)
@@ -54,10 +58,10 @@ if __name__ == "__main__":
         exit(0)
 
     try:
+        logger.info('Starting sodalite')
         _io_to_tty()
-        from ui import app
-
-        app.run()
+        from ui import graphics
+        graphics.run()
         if environment.exit_cwd:
             sys.__stdout__ = sys.stdout = open('/dev/stdout', 'w')
             _io_to_std()

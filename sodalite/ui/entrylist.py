@@ -6,7 +6,7 @@ from urwid import AttrSpec, ListBox
 from core import key as key_module
 from core.entry import Entry, EntryType
 from core.navigator import Navigator
-from ui import theme, app
+from ui import theme, graphics
 from ui.viewmodel import ViewModel, Mode
 
 logger = logging.getLogger(__name__)
@@ -83,7 +83,7 @@ class EntryList(List):
         self.model.register(self)
 
     def on_update(self):
-        with app.DRAW_LOCK:
+        with graphics.DRAW_LOCK:
             self.walker.clear()
             self.walker.extend(
                 [self.create_list_entry(entry) for entry in self.model.entries])
@@ -111,7 +111,7 @@ class EntryList(List):
             message = 'show dotfiles'
         else:
             message = 'hide dotfiles'
-        app.notify(message, duration=0.7)
+        graphics.notify(message, duration=0.7)
 
     def keypress_choose_entry(self, size, key):
         if key in key_module.get_all_keys():

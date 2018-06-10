@@ -4,7 +4,7 @@ import pyperclip
 import urwid
 from urwid import AttrSpec
 
-from ui import theme, app
+from ui import theme, graphics
 from ui.entrylist import EntryList
 from ui.filepreview import FilePreview
 from ui.filter import Filter
@@ -30,7 +30,7 @@ class MainPane(urwid.WidgetWrap):
         super().__init__(self.box)
 
     def on_update(self):
-        with app.DRAW_LOCK:
+        with graphics.DRAW_LOCK:
             if self.model.current_entry.is_dir():
                 self.body = self.entry_list
                 self.frame.set_body(self.entry_list)
@@ -38,7 +38,7 @@ class MainPane(urwid.WidgetWrap):
                 self.body = self.file_preview
                 self.frame.set_body(self.file_preview)
             self.update_title()
-            app.redraw_if_external()
+            graphics.redraw_if_external()
 
     def update_title(self):
         mode = self.model.mode
@@ -68,9 +68,9 @@ class MainPane(urwid.WidgetWrap):
             else:
                 return self.body.keypress(size, key)
         except PermissionError:
-            app.notify((AttrSpec(theme.forbidden + ',bold', '', colors=16), "PERMISSION DENIED"))
+            graphics.notify((AttrSpec(theme.forbidden + ',bold', '', colors=16), "PERMISSION DENIED"))
         except FileNotFoundError:
-            app.notify((AttrSpec(theme.forbidden + ',bold', '', colors=16), "FILE NOT FOUND"))
+            graphics.notify((AttrSpec(theme.forbidden + ',bold', '', colors=16), "FILE NOT FOUND"))
 
     def keypress_normal(self, size, key):
         if key == '.':
@@ -91,7 +91,7 @@ class MainPane(urwid.WidgetWrap):
         elif key == '0':
             self.navigator.visit_path('/')
         elif key == 'enter':
-            app.exit(cwd=self.navigator.history.cwd())
+            graphics.exit(cwd=self.navigator.history.cwd())
         elif key == 'ctrl y':
             pyperclip.copy(self.model.current_entry.path)
         elif key == '=':

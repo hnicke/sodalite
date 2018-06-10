@@ -3,7 +3,7 @@ import os
 from typing import List, Dict, Collection
 
 from core import config
-from ui import app
+from ui import graphics
 
 logger = logging.getLogger(__name__)
 
@@ -33,9 +33,9 @@ class Hook:
         result = os.system(f"( {self.action} ) > /dev/tty < /dev/tty")
         logger.info(f"Result is {result}")
         if self.finally_exit:
-            app.exit(cwd=entry.path)
+            graphics.exit(cwd=entry.path)
         else:
-            app.resume()
+            graphics.resume()
 
 
 def _extract_hook(key: str, hook_definition: [dict, str]) -> 'Hook':

@@ -2,7 +2,7 @@ import urwid
 
 from core import hook
 from core.hook import Hook
-from ui import app
+from ui import graphics
 from ui.viewmodel import ViewModel
 
 
@@ -26,7 +26,7 @@ class HookBox(urwid.WidgetWrap):
     data = property(None, data)
 
     def on_update(self):
-        with app.DRAW_LOCK:
+        with graphics.DRAW_LOCK:
             self._w.base_widget.contents = [(HookCell(hook), self._w.base_widget.options()) for hook in
                                             self._data.current_entry.hooks if hook.label]
             if len(self._w.base_widget.contents) > 0:
