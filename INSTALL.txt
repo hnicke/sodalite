@@ -14,4 +14,5 @@ Run the 'install' script in order to install sodalite.
 |- DOC_DIR         |  documentation dir         |  /usr/share/doc          |
 |- LOG_DIR         |  log dir                   |  /var/log                |
 |- MIME_DIR        |  desktop entry dir         |  /usr/share/applications |
+|- MAN_DIR         |  man page dir              |  /usr/share/man          |
 .__________________________________________________________________________.
