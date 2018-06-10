@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## v0.11: June 10, 2018
 ##### Features
 - Use the concept of frecency instead of frequency for sorting entries. This results in a much better, more dynamic sorting strategy
 - Enhanced shell-integration monitors shell navigation with `cd` commands. Collected data affects the frecency score of the related entries
