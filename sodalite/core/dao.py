@@ -1,4 +1,5 @@
 import logging
+import os
 import re
 import sqlite3
 from typing import Dict, Iterable, List
@@ -25,7 +26,7 @@ ACCESS_TIMESTAMP = 'timestamp'
 CREATE_SCHEMA = f"""
 CREATE TABLE IF NOT EXISTS {TABLE_ENTRY} (
     {ENTRY_PATH} TEXT PRIMARY KEY,
-    {ENTRY_KEY} TEXT NOT NULL
+    {ENTRY_KEY} TEXT DEFAULT ''
 );
 CREATE TABLE IF NOT EXISTS {TABLE_ACCESS} (
     {ACCESS_PATH} TEXT,
@@ -38,7 +39,11 @@ CREATE TABLE IF NOT EXISTS {TABLE_ACCESS} (
 
 
 class DbEntry:
-    def __init__(self, path: str, key: Key, access_history: List[int]):
+    def __init__(self, path: str, key: Key = None, access_history: List[int] = None):
+        if not key:
+            key = Key('')
+        if not access_history:
+            access_history = []
         self.path: str = path
         self.key: Key = key
         self.access_history: List[int] = access_history
@@ -69,7 +74,7 @@ def inject_data(entry):
     Injects key and frequency information into children of given entry
     """
     entries_fs: Dict[str, Entry] = entry.path_to_child
-    entries_db: Dict[str, DbEntry] = get_db_entries(entry)
+    entries_db: Dict[str, DbEntry] = get_children(entry.realpath)
     # remove obsolete entries
     obsolete_paths = entries_db.keys() - entries_fs.keys()
     remove_entries(obsolete_paths)
@@ -82,16 +87,14 @@ def inject_data(entry):
     insert_new_entries(entries_fs, entries_db)
 
 
-def get_db_entries(parent: Entry) -> Dict[str, DbEntry]:
+def get_children(path: str) -> Dict[str, DbEntry]:
     """
     Queries the database for all child entries belonging to given entry
     """
-    basedir = parent.realpath
     # fix regexp for root
-    if basedir == '/':
-        basedir = ''
-    children = '{}/[^/]+$'.format(basedir)
-    query = '^{}'.format(children)
+    if path == '/':
+        path = ''
+    query = f"^{path}/[^/]+$"
     return read_entries_from_db(query)
 
 
@@ -118,10 +121,10 @@ def read_entries_from_db(regexp: str) -> Dict[str, DbEntry]:
 
             else:
                 key = Key(row[1])
-                entry_history = []
+                access_history = []
                 if access is not None:
-                    entry_history.append(access)
-                entry = DbEntry(path, key, entry_history)
+                    access_history.append(access)
+                entry = DbEntry(path, key=key, access_history=access_history)
                 result[path] = entry
         return result
     finally:
@@ -146,6 +149,26 @@ def insert_new_entries(entries_fs: Dict[str, Entry], entries_db: Dict[str, DbEnt
         conn.commit()
     except sqlite3.IntegrityError:
         logger.error("Integrity error. failed to insert at least one of " + str(new_paths))
+    finally:
+        conn.close()
+
+
+def entry_exists(path: str) -> bool:
+    query = f"""SELECT EXISTS (SELECT 1 FROM {TABLE_ENTRY} WHERE ({ENTRY_PATH}) = ?)"""
+    conn = open_connection()
+    try:
+        exists = conn.cursor().execute(query, (path,)).fetchone()[0]
+        return exists
+    finally:
+        conn.close()
+
+
+def insert_entry(entry):
+    query = f"""INSERT INTO {TABLE_ENTRY} ({ENTRY_PATH},{ENTRY_KEY}) VALUES (?,?)"""
+    conn = open_connection()
+    try:
+        conn.cursor().execute(query, (entry.path, entry.key.value))
+        conn.commit()
     finally:
         conn.close()
 

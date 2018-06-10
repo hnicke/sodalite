@@ -1,5 +1,16 @@
 # sodalite shell integration
 
+shell=$(ps -p $$ | tail -n1 | rev | cut -d" " -f1 | rev)
+
+# intercept call to cd: add access to database
+function cd { 
+    (
+        for last in $@; do true; done
+        nohup sodalite --update-access "$last" &
+    ) >/dev/null 2>&1
+    builtin cd $@
+}
+
 function headless_clear {
     [ $DISPLAY ] || clear
     # untrap
@@ -15,7 +26,7 @@ function sodalite-emacs-widget {
     target="$(sodalite)"
     if [ "$target" ]; then
         [ -d "$target" ] || target="$(dirname $target)"
-        cd "$target"
+        builtin cd "$target"
     fi
     zle reset-prompt
 }
@@ -25,7 +36,6 @@ function sodalite-vim-widget {
     zle -K viins
 }
 
-shell=$(ps -p $$ | tail -n1 | rev | cut -d" " -f1 | rev)
 if [ $shell = 'zsh' ]; then
     zle     -N      sodalite-vim-widget
     zle     -N      sodalite-emacs-widget

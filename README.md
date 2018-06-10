@@ -44,7 +44,7 @@ In order to manually install `sodalite`, clone this repository, `cd` to the proj
 ```bash
 sudo ./install
 ```
-For customization of the destination directories, consult [INSTALL](../INSTALL).
+For customization of the destination directories, consult [INSTALL](../INSTALL.txt).
 
 > **Necessary dependencies**:  
 > - [python3](https://www.python.org/downloads/release/python-364/) 
@@ -57,7 +57,11 @@ For customization of the destination directories, consult [INSTALL](../INSTALL).
 > - [xdg-utils](https://www.freedesktop.org/wiki/Software/xdg-utils/)
 
 ## Configuration
-`sodalite` needs to get integrated into your favourite shell (supported: `bash`, `zsh`, `fish`).  
+For maximum benefit, `sodalite` needs to get integrated into your favourite shell (supported: `bash`, `zsh`, `fish`).
+The iintegration will:
+
+1. Add a keybinding to launch sodalite wich enables convenient navigation
+2. Collect data about your navigation profile (e.g., by intercepting `cd` calls) in order to customize your view on the data
 
 #### bash / zsh
 Simply add following line to your `.bashrc` / `.zshrc`:
@@ -70,11 +74,15 @@ The script will set up a keybinding which launches `sodalite`.
 * Vim keymap:       `f` in command (aka normal) mode
 
 #### fish
-Create the function `fish_user_key_bindings` in your `config.fish` (if not already exists). 
-Then, insert following line into the function:
+Add following to your fish.config:
 ```bash
 source /usr/share/sodalite/shell-integration.fish
+
+function fish_user_key_bindings
+    bind \cf sodalite-widget
+end
 ```
+If the function `fish_user_key_bindings` already exists, only add its content to the function.
 
 *If your favourite shell is not supported, feel free to open an issue.*
 

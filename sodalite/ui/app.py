@@ -101,7 +101,6 @@ def exit(cwd=None):
     raise urwid.ExitMainLoop()
 
 
-
 def redraw_if_external():
     """
     Redraws the screen if and only if the current thread is NOT the main event loop.

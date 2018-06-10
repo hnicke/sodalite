@@ -4,7 +4,6 @@ from typing import List, Dict, Collection
 
 from core import config
 from ui import app
-from util import environment
 
 logger = logging.getLogger(__name__)
 
@@ -31,7 +30,7 @@ class Hook:
     def trigger(self, entry):
         os.environ['entry'] = entry.path
         logger.info("Executing command: {}".format(self.action))
-        result = os.system(self.action)
+        result = os.system(f"( {self.action} ) > /dev/tty < /dev/tty")
         logger.info(f"Result is {result}")
         if self.finally_exit:
             app.exit(cwd=entry.path)

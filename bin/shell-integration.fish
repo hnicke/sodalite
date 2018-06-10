@@ -1,4 +1,10 @@
 # sodalite integration into fish
+#
+
+function cd
+  begin; nohup sodalite --update-access "$argv[-1]" &; end >/dev/null 2>&1
+  builtin cd $argv
+end
 
 function sodalite-widget 
   set target (sodalite)
@@ -11,5 +17,3 @@ function sodalite-widget
   end
   commandline -f repaint
 end
-
-bind \cf sodalite-widget
