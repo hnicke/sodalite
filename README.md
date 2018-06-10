@@ -44,7 +44,7 @@ In order to manually install `sodalite`, clone this repository, `cd` to the proj
 ```bash
 sudo ./install
 ```
-For customization of the destination directories, consult [INSTALL](../INSTALL.txt).
+For customization of the destination directories, consult [INSTALL.txt](NSTALL.txt).
 
 > **Necessary dependencies**:  
 > - [python3](https://www.python.org/downloads/release/python-364/) 
