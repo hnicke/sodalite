@@ -5,6 +5,7 @@
 - Add man page
 ##### Bugfixes
 - Fix resolving of relative symlinks
+- Child processes spawned with sodalite-open can now live further even if their parent process (sodalite and it's containing shell) stopped
 
 ## v0.11: June 10, 2018
 ##### Features

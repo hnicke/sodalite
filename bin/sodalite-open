@@ -53,7 +53,7 @@ desktop_entry=$(xdg-mime query default $filetype)
 [ "$desktop_entry" ] && [ $(is_terminal_app "$desktop_entry") -eq 0 ] || background="true"
 
 if [ "$background" ]; then
-    xdg-open $target_file &
+    nohup xdg-open $target_file >/dev/null 2>&1 &
 else
     xdg-open $target_file
 fi
