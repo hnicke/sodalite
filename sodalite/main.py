@@ -10,6 +10,7 @@ from util import environment
 
 logger = logging.getLogger(__name__)
 
+VERSION = 'sodalite v0.11.0'
 
 def _io_to_tty():
     global _old_stdin
@@ -26,15 +27,25 @@ def _io_to_std():
 
 
 def parse_arguments():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--update-access", metavar='<path>',
-                        help='Store access to given relative or absolute <path> in database and exit.')
-    parser.prog = 'sodalite'
+    parser = argparse.ArgumentParser(prog='sodalite', description='A terminal file navigator and launcher')
+    parser.add_argument("path", nargs="?", help="the path to the current entry at startup. Defaults to $PWD")
+    parser.add_argument("-v", "--version", action='store_true', help="print the version and exist")
+    parser.add_argument("-u", "--update-access", metavar='target',
+                        help='store access to given relative or absolute target in database and exit')
     return parser.parse_args()
 
 
 if __name__ == "__main__":
     args = parse_arguments()
+    if args.version:
+        print(VERSION)
+        exit(0)
+    if args.path:
+        if not os.path.exists(args.path):
+            print(f"'{args.path}' does not exist, aborting", file=sys.stderr)
+            exit(1)
+        os.chdir(args.path)
+
     if args.update_access:
         # make the update run as nicely as possible
         os.nice(20)
@@ -61,6 +72,7 @@ if __name__ == "__main__":
         logger.info('Starting sodalite')
         _io_to_tty()
         from ui import graphics
+
         graphics.run()
         if environment.exit_cwd:
             sys.__stdout__ = sys.stdout = open('/dev/stdout', 'w')
