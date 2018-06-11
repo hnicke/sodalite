@@ -10,7 +10,7 @@ What makes it stand out is it's extremely efficient menu navigation philsophy.
 *Dungeon Crawl Stone Soup: For selecting an item, press it's automatically assigned key.*
 
 After a while, the keys burn into one's muscle memory - using the game's interface feels extremely efficient.  
-`sodalite` brings the same asset to your file system: Navigation at the speed of thought.
+`sodalite` brings the same feature to your file system: Navigation at the speed of thought.
 
 ## Navigate the file system
 When opening `sodalite`, you will see the listing of the current directory.   
@@ -55,36 +55,6 @@ For customization of the destination directories, consult [INSTALL.txt](NSTALL.t
 > - [pyperclip](https://github.com/asweigart/pyperclip)
 > - [watchdog](https://github.com/gorakhargosh/watchdog)
 > - [xdg-utils](https://www.freedesktop.org/wiki/Software/xdg-utils/)
-
-## Configuration
-For maximum benefit, `sodalite` needs to get integrated into your favourite shell (supported: `bash`, `zsh`, `fish`).
-The iintegration will:
-
-1. Add a keybinding to launch sodalite wich enables convenient navigation
-2. Collect data about your navigation profile (e.g., by intercepting `cd` calls) in order to customize your view on the data
-
-#### bash / zsh
-Simply add following line to your `.bashrc` / `.zshrc`:
-
-```bash
-source /usr/share/sodalite/shell-integration.sh
-```
-The script will set up a keybinding which launches `sodalite`.
-* Emacs keymap:     `Control + f`
-* Vim keymap:       `f` in command (aka normal) mode
-
-#### fish
-Add following to your fish.config:
-```bash
-source /usr/share/sodalite/shell-integration.fish
-
-function fish_user_key_bindings
-    bind \cf sodalite-widget
-end
-```
-If the function `fish_user_key_bindings` already exists, only add its content to the function.
-
-*If your favourite shell is not supported, feel free to open an issue.*
 
 ## Getting started
 See [here](docs/usage.md) for detailed usage information.

@@ -1,56 +1,104 @@
-% HELLO(1) Version 1.0 | Frivolous "Hello World" Documentation
+% SODALITE(1) Version 1.0 | User Commands
 
 NAME
 ====
 
-**hello** — prints Hello, World!
+**sodalite** — terminal file navigator and launcher 
 
 SYNOPSIS
 ========
 
-| **hello** \[**-o**|**--out** _file_] \[_dedication_]
-| **hello** \[**-h**|**--help**|**-v**|**--version**]
+| **sodalite** \[**-h**|**-v**|\[**-u** *target*] *path*]
 
 DESCRIPTION
 ===========
 
-Prints "Hello, _dedication_!" to the terminal. If no dedication is
-given, uses the default dedication. The default dedication is chosen by
-the following sequence:
+Sodalite is a keyboard-driven terminal file navigator and launcher. It's designed to be the missing glue for those who use the shell as their daily driver and seek more speed and ease.
 
- 1. Using the environment variable *DEFAULT_HELLO_DEDICATION*
- 2. Using the per-user configuration file, *~/.hellorc*
- 3. Using the system-wide configuration file, */etc/hello.conf*
- 4. Finally, using "world".
+In a nutshell, sodalite assigns a key to each entry. Pressing a key navigates to the corresponding entry. 
+The assignments are permanent but can be changed to your liking.
+
+Next to fast navigation, sodalite brings file preview with syntax highlighting and a pluggable hook system.
+
+Launch sodalite: sodalite \[*path*]  
+If *path* is supplied, sodalite will start in given path.
+
+
+
+Shell integration
+-----------------
+
+It's recommended to integrate sodalite into the shell. The integration does the following:
+
+- set up a keybinding to launch sodalite wich enables convenient navigation
+- collect data about your navigation profile (e.g., by intercepting `cd` calls) in order to customize your view on the data
+
+**bash / zsh**
+
+Add following line to your `.bashrc` / `.zshrc`:
+
+```bash
+source /usr/share/sodalite/shell-integration.sh
+```
+The script will set up a keybinding which launches `sodalite`.
+
+* Emacs keymap:     `Control + f`
+* Vim keymap:       `f` in command (aka normal) mode
+
+**fish**
+
+Add following to your fish.config:
+```bash
+source /usr/share/sodalite/shell-integration.fish
+
+function fish_user_key_bindings
+    bind \cf sodalite-widget
+end
+```
+If the function `fish_user_key_bindings` already exists, only add its content to the function.
+
 
 Options
 -------
 
--h, --help
+-h, -\-help
 
 :   Prints brief usage information.
 
--o, --output
-
-:   Outputs the greeting to the given filename.
-
-    The file must be an **open(2)**able and **write(2)**able file.
-
--v, --version
+-v, -\-version
 
 :   Prints the current version number.
+
+-u, -\-update-access *target*
+
+:   Simulates navigation to *target* (a relative or absolute path to a file or directory) without launching the UI. However, the database is updated regularly. Afterwards, quits. For example:
+
+        sodalite -u .local/share/sodalite $HOME
+        
+    will store an access for each $HOME/.local, $HOME/.local/share and $HOME/.local/share/sodalite. 
+    
+    The purpose of this mode is to affect the entry ranking in a programmatical way. E.g., it is used in the shell integration where calls to *cd* are intercepted in order to gather information about the user's navigational preferences.
 
 FILES
 =====
 
-*~/.hellorc*
+*/etc/sodalite.yml*
 
-:   Per-user default dedication file.
+:   Global default configuration file.
 
-*/etc/hello.conf*
+*$XDG_CONFIG_HOME/sodalite/sodalite.yml*
 
-:   Global default dedication file.
+:   Per-user default configuration file. If `$XDG_CONFIG_HOME` is not set, uses `$HOME/.config`.
 
+*$XDG_DATA_HOME/sodalite/db.sqlite*
+
+:   Database of sodalite. If `$XDG_DATA_HOME` is not set, uses `$HOME/.local/share`.
+
+*/var/log/sodalite.log*
+
+:   The log.
+
+<!-- 
 ENVIRONMENT
 ===========
 
@@ -58,18 +106,20 @@ ENVIRONMENT
 
 :   The default dedication if none is given. Has the highest precedence
     if a dedication is not supplied on the command line.
-
+-->
 BUGS
 ====
 
-See GitHub Issues: <https://github.com/[owner]/[repo]/issues>
+Please report at https://github.com/hnicke/sodalite/issues.
 
 AUTHOR
 ======
 
-Foobar Goodprogrammer <foo@example.org>
+Heiko Nickerl <dev@heiko-nickerl.com>
 
+<!--
 SEE ALSO
 ========
 
 **hi(1)**, **hello(3)**, **hello.conf(5)**<Paste>
+-->
