@@ -3,6 +3,7 @@
 ## Unreleased
 ##### Features
 - Add man page
+- A key gets automatically reassigned to a newer entry if the corresponding old entry is not used
 ##### Bugfixes
 - Fix resolving of relative symlinks
 - Child processes spawned with sodalite-open can now live further even if their parent process (sodalite and it's containing shell) stopped

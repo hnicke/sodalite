@@ -202,17 +202,19 @@ class ListEntry(urwid.Text):
 
 
 def compute_color(entry: Entry) -> AttrSpec:
-    # TODO rewrite
+    rating = entry.rating
+    if entry._parent.unexplored:
+        rating = 0.5
     bold = False
     unimportant = False
     if not entry.readable:
         color = theme.forbidden
-    elif entry.rating < 0.05:
+    elif rating < 0.05:
         color = theme.unused
     else:
-        if entry.rating >= 0.6:
+        if rating >= 0.6:
             bold = True
-        elif entry.rating < 0.2:
+        elif rating < 0.2:
             unimportant = True
         if entry.type == EntryType.DIRECTORY:
             color = theme.directory

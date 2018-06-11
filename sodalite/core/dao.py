@@ -1,5 +1,4 @@
 import logging
-import os
 import re
 import sqlite3
 from typing import Dict, Iterable, List
@@ -80,11 +79,13 @@ def inject_data(entry):
     remove_entries(obsolete_paths)
     entries_db = {path: entry_db for (path, entry_db) in entries_db.items() if path not in obsolete_paths}
     # inject values
+    old_entries = {}
     for db_entry in entries_db.values():
         child: Entry = entry.get_child_for_path(db_entry.path)
         child.key = db_entry.key
         child.access_history = db_entry.access_history
-    insert_new_entries(entries_fs, entries_db)
+        old_entries[child.path] = child
+    insert_new_entries(entries_fs, old_entries)
 
 
 def get_children(path: str) -> Dict[str, DbEntry]:
@@ -131,14 +132,16 @@ def read_entries_from_db(regexp: str) -> Dict[str, DbEntry]:
         conn.close()
 
 
-def insert_new_entries(entries_fs: Dict[str, Entry], entries_db: Dict[str, DbEntry]):
+def insert_new_entries(entries_fs: Dict[str, Entry], entries_db: Dict[str, Entry]):
     new_paths = entries_fs.keys() - entries_db.keys()
     if not new_paths:
         return
     new_entries = {path: entries_fs[path] for path in new_paths}
     for path in new_paths:
         logger.info("Persisting new entry: {}".format(path))
-    key_module.assign_keys(new_entries, entries_db)
+    reassigned_old_entries = key_module.assign_keys(new_entries, entries_db)
+    for entry in reassigned_old_entries:
+        update_entry(entry)
     query = f"INSERT INTO {TABLE_ENTRY} VALUES "
     for entry in new_entries.values():
         query += "('{}','{}'),".format(entry.path, entry.key.value)
@@ -186,7 +189,7 @@ def remove_entries(obsolete_paths: Iterable[str]):
         conn.close()
 
 
-def update_entry(entry):
+def update_entry(entry: Entry):
     """Updates given entry in database"""
     query = f"UPDATE {TABLE_ENTRY} SET {ENTRY_KEY}=? WHERE {ENTRY_PATH}=?"
     conn = open_connection()

@@ -33,6 +33,7 @@ class Entry:
         self.path = path
         if not access_history:
             access_history = []
+        self.unexplored = False
         self.access_history: List[int] = access_history
         self._rating = None
         self._parent = parent
