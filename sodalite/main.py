@@ -17,8 +17,12 @@ def _io_to_tty():
     global _old_stdout
     _old_stdin = sys.stdin
     _old_stdout = sys.stdout
-    sys.__stdin__ = sys.stdin = open('/dev/tty', 'r')
-    sys.__stdout__ = sys.stdout = open('/dev/tty', 'w')
+    try:
+        sys.__stdin__ = sys.stdin = open('/dev/tty', 'r')
+        sys.__stdout__ = sys.stdout = open('/dev/tty', 'w')
+    except OSError:
+        # when debugging the app, /dev/tty is not available
+        pass
 
 
 def _io_to_std():
