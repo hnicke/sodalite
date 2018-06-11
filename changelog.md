@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+##### Features
+- Add man page
+##### Bugfixes
+- Fix resolving of relative symlinks
+
 ## v0.11: June 10, 2018
 ##### Features
 - Use the concept of frecency instead of frequency for sorting entries. This results in a much better, more dynamic sorting strategy

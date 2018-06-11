@@ -50,7 +50,7 @@ class Entry:
         self.permissions = oct(self.stat.st_mode)[-3:]
         self.type = detect_type(self.stat.st_mode)
         if self.is_link():
-            self.realpath = os.readlink(path)
+            self.realpath = os.path.join(os.path.dirname(path), os.readlink(path))
         else:
             self.realpath = path
         self._executable = None
