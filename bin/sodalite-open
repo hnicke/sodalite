@@ -20,6 +20,7 @@ function set_fallback_editor {
 # $1: desktop entry name, e.g. 'vim.desktop'
 function is_terminal_app {
     desktop_entry=$1
+    locations='~/.local/share/applications /usr/share/applications /usr/local/share/applications'
     for location in $locations; do
         entry=$location/$desktop_entry
         [ -f $entry ] && break
@@ -34,26 +35,25 @@ function is_terminal_app {
     fi
 }
 
-[ $1 ] || { echo Which file?; exit 1; }
+[ "$1" ] || { echo Which file?; exit 1; }
 
 target_file=$1
 
 # if running headless just launch editor
 if [ ! $DISPLAY ]; then
     set_fallback_editor
-    $editor $target_file
+    $editor "$target_file"
     exit
 fi
 
-locations='~/.local/share/applications /usr/share/applications /usr/local/share/applications'
-filetype=$(xdg-mime query filetype $target_file)
-desktop_entry=$(xdg-mime query default $filetype)
+filetype=$(xdg-mime query filetype "$target_file")
+desktop_entry=$(xdg-mime query default "$filetype")
 
 [ "$desktop_entry" ] && is_terminal_app "$desktop_entry" || background="true"
 
 if [ "$background" ]; then
-    nohup xdg-open $target_file >/dev/null 2>&1 &
+    nohup xdg-open "$target_file" >/dev/null 2>&1 &
 else
-    xdg-open $target_file
+    xdg-open "$target_file"
 fi
 
