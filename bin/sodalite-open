@@ -25,13 +25,12 @@ function is_terminal_app {
         [ -f $entry ] && break
     done
 
-    [ -f $entry ] || echo 1
-
+    [ -f "$entry" ] || { echo "Desktop entry '$entry' does not exist, aborting" >&2; exit 1; }
     is_terminal=$(cat "$entry" | grep ^Terminal= | cut -d"=" -f2)
     if [ "$is_terminal" = 'true' ]; then
-        echo 0
+        return 0
     else
-        echo 1
+        return 1
     fi
 }
 
@@ -50,7 +49,7 @@ locations='~/.local/share/applications /usr/share/applications /usr/local/share/
 filetype=$(xdg-mime query filetype $target_file)
 desktop_entry=$(xdg-mime query default $filetype)
 
-[ "$desktop_entry" ] && [ $(is_terminal_app "$desktop_entry") -eq 0 ] || background="true"
+[ "$desktop_entry" ] && is_terminal_app "$desktop_entry" || background="true"
 
 if [ "$background" ]; then
     nohup xdg-open $target_file >/dev/null 2>&1 &
