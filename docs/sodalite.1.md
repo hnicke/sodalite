@@ -57,19 +57,107 @@ end
 ```
 If the function `fish_user_key_bindings` already exists, only add its content to the function.
 
+Modi
+----
+
+Like in vim, there are different modi. In each mode, a different set of actions is available.
+
+- `NORMAL`: navigate the file system
+- `ASSIGN`: assign keys to files
+<!-- - `OPERATE`: modify the file system -->
+
+Global actions
+--------------
+Following general actions can be triggered everywhere in `sodalite`:
+
+**exit (`ENTER`)**
+
+:   Exit `sodalite`. Prints the current entry to `stdout`.
+
+    In case `sodalite` was invoked with the provided shell integration key-bindings, will `cd` into current directory. If the current entry is not a directoy but a file, will `cd` into the parent directory.
+
+**abort (`C-c`)**
+
+:   Exit `sodalite` without printing current directory to `stdout`.
+
+**normal_mode (`ESC`)**
+
+:   Enter normal mode.
+
+**filter (`/`)**
+
+:   Focuses the filter bar on the bottom. Use regular expressions to filter displayed entries. The filtering is case-insensitive. Press `CR` to submit or `ESC` to dismiss the filter.
+
+**toggle_dotfiles  (`M-h`)**
+
+:   Toggles visiblity of dotfiles.
+
+**scroll_page_down (`C-f`)**
+
+:   Scroll down one page.
+
+**scroll_page_up (`C-b`)**
+
+:   Scroll up one page.
+
+**scroll_half_page_down (`C-d`)**
+
+:   Scroll down half a page.
+
+**scroll_half_page_down (`C-u`)**
+
+:   Scroll up half a page.
+
+`NORMAL` mode
+-----------
+`sodalite` automatically assigns keys to entries in order to enable quick navigation. For navigating to a specifc entry, simply press its assigned key.
+Valid values for keys are all letters of the alphabet (lower and upper case), so there are 52 different keys. For every directory, each key is unique. If there are more than 52 entries in a directory, some entries will end up having no key assigned to them. However, you can change this within the `ASSIGN` mode.
+
+**normal.go_to (`[a-zA-Z]`)**
+
+:   Navigate to the entry matching pressed key.
+
+**normal.go_to_home (``[`~]``)**
+
+:   Navigate to the `$HOME` directory.
+
+**normal.go_to_root (`0`)**
+
+:   Navigate to the root directory.
+
+**normal.go_to_parent (`.`)**
+
+:   Navigate to the parent directory. Does nothing if parent directory does not exist.
+
+**normal.go_to_previous (`C-h`)**
+
+:   Navigate back in history one step. Does nothing if history does not contain a previous entry.
+
+**normal.go_to_next (`C-l`)**
+
+:   Navigate forward in history. Does nothing if history does not contain a next entry.
+
+**normal.yank_current_entry (`C-y`)**
+
+:   Copy current entry's path to the system's clipboard.
+
+**normal.assign_mode (`=`)**
+
+:   Enter assign mode.
+
 
 Options
 -------
 
--h, -\-help
+**-h, -\-help**
 
 :   Prints brief usage information.
 
--v, -\-version
+**-v, -\-version**
 
 :   Prints the current version number.
 
--u, -\-update-access *target*
+**-u, -\-update-access *target***
 
 :   Simulates navigation to *target* (a relative or absolute path to a file or directory) without launching the UI. However, the database is updated regularly. Afterwards, quits. For example:
 
@@ -78,6 +166,155 @@ Options
     will store an access for each $HOME/.local, $HOME/.local/share and $HOME/.local/share/sodalite. 
     
     The purpose of this mode is to affect the entry ranking in a programmatical way. E.g., it is used in the shell integration where calls to *cd* are intercepted in order to gather information about the user's navigational preferences.
+
+`ASSIGN` mode
+-----------
+The `ASSIGN` mode is needed to assign a specific key to an entry. This is accomplished within these steps:
+
+1. Enter assign mode
+2. Press a key associated with an entry or select an entry manually
+3. Press the new key
+
+If the newly assigned key is already assigned to another entry in the current directory, keys get swapped.
+Abort the process by pressing `Esc`.
+
+**assign.select_next (`C-n`)**
+
+:   Select next entry.
+
+**assign.select_previous (`C-p`)**
+
+:   Select previous entry.
+
+
+Configuration
+=============
+Upon startup, `sodalite` looks in following places for its configuration:
+
+1. `$XDG_CONFIG_HOME/sodalite/sodalite.yml` (user specific configuration).
+    If `$XDG_CONFIG_HOME` is not set, falls back to `$HOME/.config/sodalite/sodalite.yml`
+2. `/etc/sodalite.yml` (system-wide configuration)
+
+The configuration is written in [YAML](https://learnxinyminutes.com/docs/yaml/).
+
+Example configuration
+---------------------
+<!-- keymap:
+  "*": normal.toggle_bookmark -->
+```yml
+hooks:
+  general:
+  dir:
+  plain_text:
+    "e":
+      action: './"$entry"'
+      label: "execute"
+    "o":
+      action: 'vim "$entry"'
+      label: "open with vim"
+  custom:
+    image:
+      extensions: [png, jpg, bmp]
+      hooks:
+        "o":
+          action: 'feh "$entry"'
+          label: "open with feh"
+``` 
+
+<!-- **Customizing the default keymap**
+
+> This feature is **not yet implemented**.
+
+```yaml
+keymap:
+  <keybinding>: <built-in>
+```
+If *built-in>* matches the name of a built-in action, given *keybinding* is bound to this action.
+    
+**keybinding**:
+:   (String, required) The keybinding which is used to trigger the action. Use `ctrl a` and `meta a` to define the keys `Control a` and `Meta a`. Other special keys: `esc`, `enter`, `f1`
+
+**built-in**
+
+:   (String, required) The name of a built-in function (e.g., `normal.toggle_bookmark`)
+-->    
+    
+Action hooks
+------------
+
+It is possible to setup keybindings to trigger custom actions.
+Note that keybindings defined in the configuration file will take precedence over the default keymap.
+
+**Extended notation:**
+```yaml
+<keybinding>:
+  action: <action>
+  label: <label>
+```
+**Short notation:**
+```yaml
+<keybinding>: <action>
+```
+
+**action**
+
+: (String, required) The action which is triggered by given keybinding. *action* is interpreted as a shell command and executed within a subshell. Use the variable `$entry` to reference the current entry. If given string ends with `#q`, `sodalite` will exit after command execution.
+ 
+**label**
+
+: (String, optional) Is used to represent the hook in the UI. Should be short and concise. If omitted, the hook will not be displayed in the UI.
+ 
+**keybinding**
+
+: (String, required) The keybinding which is used to trigger the action. Use `ctrl a` and `meta a` to define the keys `Control a` and `Meta a`. Other special keys: `esc`, `enter`, `f1`
+
+
+The **hooks** declaration works like this:
+```yaml
+hooks:
+  dir:
+    <hook>
+    ...
+  file:
+    <hook>
+    ...
+  plain_text:
+    <hook>
+    ...
+  executable:
+    <hook>
+    ...
+  custom:
+    <name>:
+      extensions: [<extension>, ...]
+      hooks:
+        <hook>
+        ...
+      ...
+            
+```
+
+**dir**
+
+: (optional) Declared hooks within this map are available whenever the current entry is a directory.
+
+**file**
+
+: (optional) Declared hooks within this map are available whenever the current entry is a file.
+
+**plain_text**
+
+: (optional) Declared hooks within this map are available whenever the current entry is a plain text file.
+
+**executable**
+
+: (optional) Declared hooks within this map are available whenever the current entry is executable.
+
+**custom**
+
+: (optional) Declare one or more custom hooks and attach them to one or multiple extensions, and repeat this if you want. This makes the hooks available whenever the current entry has one of its attached extension.
+
+
 
 FILES
 =====
@@ -115,11 +352,11 @@ Please report at https://github.com/hnicke/sodalite/issues.
 AUTHOR
 ======
 
-Heiko Nickerl <dev@heiko-nickerl.com>
+Heiko Nickerl <dev(at)heiko-nickerl.com>
 
 <!--
 SEE ALSO
 ========
 
-**hi(1)**, **hello(3)**, **hello.conf(5)**<Paste>
+**hi(1)**, **hello(3)**, **hello.conf(5)**
 -->

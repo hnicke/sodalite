@@ -70,22 +70,140 @@ end
 .PP
 If the function \f[C]fish_user_key_bindings\f[] already exists, only add
 its content to the function.
+.SS Modi
 .PP
-\f[B]If your favourite shell is not supported, feel free to open a
-feature request.\f[]
+Like in vim, there are different modi.
+In each mode, a different set of actions is available.
+.IP \[bu] 2
+\f[C]NORMAL\f[]: navigate the file system
+.IP \[bu] 2
+\f[C]ASSIGN\f[]: assign keys to files
+.SS Global actions
+.PP
+Following general actions can be triggered everywhere in
+\f[C]sodalite\f[]:
+.TP
+.B \f[B]exit (\f[BC]ENTER\f[B])\f[]
+Exit \f[C]sodalite\f[].
+Prints the current entry to \f[C]stdout\f[].
+.RS
+.PP
+In case \f[C]sodalite\f[] was invoked with the provided shell
+integration key\-bindings, will \f[C]cd\f[] into current directory.
+If the current entry is not a directoy but a file, will \f[C]cd\f[] into
+the parent directory.
+.RE
+.TP
+.B \f[B]abort (\f[BC]C\-c\f[B])\f[]
+Exit \f[C]sodalite\f[] without printing current directory to
+\f[C]stdout\f[].
+.RS
+.RE
+.TP
+.B \f[B]normal_mode (\f[BC]ESC\f[B])\f[]
+Enter normal mode.
+.RS
+.RE
+.TP
+.B \f[B]filter (\f[BC]/\f[B])\f[]
+Focuses the filter bar on the bottom.
+Use regular expressions to filter displayed entries.
+The filtering is case\-insensitive.
+Press \f[C]CR\f[] to submit or \f[C]ESC\f[] to dismiss the filter.
+.RS
+.RE
+.TP
+.B \f[B]toggle_dotfiles (\f[BC]M\-h\f[B])\f[]
+Toggles visiblity of dotfiles.
+.RS
+.RE
+.TP
+.B \f[B]scroll_page_down (\f[BC]C\-f\f[B])\f[]
+Scroll down one page.
+.RS
+.RE
+.TP
+.B \f[B]scroll_page_up (\f[BC]C\-b\f[B])\f[]
+Scroll up one page.
+.RS
+.RE
+.TP
+.B \f[B]scroll_half_page_down (\f[BC]C\-d\f[B])\f[]
+Scroll down half a page.
+.RS
+.RE
+.TP
+.B \f[B]scroll_half_page_down (\f[BC]C\-u\f[B])\f[]
+Scroll up half a page.
+.RS
+.RE
+.SS \f[C]NORMAL\f[] mode
+.PP
+\f[C]sodalite\f[] automatically assigns keys to entries in order to
+enable quick navigation.
+For navigating to a specifc entry, simply press its assigned key.
+Valid values for keys are all letters of the alphabet (lower and upper
+case), so there are 52 different keys.
+For every directory, each key is unique.
+If there are more than 52 entries in a directory, some entries will end
+up having no key assigned to them.
+However, you can change this within the \f[C]ASSIGN\f[] mode.
+.TP
+.B \f[B]normal.go_to (\f[BC][a\-zA\-Z]\f[B])\f[]
+Navigate to the entry matching pressed key.
+.RS
+.RE
+.TP
+.B \f[B]normal.go_to_home (\f[BC][`~]\f[B])\f[]
+Navigate to the \f[C]$HOME\f[] directory.
+.RS
+.RE
+.TP
+.B \f[B]normal.go_to_root (\f[BC]0\f[B])\f[]
+Navigate to the root directory.
+.RS
+.RE
+.TP
+.B \f[B]normal.go_to_parent (\f[BC]\&.\f[B])\f[]
+Navigate to the parent directory.
+Does nothing if parent directory does not exist.
+.RS
+.RE
+.TP
+.B \f[B]normal.go_to_previous (\f[BC]C\-h\f[B])\f[]
+Navigate back in history one step.
+Does nothing if history does not contain a previous entry.
+.RS
+.RE
+.TP
+.B \f[B]normal.go_to_next (\f[BC]C\-l\f[B])\f[]
+Navigate forward in history.
+Does nothing if history does not contain a next entry.
+.RS
+.RE
+.TP
+.B \f[B]normal.yank_current_entry (\f[BC]C\-y\f[B])\f[]
+Copy current entry's path to the system's clipboard.
+.RS
+.RE
+.TP
+.B \f[B]normal.assign_mode (\f[BC]=\f[B])\f[]
+Enter assign mode.
+.RS
+.RE
 .SS Options
 .TP
-.B \-h, \-\-help
+.B \f[B]\-h, \-\-help\f[]
 Prints brief usage information.
 .RS
 .RE
 .TP
-.B \-v, \-\-version
+.B \f[B]\-v, \-\-version\f[]
 Prints the current version number.
 .RS
 .RE
 .TP
-.B \-u, \-\-update\-access \f[I]target\f[]
+.B \f[B]\-u, \-\-update\-access \f[BI]target\f[B] \f[]
 Simulates navigation to \f[I]target\f[] (a relative or absolute path to
 a file or directory) without launching the UI.
 However, the database is updated regularly.
@@ -107,6 +225,177 @@ programmatical way.
 E.g., it is used in the shell integration where calls to \f[I]cd\f[] are
 intercepted in order to gather information about the user's navigational
 preferences.
+.RE
+.SS \f[C]ASSIGN\f[] mode
+.PP
+The \f[C]ASSIGN\f[] mode is needed to assign a specific key to an entry.
+This is accomplished within these steps:
+.IP "1." 3
+Enter assign mode
+.IP "2." 3
+Press a key associated with an entry or select an entry manually
+.IP "3." 3
+Press the new key
+.PP
+If the newly assigned key is already assigned to another entry in the
+current directory, keys get swapped.
+Abort the process by pressing \f[C]Esc\f[].
+.TP
+.B \f[B]assign.select_next (\f[BC]C\-n\f[B])\f[]
+Select next entry.
+.RS
+.RE
+.TP
+.B \f[B]assign.select_previous (\f[BC]C\-p\f[B])\f[]
+Select previous entry.
+.RS
+.RE
+.SH Configuration
+.PP
+Upon startup, \f[C]sodalite\f[] looks in following places for its
+configuration:
+.IP "1." 3
+\f[C]$XDG_CONFIG_HOME/sodalite/sodalite.yml\f[] (user specific
+configuration).
+If \f[C]$XDG_CONFIG_HOME\f[] is not set, falls back to
+\f[C]$HOME/.config/sodalite/sodalite.yml\f[]
+.IP "2." 3
+\f[C]/etc/sodalite.yml\f[] (system\-wide configuration)
+.PP
+The configuration is written in
+YAML (https://learnxinyminutes.com/docs/yaml/).
+.SS Example configuration
+.IP
+.nf
+\f[C]
+hooks:
+\ \ general:
+\ \ dir:
+\ \ plain_text:
+\ \ \ \ "e":
+\ \ \ \ \ \ action:\ \[aq]./"$entry"\[aq]
+\ \ \ \ \ \ label:\ "execute"
+\ \ \ \ "o":
+\ \ \ \ \ \ action:\ \[aq]vim\ "$entry"\[aq]
+\ \ \ \ \ \ label:\ "open\ with\ vim"
+\ \ custom:
+\ \ \ \ image:
+\ \ \ \ \ \ extensions:\ [png,\ jpg,\ bmp]
+\ \ \ \ \ \ hooks:
+\ \ \ \ \ \ \ \ "o":
+\ \ \ \ \ \ \ \ \ \ action:\ \[aq]feh\ "$entry"\[aq]
+\ \ \ \ \ \ \ \ \ \ label:\ "open\ with\ feh"
+\f[]
+.fi
+.SS Action hooks
+.PP
+It is possible to setup keybindings to trigger custom actions.
+Note that keybindings defined in the configuration file will take
+precedence over the default keymap.
+.PP
+\f[B]Extended notation:\f[]
+.IP
+.nf
+\f[C]
+<keybinding>:
+\ \ action:\ <action>
+\ \ label:\ <label>
+\f[]
+.fi
+.PP
+\f[B]Short notation:\f[]
+.IP
+.nf
+\f[C]
+<keybinding>:\ <action>
+\f[]
+.fi
+.TP
+.B \f[B]\f[BC]<action>\f[B]\f[]
+(String, required) The action which is triggered by given keybinding.
+\f[C]<action>\f[] is interpreted as a shell command and executed within
+a subshell.
+Use the variable \f[C]$entry\f[] to reference the current entry.
+If given string ends with \f[C]#q\f[], \f[C]sodalite\f[] will exit after
+command execution.
+.RS
+.RE
+.TP
+.B \f[B]\f[BC]<label>\f[B]\f[]
+(String, optional) Is used to represent the hook in the UI.
+Should be short and concise.
+If omitted, the hook will not be displayed in the UI.
+.RS
+.RE
+.TP
+.B \f[B]\f[BC]<keybinding>\f[B]\f[]
+(String, required) The keybinding which is used to trigger the action.
+Use \f[C]ctrl\ a\f[] and \f[C]meta\ a\f[] to define the keys
+\f[C]Control\ a\f[] and \f[C]Meta\ a\f[].
+Other special keys: \f[C]esc\f[], \f[C]enter\f[], \f[C]f1\f[] \-
+\f[B]\f[BC]<built\-in>\f[B]\f[] (String, required) The name of a
+built\-in function (e.g., \f[C]normal.toggle_bookmark\f[])
+.RS
+.RE
+.PP
+The \f[B]hooks\f[] declaration works like this:
+.IP
+.nf
+\f[C]
+hooks:
+\ \ dir:
+\ \ \ \ <hook>
+\ \ \ \ ...
+\ \ file:
+\ \ \ \ <hook>
+\ \ \ \ ...
+\ \ plain_text:
+\ \ \ \ <hook>
+\ \ \ \ ...
+\ \ executable:
+\ \ \ \ <hook>
+\ \ \ \ ...
+\ \ custom:
+\ \ \ \ <name>:
+\ \ \ \ \ \ extensions:\ [<extension>,\ ...]
+\ \ \ \ \ \ hooks:
+\ \ \ \ \ \ \ \ <hook>
+\ \ \ \ \ \ \ \ ...
+\ \ \ \ \ \ ...
+\ \ \ \ \ \ \ \ \ \ \ \ 
+\f[]
+.fi
+.TP
+.B \f[B]dir\f[]
+(optional) Declared hooks within this map are available whenever the
+current entry is a directory.
+.RS
+.RE
+.TP
+.B \f[B]file\f[]
+(optional) Declared hooks within this map are available whenever the
+current entry is a file.
+.RS
+.RE
+.TP
+.B \f[B]plain_text\f[]
+(optional) Declared hooks within this map are available whenever the
+current entry is a plain text file.
+.RS
+.RE
+.TP
+.B \f[B]executable\f[]
+(optional) Declared hooks within this map are available whenever the
+current entry is executable.
+.RS
+.RE
+.TP
+.B \f[B]custom\f[]
+(optional) Declare one or more custom hooks and attach them to one or
+multiple extensions, and repeat this if you want.
+This makes the hooks available whenever the current entry has one of its
+attached extension.
+.RS
 .RE
 .SH FILES
 .TP

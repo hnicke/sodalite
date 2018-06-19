@@ -57,7 +57,7 @@ For customization of the destination directories, consult [INSTALL.txt](NSTALL.t
 > - [xdg-utils](https://www.freedesktop.org/wiki/Software/xdg-utils/)
 
 ## Getting started
-See [here](docs/usage.md) for detailed usage information.
+Check out the [manpage](docs/sodalite.1.md) for detailed usage information.
 
 ## Changelog
 Don't miss out on what has changed: Read the [changelog](changelog.md).
