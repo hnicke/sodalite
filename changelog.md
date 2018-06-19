@@ -9,6 +9,7 @@
 - Child processes spawned with sodalite-open can now live further even if their parent process (sodalite and it's containing shell) stopped
 - Fix mimelauncher crash when open file with whitespace in its name
 - Fix that visiting big directories took forever
+- Fix auto-assignment of keys for hidden entries
 
 ## v0.11: June 10, 2018
 ##### Features

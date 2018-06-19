@@ -97,7 +97,7 @@ def _assign(entries: List, available_keys: List[str]):
     for entry in entries:
         if len(available_keys) > 0:
             # try to assign starting character as key
-            start_char = entry.name[0].lower()
+            start_char = entry.name.lstrip('.')[0].lower()
             if start_char in available_keys:
                 available_keys.remove(start_char)
                 char = start_char
