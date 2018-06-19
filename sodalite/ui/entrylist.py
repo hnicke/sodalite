@@ -96,13 +96,16 @@ class EntryList(List):
         mode = self.model.mode
         if key == 'meta h':
             self.toggle_hidden_files()
+            return
         elif key == 'esc' and (mode == Mode.ASSIGN_CHOOSE_KEY or mode == Mode.ASSIGN_CHOOSE_ENTRY):
             self.exit_assign_mode(size)
+            return
         elif mode == Mode.ASSIGN_CHOOSE_ENTRY:
-            return self.keypress_choose_entry(size, key)
+            key = self.keypress_choose_entry(size, key)
         elif mode == Mode.ASSIGN_CHOOSE_KEY:
-            return self.keypress_choose_key(size, key)
-        else:
+            key = self.keypress_choose_key(size, key)
+
+        if key:
             return super().keypress(size, key)
 
     def toggle_hidden_files(self):

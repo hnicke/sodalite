@@ -1,6 +1,7 @@
 # Changelog
 
-## Unreleased
+
+## v0.12.0: June 19, 2018
 ##### Features
 - Add man page
 - A key gets automatically reassigned to a newer entry if the corresponding old entry is not used
@@ -10,8 +11,9 @@
 - Fix mimelauncher crash when open file with whitespace in its name
 - Fix that visiting big directories took forever
 - Fix auto-assignment of keys for hidden entries
+- Fix scrolling in assign mode
 
-## v0.11: June 10, 2018
+## v0.11.0: June 10, 2018
 ##### Features
 - Use the concept of frecency instead of frequency for sorting entries. This results in a much better, more dynamic sorting strategy
 - Enhanced shell-integration monitors shell navigation with `cd` commands. Collected data affects the frecency score of the related entries

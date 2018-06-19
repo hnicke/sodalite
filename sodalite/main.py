@@ -10,7 +10,7 @@ from util import environment
 
 logger = logging.getLogger(__name__)
 
-VERSION = 'sodalite v0.11.0'
+VERSION = 'sodalite v0.12.0'
 
 def _io_to_tty():
     global _old_stdin
