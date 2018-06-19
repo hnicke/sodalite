@@ -1,6 +1,5 @@
 #!/bin/bash  
 # execute in order to setup important git hooks (for developement)
 pushd "$(dirname "$0")"
-cd ../.git/hooks
-ln -s ../../bin/hooks/pre-commit pre-commit 
-popd
+ln -s pre-commit ../../.git/hooks/pre-commit
+popd 
