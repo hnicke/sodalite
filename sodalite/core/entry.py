@@ -137,7 +137,7 @@ class Entry:
 
     @property
     def rating(self):
-        if not self._rating:
+        if not isinstance(self._rating, (float, int)):
             if not self._parent:
                 raise ValueError("Trying to get rating of entry which parent is not set")
             rating.populate_ratings(self._parent.children)
