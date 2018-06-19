@@ -178,12 +178,16 @@ def insert_entry(entry):
 
 def remove_entries(obsolete_paths: Iterable[str]):
     """Deletes obsolete entries in the db"""
+    if not obsolete_paths:
+        return
     query = f"DELETE FROM {TABLE_ENTRY} WHERE {ENTRY_PATH} REGEXP ?"
     conn = open_connection()
     try:
+        regex = '^('
         for path in obsolete_paths:
-            regexp = '^' + path + '(/.*)*$'
-            conn.cursor().execute(query, (regexp,))
+            regex += re.escape(path) + '(/.*)*|'
+        regex = regex[:-1] + ')$'
+        conn.cursor().execute(query, (regex,))
         conn.commit()
     finally:
         conn.close()
