@@ -3,6 +3,8 @@
 ## Unreleased
 ##### Features
 - Add option to turn off cd interception
+##### Bugfixes
+- Fix outdated manpages 
 
 
 ## v0.12.0: June 19, 2018

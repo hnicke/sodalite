@@ -36,7 +36,9 @@ set up a keybinding to launch sodalite wich enables convenient
 navigation
 .IP \[bu] 2
 collect data about your navigation profile (e.g., by intercepting
-\f[C]cd\f[] calls) in order to customize your view on the data
+\f[C]cd\f[] calls) in order to customize your view on the data.
+You can disable this by setting the variable SODALITE_CD_INTERCEPTION to
+\f[I]false\f[] before sourcing the integration script.
 .PP
 \f[B]bash / zsh\f[]
 .PP
@@ -203,7 +205,7 @@ Prints the current version number.
 .RS
 .RE
 .TP
-.B \f[B]\-u, \-\-update\-access \f[BI]target\f[B] \f[]
+.B \f[B]\-u, \-\-update\-access \f[BI]target\f[B]\f[]
 Simulates navigation to \f[I]target\f[] (a relative or absolute path to
 a file or directory) without launching the UI.
 However, the database is updated regularly.
@@ -311,30 +313,28 @@ precedence over the default keymap.
 \f[]
 .fi
 .TP
-.B \f[B]\f[BC]<action>\f[B]\f[]
+.B \f[B]action\f[]
 (String, required) The action which is triggered by given keybinding.
-\f[C]<action>\f[] is interpreted as a shell command and executed within
-a subshell.
+\f[I]action\f[] is interpreted as a shell command and executed within a
+subshell.
 Use the variable \f[C]$entry\f[] to reference the current entry.
 If given string ends with \f[C]#q\f[], \f[C]sodalite\f[] will exit after
 command execution.
 .RS
 .RE
 .TP
-.B \f[B]\f[BC]<label>\f[B]\f[]
+.B \f[B]label\f[]
 (String, optional) Is used to represent the hook in the UI.
 Should be short and concise.
 If omitted, the hook will not be displayed in the UI.
 .RS
 .RE
 .TP
-.B \f[B]\f[BC]<keybinding>\f[B]\f[]
+.B \f[B]keybinding\f[]
 (String, required) The keybinding which is used to trigger the action.
 Use \f[C]ctrl\ a\f[] and \f[C]meta\ a\f[] to define the keys
 \f[C]Control\ a\f[] and \f[C]Meta\ a\f[].
-Other special keys: \f[C]esc\f[], \f[C]enter\f[], \f[C]f1\f[] \-
-\f[B]\f[BC]<built\-in>\f[B]\f[] (String, required) The name of a
-built\-in function (e.g., \f[C]normal.toggle_bookmark\f[])
+Other special keys: \f[C]esc\f[], \f[C]enter\f[], \f[C]f1\f[]
 .RS
 .RE
 .PP
@@ -425,4 +425,4 @@ The log.
 Please report at https://github.com/hnicke/sodalite/issues.
 .SH AUTHOR
 .PP
-Heiko Nickerl <dev@heiko-nickerl.com>
+Heiko Nickerl <dev(at)heiko\-nickerl.com>
