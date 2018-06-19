@@ -1,4 +1,8 @@
 # Changelog
+ 
+## Unreleased
+##### Features
+- Add option to turn off cd interception
 
 
 ## v0.12.0: June 19, 2018

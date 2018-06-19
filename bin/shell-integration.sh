@@ -2,14 +2,6 @@
 
 shell=$(ps -p $$ | tail -n1 | rev | cut -d" " -f1 | rev)
 
-# intercept call to cd: add access to database
-function cd { 
-    (
-        for last in $@; do true; done
-        nohup sodalite --update-access "$last" &
-    ) >/dev/null 2>&1
-    builtin cd $@
-}
 
 function headless_clear {
     [ $DISPLAY ] || clear
@@ -44,4 +36,14 @@ if [ $shell = 'zsh' ]; then
 elif [ $shell = 'bash' ]; then
     bind -m vi-command '"f":"ddisetup_cleanup; cd $(sodalite); tput cuu1; tput ed\n"'
     bind -m emacs '"\C-f":"\C-k\C-usetup_cleanup; cd $(sodalite); tput cuu1; tput ed\n"'
+fi
+
+if ! [ "$SODALITE_CD_INTERCEPTION" = 'false' ]; then
+    function cd { 
+        (
+            for last in $@; do true; done
+            nohup sodalite --update-access "$last" &
+        ) >/dev/null 2>&1
+        builtin cd $@
+    }
 fi

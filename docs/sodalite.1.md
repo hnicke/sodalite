@@ -31,7 +31,7 @@ Shell integration
 It's recommended to integrate sodalite into the shell. The integration does the following:
 
 - set up a keybinding to launch sodalite wich enables convenient navigation
-- collect data about your navigation profile (e.g., by intercepting `cd` calls) in order to customize your view on the data
+- collect data about your navigation profile (e.g., by intercepting `cd` calls) in order to customize your view on the data. You can disable this by setting the variable SODALITE_CD_INTERCEPTION to *false* before sourcing the integration script.
 
 **bash / zsh**
 
