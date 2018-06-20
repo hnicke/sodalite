@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.13.2: June 20, 2018
+##### Features
+- Install documentation to general doc directory
+##### Bugfixes
+- Explicitly specify v3.6 as python version
+
 ## v0.13.1: June 20, 2018
 ##### Bugfixes
 - Install compressed manpage
