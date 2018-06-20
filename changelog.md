@@ -1,12 +1,12 @@
 # Changelog
  
-## Unreleased
+## v0.13.0: June 20, 2018
 ##### Features
 - Add option to turn off cd interception
 - Keybindings are now customizable
 ##### Bugfixes
+- Fix mimetype launcher
 - Fix outdated manpages 
-
 
 ## v0.12.0: June 19, 2018
 ##### Features
