@@ -50,7 +50,7 @@ install -m 644 sodalite.desktop $FAKE_MIME_DIR
 mkdir -p $(dirname $FAKE_LOG_FILE)
 touch $FAKE_LOG_FILE && chmod 666 $FAKE_LOG_FILE
 
-install -D -m 644 docs/sodalite.1.gz $FAKE_MAN_DIR/man1/sodalite.1.gz
+install -Dm 644 docs/sodalite.1.gz $FAKE_MAN_DIR/man1/sodalite.1.gz
 
 mkdir -p $FAKE_BIN_DIR
 awk 'NR==1 {print; 
@@ -67,3 +67,7 @@ mkdir -p $FAKE_CONFIG_DIR
 [ -f $FAKE_CONFIG_FILE ] && mv $FAKE_CONFIG_FILE ${FAKE_CONFIG_FILE}.bak
 cp docs/sodalite.conf $FAKE_CONFIG_FILE
 cp docs/sodalite.conf $FAKE_DATA_DIR
+
+mkdir -p $FAKE_DOC_DIR
+install -Dm 644 README.md changelog.md COPYING $FAKE_DOC_DIR
+

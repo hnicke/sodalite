@@ -7,3 +7,4 @@ rm -f /etc/sodalite.conf
 rm -rf /usr/share/sodalite
 rm -f /usr/share/applications/sodalite.desktop
 rm -f /usr/share/man/man1/sodalite.1.gz
+rm /usr/share/doc/sodalite/{changelog.md,README.md,COPYING}
