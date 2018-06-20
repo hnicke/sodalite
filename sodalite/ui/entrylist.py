@@ -8,6 +8,8 @@ from core.entry import Entry, EntryType
 from core.navigator import Navigator
 from ui import theme, graphics
 from ui.viewmodel import ViewModel, Mode
+from util import keymap
+from util.keymap import Action
 
 logger = logging.getLogger(__name__)
 
@@ -28,13 +30,13 @@ class List(ListBox):
             pass
 
     def keypress(self, size, key):
-        if key == 'ctrl f':
+        if keymap.matches(Action.SCROLL_PAGE_DOWN, key):
             self.scroll_page_down(size)
-        elif key == 'ctrl b':
+        elif keymap.matches(Action.SCROLL_PAGE_UP, key):
             self.scroll_page_up(size)
-        elif key == 'ctrl d':
+        elif keymap.matches(Action.SCROLL_HALF_PAGE_DOWN, key):
             self.scroll_half_page_down(size)
-        elif key == 'ctrl u':
+        elif keymap.matches(Action.SCROLL_HALF_PAGE_UP, key):
             self.scroll_half_page_up(size)
         else:
             return key
@@ -94,7 +96,7 @@ class EntryList(List):
 
     def keypress(self, size, key):
         mode = self.model.mode
-        if key == 'meta h':
+        if keymap.matches(Action.TOGGLE_DOTFILES, key):
             self.toggle_hidden_files()
             return
         elif key == 'esc' and (mode == Mode.ASSIGN_CHOOSE_KEY or mode == Mode.ASSIGN_CHOOSE_ENTRY):

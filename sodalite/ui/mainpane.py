@@ -10,6 +10,8 @@ from ui.filepreview import FilePreview
 from ui.filter import Filter
 from ui.viewmodel import ViewModel, Mode
 from util import environment
+from util import keymap
+from util.keymap import Action
 
 logger = logging.getLogger(__name__)
 
@@ -79,22 +81,22 @@ class MainPane(urwid.WidgetWrap):
         elif key == '~' or key == '`':
             self.navigator.visit_path(environment.home)
             self.clear_filter()
-        elif key == 'backspace':  # also matches ctrl h
+        elif keymap.matches(Action.GO_TO_PREVIOUS, key):
             self.navigator.visit_previous()
             self.clear_filter()
-        elif key == 'ctrl l':
+        elif keymap.matches(Action.GO_TO_NEXT, key):
             self.navigator.visit_next()
             self.clear_filter()
         elif self.navigator.is_navigation_key(key):
             self.navigator.visit_child(key)
             self.clear_filter()
-        elif key == '0':
+        elif keymap.matches(Action.GO_TO_ROOT, key):
             self.navigator.visit_path('/')
-        elif key == 'enter':
+        elif keymap.matches(Action.EXIT, key):
             graphics.exit(cwd=self.navigator.history.cwd())
-        elif key == 'ctrl y':
+        elif keymap.matches(Action.YANK_CURRENT_PATH, key):
             pyperclip.copy(self.model.current_entry.path)
-        elif key == '=':
+        elif keymap.matches(Action.ASSIGN_MODE, key):
             self.body.enter_assign_mode(size)
         else:
             return key

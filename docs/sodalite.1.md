@@ -42,7 +42,7 @@ source /usr/share/sodalite/shell-integration.sh
 ```
 The script will set up a keybinding which launches `sodalite`.
 
-* Emacs keymap:     `Control + f`
+* Emacs keymap:     `ctrl f`
 * Vim keymap:       `f` in command (aka normal) mode
 
 **fish**
@@ -70,41 +70,43 @@ Global actions
 --------------
 Following general actions can be triggered everywhere in `sodalite`:
 
-**exit (`ENTER`)**
+**global.exit (`ENTER`)**
 
 :   Exit `sodalite`. Prints the current entry to `stdout`.
 
     In case `sodalite` was invoked with the provided shell integration key-bindings, will `cd` into current directory. If the current entry is not a directoy but a file, will `cd` into the parent directory.
 
-**abort (`C-c`)**
+**global.abort (`ctrl c`)**
 
 :   Exit `sodalite` without printing current directory to `stdout`.
 
-**normal_mode (`ESC`)**
+<!--
+**global.normal_mode (`ESC`)**
 
 :   Enter normal mode.
+-->
 
-**filter (`/`)**
+**global.filter (`/`)**
 
 :   Focuses the filter bar on the bottom. Use regular expressions to filter displayed entries. The filtering is case-insensitive. Press `CR` to submit or `ESC` to dismiss the filter.
 
-**toggle_dotfiles  (`M-h`)**
+**global.toggle_dotfiles  (`meta h`)**
 
 :   Toggles visiblity of dotfiles.
 
-**scroll_page_down (`C-f`)**
+**global.scroll_page_down (`ctrl f`)**
 
 :   Scroll down one page.
 
-**scroll_page_up (`C-b`)**
+**global.scroll_page_up (`ctrl b`)**
 
 :   Scroll up one page.
 
-**scroll_half_page_down (`C-d`)**
+**global.scroll_half_page_down (`ctrl d`)**
 
 :   Scroll down half a page.
 
-**scroll_half_page_down (`C-u`)**
+**global.scroll_half_page_up (`ctrl u`)**
 
 :   Scroll up half a page.
 
@@ -115,9 +117,9 @@ Valid values for keys are all letters of the alphabet (lower and upper case), so
 
 **normal.go_to (`[a-zA-Z]`)**
 
-:   Navigate to the entry matching pressed key.
+:   Navigate to the entry matching pressed key. Note: This function is not reassinable to another keybinding.
 
-**normal.go_to_home (``[`~]``)**
+**normal.go_to_home (`` ` ``)**
 
 :   Navigate to the `$HOME` directory.
 
@@ -129,15 +131,15 @@ Valid values for keys are all letters of the alphabet (lower and upper case), so
 
 :   Navigate to the parent directory. Does nothing if parent directory does not exist.
 
-**normal.go_to_previous (`C-h`)**
+**normal.go_to_previous (`ctrl h`)**
 
-:   Navigate back in history one step. Does nothing if history does not contain a previous entry.
+:   Navigate back in history one step. Does nothing if history does not contain a previous entry. Note: 'ctrl h' equals backslash in terminal emulators.
 
-**normal.go_to_next (`C-l`)**
+**normal.go_to_next (`ctrl l`)**
 
 :   Navigate forward in history. Does nothing if history does not contain a next entry.
 
-**normal.yank_current_entry (`C-y`)**
+**normal.yank_current_path (`ctrl y`)**
 
 :   Copy current entry's path to the system's clipboard.
 
@@ -157,11 +159,11 @@ The `ASSIGN` mode is needed to assign a specific key to an entry. This is accomp
 If the newly assigned key is already assigned to another entry in the current directory, keys get swapped.
 Abort the process by pressing `Esc`.
 
-**assign.select_next (`C-n`)**
+**assign.select_next (`ctrl n`)**
 
 :   Select next entry.
 
-**assign.select_previous (`C-p`)**
+**assign.select_previous (`ctrl p`)**
 
 :   Select previous entry.
 
@@ -222,7 +224,7 @@ hooks:
           label: "open with feh"
 ``` 
 
-<!-- **Customizing the default keymap**
+**Customizing the default keymap**
 
 > This feature is **not yet implemented**.
 
@@ -230,15 +232,15 @@ hooks:
 keymap:
   <keybinding>: <built-in>
 ```
-If *built-in>* matches the name of a built-in action, given *keybinding* is bound to this action.
+If *built-in* matches the name of a built-in action, given *keybinding* is bound to this action (instead of its default binding).
     
 **keybinding**:
 :   (String, required) The keybinding which is used to trigger the action. Use `ctrl a` and `meta a` to define the keys `Control a` and `Meta a`. Other special keys: `esc`, `enter`, `f1`
 
 **built-in**
 
-:   (String, required) The name of a built-in function (e.g., `normal.toggle_bookmark`)
--->    
+:   (String, required) The name of a built-in function (e.g., `normal.go_to_home`).
+    
     
 Action hooks
 ------------

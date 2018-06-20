@@ -3,6 +3,7 @@
 ## Unreleased
 ##### Features
 - Add option to turn off cd interception
+- Keybindings are now customizable
 ##### Bugfixes
 - Fix outdated manpages 
 

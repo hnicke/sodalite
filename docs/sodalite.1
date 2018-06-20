@@ -52,7 +52,7 @@ source\ /usr/share/sodalite/shell\-integration.sh
 .PP
 The script will set up a keybinding which launches \f[C]sodalite\f[].
 .IP \[bu] 2
-Emacs keymap: \f[C]Control\ +\ f\f[]
+Emacs keymap: \f[C]ctrl\ f\f[]
 .IP \[bu] 2
 Vim keymap: \f[C]f\f[] in command (aka normal) mode
 .PP
@@ -85,7 +85,7 @@ In each mode, a different set of actions is available.
 Following general actions can be triggered everywhere in
 \f[C]sodalite\f[]:
 .TP
-.B \f[B]exit (\f[BC]ENTER\f[B])\f[]
+.B \f[B]global.exit (\f[BC]ENTER\f[B])\f[]
 Exit \f[C]sodalite\f[].
 Prints the current entry to \f[C]stdout\f[].
 .RS
@@ -96,18 +96,13 @@ If the current entry is not a directoy but a file, will \f[C]cd\f[] into
 the parent directory.
 .RE
 .TP
-.B \f[B]abort (\f[BC]C\-c\f[B])\f[]
+.B \f[B]global.abort (\f[BC]ctrl\ c\f[B])\f[]
 Exit \f[C]sodalite\f[] without printing current directory to
 \f[C]stdout\f[].
 .RS
 .RE
 .TP
-.B \f[B]normal_mode (\f[BC]ESC\f[B])\f[]
-Enter normal mode.
-.RS
-.RE
-.TP
-.B \f[B]filter (\f[BC]/\f[B])\f[]
+.B \f[B]global.filter (\f[BC]/\f[B])\f[]
 Focuses the filter bar on the bottom.
 Use regular expressions to filter displayed entries.
 The filtering is case\-insensitive.
@@ -115,27 +110,27 @@ Press \f[C]CR\f[] to submit or \f[C]ESC\f[] to dismiss the filter.
 .RS
 .RE
 .TP
-.B \f[B]toggle_dotfiles (\f[BC]M\-h\f[B])\f[]
+.B \f[B]global.toggle_dotfiles (\f[BC]meta\ h\f[B])\f[]
 Toggles visiblity of dotfiles.
 .RS
 .RE
 .TP
-.B \f[B]scroll_page_down (\f[BC]C\-f\f[B])\f[]
+.B \f[B]global.scroll_page_down (\f[BC]ctrl\ f\f[B])\f[]
 Scroll down one page.
 .RS
 .RE
 .TP
-.B \f[B]scroll_page_up (\f[BC]C\-b\f[B])\f[]
+.B \f[B]global.scroll_page_up (\f[BC]ctrl\ b\f[B])\f[]
 Scroll up one page.
 .RS
 .RE
 .TP
-.B \f[B]scroll_half_page_down (\f[BC]C\-d\f[B])\f[]
+.B \f[B]global.scroll_half_page_down (\f[BC]ctrl\ d\f[B])\f[]
 Scroll down half a page.
 .RS
 .RE
 .TP
-.B \f[B]scroll_half_page_down (\f[BC]C\-u\f[B])\f[]
+.B \f[B]global.scroll_half_page_up (\f[BC]ctrl\ u\f[B])\f[]
 Scroll up half a page.
 .RS
 .RE
@@ -153,10 +148,11 @@ However, you can change this within the \f[C]ASSIGN\f[] mode.
 .TP
 .B \f[B]normal.go_to (\f[BC][a\-zA\-Z]\f[B])\f[]
 Navigate to the entry matching pressed key.
+Note: This function is not reassinable to another keybinding.
 .RS
 .RE
 .TP
-.B \f[B]normal.go_to_home (\f[BC][`~]\f[B])\f[]
+.B \f[B]normal.go_to_home (\f[BC]`\f[B])\f[]
 Navigate to the \f[C]$HOME\f[] directory.
 .RS
 .RE
@@ -172,19 +168,20 @@ Does nothing if parent directory does not exist.
 .RS
 .RE
 .TP
-.B \f[B]normal.go_to_previous (\f[BC]C\-h\f[B])\f[]
+.B \f[B]normal.go_to_previous (\f[BC]ctrl\ h\f[B])\f[]
 Navigate back in history one step.
 Does nothing if history does not contain a previous entry.
+Note: `ctrl h' equals backslash in terminal emulators.
 .RS
 .RE
 .TP
-.B \f[B]normal.go_to_next (\f[BC]C\-l\f[B])\f[]
+.B \f[B]normal.go_to_next (\f[BC]ctrl\ l\f[B])\f[]
 Navigate forward in history.
 Does nothing if history does not contain a next entry.
 .RS
 .RE
 .TP
-.B \f[B]normal.yank_current_entry (\f[BC]C\-y\f[B])\f[]
+.B \f[B]normal.yank_current_path (\f[BC]ctrl\ y\f[B])\f[]
 Copy current entry's path to the system's clipboard.
 .RS
 .RE
@@ -208,12 +205,12 @@ If the newly assigned key is already assigned to another entry in the
 current directory, keys get swapped.
 Abort the process by pressing \f[C]Esc\f[].
 .TP
-.B \f[B]assign.select_next (\f[BC]C\-n\f[B])\f[]
+.B \f[B]assign.select_next (\f[BC]ctrl\ n\f[B])\f[]
 Select next entry.
 .RS
 .RE
 .TP
-.B \f[B]assign.select_previous (\f[BC]C\-p\f[B])\f[]
+.B \f[B]assign.select_previous (\f[BC]ctrl\ p\f[B])\f[]
 Select previous entry.
 .RS
 .RE
@@ -289,6 +286,37 @@ hooks:
 \ \ \ \ \ \ \ \ \ \ label:\ "open\ with\ feh"
 \f[]
 .fi
+.PP
+\f[B]Customizing the default keymap\f[]
+.RS
+.PP
+This feature is \f[B]not yet implemented\f[].
+.RE
+.IP
+.nf
+\f[C]
+keymap:
+\ \ <keybinding>:\ <built\-in>
+\f[]
+.fi
+.PP
+If \f[I]built\-in\f[] matches the name of a built\-in action, given
+\f[I]keybinding\f[] is bound to this action (instead of its default
+binding).
+.TP
+.B \f[B]keybinding\f[]:
+(String, required) The keybinding which is used to trigger the action.
+Use \f[C]ctrl\ a\f[] and \f[C]meta\ a\f[] to define the keys
+\f[C]Control\ a\f[] and \f[C]Meta\ a\f[].
+Other special keys: \f[C]esc\f[], \f[C]enter\f[], \f[C]f1\f[]
+.RS
+.RE
+.TP
+.B \f[B]built\-in\f[]
+(String, required) The name of a built\-in function (e.g.,
+\f[C]normal.go_to_home\f[]).
+.RS
+.RE
 .SS Action hooks
 .PP
 It is possible to setup keybindings to trigger custom actions.
