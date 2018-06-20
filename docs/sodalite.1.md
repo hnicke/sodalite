@@ -146,6 +146,26 @@ Valid values for keys are all letters of the alphabet (lower and upper case), so
 :   Enter assign mode.
 
 
+`ASSIGN` mode
+-----------
+The `ASSIGN` mode is needed to assign a specific key to an entry. This is accomplished within these steps:
+
+1. Enter assign mode
+2. Press a key associated with an entry or select an entry manually
+3. Press the new key
+
+If the newly assigned key is already assigned to another entry in the current directory, keys get swapped.
+Abort the process by pressing `Esc`.
+
+**assign.select_next (`C-n`)**
+
+:   Select next entry.
+
+**assign.select_previous (`C-p`)**
+
+:   Select previous entry.
+
+
 Options
 -------
 
@@ -166,25 +186,6 @@ Options
     will store an access for each $HOME/.local, $HOME/.local/share and $HOME/.local/share/sodalite. 
     
     The purpose of this mode is to affect the entry ranking in a programmatical way. E.g., it is used in the shell integration where calls to *cd* are intercepted in order to gather information about the user's navigational preferences.
-
-`ASSIGN` mode
------------
-The `ASSIGN` mode is needed to assign a specific key to an entry. This is accomplished within these steps:
-
-1. Enter assign mode
-2. Press a key associated with an entry or select an entry manually
-3. Press the new key
-
-If the newly assigned key is already assigned to another entry in the current directory, keys get swapped.
-Abort the process by pressing `Esc`.
-
-**assign.select_next (`C-n`)**
-
-:   Select next entry.
-
-**assign.select_previous (`C-p`)**
-
-:   Select previous entry.
 
 
 Configuration
