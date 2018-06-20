@@ -50,7 +50,7 @@ install -m 644 sodalite.desktop $FAKE_MIME_DIR
 mkdir -p $(dirname $FAKE_LOG_FILE)
 touch $FAKE_LOG_FILE && chmod 666 $FAKE_LOG_FILE
 
-install -D -m 644 docs/sodalite.1 $FAKE_MAN_DIR/man1/sodalite.1
+install -D -m 644 docs/sodalite.1.gz $FAKE_MAN_DIR/man1/sodalite.1.gz
 
 mkdir -p $FAKE_BIN_DIR
 awk 'NR==1 {print; 

@@ -2,4 +2,5 @@
 
 # build man page
 pandoc --standalone --to man docs/sodalite.1.md -o docs/sodalite.1
-git add docs/sodalite.1
+gzip docs/sodalite.1
+git add docs/sodalite.1.gz

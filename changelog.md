@@ -1,4 +1,8 @@
 # Changelog
+
+## v0.13.1: June 20, 2018
+##### Bugfixes
+- Install compressed manpage
  
 ## v0.13.0: June 20, 2018
 ##### Features
