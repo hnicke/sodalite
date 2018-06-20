@@ -399,14 +399,22 @@ attached extension.
 .RE
 .SH FILES
 .TP
-.B \f[I]/etc/sodalite.yml\f[]
-Global default configuration file.
+.B \f[I]$XDG_CONFIG_HOME/sodalite/sodalite.conf\f[]
+Per\-user default configuration file.
+If \f[C]$XDG_CONFIG_HOME\f[] is not set, uses \f[C]$HOME/.config\f[]
+instead.
+If file does not exist, fall back to global config file.
 .RS
 .RE
 .TP
-.B \f[I]$XDG_CONFIG_HOME/sodalite/sodalite.yml\f[]
-Per\-user default configuration file.
-If \f[C]$XDG_CONFIG_HOME\f[] is not set, uses \f[C]$HOME/.config\f[].
+.B \f[I]/etc/sodalite.conf\f[]
+Global default configuration file.
+If file does not exists, fall back to example config file.
+.RS
+.RE
+.TP
+.B \f[B]/usr/share/sodalite/sodalite.conf\f[]
+Example config file.
 .RS
 .RE
 .TP

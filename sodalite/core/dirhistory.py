@@ -106,9 +106,9 @@ class DirHistory:
 
 def load() -> DirHistory:
     logger.info('Load navigation history')
-    if not os.path.isfile(environment.history_path):
+    if not os.path.isfile(environment.history_file):
         return DirHistory(persist=True)
-    with open(environment.history_path, 'r') as file:
+    with open(environment.history_file, 'r') as file:
         text = file.read()
         try:
             history = json.loads(text, object_hook=object_decoder)
@@ -129,5 +129,5 @@ def save(history: DirHistory):
     history._truncate()
     logger.info('Persist navigation history')
     text = json.dumps(history.__dict__, indent=4)
-    with open(environment.history_path, 'w') as file:
+    with open(environment.history_file, 'w') as file:
         file.write(text)

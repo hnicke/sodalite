@@ -1,57 +1,41 @@
-# program will read following environment variables
 import logging
 import os
 
+exit_cwd = None
+
+# program will read following environment variables
+ENV_DATA_DIR = 'DATA_DIR'
 ENV_BOOKMARK_DIR = 'BOOKMARK_DIR'
 ENV_LOG_FILE = 'LOG_FILE'
-ENV_CWD_PIPE = 'CWD_PIPE'
 ENV_DB_PATH = 'DB_PATH'
 ENV_CONFIG_FILE = 'CONFIG_FILE'
 
 home = os.getenv('HOME')
-user_data = os.getenv('XDG_DATA_HOME')
-user_config = os.getenv('XDG_CONFIG_HOME')
+data = os.getenv(ENV_DATA_DIR, "/usr/share/sodalite/")
+user_data = os.getenv('XDG_DATA_HOME', os.path.join(home, ".local/share/sodalite/"))
+bookmark_dir = os.getenv(ENV_BOOKMARK_DIR, os.path.join(user_data, "bookmarks"))
+user_config = os.getenv('XDG_CONFIG_HOME', os.path.join(home, ".config/sodalite/"))
+log_file = os.getenv(ENV_LOG_FILE, "/var/log/sodalite.log")
+db_file = os.getenv(ENV_DB_PATH, os.path.join(user_data, "db.sqlite"))
+history_file = os.path.join(user_data, 'history')
 
-log_file = os.getenv(ENV_LOG_FILE)
-if log_file is None:
-    log_file = "/var/log/sodalite.log"
+config_file = os.getenv(ENV_CONFIG_FILE, os.path.join(user_config, "sodalite/sodalite.conf"))
+if not os.path.exists(config_file):
+    config_file = "/etc/sodalite.conf"
+if not os.path.exists(config_file):
+    config_file = "/usr/share/sodalite/sodalite.conf"
+
+dirs = [home, data, user_data, user_config, bookmark_dir]
+for directory in dirs:
+    os.makedirs(directory, exist_ok=True)
 
 logging.basicConfig(filename=log_file, level=logging.DEBUG,
                     format='%(asctime)s - %(name)-18s - %(levelname)-5s - %(message)s')
 logger = logging.getLogger(__name__)
 logging.getLogger('watchdog').setLevel(logging.INFO)
 
-exit_cwd = None
+logger.info(f"Using database: {db_file}")
+logger.info(f"Using config file: {config_file}")
 
-if user_data is None:
-    user_data = os.path.join(home, '.local/share/sodalite/')
-    if not os.path.exists(user_data):
-        os.makedirs(user_data, exist_ok=True)
 
-if user_config is None:
-    user_config = os.path.join(home, '.config/sodalite')
-    if not os.path.exists(user_config):
-        os.makedirs(user_config, exist_ok=True)
 
-db_path = os.getenv(ENV_DB_PATH)
-if db_path is None:
-    db_path = os.path.join(user_data, 'db.sqlite')
-logger.info(f"Using database: {db_path}")
-
-history_path = os.path.join(user_data, 'history')
-
-# might be None
-cwd_pipe = os.getenv(ENV_CWD_PIPE)
-
-config_path = os.getenv(ENV_CONFIG_FILE)
-if config_path is None:
-    config_path = os.path.join(user_config, "sodalite/sodalite.yml")
-if not os.path.exists(config_path):
-    config_path = "/etc/sodalite.yml"
-logger.info(f"Using config file: {config_path}")
-
-bookmark_dir = os.getenv(ENV_BOOKMARK_DIR)
-if bookmark_dir is None:
-    bookmark_dir = os.path.join(user_data, "bookmarks")
-    if not os.path.exists(bookmark_dir):
-        os.makedirs(bookmark_dir, exist_ok=True)

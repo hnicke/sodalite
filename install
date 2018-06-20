@@ -21,7 +21,7 @@ PROJECT_NAME=sodalite
 [ -z $MAN_DIR ] && MAN_DIR=/usr/share/man
 
 # add project suffix
-CONFIG_FILE=${CONFIG_DIR}/${PROJECT_NAME}.yml
+CONFIG_FILE=${CONFIG_DIR}/${PROJECT_NAME}.conf
 LIB_DIR=${LIB_DIR}/${PROJECT_NAME}
 DATA_DIR=${DATA_DIR}/${PROJECT_NAME}
 DOC_DIR=${DOC_DIR}/${PROJECT_NAME}
@@ -54,6 +54,7 @@ install -D -m 644 docs/sodalite.1 $FAKE_MAN_DIR/man1/sodalite.1
 
 mkdir -p $FAKE_BIN_DIR
 awk 'NR==1 {print; 
+    print "DATA_DIR='"$DATA_DIR"'"; 
     print "LIB_DIR='"$LIB_DIR"'"; 
     print "LOG_FILE='"$LOG_FILE"'"; 
     print "CONFIG_FILE='"$CONFIG_FILE"'"} 
@@ -64,4 +65,5 @@ install bin/sodalite-open $FAKE_BIN_DIR
 
 mkdir -p $FAKE_CONFIG_DIR
 [ -f $FAKE_CONFIG_FILE ] && mv $FAKE_CONFIG_FILE ${FAKE_CONFIG_FILE}.bak
-cp docs/example.yml $FAKE_CONFIG_FILE
+cp docs/sodalite.conf $FAKE_CONFIG_FILE
+cp docs/sodalite.conf $FAKE_DATA_DIR

@@ -54,7 +54,7 @@ def regexp(expr, item):
 
 
 def open_connection():
-    conn = sqlite3.connect(environment.db_path)
+    conn = sqlite3.connect(environment.db_file)
     conn.create_function("REGEXP", 2, regexp)
     return conn
 

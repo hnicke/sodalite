@@ -61,7 +61,7 @@ def fixture():
     except FileNotFoundError:
         pass
     setup_test_data()
-    environment.db_path = os.path.join(test_dir, "tmp_db.sqlite")
+    environment.db_file = os.path.join(test_dir, "tmp_db.sqlite")
     navigator = Navigator(DirHistory(), EntryAccess(EntryDao()))
     yield
     shutil.rmtree(test_dir)

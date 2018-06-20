@@ -319,13 +319,17 @@ hooks:
 FILES
 =====
 
-*/etc/sodalite.yml*
+*$XDG_CONFIG_HOME/sodalite/sodalite.conf*
 
-:   Global default configuration file.
+:   Per-user default configuration file. If `$XDG_CONFIG_HOME` is not set, uses `$HOME/.config` instead. If file does not exist, fall back to global config file.
 
-*$XDG_CONFIG_HOME/sodalite/sodalite.yml*
+*/etc/sodalite.conf*
 
-:   Per-user default configuration file. If `$XDG_CONFIG_HOME` is not set, uses `$HOME/.config`.
+:   Global default configuration file. If file does not exists, fall back to example config file.
+
+**/usr/share/sodalite/sodalite.conf**
+
+:   Example config file.
 
 *$XDG_DATA_HOME/sodalite/db.sqlite*
 
