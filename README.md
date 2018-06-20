@@ -35,8 +35,7 @@ AUR package [sodalite-git](https://aur.archlinux.org/packages/sodalite-git/) (ma
 > `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 2. Install dependencies:
     1. python3: `brew install python3`
-    2. xdg-utils: `brew install xdg-utils`
-    3. other: `pip3 install -r requirements.txt`
+    2. other: `pip3 install -r requirements.txt`
 3. Proceed with `Manual installation`
 
 #### Manual Installation
@@ -54,7 +53,6 @@ For customization of the destination directories, consult [INSTALL.txt](NSTALL.t
 > - [PyYAML](https://github.com/yaml/pyyaml)
 > - [pyperclip](https://github.com/asweigart/pyperclip)
 > - [watchdog](https://github.com/gorakhargosh/watchdog)
-> - [xdg-utils](https://www.freedesktop.org/wiki/Software/xdg-utils/)
 
 ## Getting started
 Check out the [manpage](docs/sodalite.1.md) for detailed usage information.
