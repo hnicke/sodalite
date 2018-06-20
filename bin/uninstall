@@ -1,8 +1,8 @@
 #!/bin/bash  
 rm -rf /var/log/sodalite.log
 rm -rf /usr/lib/sodalite
-rm /usr/bin/sodalite
-rm /usr/bin/sodalite-open
-rm /etc/sodalite.yml
+rm -f /usr/bin/sodalite
+rm -f /usr/bin/sodalite-open
+rm -f /etc/sodalite.conf
 rm -rf /usr/share/sodalite
-rm /usr/share/applications/sodalite.desktop
+rm -f /usr/share/applications/sodalite.desktop

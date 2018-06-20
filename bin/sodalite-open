@@ -1,7 +1,8 @@
 #!/bin/bash
-# wrapper around xdg-open.
-# Execute xdg-open in background if the launching application is a graphical (i.e., non-terminal) app.
-# In case it's a terminal app, launches xdg-open in foreground.
+# Alternative to xdg-open. I.e., opens given file with it's associated program.
+# Execute app in background if the launching application is a graphical (i.e., non-terminal) app.
+# In case it's a terminal app, launches app in foreground.
+
 # If launched headless, will always fallback to a text editor
 
 function set_fallback_editor {
@@ -51,9 +52,14 @@ desktop_entry=$(xdg-mime query default "$filetype")
 
 [ "$desktop_entry" ] && is_terminal_app "$desktop_entry" || background="true"
 
+execute=$(cat "$entry" | grep ^Exec= | cut -d"=" -f2)
+
+# replace file placeholder with file
+execute=${execute/"%F"/"$target_file"}
+
 if [ "$background" ]; then
-    nohup xdg-open "$target_file" >/dev/null 2>&1 &
+    nohup $execute >/dev/null 2>&1 &
 else
-    xdg-open "$target_file"
+    $execute
 fi
 
