@@ -6,7 +6,7 @@
 # CONFIG_DIR: system configuration dir
 # DOC_DIR: documentation dir
 # MIME_DIR: desktop entry dir
-pushd $(dirname $0)
+pushd $(dirname $0) > /dev/null
 
 PROJECT_NAME=sodalite
 
@@ -71,3 +71,4 @@ cp docs/sodalite.conf $FAKE_DATA_DIR
 mkdir -p $FAKE_DOC_DIR
 install -Dm 644 README.md changelog.md COPYING $FAKE_DOC_DIR
 
+popd > /dev/null
