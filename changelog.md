@@ -5,6 +5,7 @@
 - Install documentation to general doc directory
 ##### Bugfixes
 - Explicitly specify v3.6 as python version
+- Instead of crashing, fail gracefully when yanking current path on systems without clipboard
 
 ## v0.13.1: June 20, 2018
 ##### Bugfixes

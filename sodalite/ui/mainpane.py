@@ -95,11 +95,21 @@ class MainPane(urwid.WidgetWrap):
         elif keymap.matches(Action.EXIT, key):
             graphics.exit(cwd=self.navigator.history.cwd())
         elif keymap.matches(Action.YANK_CURRENT_PATH, key):
-            pyperclip.copy(self.model.current_entry.path)
+            self.yank_to_clipboard()
         elif keymap.matches(Action.ASSIGN_MODE, key):
             self.body.enter_assign_mode(size)
         else:
             return key
+
+    def yank_to_clipboard(self):
+        try:
+            path = self.model.current_entry.path
+            pyperclip.copy(path)
+            logger.info(f"Yanked '{path} to system clipboard")
+            graphics.notify(f"Yanked to clipboard", duration=1)
+        except pyperclip.PyperclipException:
+            logger.exception(f"Failed to yank current path '{path}'")
+            graphics.notify("Failed to yank: system has no clipboard", duration=2)
 
     def clear_filter(self):
         if self.frame.footer:
