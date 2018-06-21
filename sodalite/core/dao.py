@@ -143,12 +143,14 @@ def insert_new_entries(entries_fs: Dict[str, Entry], entries_db: Dict[str, Entry
     for entry in reassigned_old_entries:
         update_entry(entry)
     query = f"INSERT INTO {TABLE_ENTRY} VALUES "
+    parameters = []
     for entry in new_entries.values():
-        query += "('{}','{}'),".format(entry.path, entry.key.value)
+        query += "(?,?),"
+        parameters += [entry.path, entry.key.value]
     query = query[:-1] + ';'
     conn = open_connection()
     try:
-        conn.cursor().execute(query)
+        conn.cursor().execute(query, (*parameters,))
         conn.commit()
     except sqlite3.IntegrityError:
         logger.error("Integrity error. failed to insert at least one of " + str(new_paths))
