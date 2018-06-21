@@ -70,4 +70,4 @@ Current plans for the future involve (in roughly this order):
 - Add an `operation` mode which allows for `yanking`, `deleting`, `renaming` and `moving` files
 
 ## License
-See [COPYING](COPYING).
+See [copyyright](copyright).

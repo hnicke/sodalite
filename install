@@ -69,6 +69,7 @@ cp docs/sodalite.conf $FAKE_CONFIG_FILE
 cp docs/sodalite.conf $FAKE_DATA_DIR
 
 mkdir -p $FAKE_DOC_DIR
-install -Dm 644 README.md changelog.md COPYING $FAKE_DOC_DIR
+install -Dm 644 README.md copyright $FAKE_DOC_DIR
+install -m 644 changelog.md $FAKE_DOC_DIR/changelog
 
 popd > /dev/null
