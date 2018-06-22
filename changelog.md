@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.13.4: June 22,  2018
+##### Misc
+- Ditch install script in favour of a standardized Makefile
+
 ## v0.13.3: June 21, 2018
 ##### Bugfixes
 - Instead of crashing, fail gracefully when yanking current path on systems without clipboard
