@@ -1,6 +1,8 @@
 #!/bin/bash  
 
 # build man page
-pandoc --standalone --to man docs/sodalite.1.md -o docs/sodalite.1 &&
-gzip -f docs/sodalite.1 &&
-git add docs/sodalite.1.gz
+for manpage in sodalite sodalite-open; do
+    pandoc --standalone --to man docs/$manpage.1.md -o docs/$manpage.1 &&
+    gzip -f docs/$manpage.1 &&
+    git add docs/$manpage.1.gz
+done

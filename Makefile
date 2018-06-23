@@ -41,6 +41,7 @@ install: installdirs
 	${INSTALL_DATA} ${srcdir}/bin/shell-integration.sh bin/shell-integration.fish ${DESTDIR}${appdatadir}
 	${INSTALL_DATA} ${srcdir}/${APPNAME}.desktop ${DESTDIR}${mimedir}
 	${INSTALL_DATA} ${srcdir}/docs/${APPNAME}.1.gz ${DESTDIR}${man1dir}
+	${INSTALL_DATA} ${srcdir}/docs/${APPNAME}-open.1.gz ${DESTDIR}${man1dir}
 	${INSTALL_DATA} ${srcdir}/docs/${APPNAME}.conf ${DESTDIR}${configfile}
 	${INSTALL_DATA} ${srcdir}/docs/${APPNAME}.conf ${DESTDIR}${appdatadir}
 	${INSTALL_DATA} ${srcdir}/README.md ${DESTDIR}${appdocdir}/README
@@ -58,6 +59,7 @@ uninstall:
 	@rm -rfv ${appdatadir} 
 	@rm -rfv ${mimedir}/${APPNAME}.desktop
 	@rm -rfv ${man1dir}/${APPNAME}.1.gz
+	@rm -rfv ${man1dir}/${APPNAME}-open.1.gz
 	@rm -rfv ${bindir}/${APPNAME}
 	@rm -rfv ${bindir}/${APPNAME}-open
 	@rm -rfv ${configfile}
