@@ -12,7 +12,6 @@ datarootdir=${prefix}/share
 datadir=${datarootdir}
 appdatadir=${datadir}/${APPNAME}
 sysconfdir=${prefix}/etc
-localstatedir=${prefix}/var
 docdir=${datarootdir}/doc
 appdocdir=${docdir}/${APPNAME}
 libdir=${exec_prefix}/lib
@@ -21,8 +20,6 @@ mandir=${datarootdir}/man
 man1dir=${mandir}/man1
 mimedir=${datadir}/applications
 srcdir=.
-logdir=${localstatedir}/log
-logfile=${logdir}/${APPNAME}.log
 
 configfile=${sysconfdir}/${APPNAME}.conf
 
@@ -32,7 +29,6 @@ install: installdirs
 	$(shell awk 'NR==1 {print; \
 		print "DATA_DIR='"${appdatadir}"'"; \
 		print "LIB_DIR='"${applibdir}"'"; \
-		print "LOG_FILE='"${logfile}"'"; \
 		print "CONFIG_FILE='"${configfile}"'"} \
 		NR!=1'  \
 			${srcdir}/bin/${APPNAME} > ${DESTDIR}${bindir}/${APPNAME})
@@ -44,8 +40,6 @@ install: installdirs
 	done
 	${INSTALL_DATA} ${srcdir}/bin/shell-integration.sh bin/shell-integration.fish ${DESTDIR}${appdatadir}
 	${INSTALL_DATA} ${srcdir}/${APPNAME}.desktop ${DESTDIR}${mimedir}
-	touch ${DESTDIR}${logfile}
-	chmod 666 ${DESTDIR}${logfile}
 	${INSTALL_DATA} ${srcdir}/docs/${APPNAME}.1.gz ${DESTDIR}${man1dir}
 	${INSTALL_DATA} ${srcdir}/docs/${APPNAME}.conf ${DESTDIR}${configfile}
 	${INSTALL_DATA} ${srcdir}/docs/${APPNAME}.conf ${DESTDIR}${appdatadir}
@@ -55,7 +49,7 @@ install: installdirs
 
 
 installdirs:
-	${INSTALL} -d ${DESTDIR}${bindir} ${DESTDIR}${applibdir} ${DESTDIR}${appdatadir} ${DESTDIR}${logdir}\
+	${INSTALL} -d ${DESTDIR}${bindir} ${DESTDIR}${applibdir} ${DESTDIR}${appdatadir} \
 		${DESTDIR}${appdocdir} ${DESTDIR}${man1dir} ${DESTDIR}${mimedir} ${DESTDIR}${sysconfdir}
 
 uninstall:
@@ -64,7 +58,6 @@ uninstall:
 	@rm -rfv ${appdatadir} 
 	@rm -rfv ${mimedir}/${APPNAME}.desktop
 	@rm -rfv ${man1dir}/${APPNAME}.1.gz
-	@rm -rfv ${logfile}
 	@rm -rfv ${bindir}/${APPNAME}
 	@rm -rfv ${bindir}/${APPNAME}-open
 	@rm -rfv ${configfile}

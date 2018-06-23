@@ -338,10 +338,6 @@ FILES
 
 :   Database of sodalite. If `$XDG_DATA_HOME` is not set, uses `$HOME/.local/share`.
 
-*/var/log/sodalite.log*
-
-:   The log.
-
 <!-- 
 ENVIRONMENT
 ===========

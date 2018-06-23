@@ -8,9 +8,11 @@ from core import dao, key
 from core.entry import Entry
 from util import environment
 
+VERSION = 'sodalite v0.13.5'
+
+
 logger = logging.getLogger(__name__)
 
-VERSION = 'sodalite v0.13.4'
 
 def _io_to_tty():
     global _old_stdin
@@ -73,7 +75,6 @@ if __name__ == "__main__":
         exit(0)
 
     try:
-        logger.info('Starting sodalite')
         _io_to_tty()
         from ui import graphics
 
@@ -84,5 +85,5 @@ if __name__ == "__main__":
             print(environment.exit_cwd)
         logger.info("Shutting down")
     except KeyboardInterrupt as e:
-        logger.info('Received SIGINT')
+        logger.info('Received SIGINT - shutting down')
         exit(1)
