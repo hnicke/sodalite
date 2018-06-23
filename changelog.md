@@ -1,8 +1,10 @@
 # Changelog
 
-## Unreleased
+## v0.13.6: June 23, 2018
 ##### Bugfixes
-- Manpage is now parsable by lexgrog
+- Manpage of sodalite is now parsable by lexgrog
+##### Misc
+- Add manpage for sodalite-open
 
 ## v0.13.5: June 23, 2018
 ##### Misc
