@@ -2,8 +2,7 @@
 
 NAME
 ====
-
-**sodalite** — terminal file navigator and launcher 
+sodalite - terminal file navigator and launcher 
 
 SYNOPSIS
 ========

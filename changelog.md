@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+##### Bugfixes
+- Manpage is now parsable by lexgrog
+
 ## v0.13.5: June 23, 2018
 ##### Misc
 - Instead of logging to /var/log/sodalite.log, now logging to the syslog socket /dev/log. When running systemd, you can now access the logs with `journalctl -ft sodalite`.
