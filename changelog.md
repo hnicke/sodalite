@@ -3,6 +3,7 @@
 ## Unreleased
 ##### Bugfixes
 - Fix rendering of tabs in filepreview
+- Sodalite-open now handles a broader array of desktop entries
 
 ## v0.13.6: June 23, 2018
 ##### Bugfixes

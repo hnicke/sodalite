@@ -36,6 +36,15 @@ function is_terminal_app {
     fi
 }
 
+# $1: the exec string
+function replace_exec_placeholders {
+    execute=${execute/"%F"/"$target_file"}
+    execute=${execute/"%f"/"$target_file"}
+    execute=${execute/"%u"/"$target_file"}
+    execute=${execute/"%U"/"$target_file"}
+    echo $execute
+}
+
 [ "$1" ] || { echo Which file?; exit 1; }
 
 target_file=$1
@@ -54,8 +63,7 @@ desktop_entry=$(xdg-mime query default "$filetype")
 
 execute=$(cat "$entry" | grep ^Exec= | cut -d"=" -f2)
 
-# replace file placeholder with file
-execute=${execute/"%F"/"$target_file"}
+execute=$(replace_exec_placeholders "$execute")
 
 if [ "$background" ]; then
     nohup $execute >/dev/null 2>&1 &
