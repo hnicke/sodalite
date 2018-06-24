@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+##### Bugfixes
+- Fix rendering of tabs in filepreview
+
 ## v0.13.6: June 23, 2018
 ##### Bugfixes
 - Manpage of sodalite is now parsable by lexgrog

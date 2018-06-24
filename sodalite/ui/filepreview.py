@@ -25,8 +25,14 @@ class FilePreview(List):
                 lexer = find_lexer(self.model.current_entry.path, content)
                 logger.info("Viewing file content - using {} for highlighting".format(type(lexer).__name__))
                 tokens = list(lexer.get_tokens(self.model.file_content))
+                # tabs are not rendered correctly, replace them with spaces
+                tokens = replace_tabs(tokens)
                 self.body.extend([Text(line) for line in bold_headings(inject_linenumbers(tokens))])
                 self.focus_position = 0
+
+
+def replace_tabs(tokens):
+    return [(attr, line.replace("\t", "    ")) for attr, line in tokens]
 
 
 def find_lexer(filename: str, content: str):
