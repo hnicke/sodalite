@@ -40,8 +40,10 @@ install: installdirs
 	done
 	${INSTALL_DATA} ${srcdir}/bin/shell-integration.sh bin/shell-integration.fish ${DESTDIR}${appdatadir}
 	${INSTALL_DATA} ${srcdir}/${APPNAME}.desktop ${DESTDIR}${mimedir}
-	${INSTALL_DATA} ${srcdir}/docs/${APPNAME}.1.gz ${DESTDIR}${man1dir}
-	${INSTALL_DATA} ${srcdir}/docs/${APPNAME}-open.1.gz ${DESTDIR}${man1dir}
+	${INSTALL_DATA} ${srcdir}/docs/${APPNAME}.1 ${DESTDIR}${man1dir}
+	${INSTALL_DATA} ${srcdir}/docs/${APPNAME}-open.1 ${DESTDIR}${man1dir}
+	gzip ${DESTDIR}${man1dir}/${APPNAME}.1
+	gzip ${DESTDIR}${man1dir}/${APPNAME}-open.1
 	${INSTALL_DATA} ${srcdir}/docs/${APPNAME}.conf ${DESTDIR}${configfile}
 	${INSTALL_DATA} ${srcdir}/docs/${APPNAME}.conf ${DESTDIR}${appdatadir}
 	${INSTALL_DATA} ${srcdir}/README.md ${DESTDIR}${appdocdir}/README
