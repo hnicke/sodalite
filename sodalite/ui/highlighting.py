@@ -14,6 +14,7 @@ logger = logging.getLogger(__name__)
 class HighlightedLine:
     def __init__(self, content, linenumber):
         self.content = self.bold_headings(content)
+        self.raw_content = ''.join([word for attr, word in self.content])
         self.linenumber = linenumber
         formatted_linenumber = [(theme.line_number, u'{:>2} '.format(linenumber))]
         self.numbered_content = [formatted_linenumber] + content
@@ -30,11 +31,7 @@ class HighlightedLine:
         return new_content
 
     def matches(self, pattern: Pattern):
-        if not pattern.pattern:
-            return True
-        for attr, word in self.content:
-            if pattern.search(word):
-                return True
+        return not pattern.pattern or pattern.search(self.raw_content)
 
     def __str__(self):
         return f"[{self.linenumber}: {self.content}]"

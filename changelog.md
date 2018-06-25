@@ -1,6 +1,11 @@
 # Changelog
 
-## v0.14.0
+## v0.14.1, June 25, 2018
+##### Bugfixes
+- Fix crash when escaping input with '\' while filtering
+- Update display correctly in case filter does not match anything
+
+## v0.14.0: June 25, 2018
 ##### Features
 - Filtering in file preview is now possible
 ##### Bugfixes

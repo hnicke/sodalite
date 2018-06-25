@@ -12,14 +12,15 @@ logger = logging.getLogger(__name__)
 class FilePreview(List):
     def __init__(self, model):
         super().__init__()
-        self.content = None
+        self.content = []
         self.model: ViewModel = model
         self.model.register(self)
 
     def on_update(self):
-        if self.model.filtered_file_content and self.model.filtered_file_content != self.content:
+        if self.model.filtered_file_content != self.content:
             self.content = self.model.filtered_file_content
             with graphics.DRAW_LOCK:
                 self.body.clear()
                 self.body.extend([Text(line.numbered_content) for line in self.content])
-                self.focus_position = 0
+                if len(self.content) > 0:
+                    self.focus_position = 0

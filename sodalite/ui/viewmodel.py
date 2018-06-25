@@ -1,6 +1,8 @@
 import logging
 import re
+import sre_constants
 from enum import Enum
+from sre_parse import Pattern
 from typing import List
 
 from core.entry import Entry
@@ -24,8 +26,8 @@ class ViewModel(Observable):
         self.mode = Mode.NORMAL
         self.current_entry: Entry = None
         self.file_content: List[HighlightedLine] = None
-        self.filtered_file_content: List[HighlightedLine] = None
-        self._filter_string = ""
+        self.filtered_file_content: List[HighlightedLine] = []
+        self._filter_pattern: Pattern = re.compile('')
         self.navigator = navigator
         self._show_hidden_files = True
         self.entries = []
@@ -38,7 +40,7 @@ class ViewModel(Observable):
         else:
             self.file_content = None
 
-        self._filter_string = ""
+        self._filter_pattern = re.compile('')
         self.process()
 
     def process(self):
@@ -47,22 +49,17 @@ class ViewModel(Observable):
             self.notify_all()
         else:
             entries = list(self.current_entry.children)
-            entries = self.filter_regexp(entries)
+            entries = self.filter_entry(entries)
             entries = self.filter_hidden_files(entries)
             entries = sort(entries)
             self.entries = entries
             self.notify_all()
 
-    def filter_regexp(self, entries: List[Entry]) -> List[Entry]:
-        p = self.get_filter_pattern()
-        return [entry for entry in entries if p.search(entry.name)]
+    def filter_entry(self, entries: List[Entry]) -> List[Entry]:
+        return [entry for entry in entries if self.filter_pattern.search(entry.name)]
 
     def filter_file_content(self):
-        pattern = self.get_filter_pattern()
-        return [line for line in self.file_content if line.matches(pattern)]
-
-    def get_filter_pattern(self):
-        return re.compile(self.filter_string, re.IGNORECASE)
+        return [line for line in self.file_content if line.matches(self.filter_pattern)]
 
     def filter_hidden_files(self, entries: List[Entry]) -> List[Entry]:
         if self.show_hidden_files:
@@ -81,13 +78,17 @@ class ViewModel(Observable):
             self.process()
 
     @property
-    def filter_string(self) -> str:
-        return self._filter_string
+    def filter_pattern(self) -> Pattern:
+        return self._filter_pattern
 
-    @filter_string.setter
-    def filter_string(self, string: str):
-        self._filter_string = string
-        self.process()
+    @filter_pattern.setter
+    def filter_pattern(self, pattern: str):
+        try:
+            self._filter_pattern = re.compile(pattern, re.IGNORECASE)
+            self.process()
+        except sre_constants.error:
+            # .e.g gets thrown when string ends with '\' (user is about to escape a char)
+            pass
 
 
 def sort(entries: List[Entry]):

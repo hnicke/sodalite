@@ -22,10 +22,10 @@ class Filter(urwid.Edit):
             super().keypress(size, key)
 
     def update_filter(self, *args, **keywords):
-        self.model.filter_string = self.edit_text
+        self.model.filter_pattern = self.edit_text
 
     def clear_filter(self):
-        self.model.filter_string = ''
+        self.model.filter_pattern = ''
         self.parent.footer = None
 
     def render(self, size, focus=False):
