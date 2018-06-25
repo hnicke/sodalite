@@ -56,7 +56,7 @@ class Entry:
             self.realpath = path
         self._executable = None
         self._readable = None
-        self._content = None
+        self._content: List[str] = None
 
     def chdir(self):
         """

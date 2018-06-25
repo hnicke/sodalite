@@ -5,6 +5,8 @@ from typing import List
 
 from core.entry import Entry
 from core.navigator import Navigator
+from ui import highlighting
+from ui.highlighting import HighlightedLine
 from util.observer import Observable
 
 logger = logging.getLogger(__name__)
@@ -21,8 +23,8 @@ class ViewModel(Observable):
         super().__init__()
         self.mode = Mode.NORMAL
         self.current_entry: Entry = None
-        self._unprocessed_children = None
-        self.file_content = None
+        self.file_content: List[HighlightedLine] = None
+        self.filtered_file_content: List[HighlightedLine] = None
         self._filter_string = ""
         self.navigator = navigator
         self._show_hidden_files = True
@@ -31,9 +33,8 @@ class ViewModel(Observable):
 
     def on_update(self):
         self.current_entry = self.navigator.current_entry
-        self._unprocessed_children = self.current_entry.children
         if self.current_entry.is_plain_text_file():
-            self.file_content = self.current_entry.content
+            self.file_content = list(highlighting.compute_highlighting(self.current_entry))
         else:
             self.file_content = None
 
@@ -41,22 +42,27 @@ class ViewModel(Observable):
         self.process()
 
     def process(self):
-        entries = list(self._unprocessed_children)
-        entries = self.filter_regexp(entries)
-        entries = self.filter_hidden_files(entries)
-        entries = sort(entries)
-        self.entries = entries
-        self.notify_all()
+        if self.current_entry.is_plain_text_file():
+            self.filtered_file_content = self.filter_file_content()
+            self.notify_all()
+        else:
+            entries = list(self.current_entry.children)
+            entries = self.filter_regexp(entries)
+            entries = self.filter_hidden_files(entries)
+            entries = sort(entries)
+            self.entries = entries
+            self.notify_all()
 
     def filter_regexp(self, entries: List[Entry]) -> List[Entry]:
-        if self.filter_string[-1:] == "\\":
-            return entries
-        filtered = []
-        p = re.compile(self.filter_string, re.IGNORECASE)
-        for entry in entries:
-            if p.search(entry.name):
-                filtered.append(entry)
-        return filtered
+        p = self.get_filter_pattern()
+        return [entry for entry in entries if p.search(entry.name)]
+
+    def filter_file_content(self):
+        pattern = self.get_filter_pattern()
+        return [line for line in self.file_content if line.matches(pattern)]
+
+    def get_filter_pattern(self):
+        return re.compile(self.filter_string, re.IGNORECASE)
 
     def filter_hidden_files(self, entries: List[Entry]) -> List[Entry]:
         if self.show_hidden_files:

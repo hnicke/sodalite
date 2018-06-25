@@ -1,6 +1,8 @@
 # Changelog
 
-## Unreleased
+## v0.14.0
+##### Features
+- Filtering in file preview is now possible
 ##### Bugfixes
 - Fix rendering of tabs in filepreview
 - Sodalite-open now handles a broader array of desktop entries
