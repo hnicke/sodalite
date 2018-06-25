@@ -32,7 +32,7 @@ sudo apt-get install sodalite
 ```
 The `add-repo` script adds the repository `repo.hnicke.de/apt/debian/repos` to your apt repositories and installs the necessary public keys.
 
-*Note:* Sodalite depends on python3.6. If you're running debian, you probably have to manually install python3.6 first.
+*Note:* Sodalite depends on python3 (>=3.6). If you're running debian (stable), you probably have to manually install it first.
 
 > We're working on getting the package into the official debian repo.
 
@@ -63,7 +63,7 @@ The project adheres to the [GNU Makefile Conventions](https://www.gnu.org/prep/s
 In case it doesn't it's considered a bug - please file a bug report.
 
 > **Necessary dependencies**:  
-> - [python3](https://www.python.org/downloads/release/python-364/) 
+> - [python3](https://www.python.org/downloads/release/python-364/)  (>=3.6)
 > - [urwid](http://urwid.org)
 > - [pygments](http://pygments.org)
 > - [binaryornot](https://github.com/audreyr/binaryornot)

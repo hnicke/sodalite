@@ -14,4 +14,4 @@ stty -ixon 2> /dev/null
 APPNAME=sodalite
 LIB_DIR="${LIB_DIR:-$(dirname $(readlink -f "$0"))/../sodalite}"
 
-python3.6 $LIB_DIR/main.py $@
+python3 $LIB_DIR/main.py $@
