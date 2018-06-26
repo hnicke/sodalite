@@ -1,7 +1,8 @@
 [Desktop Entry]
 Name=sodalite
 GenericName=File Navigator
-Exec=sodalite
+Exec=sodalite %F
 Terminal=true
 Type=Application
 Categories=FileManager;FileTools;Utility
+Keywords=Navigator;Launcher;

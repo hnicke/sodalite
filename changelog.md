@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+##### Misc
+- Improve desktop entry
+
 ## v0.14.1, June 25, 2018
 ##### Bugfixes
 - Fix crash when escaping input with '\' while filtering
