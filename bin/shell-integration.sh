@@ -40,10 +40,19 @@ fi
 
 if ! [ "$SODALITE_CD_INTERCEPTION" = 'false' ]; then
     function cd { 
+        for last in $@; do true; done
         (
-            for last in $@; do true; done
             nohup sodalite --update-access "$last" &
         ) >/dev/null 2>&1
-        builtin cd $@
+        # catching the errors here: so user does not see an inconvenient error message
+        if ! [ -e "$last" ]; then
+            echo "cd: no such file or directory: $last" > /dev/stderr
+            return 1
+        elif ! [ -x "$last" ]; then
+            echo "cd: permission denied: testing" > /dev/stderr
+            return 1
+        else
+            builtin cd "$@"
+        fi
     }
 fi
