@@ -29,7 +29,7 @@ Shell integration
 
 It's recommended to integrate sodalite into the shell. The integration does the following:
 
-- set up a keybinding to launch sodalite wich enables convenient navigation
+- set up a keybinding to launch sodalite which enables convenient navigation
 - collect data about your navigation profile (e.g., by intercepting `cd` calls) in order to customize your view on the data. You can disable this by setting the variable SODALITE_CD_INTERCEPTION to *false* before sourcing the integration script.
 
 **bash / zsh**
@@ -73,7 +73,7 @@ Following general actions can be triggered everywhere in `sodalite`:
 
 :   Exit `sodalite`. Prints the current entry to `stdout`.
 
-    In case `sodalite` was invoked with the provided shell integration key-bindings, will `cd` into current directory. If the current entry is not a directoy but a file, will `cd` into the parent directory.
+    In case `sodalite` was invoked with the provided shell integration key-bindings, will `cd` into current directory. If the current entry is not a directory but a file, will `cd` into the parent directory.
 
 **global.abort (`ctrl c`)**
 
@@ -111,7 +111,7 @@ Following general actions can be triggered everywhere in `sodalite`:
 
 `NORMAL` mode
 -----------
-`sodalite` automatically assigns keys to entries in order to enable quick navigation. For navigating to a specifc entry, simply press its assigned key.
+`sodalite` automatically assigns keys to entries in order to enable quick navigation. For navigating to a specific entry, simply press its assigned key.
 Valid values for keys are all letters of the alphabet (lower and upper case), so there are 52 different keys. For every directory, each key is unique. If there are more than 52 entries in a directory, some entries will end up having no key assigned to them. However, you can change this within the `ASSIGN` mode.
 
 **normal.go_to (`[a-zA-Z]`)**
