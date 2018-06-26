@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## v0.14.3: June 26, 2018
 ##### Misc
 - Enhance error handling in cd interception
 ##### Bugfixes
