@@ -3,6 +3,7 @@
 ## Unreleased
 ##### Bugfixes
 - Fix crash when starting sodalite and starting entry is not a directory
+- Clear stale file previewing when viewing a non-previewable file
 
 ## v0.14.2: June 26, 2018
 ##### Misc

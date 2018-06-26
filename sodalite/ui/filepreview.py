@@ -17,6 +17,9 @@ class FilePreview(List):
         self.model.register(self)
 
     def on_update(self):
+        current = self.model.current_entry
+        if not current.is_plain_text_file() and current.is_file():
+            self.body.clear()
         if self.model.filtered_file_content != self.content:
             self.content = self.model.filtered_file_content
             with graphics.DRAW_LOCK:
