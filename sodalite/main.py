@@ -10,7 +10,6 @@ from util import environment
 
 VERSION = 'sodalite v0.14.2'
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -50,7 +49,9 @@ if __name__ == "__main__":
         if not os.path.exists(args.path):
             print(f"'{args.path}' does not exist, aborting", file=sys.stderr)
             exit(1)
-        os.chdir(args.path)
+    if not args.path:
+        args.path = os.getcwd()
+    args.path = os.path.abspath(args.path)
 
     if args.update_access:
         # make the update run as nicely as possible
@@ -59,7 +60,7 @@ if __name__ == "__main__":
             args.update_access = args.update_access[1:]
             cwd = "/"
         else:
-            cwd = os.getcwd()
+            cwd = args.path
         route = args.update_access.split("/")
         for segment in route:
             entry_path = os.path.join(cwd, segment)
@@ -77,8 +78,8 @@ if __name__ == "__main__":
     try:
         _io_to_tty()
         from ui import graphics
+        graphics.run(args.path)
 
-        graphics.run()
         if environment.exit_cwd:
             sys.__stdout__ = sys.stdout = open('/dev/stdout', 'w')
             _io_to_std()

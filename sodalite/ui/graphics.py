@@ -18,8 +18,13 @@ logger = logging.getLogger(__name__)
 
 class MainFrame(urwid.Frame):
 
-    def __init__(self):
+    def __init__(self, path: str):
+        """
+
+        :param path: the start entry
+        """
         history = dirhistory.load()
+        history.visit(path)
         self.model = ViewModel(Navigator(history=history))
         self.mainpane = MainPane(self.model)
         super().__init__(self.mainpane)
@@ -61,10 +66,10 @@ _notify_lock = threading.Lock()
 _last_message = ''
 
 
-def run():
+def run(path: str):
     global frame
     global loop
-    frame = MainFrame()
+    frame = MainFrame(path)
     loop = _create_loop(frame)
     loop.run()
 

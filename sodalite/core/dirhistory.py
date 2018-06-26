@@ -22,12 +22,6 @@ class DirHistory:
             history = []
         self._history = history
         self._current_index = index
-        cwd = os.getcwd()
-        if len(self._history) < 1:
-            self._history.append(cwd)
-        elif not self.cwd() == cwd:
-            self._history.insert(self._current_index + 1, cwd)
-            self._current_index += 1
         if persist:
             atexit.register(save, self)
 
@@ -99,9 +93,6 @@ class DirHistory:
             lower = min(upper - MAX_LENGTH, lower)
             self._history = self._history[lower:upper]
             self._current_index -= lower
-
-
-
 
 
 def load() -> DirHistory:
