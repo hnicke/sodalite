@@ -8,7 +8,7 @@ from core import dao, key
 from core.entry import Entry
 from util import environment
 
-VERSION = 'sodalite v0.14.3'
+VERSION = 'sodalite v0.14.4'
 
 logger = logging.getLogger(__name__)
 

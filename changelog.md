@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.14.4: June 26, 2018
+##### Bugfixes
+- Fix error in shell-integration when calling `cd` without path
+
 ## v0.14.3: June 26, 2018
 ##### Misc
 - Enhance error handling in cd interception
