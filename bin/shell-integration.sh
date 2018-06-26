@@ -34,8 +34,8 @@ if [ $shell = 'zsh' ]; then
     bindkey -M vicmd 'f'  sodalite-vim-widget
     bindkey -M emacs '^f' sodalite-emacs-widget
 elif [ $shell = 'bash' ]; then
-    bind -m vi-command '"f":"ddisetup_cleanup; cd $(sodalite); tput cuu1; tput ed\n"'
-    bind -m emacs '"\C-f":"\C-k\C-usetup_cleanup; cd $(sodalite); tput cuu1; tput ed\n"'
+    bind -m vi-command '"f":"ddi setup_cleanup; cd $(sodalite); tput cuu1; tput ed\n"'
+    bind -m emacs '"\C-f":"\C-k\C-u setup_cleanup; cd $(sodalite); tput cuu1; tput ed\n"'
 fi
 
 if ! [ "$SODALITE_CD_INTERCEPTION" = 'false' ]; then
