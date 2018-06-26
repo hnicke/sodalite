@@ -1,10 +1,11 @@
 # Changelog
 
-## Unreleased
+## v0.14.2: June 26, 2018
 ##### Misc
 - Improve desktop entry
+- Fix spelling in manpage
 
-## v0.14.1, June 25, 2018
+## v0.14.1: June 25, 2018
 ##### Bugfixes
 - Fix crash when escaping input with '\' while filtering
 - Update display correctly in case filter does not match anything
