@@ -15,6 +15,7 @@ After a while, the keys burn into one's muscle memory - using the game's interfa
 ## Navigate the file system
 When opening `sodalite`, you will see the listing of the current directory.   
 Pressing one of the keys displayed in front of the entries will navigate there.
+
 ![Sodalite](docs/sodalite.png)
 
 Assign the most intuitive and/or reachable keys to your most frequently used entries, and stick with this assignment. 

@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+##### Misc
+- Enhance error handling in cd interception
 ##### Bugfixes
 - Fix crash when starting sodalite and starting entry is not a directory
 - Clear stale file previewing when viewing a non-previewable file
