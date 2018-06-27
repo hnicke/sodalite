@@ -329,7 +329,7 @@ FILES
 
 :   Global default configuration file. If file does not exists, fall back to example config file.
 
-**/usr/share/sodalite/sodalite.conf**
+*/usr/share/sodalite/sodalite.conf*
 
 :   Example config file.
 

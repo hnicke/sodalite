@@ -76,6 +76,20 @@ In case it doesn't it's considered a bug - please file a bug report.
 ## Getting started
 Check out the [manpage](docs/sodalite.1.md) for detailed usage information.
 
+## FAQ
+##### The default 'open' hook doesn't work / launches weird programs :(
+Most probably it is not sodalite's fault, but your mime default application list isn't configured correctly.
+You could try this:
+```bash
+xdg-mime default <desktop> $(xdg-mime query filetype <file>)
+```
+Replace `<file>` with the file you're trying to open and `<desktop>` with name of the desktop entry file of your new default app. If you're not sure what's the name of the desktop entry of a specific app, look for it in `/usr/share/applications`.
+
+Alternatively you can edit the mime app list manually: `$HOME/.config/mimeapps.list`
+
+Or learn more about [mime](https://wiki.archlinux.org/index.php/XDG_MIME_Applications#mimeapps.list).
+
+
 ## Changelog
 Don't miss out on what has changed: Read the [changelog](changelog.md).
 
