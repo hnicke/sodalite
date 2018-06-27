@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.14.5: June 27, 2018
+##### Bugfixes
+- Fix crash on startup when history file did not yet exist
+
 ## v0.14.4: June 26, 2018
 ##### Bugfixes
 - Fix error in shell-integration when calling `cd` without path

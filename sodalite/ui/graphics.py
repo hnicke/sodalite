@@ -23,9 +23,8 @@ class MainFrame(urwid.Frame):
 
         :param path: the start entry
         """
-        history = dirhistory.load()
-        history.visit(path)
-        self.model = ViewModel(Navigator(history=history))
+        history = dirhistory.load(path)
+        self.model = ViewModel(Navigator(history))
         self.mainpane = MainPane(self.model)
         super().__init__(self.mainpane)
         self.hookbox = HookBox(self.model, self)

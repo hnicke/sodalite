@@ -17,7 +17,7 @@ class Navigator:
     Clients (e.g., GUI) may use the navigator class for interaction
     """
 
-    def __init__(self, history: DirHistory = DirHistory(), entry_access: EntryAccess = EntryAccess()):
+    def __init__(self, history, entry_access: EntryAccess = EntryAccess()):
         self.history = history
         self.entry_access = entry_access
         self.entry_notifier = Observable()

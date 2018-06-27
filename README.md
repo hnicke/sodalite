@@ -28,7 +28,7 @@ Once setup, and muscle memory kicks in, all directories will be reachable in a b
 ##### Debian and derivates
 You can use this two-liner and you're ready to go:
 ```bash
-curl -sLf repo.hnicke.de/apt/debian/add-repo | sudo bash
+curl -sL repo.hnicke.de/apt/debian/add-repo | sudo bash
 sudo apt-get install sodalite
 ```
 The `add-repo` script adds the repository `repo.hnicke.de/apt/debian/repos` to your apt repositories and installs the necessary public keys.
@@ -57,8 +57,9 @@ AUR package [sodalite-git](https://aur.archlinux.org/packages/sodalite-git/) (ma
 #### Manual Installation
 In order to manually install `sodalite`, clone this repository, `cd` to the project root and execute:
 ```bash
-sudo make install
+sudo make prefix=/usr sysconfdir=/etc install
 ```
+Replace `prefix` and `sysconfdir` with the appropriate directories for you're OS.
 
 The project adheres to the [GNU Makefile Conventions](https://www.gnu.org/prep/standards/html_node/Makefile-Conventions.html#Makefile-Conventions). 
 In case it doesn't it's considered a bug - please file a bug report.

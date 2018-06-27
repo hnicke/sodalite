@@ -17,9 +17,8 @@ class DirHistory:
     Will never check if a file path is a valid file path.
     """
 
-    def __init__(self, history=None, index=0, persist=False):
-        if not history:
-            history = []
+    def __init__(self, history, index=0, persist=False):
+        assert history
         self._history = history
         self._current_index = index
         if persist:
@@ -95,17 +94,19 @@ class DirHistory:
             self._current_index -= lower
 
 
-def load() -> DirHistory:
+def load(start_entry: str) -> DirHistory:
     logger.info('Load navigation history')
     if not os.path.isfile(environment.history_file):
-        return DirHistory(persist=True)
+        return DirHistory([start_entry], persist=True)
     with open(environment.history_file, 'r') as file:
         text = file.read()
         try:
-            history = json.loads(text, object_hook=object_decoder)
+            history: DirHistory = json.loads(text, object_hook=object_decoder)
+            history._history.insert(history._current_index + 1, start_entry)
+            history._current_index += 1
             return history
         except JSONDecodeError:
-            return DirHistory(persist=True)
+            return DirHistory([start_entry], persist=True)
 
 
 def object_decoder(obj) -> DirHistory:
