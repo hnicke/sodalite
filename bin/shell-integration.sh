@@ -44,15 +44,15 @@ if ! [ "$SODALITE_CD_INTERCEPTION" = 'false' ]; then
         (
             nohup sodalite --update-access "$last" &
         ) >/dev/null 2>&1
-        # catching the errors here: so user does not see an inconvenient error message
-        if ! [ "$@" ]; then
-            # everythings alright
-        elif ! [ -e "$last" ]; then
-            echo "cd: no such file or directory: $last" > /dev/stderr
-            return 1
-        elif ! [ -x "$last" ]; then
-            echo "cd: permission denied: testing" > /dev/stderr
-            return 1
+        # catching the errors here, so user does not see an inconvenient error message
+        if [ "$@" ]; then
+            if ! [ -e "$last" ]; then
+                echo "cd: no such file or directory: $last" > /dev/stderr
+                return 1
+            elif ! [ -x "$last" ]; then
+                echo "cd: permission denied: testing" > /dev/stderr
+                return 1
+            fi
         fi
         builtin cd "$@"
     }

@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.14.6: June 27, 2018
+##### Bugfixes
+- Fix shell integration for bash
+
 ## v0.14.5: June 27, 2018
 ##### Bugfixes
 - Fix crash on startup when history file did not yet exist
