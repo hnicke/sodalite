@@ -59,7 +59,7 @@ In order to manually install `sodalite`, clone this repository, `cd` to the proj
 ```bash
 sudo make prefix=/usr sysconfdir=/etc install
 ```
-Replace `prefix` and `sysconfdir` with the appropriate directories for you're OS.
+Replace the values for `prefix` and `sysconfdir` with the appropriate directories for you're OS.
 
 The project adheres to the [GNU Makefile Conventions](https://www.gnu.org/prep/standards/html_node/Makefile-Conventions.html#Makefile-Conventions). 
 In case it doesn't it's considered a bug - please file a bug report.
