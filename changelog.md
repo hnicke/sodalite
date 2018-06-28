@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+##### Bugfixes
+- Fixes custom keybindings for `normal.go_to_parent` and `normal.go_to_home`
+##### Misc
+- Change default keybinding of `normal.go_to_home` to `;` and of `normal.go_to_root` to `,`
+
 ## v0.15.0: June 28, 2018
 ##### Features
 - keys `0-9` can now be used as navigation keys

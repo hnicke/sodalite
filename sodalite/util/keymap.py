@@ -18,6 +18,7 @@ class Action(Enum):
     SCROLL_PAGE_UP = 'global.scroll_page_up'
     SCROLL_HALF_PAGE_DOWN = 'global.scroll_half_page_down'
     SCROLL_HALF_PAGE_UP = 'global.scroll_half_page_up'
+    GO_TO_PARENT = 'normal.go_to_parent'
     GO_TO_HOME = 'normal.go_to_home'
     GO_TO_ROOT = 'normal.go_to_root'
     GO_TO_PREVIOUS = 'normal.go_to_previous'
@@ -37,8 +38,8 @@ defaults = {
     'ctrl b': Action.SCROLL_PAGE_UP,
     'ctrl d': Action.SCROLL_HALF_PAGE_DOWN,
     'ctrl u': Action.SCROLL_HALF_PAGE_UP,
-    '`': Action.GO_TO_HOME,
-    '0': Action.GO_TO_ROOT,
+    ';': Action.GO_TO_HOME,
+    ',': Action.GO_TO_ROOT,
     'backspace': Action.GO_TO_PREVIOUS,  # also matches 'ctrl h'
     'ctrl l': Action.GO_TO_NEXT,
     'ctrl y': Action.YANK_CURRENT_PATH,

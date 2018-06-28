@@ -118,11 +118,11 @@ Valid values for keys are all letters of the alphabet (lower and upper case), so
 
 :   Navigate to the entry matching pressed key. Note: This function is not reassinable to another keybinding.
 
-**normal.go_to_home (`` ` ``)**
+**normal.go_to_home (`;`)**
 
 :   Navigate to the `$HOME` directory.
 
-**normal.go_to_root (`0`)**
+**normal.go_to_root (`,`)**
 
 :   Navigate to the root directory.
 

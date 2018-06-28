@@ -75,23 +75,23 @@ class MainPane(urwid.WidgetWrap):
             graphics.notify((AttrSpec(theme.forbidden + ',bold', '', colors=16), "FILE NOT FOUND"))
 
     def keypress_normal(self, size, key):
-        if key == '.':
+        if self.navigator.is_navigation_key(key):
+            self.navigator.visit_child(key)
+            self.clear_filter()
+        elif keymap.matches(Action.GO_TO_PARENT, key):
             self.navigator.visit_parent()
             self.clear_filter()
-        elif key == '~' or key == '`':
+        elif keymap.matches(Action.GO_TO_HOME, key):
             self.navigator.visit_path(environment.home)
             self.clear_filter()
+        elif keymap.matches(Action.GO_TO_ROOT, key):
+            self.navigator.visit_path('/')
         elif keymap.matches(Action.GO_TO_PREVIOUS, key):
             self.navigator.visit_previous()
             self.clear_filter()
         elif keymap.matches(Action.GO_TO_NEXT, key):
             self.navigator.visit_next()
             self.clear_filter()
-        elif self.navigator.is_navigation_key(key):
-            self.navigator.visit_child(key)
-            self.clear_filter()
-        elif keymap.matches(Action.GO_TO_ROOT, key):
-            self.navigator.visit_path('/')
         elif keymap.matches(Action.EXIT, key):
             graphics.exit(cwd=self.navigator.history.cwd())
         elif keymap.matches(Action.YANK_CURRENT_PATH, key):
