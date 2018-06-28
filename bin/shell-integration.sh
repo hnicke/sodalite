@@ -49,6 +49,9 @@ if ! [ "$SODALITE_CD_INTERCEPTION" = 'false' ]; then
             if ! [ -e "$last" ]; then
                 echo "cd: no such file or directory: $last" > /dev/stderr
                 return 1
+            elif ! [ -d "$last" ]; then
+                echo "cd: not a directory: $last" > /dev/stderr
+                return 1
             elif ! [ -x "$last" ]; then
                 echo "cd: permission denied: testing" > /dev/stderr
                 return 1
