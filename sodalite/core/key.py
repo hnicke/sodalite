@@ -6,18 +6,19 @@ all_keys.append(['a', 's', 'd', 'f', 'j', 'k', 'l'])
 all_keys.append(['g', 'h', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'z', 'x', 'c', 'v', 'b', 'n', 'm'])
 all_keys.append([x.upper() for x in all_keys[0]])
 all_keys.append([x.upper() for x in all_keys[1]])
+all_keys.append([str(x) for x in range(10)])
 
 
 class Key:
-    """all keys, divided into 4 groups:
+    """all keys, divided into 5 groups:
     the first group is the group of keys which is intended to be assigned first, the last one last.
     """
 
     def compute_key_rank(self):
-        """"# returns integer 1-4, depending on the key rank. the lower, the better.
+        """"# returns integer 1-5, depending on the key rank. the lower, the better.
         """
-        self.rank = 4
-        for x in range(3):
+        self.rank = len(all_keys)
+        for x in range(len(all_keys) - 1):
             if self.value in all_keys[x]:
                 self.rank = x
                 break
@@ -60,8 +61,8 @@ def _get_available_keys(old_entries: dict) -> List[str]:
     used_keys = set(map(lambda x: x.key.value, old_entries.values()))
     used_keys.discard('')
     unused_keys = []
-    for i in range(4):
-        tmp = list(set(all_keys[i]) - used_keys)
+    for key_rank in all_keys:
+        tmp = list(set(key_rank) - used_keys)
         shuffle(tmp)
         unused_keys.extend(tmp)
     return unused_keys

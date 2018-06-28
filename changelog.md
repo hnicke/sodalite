@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.15.0: June 28, 2018
+##### Features
+- keys `0-9` can now be used as navigation keys
+
 ## v0.14.7: June 28, 2018
 ##### Bugfixes
 - Sodalite-open now handles filenames which contain whitespaces

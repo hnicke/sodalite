@@ -114,7 +114,7 @@ Following general actions can be triggered everywhere in `sodalite`:
 `sodalite` automatically assigns keys to entries in order to enable quick navigation. For navigating to a specific entry, simply press its assigned key.
 Valid values for keys are all letters of the alphabet (lower and upper case), so there are 52 different keys. For every directory, each key is unique. If there are more than 52 entries in a directory, some entries will end up having no key assigned to them. However, you can change this within the `ASSIGN` mode.
 
-**normal.go_to (`[a-zA-Z]`)**
+**normal.go_to (`[a-zA-Z0-9]`)**
 
 :   Navigate to the entry matching pressed key. Note: This function is not reassinable to another keybinding.
 
