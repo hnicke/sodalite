@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+##### Bugfixes
+- Fixes cascading deletion of accesses whenever an entry is deleted from database 
+
 ## v0.15.1: June 28, 2018
 ##### Bugfixes
 - Fixes custom keybindings for `normal.go_to_parent` and `normal.go_to_home`
