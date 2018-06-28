@@ -27,3 +27,4 @@ class FilePreview(List):
                 self.body.extend([Text(line.numbered_content) for line in self.content])
                 if len(self.content) > 0:
                     self.focus_position = 0
+            graphics.redraw_if_external()

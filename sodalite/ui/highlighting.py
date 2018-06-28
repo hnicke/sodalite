@@ -39,7 +39,7 @@ class HighlightedLine:
 
 def compute_highlighting(entry: Entry) -> List[HighlightedLine]:
     lexer = find_lexer(entry.path, entry.content)
-    logger.info("Viewing file content - using {} for highlighting".format(type(lexer).__name__))
+    logger.info("Using {} for highlighting".format(type(lexer).__name__))
     content = entry.content.replace('\t', "    ")
     tokens = list(lexer.get_tokens(content))
     return line_per_line(tokens)

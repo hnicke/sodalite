@@ -1,9 +1,10 @@
 # Changelog
 
-## Unreleased
+## v0.15.1: June 28, 2018
 ##### Bugfixes
 - Fixes custom keybindings for `normal.go_to_parent` and `normal.go_to_home`
 - Fixes the cd interception: Now only updates database if the actual `cd` was successful and the target was neither `.` nor `..`
+- Fixes the filepreview: Sometimes when the file content changed, the preview was not updated 
 ##### Misc
 - Change default keybinding of `normal.go_to_home` to `;` and of `normal.go_to_root` to `,`
 
