@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.14.7: June 28, 2018
+##### Bugfixes
+- Sodalite-open now handles filenames which contain whitespaces
+
 ## v0.14.6: June 27, 2018
 ##### Bugfixes
 - Fix shell integration for bash

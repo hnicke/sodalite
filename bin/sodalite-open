@@ -36,18 +36,9 @@ function is_terminal_app {
     fi
 }
 
-# $1: the exec string
-function replace_exec_placeholders {
-    execute=${execute/"%F"/"$target_file"}
-    execute=${execute/"%f"/"$target_file"}
-    execute=${execute/"%u"/"$target_file"}
-    execute=${execute/"%U"/"$target_file"}
-    echo $execute
-}
-
 [ "$1" ] || { echo Which file?; exit 1; }
 
-target_file=$1
+target_file="$1"
 
 # if running headless just launch editor
 if [ ! $DISPLAY ]; then
@@ -63,11 +54,16 @@ desktop_entry=$(xdg-mime query default "$filetype")
 
 execute=$(cat "$entry" | grep ^Exec= | cut -d"=" -f2)
 
-execute=$(replace_exec_placeholders "$execute")
+target_file=${target_file/" "/"\ "}
+execute=${execute/"%F"/$target_file}
+execute=${execute/"%f"/$target_file}
+execute=${execute/"%u"/$target_file}
+execute=${execute/"%U"/$target_file}
 
 if [ "$background" ]; then
-    nohup $execute >/dev/null 2>&1 &
+    bash -c "nohup $execute >/dev/null 2>&1 &"
 else
-    $execute
+    #$execute
+    bash -c "$execute"
 fi
 
