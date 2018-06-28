@@ -15,7 +15,10 @@ end
 
 if not [ "$SODALITE_CD_INTERCEPTION" = 'false' ] 
     function cd
-      begin; nohup sodalite --update-access "$argv[-1]" &; end >/dev/null 2>&1
-      builtin cd $argv
+      if builtin cd $argv
+        if not echo "$argv[-1]" | grep -qE '^(\.|\.\.)$'
+            begin; nohup sodalite --update-access "$argv[-1]" "$OLDPWD" &; end >/dev/null 2>&1
+        end
+      end
     end
 end

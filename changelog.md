@@ -3,6 +3,7 @@
 ## Unreleased
 ##### Bugfixes
 - Fixes custom keybindings for `normal.go_to_parent` and `normal.go_to_home`
+- Fixes the cd interception: Now only updates database if the actual `cd` was successful and the target was neither `.` nor `..`
 ##### Misc
 - Change default keybinding of `normal.go_to_home` to `;` and of `normal.go_to_root` to `,`
 

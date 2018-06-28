@@ -41,9 +41,6 @@ fi
 if ! [ "$SODALITE_CD_INTERCEPTION" = 'false' ]; then
     function cd { 
         for last in $@; do true; done
-        (
-            nohup sodalite --update-access "$last" &
-        ) >/dev/null 2>&1
         # catching the errors here, so user does not see an inconvenient error message
         if [ "$@" ]; then
             if ! [ -e "$last" ]; then
@@ -57,6 +54,10 @@ if ! [ "$SODALITE_CD_INTERCEPTION" = 'false' ]; then
                 return 1
             fi
         fi
+        [[ "$argv[-1]" =~ ^(\.|\.\.)$ ]] ||
+        (
+            nohup sodalite --update-access "$last" &
+        ) >/dev/null 2>&1
         builtin cd "$@"
     }
 fi
