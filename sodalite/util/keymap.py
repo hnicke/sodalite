@@ -38,6 +38,7 @@ defaults = {
     'ctrl b': Action.SCROLL_PAGE_UP,
     'ctrl d': Action.SCROLL_HALF_PAGE_DOWN,
     'ctrl u': Action.SCROLL_HALF_PAGE_UP,
+    '.': Action.GO_TO_PARENT,
     ';': Action.GO_TO_HOME,
     ',': Action.GO_TO_ROOT,
     'backspace': Action.GO_TO_PREVIOUS,  # also matches 'ctrl h'
