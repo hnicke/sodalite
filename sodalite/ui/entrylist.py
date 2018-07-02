@@ -42,20 +42,20 @@ class List(ListBox):
             return key
 
     def scroll_page_down(self, size):
-        maxrow, _ = size
-        self._scroll_down(size, maxrow)
+        _, max_row = size
+        self._scroll_down(size, max_row)
 
     def scroll_page_up(self, size):
-        maxrow, _ = size
-        self._scroll_up(size, maxrow)
+        _, max_row = size
+        self._scroll_up(size, max_row)
 
     def scroll_half_page_down(self, size):
-        maxrow, _ = size
-        self._scroll_down(size, maxrow // 2)
+        _, max_row = size
+        self._scroll_down(size, max_row // 2)
 
     def scroll_half_page_up(self, size):
-        maxrow, _ = size
-        self._scroll_up(size, maxrow // 2)
+        _, max_row = size
+        self._scroll_up(size, max_row // 2)
 
     def _scroll_down(self, size, amount):
         middle, top, bottom = self.calculate_visible(size)
