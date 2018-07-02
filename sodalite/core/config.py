@@ -9,6 +9,10 @@ from util import environment
 
 logger = logging.getLogger(__name__)
 
+KEY_HOOKS = 'hooks'
+KEY_KEYMAP = 'keymap'
+KEY_ASSIGN_FIRST = 'assign_first'
+
 
 class InvalidConfiguration(Exception):
     pass
@@ -18,10 +22,15 @@ try:
     with open(environment.config_file) as f:
         # use safe_load instead load
         config_dict = yaml.safe_load(f)
-        hooks = config_dict.setdefault('hooks', {})
-        keymap = config_dict.get('keymap')
+        hooks = config_dict.setdefault(KEY_HOOKS, {})
+        if not hooks:
+            hooks = {}
+        keymap = config_dict.setdefault(KEY_KEYMAP, {})
         if not keymap:
             keymap = {}
+        preferred_names = config_dict.setdefault(KEY_ASSIGN_FIRST, [])
+        if not preferred_names:
+            preferred_names = []
 except ScannerError:
     message = "Error while parsing config file '{}'".format(environment.config_file)
     print(message, file=sys.stderr)

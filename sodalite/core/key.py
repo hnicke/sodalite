@@ -131,4 +131,5 @@ def _sort(entries):
     sorted_entries = sorted(entries, key=lambda x: x.name)
     sorted_entries.sort(key=lambda x: x.is_dir(), reverse=True)
     sorted_entries.sort(key=lambda x: x.is_hidden())
+    sorted_entries.sort(key=lambda x: x.name_precedence)
     return sorted_entries

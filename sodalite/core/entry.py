@@ -7,7 +7,7 @@ from typing import Dict, Iterable, List
 
 from binaryornot.check import is_binary
 
-from core import rating
+from core import rating, config
 from .key import Key
 
 
@@ -54,6 +54,8 @@ class Entry:
             self.realpath = os.path.join(os.path.dirname(path), os.readlink(path))
         else:
             self.realpath = path
+        """lower precedence number means higher priority, e.g. for displaying"""
+        self.name_precedence = compute_name_precedence(self.name)
         self._executable = None
         self._readable = None
         self._content: List[str] = None
@@ -188,3 +190,10 @@ def detect_type(mode) -> EntryType:
         return EntryType(EntryType.BLOCK_DEVICE)
     if stat.S_ISCHR(mode):
         return EntryType(EntryType.CHARACTER_DEVICE)
+
+
+def compute_name_precedence(name: str) -> int:
+    try:
+        return config.preferred_names.index(name)
+    except ValueError:
+        return len(config.preferred_names)

@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+##### Features
+- Add option to set up preferred file names via configuration file
 ##### Bugfixes
 - Fix cascading deletion of accesses whenever an entry is deleted from database 
 - Fix scrolling
