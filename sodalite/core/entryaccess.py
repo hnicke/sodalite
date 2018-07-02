@@ -73,6 +73,8 @@ class EntryAccess:
 
     def access_now(self, entry):
         """Adds a new access to given entry"""
+        if not dao.entry_exists(entry.path):
+            dao.insert_entry(entry)
         access = int(time.time() * 1000)
         entry.access_history.append(access)
         dao.insert_access(entry.path, access)
