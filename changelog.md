@@ -1,8 +1,9 @@
 # Changelog
 
-## Unreleased
+## v0.16.1: July 03, 2018
 ##### Features
 - Add option to set up preferred file names via configuration file
+- Improve shell integration: When exiting and current entry is a file, inserts the file name at the current cursor position in the command line
 ##### Bugfixes
 - Fix cascading deletion of accesses whenever an entry is deleted from database 
 - Fix scrolling

@@ -13,29 +13,55 @@ function setup_cleanup {
     trap headless_clear EXIT SIGTERM SIGINT
 }
 
-function sodalite-emacs-widget {
-    setup_cleanup
-    target="$(sodalite)"
-    if [ "$target" ]; then
-        [ -d "$target" ] || target="$(dirname $target)"
-        builtin cd "$target"
-    fi
-    zle reset-prompt
-}
-
-function sodalite-vim-widget {
-    sodalite-emacs-widget
-    zle -K viins
-}
-
 if [ $shell = 'zsh' ]; then
+    function sodalite-emacs-widget {
+        setup_cleanup
+        target=$(sodalite)
+        if [ "$target" ]; then
+            if [ -d "$target" ]; then 
+                dirname=$target
+            else
+                dirname="$(dirname "$target")"
+                RBUFFER=" $(basename "$target") $RBUFFER"
+            fi
+            builtin cd "$dirname"
+        fi
+        zle reset-prompt
+    }
+
+    function sodalite-vim-widget {
+        sodalite-emacs-widget
+        zle -K viins
+    }
+
+
     zle     -N      sodalite-vim-widget
     zle     -N      sodalite-emacs-widget
     bindkey -M vicmd 'f'  sodalite-vim-widget
     bindkey -M emacs '^f' sodalite-emacs-widget
 elif [ $shell = 'bash' ]; then
-    bind -m vi-command '"f":"ddi setup_cleanup; cd $(sodalite); tput cuu1; tput ed\n"'
-    bind -m emacs '"\C-f":"\C-k\C-u setup_cleanup; cd $(sodalite); tput cuu1; tput ed\n"'
+    function sodalite-bash {
+        setup_cleanup
+        target=$(sodalite)
+        if [ "$target" ]; then
+            if [ -d "$target" ]; then 
+                dirname=$target
+            else
+                dirname="$(dirname $target)"
+                before=${READLINE_LINE:0:$READLINE_POINT}
+                insert=$(basename "$target")
+                after=${READLINE_LINE:$READLINE_POINT}
+                TMP_READLINE_LINE="$before $insert $after"
+                TMP_READLINE_POINT=$((${#before}-1))
+            fi
+            builtin cd "$dirname"
+        fi
+        unset {target,dirname,before,insert,after}
+    }
+    bind -m vi-command -x '"\200": sodalite-bash'
+    bind -m vi-command -x '"\201": tput cuu 2; tput ed; READLINE_LINE=$TMP_READLINE_LINE; READLINE_POINT=$TMP_READLINE_POINT; unset {TMP_READLINE_LINE,TMP_READLINE_POINT}'
+    bind -m vi-command '"f": "\200 dd\C-m \e \201 i"'
+    bind -m emacs '"\C-f":"\200 \C-u\C-m \201'
 fi
 
 if ! [ "$SODALITE_CD_INTERCEPTION" = 'false' ]; then
