@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 KEY_HOOKS = 'hooks'
 KEY_KEYMAP = 'keymap'
-KEY_ASSIGN_FIRST = 'assign_first'
+PREFERRED_NAMES = 'preferred_names'
 
 
 class InvalidConfiguration(Exception):
@@ -28,7 +28,8 @@ try:
         keymap = config_dict.setdefault(KEY_KEYMAP, {})
         if not keymap:
             keymap = {}
-        preferred_names = config_dict.setdefault(KEY_ASSIGN_FIRST, [])
+        preferred_names = config_dict.setdefault(PREFERRED_NAMES, [])
+        preferred_names = [x.lower() for x in preferred_names]
         if not preferred_names:
             preferred_names = []
 except ScannerError:
