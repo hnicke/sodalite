@@ -23,10 +23,17 @@ unimportant = {
 unused = urwid.DARK_GRAY
 forbidden = urwid.LIGHT_RED
 
+navigation_mode = 'navigation_mode'
+assign_mode = 'assign_mode'
+
+
 palette = (
     ('underline', 'underline', ''),
     (bold, 'bold', ''),
     (reverse, 'standout', ''),
+
+    (navigation_mode, '', ''),
+    (assign_mode, urwid.DARK_GREEN, ''),
 
     # text preview highlighting
     (line_number, urwid.DARK_GRAY, ''),

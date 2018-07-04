@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+##### Features
+- Add visual indicator to easily see in which mode the app currently is
+
 ## v0.16.1: July 03, 2018
 ##### Features
 - Add option to set up preferred file names via configuration file

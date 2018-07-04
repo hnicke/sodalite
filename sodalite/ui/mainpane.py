@@ -27,9 +27,11 @@ class MainPane(urwid.WidgetWrap):
         self.frame = urwid.Frame(self.body)
         self.box = urwid.LineBox(self.frame, title_align='left')
         self.box.title_widget.set_layout('right', 'clip')
-        self.model.register(self)
+        self.colored_box = urwid.AttrMap(self.box, 'navigation_mode')
+        self.model.register(self.update_border, topic=self.model.TOPIC_MODE)
+        self.model.register(self.on_update)
 
-        super().__init__(self.box)
+        super().__init__(self.colored_box)
 
     def on_update(self):
         with graphics.DRAW_LOCK:
@@ -50,6 +52,14 @@ class MainPane(urwid.WidgetWrap):
             self.box.set_title("assign key: choose entry")
         elif mode == Mode.ASSIGN_CHOOSE_KEY:
             self.box.set_title("assign key: choose new key")
+
+    def update_border(self):
+        mode = self.model.mode
+        if mode == Mode.NORMAL:
+            attr = theme.navigation_mode
+        elif mode in (Mode.ASSIGN_CHOOSE_ENTRY, Mode.ASSIGN_CHOOSE_KEY):
+            attr = theme.assign_mode
+        self.colored_box.set_attr_map({None: attr})
 
     def set_title_to_cwd(self):
         cwd = self.model.current_entry.path

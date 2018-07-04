@@ -21,9 +21,11 @@ class Mode(Enum):
 
 
 class ViewModel(Observable):
+    TOPIC_MODE = 'mode'
+
     def __init__(self, navigator: Navigator):
         super().__init__()
-        self.mode = Mode.NORMAL
+        self._mode = Mode.NORMAL
         self.current_entry: Entry = None
         self.file_content: List[HighlightedLine] = None
         self.filtered_file_content: List[HighlightedLine] = []
@@ -89,6 +91,15 @@ class ViewModel(Observable):
         except sre_constants.error:
             # .e.g gets thrown when string ends with '\' (user is about to escape a char)
             pass
+
+    @property
+    def mode(self) -> Mode:
+        return self._mode
+
+    @mode.setter
+    def mode(self, mode):
+        self._mode = mode
+        self.notify_all(topic=ViewModel.TOPIC_MODE)
 
 
 def sort(entries: List[Entry]):
