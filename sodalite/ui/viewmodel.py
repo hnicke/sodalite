@@ -31,7 +31,7 @@ class ViewModel(Observable):
         self.navigator = navigator
         self._show_hidden_files = True
         self.entries = []
-        navigator.entry_notifier.register(self)
+        navigator.entry_notifier.register(self.on_update)
 
     def on_update(self):
         self.current_entry = self.navigator.current_entry

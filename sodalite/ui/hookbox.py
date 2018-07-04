@@ -21,7 +21,7 @@ class HookBox(urwid.WidgetWrap):
         if self._data is not None:
             self._data.unregister(self)
         self._data = data
-        self._data.register(self)
+        self._data.register(self.on_update)
 
     data = property(None, data)
 

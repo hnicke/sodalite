@@ -1,4 +1,4 @@
-from typing import Set
+from typing import Set, Dict, Callable
 
 
 class Observer:
@@ -8,16 +8,20 @@ class Observer:
 
 class Observable:
     def __init__(self):
-        self._observers: Set[Observer] = set()
+        self._observers: Dict[str, Set[Callable]] = {}
 
-    def register(self, observer, immediate_update=True):
-        self._observers.add(observer)
+    def register(self, callback: Callable, topic=None, immediate_update=True):
+        if topic not in self._observers:
+            self._observers[topic] = set()
+        self._observers[topic].add(callback)
         if immediate_update:
-            observer.on_update()
+            callback.__call__()
 
-    def unregister(self, observer):
-        self._observers.remove(observer)
+    def unregister(self, callback: Callable, topic=None):
+        if topic in self._observers:
+            self._observers[topic].remove(callback)
 
-    def notify_all(self):
-        for observer in self._observers:
-            observer.on_update()
+    def notify_all(self, topic=None):
+        if topic in self._observers:
+            for callback in self._observers[topic]:
+                callback.__call__()

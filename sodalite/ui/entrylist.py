@@ -82,7 +82,7 @@ class EntryList(List):
         self.model = model
         self.navigator = navigator
         self.entry_for_assignment = None
-        self.model.register(self)
+        self.model.register(self.on_update)
 
     def on_update(self):
         with graphics.DRAW_LOCK:

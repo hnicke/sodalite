@@ -22,7 +22,7 @@ class Navigator:
         self.entry_access = entry_access
         self.entry_notifier = Observable()
         self._current_entry = None
-        self.entry_notifier.register(EntryWatcher(self), immediate_update=False)
+        self.entry_notifier.register(EntryWatcher(self).on_update, immediate_update=False)
         self.current_entry = self.current()
 
     def current(self) -> Entry:

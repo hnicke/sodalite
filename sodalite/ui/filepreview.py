@@ -14,7 +14,7 @@ class FilePreview(List):
         super().__init__()
         self.content = []
         self.model: ViewModel = model
-        self.model.register(self)
+        self.model.register(self.on_update)
 
     def on_update(self):
         current = self.model.current_entry
