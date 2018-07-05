@@ -1,6 +1,9 @@
 import urwid
 from pygments import token
 
+from ui import theme, viewmodel
+from ui.viewmodel import ViewModel, Topic, Mode
+
 file = urwid.WHITE
 file_unimportant = urwid.LIGHT_GRAY
 directory = urwid.LIGHT_BLUE
@@ -25,7 +28,6 @@ forbidden = urwid.LIGHT_RED
 
 navigation_mode = 'navigation_mode'
 assign_mode = 'assign_mode'
-
 
 palette = (
     ('underline', 'underline', ''),
@@ -71,3 +73,19 @@ palette = (
     (token.Punctuation, urwid.WHITE, ''),
     (token.Text, urwid.WHITE, ''),
 )
+
+
+class DynamicAttrMap(urwid.AttrMap):
+
+    def __init__(self, w):
+        super().__init__(w, theme.navigation_mode)
+        viewmodel.global_mode.register(self.update_colors, topic=Topic.MODE)
+
+    def update_colors(self, model):
+        if viewmodel.global_mode == Mode.NORMAL:
+            attr = theme.navigation_mode
+        elif viewmodel.global_mode in (Mode.ASSIGN_CHOOSE_ENTRY, Mode.ASSIGN_CHOOSE_KEY):
+            attr = theme.assign_mode
+        else:
+            raise ValueError
+        self.set_attr_map({None: attr})

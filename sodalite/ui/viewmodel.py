@@ -6,7 +6,6 @@ from sre_parse import Pattern
 from typing import List
 
 from core.entry import Entry
-from core.navigator import Navigator
 from ui import highlighting
 from ui.highlighting import HighlightedLine
 from util.observer import Observable
@@ -27,21 +26,41 @@ class Topic(Enum):
     FILTERED_FILE_CONTENT = 'filtered_file_content'
 
 
-class ViewModel(Observable):
-    def __init__(self, navigator: Navigator):
+class GlobalMode(Observable):
+
+    def __init__(self):
         super().__init__()
         self._mode = Mode.NORMAL
+
+    @property
+    def mode(self):
+        return self._mode
+
+    @mode.setter
+    def mode(self, mode: Mode):
+        self._mode = mode
+        self.notify_all(topic=Topic.MODE)
+
+    def __eq__(self, other):
+        return self._mode == other or super.__eq__(self, other)
+
+
+global_mode = GlobalMode()
+
+
+class ViewModel(Observable):
+
+    def __init__(self):
+        super().__init__()
         self._current_entry: Entry = None
         self._entries = []
         self.file_content: List[HighlightedLine] = None
         self._filtered_file_content: List[HighlightedLine] = []
         self._filter_pattern: Pattern = re.compile('')
-        self.navigator = navigator
         self._show_hidden_files = True
-        navigator.entry_notifier.register(self.on_update)
 
-    def on_update(self):
-        self.current_entry = self.navigator.current_entry
+    def on_update(self, navigator):
+        self.current_entry = navigator.current_entry
         if self.current_entry.is_plain_text_file():
             self.file_content = list(highlighting.compute_highlighting(self.current_entry))
         else:
@@ -94,15 +113,6 @@ class ViewModel(Observable):
         except sre_constants.error:
             # .e.g gets thrown when string ends with '\' (user is about to escape a char)
             pass
-
-    @property
-    def mode(self) -> Mode:
-        return self._mode
-
-    @mode.setter
-    def mode(self, mode):
-        self._mode = mode
-        self.notify_all(topic=Topic.MODE)
 
     @property
     def current_entry(self) -> Entry:

@@ -49,7 +49,7 @@ class EntryWatcher:
         self.entry = None
         self.watch = None
 
-    def on_update(self):
+    def on_update(self, _):
         if self.watch and self.entry == self.navigator.current_entry:
             return
         if self.watch:

@@ -4,7 +4,7 @@ from urwid import Text
 
 from ui import graphics
 from ui.entrylist import List
-from ui.viewmodel import ViewModel, Topic
+from ui.viewmodel import Topic
 
 logger = logging.getLogger(__name__)
 
@@ -13,15 +13,14 @@ class FilePreview(List):
     def __init__(self, model):
         super().__init__()
         self.content = []
-        self.model: ViewModel = model
-        self.model.register(self.on_file_content_changed, Topic.FILTERED_FILE_CONTENT, immediate_update=False)
+        model.register(self.on_file_content_changed, Topic.FILTERED_FILE_CONTENT, immediate_update=False)
 
-    def on_file_content_changed(self):
-        current = self.model.current_entry
+    def on_file_content_changed(self, model):
+        current = model.current_entry
         if not current.is_plain_text_file() and current.is_file():
             self.body.clear()
-        if self.model.filtered_file_content != self.content:
-            self.content = self.model.filtered_file_content
+        if model.filtered_file_content != self.content:
+            self.content = model.filtered_file_content
             with graphics.DRAW_LOCK:
                 self.body.clear()
                 self.body.extend([Text(line.numbered_content) for line in self.content])

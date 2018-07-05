@@ -3,10 +3,11 @@ import logging
 import urwid
 from urwid import AttrSpec, ListBox
 
+import ui.notify
 from core import key as key_module
 from core.entry import Entry, EntryType
 from core.navigator import Navigator
-from ui import theme, graphics
+from ui import theme, graphics, viewmodel
 from ui.viewmodel import ViewModel, Mode, Topic
 from util import keymap
 from util.keymap import Action
@@ -84,18 +85,18 @@ class EntryList(List):
         self.entry_for_assignment = None
         self.model.register(self.on_entries_changed, topic=Topic.ENTRIES)
 
-    def on_entries_changed(self):
+    def on_entries_changed(self, model):
         with graphics.DRAW_LOCK:
             self.walker.clear()
             self.walker.extend(
-                [self.create_list_entry(entry) for entry in self.model.entries])
+                [self.create_list_entry(entry) for entry in model.entries])
             self.walker.set_focus(0)
 
     def create_list_entry(self, entry):
         return urwid.Padding(ListEntry(entry, self.model), left=4)
 
     def keypress(self, size, key):
-        mode = self.model.mode
+        mode = viewmodel.global_mode.mode
         if keymap.matches(Action.TOGGLE_DOTFILES, key):
             self.toggle_hidden_files()
             return
@@ -116,7 +117,7 @@ class EntryList(List):
             message = 'show dotfiles'
         else:
             message = 'hide dotfiles'
-        graphics.notify(message, duration=0.7)
+        ui.notify.show(message, duration=0.7)
 
     def keypress_choose_entry(self, size, key):
         if key in key_module.get_all_keys():
@@ -137,8 +138,7 @@ class EntryList(List):
             return key
 
     def enter_assign_mode(self, size):
-        self.model.mode = Mode.ASSIGN_CHOOSE_ENTRY
-        self.mainpane.update_title()
+        viewmodel.global_mode.mode = Mode.ASSIGN_CHOOSE_ENTRY
         self.render(size, True)
 
     def select_entry_with_key(self, key):
@@ -156,19 +156,17 @@ class EntryList(List):
     def select_widget(self, entry_widget):
         self.walker.set_focus(self.walker.index(entry_widget))
         self.entry_for_assignment = self.walker[self.walker.focus].base_widget.entry
-        self.model.mode = Mode.ASSIGN_CHOOSE_KEY
-        self.mainpane.update_title()
+        viewmodel.global_mode.mode = Mode.ASSIGN_CHOOSE_KEY
 
     def exit_assign_mode(self, size):
-        self.model.mode = Mode.NORMAL
-        self.mainpane.update_title()
+        viewmodel.global_mode.mode = Mode.NORMAL
         self.render(size, True)
 
     def assign_key(self, key: str, size):
         if key in key_module.get_all_keys():
             self.navigator.assign_key(key_module.Key(key), self.entry_for_assignment.path)
             self.exit_assign_mode(size)
-            self.on_entries_changed()
+            self.on_entries_changed(self.model)
 
     def selection_up(self):
         try:
@@ -198,7 +196,7 @@ class ListEntry(urwid.Text):
         super().__init__((self.color, self.display), wrap='clip')
 
     def render(self, size, focus=False):
-        if focus and self.model.mode != Mode.NORMAL:
+        if focus and viewmodel.global_mode != Mode.NORMAL:
             color = AttrSpec(self.color.foreground + ',standout', self.color.background, colors=16)
         else:
             color = self.color

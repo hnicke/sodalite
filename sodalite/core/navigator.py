@@ -5,24 +5,23 @@ from core import key as key_module
 from core.entrywatcher import EntryWatcher
 from core.key import Key
 from util.observer import Observable
-from .dirhistory import DirHistory
 from .entry import Entry
 from .entryaccess import EntryAccess
 
 logger = logging.getLogger(__name__)
 
 
-class Navigator:
+class Navigator(Observable):
     """Public interface of the core package.
     Clients (e.g., GUI) may use the navigator class for interaction
     """
 
     def __init__(self, history, entry_access: EntryAccess = EntryAccess()):
+        super().__init__()
         self.history = history
         self.entry_access = entry_access
-        self.entry_notifier = Observable()
         self._current_entry = None
-        self.entry_notifier.register(EntryWatcher(self).on_update, immediate_update=False)
+        self.register(EntryWatcher(self).on_update, immediate_update=False)
         self.current_entry = self.current()
 
     def current(self) -> Entry:
@@ -134,7 +133,7 @@ class Navigator:
     @current_entry.setter
     def current_entry(self, entry: Entry):
         self._current_entry = entry
-        self.entry_notifier.notify_all()
+        self.notify_all()
 
     def reload_current_entry(self):
         try:

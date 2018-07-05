@@ -1,7 +1,6 @@
 import logging
 import os
 import threading
-import time
 
 import urwid.curses_display
 
@@ -24,8 +23,10 @@ class MainFrame(urwid.Frame):
         :param path: the start entry
         """
         history = dirhistory.load(path)
-        self.model = ViewModel(Navigator(history))
-        self.mainpane = MainPane(self.model)
+        navigator = Navigator(history)
+        self.model = ViewModel()
+        navigator.register(self.model.on_update)
+        self.mainpane = MainPane(self.model, navigator)
         super().__init__(self.mainpane)
         self.hookbox = HookBox(self.model, self)
 
@@ -60,10 +61,6 @@ os.environ['ESCDELAY'] = '0'
 frame = None
 loop = None
 
-notify_box = urwid.LineBox(urwid.Text('', align='center'), tline='')
-_notify_lock = threading.Lock()
-_last_message = ''
-
 
 def run(path: str):
     global frame
@@ -71,28 +68,6 @@ def run(path: str):
     frame = MainFrame(path)
     loop = _create_loop(frame)
     loop.run()
-
-
-def notify(message, duration=1.5):
-    thread = threading.Thread(target=_notify, args=(message, duration,))
-    thread.daemon = True
-    thread.start()
-
-
-def _notify(message, duration):
-    global _last_message
-    if _notify_lock.locked() and _last_message == message:
-        return
-    _notify_lock.acquire()
-    original_footer = frame.footer
-    frame.footer = notify_box
-    notify_box.base_widget.set_text(message)
-    loop.draw_screen()
-    _last_message = message
-    time.sleep(duration)
-    frame.footer = original_footer
-    _notify_lock.release()
-    loop.draw_screen()
 
 
 def resume():

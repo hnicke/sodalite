@@ -15,7 +15,7 @@ class Observable:
             self._observers[topic] = set()
         self._observers[topic].add(callback)
         if immediate_update:
-            callback.__call__()
+            callback.__call__(self)
 
     def unregister(self, callback: Callable, topic=None):
         if topic in self._observers:
@@ -24,4 +24,4 @@ class Observable:
     def notify_all(self, topic=None):
         if topic in self._observers:
             for callback in self._observers[topic]:
-                callback.__call__()
+                callback.__call__(self)
