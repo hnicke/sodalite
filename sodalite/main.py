@@ -78,6 +78,7 @@ if __name__ == "__main__":
     try:
         _io_to_tty()
         from ui import graphics
+
         graphics.run(args.path)
 
         if environment.exit_cwd:

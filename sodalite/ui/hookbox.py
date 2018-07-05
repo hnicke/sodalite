@@ -1,6 +1,5 @@
 import urwid
 
-from core import hook
 from core.hook import Hook
 from ui import graphics
 from ui.viewmodel import ViewModel, Topic
@@ -40,12 +39,6 @@ class HookBox(urwid.WidgetWrap):
         for width in [cell.width for cell, option in self._w.base_widget.contents]:
             max_width = max(max_width, width)
         self._w.base_widget.cell_width = max_width
-
-    def keypress(self, size, key):
-        if hook.is_hook(key, self._data.current_entry):
-            hook.trigger_hook(key, self._data.current_entry)
-        else:
-            return key
 
 
 class HookCell(urwid.WidgetWrap):

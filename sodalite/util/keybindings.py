@@ -19,6 +19,7 @@ class GlobalAction(Action):
     scroll_page_up = 6
     scroll_half_page_down = 7
     scroll_half_page_up = 8
+    yank_current_path = 9
 
 
 class NormalAction(Action):
@@ -27,14 +28,14 @@ class NormalAction(Action):
     go_to_root = 3
     go_to_previous = 4
     go_to_next = 5
-    yank_current_path = 6
-    assign_mode = 7
-    edit_mode = 8
+    assign_mode = 6
+    edit_mode = 7
 
 
 class AssignAction(Action):
     select_next = 1
     select_previous = 2
+    abort = 3
 
 
 class EditAction(Action):
@@ -64,18 +65,19 @@ defaults = {
     GlobalAction.scroll_page_up: 'ctrl b',
     GlobalAction.scroll_half_page_down: 'ctrl d',
     GlobalAction.scroll_half_page_up: 'ctrl u',
+    GlobalAction.yank_current_path: 'ctrl y',
 
     NormalAction.go_to_parent: '.',
     NormalAction.go_to_home: ';',
     NormalAction.go_to_root: ',',
     NormalAction.go_to_previous: 'backspace',  # also matches 'ctrl h'
     NormalAction.go_to_next: 'ctrl l',
-    NormalAction.yank_current_path: 'ctrl y',
     NormalAction.assign_mode: '=',
     NormalAction.edit_mode: ' ',
 
     AssignAction.select_next: 'ctrl n',
     AssignAction.select_previous: 'ctrl p',
+    AssignAction.abort: 'esc'
 }
 
 _keymap: Dict[type, Dict[str, Action]] = {}

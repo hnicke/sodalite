@@ -3,14 +3,10 @@ import logging
 import urwid
 from urwid import AttrSpec, ListBox
 
-import ui.notify
-from core import key as key_module
 from core.entry import Entry, EntryType
 from core.navigator import Navigator
 from ui import theme, graphics, viewmodel
 from ui.viewmodel import ViewModel, Mode, Topic
-from util import keymap
-from util.keymap import Action
 
 logger = logging.getLogger(__name__)
 
@@ -29,18 +25,6 @@ class List(ListBox):
                 self.set_focus_valign(valign)
         except IndexError:
             pass
-
-    def keypress(self, size, key):
-        if keymap.matches(Action.SCROLL_PAGE_DOWN, key):
-            self.scroll_page_down(size)
-        elif keymap.matches(Action.SCROLL_PAGE_UP, key):
-            self.scroll_page_up(size)
-        elif keymap.matches(Action.SCROLL_HALF_PAGE_DOWN, key):
-            self.scroll_half_page_down(size)
-        elif keymap.matches(Action.SCROLL_HALF_PAGE_UP, key):
-            self.scroll_half_page_up(size)
-        else:
-            return key
 
     def scroll_page_down(self, size):
         _, max_row = size
@@ -82,7 +66,6 @@ class EntryList(List):
         self.box = None
         self.model = model
         self.navigator = navigator
-        self.entry_for_assignment = None
         self.model.register(self.on_entries_changed, topic=Topic.ENTRIES)
 
     def on_entries_changed(self, model):
@@ -94,94 +77,6 @@ class EntryList(List):
 
     def create_list_entry(self, entry):
         return urwid.Padding(ListEntry(entry, self.model), left=4)
-
-    def keypress(self, size, key):
-        if keymap.matches(Action.ASSIGN_MODE, key):
-            self.enter_assign_mode(size)
-            return
-        mode = viewmodel.global_mode.mode
-        if keymap.matches(Action.TOGGLE_DOTFILES, key):
-            self.toggle_hidden_files()
-            return
-        elif key == 'esc' and (mode == Mode.ASSIGN_CHOOSE_KEY or mode == Mode.ASSIGN_CHOOSE_ENTRY):
-            self.exit_assign_mode(size)
-            return
-        elif mode == Mode.ASSIGN_CHOOSE_ENTRY:
-            key = self.keypress_choose_entry(size, key)
-        elif mode == Mode.ASSIGN_CHOOSE_KEY:
-            key = self.keypress_choose_key(size, key)
-
-        if key:
-            return super().keypress(size, key)
-
-    def toggle_hidden_files(self):
-        self.model.show_hidden_files = not self.model.show_hidden_files
-        if self.model.show_hidden_files:
-            message = 'show dotfiles'
-        else:
-            message = 'hide dotfiles'
-        ui.notify.show(message, duration=0.7)
-
-    def keypress_choose_entry(self, size, key):
-        if key in key_module.get_all_keys():
-            self.select_entry_with_key(key)
-        elif key == 'ctrl n':
-            self.selection_down()
-        elif key == 'ctrl p':
-            self.selection_up()
-        elif key == 'enter':
-            self.select_widget(self.walker[self.focus_position])
-        else:
-            return key
-
-    def keypress_choose_key(self, size, key):
-        if key in key_module.get_all_keys():
-            self.assign_key(key, size)
-        else:
-            return key
-
-    def enter_assign_mode(self, size):
-        viewmodel.global_mode.mode = Mode.ASSIGN_CHOOSE_ENTRY
-        self.render(size, True)
-
-    def select_entry_with_key(self, key):
-        match = self.navigator.current_entry.get_child_for_key(key_module.Key(key))
-        if match:
-            results = [x for x in self.walker if x.base_widget.entry == match]
-            if len(results) > 0:
-                chosen_widget = results[0]
-                self.select_widget(chosen_widget)
-            else:
-                # entry is not displayed, probably filtered
-                self.walker.append(self.create_list_entry(match))
-                self.select_entry_with_key(key)
-
-    def select_widget(self, entry_widget):
-        self.walker.set_focus(self.walker.index(entry_widget))
-        self.entry_for_assignment = self.walker[self.walker.focus].base_widget.entry
-        viewmodel.global_mode.mode = Mode.ASSIGN_CHOOSE_KEY
-
-    def exit_assign_mode(self, size):
-        viewmodel.global_mode.mode = Mode.NORMAL
-        self.render(size, True)
-
-    def assign_key(self, key: str, size):
-        if key in key_module.get_all_keys():
-            self.navigator.assign_key(key_module.Key(key), self.entry_for_assignment.path)
-            self.exit_assign_mode(size)
-            self.on_entries_changed(self.model)
-
-    def selection_up(self):
-        try:
-            self.set_focus(self.focus_position - 1, coming_from='above')
-        except IndexError:
-            pass
-
-    def selection_down(self):
-        try:
-            self.set_focus(self.focus_position + 1, coming_from='below')
-        except IndexError:
-            pass
 
 
 class ListEntry(urwid.Text):

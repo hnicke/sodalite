@@ -20,6 +20,9 @@ class Mode(Enum):
     EDIT = 4
 
 
+ANY_ASSIGN_MODE = (Mode.ASSIGN_CHOOSE_KEY, Mode.ASSIGN_CHOOSE_ENTRY)
+
+
 class Topic(Enum):
     MODE = 'mode'
     CURRENT_ENTRY = 'current_entry'

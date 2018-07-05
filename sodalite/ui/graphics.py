@@ -6,12 +6,13 @@ import urwid.curses_display
 
 from core import dirhistory
 from core.navigator import Navigator
-from ui import theme
+from ui import theme, viewmodel
+from ui.control import NormalControl, AssignControl, EditControl
+from ui.filter import Filter
 from ui.hookbox import HookBox
 from ui.mainpane import MainPane
-from ui.viewmodel import ViewModel
+from ui.viewmodel import ViewModel, Topic, Mode
 from util import environment
-from util.keymap import Action
 
 logger = logging.getLogger(__name__)
 
@@ -24,24 +25,32 @@ class MainFrame(urwid.Frame):
         :param path: the start entry
         """
         history = dirhistory.load(path)
-        navigator = Navigator(history)
+        self.navigator = Navigator(history)
         self.model = ViewModel()
-        navigator.register(self.model.on_update)
-        self.mainpane = MainPane(self.model, navigator)
+        self.navigator.register(self.model.on_update)
+        self.mainpane = MainPane(self.model, self.navigator)
+        self.filter = Filter(self.model, self.mainpane.frame)
         super().__init__(self.mainpane)
         self.hookbox = HookBox(self.model, self)
 
+        # setup controllers
+        self.control = None
+        viewmodel.global_mode.register(self.change_controller, topic=Topic.MODE)
+
+    def change_controller(self, mode):
+        if mode == Mode.NORMAL:
+            self.control = NormalControl(self)
+        elif mode in viewmodel.ANY_ASSIGN_MODE:
+            if type(self.control) is not AssignControl:
+                self.control = AssignControl(self)
+        elif mode == Mode.EDIT:
+            self.control = EditControl(self)
+        else:
+            raise ValueError
+
     def keypress(self, size, key):
-        from util import keymap
-        action: Action = keymap.get_action(key)
         with DRAW_LOCK:
-            (maxcol, maxrow) = size
-            remaining = maxrow
-            remaining -= self.hookbox.rows((maxcol,))
-            if self.mainpane.frame.focus_part == 'footer':
-                return self.mainpane.frame.footer.keypress((maxcol,), key)
-            if self.mainpane.keypress((maxcol, remaining), key):
-                return self.hookbox.keypress((maxcol, remaining), key)
+            self.control.handle_keypress(size, key)
 
 
 DRAW_LOCK = threading.RLock()

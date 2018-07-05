@@ -159,7 +159,6 @@ The `ASSIGN` mode is needed to assign a specific key to an entry. This is accomp
 3. Press the new key
 
 If the newly assigned key is already assigned to another entry in the current directory, keys get swapped.
-Abort the process by pressing `Esc`.
 
 **assign.select_next (`ctrl n`)**
 
@@ -168,6 +167,11 @@ Abort the process by pressing `Esc`.
 **assign.select_previous (`ctrl p`)**
 
 :   Select previous entry.
+
+**assign.abort (`esc`)**
+
+: Exits the assign mode without changes.
+
 
 
 Options
