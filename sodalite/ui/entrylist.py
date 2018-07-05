@@ -82,9 +82,9 @@ class EntryList(List):
         self.model = model
         self.navigator = navigator
         self.entry_for_assignment = None
-        self.model.register(self.on_update)
+        self.model.register(self.on_entries_changed, topic=ViewModel.TOPIC_ENTRIES)
 
-    def on_update(self):
+    def on_entries_changed(self):
         with graphics.DRAW_LOCK:
             self.walker.clear()
             self.walker.extend(
@@ -168,7 +168,7 @@ class EntryList(List):
         if key in key_module.get_all_keys():
             self.navigator.assign_key(key_module.Key(key), self.entry_for_assignment.path)
             self.exit_assign_mode(size)
-            self.on_update()
+            self.on_entries_changed()
 
     def selection_up(self):
         try:

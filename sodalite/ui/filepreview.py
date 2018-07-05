@@ -14,9 +14,9 @@ class FilePreview(List):
         super().__init__()
         self.content = []
         self.model: ViewModel = model
-        self.model.register(self.on_update)
+        self.model.register(self.on_file_content_changed, ViewModel.TOPIC_FILTERED_FILE_CONTENT, immediate_update=False)
 
-    def on_update(self):
+    def on_file_content_changed(self):
         current = self.model.current_entry
         if not current.is_plain_text_file() and current.is_file():
             self.body.clear()

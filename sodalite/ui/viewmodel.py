@@ -22,17 +22,20 @@ class Mode(Enum):
 
 class ViewModel(Observable):
     TOPIC_MODE = 'mode'
+    TOPIC_CURRENT_ENTRY = 'current_entry'
+    TOPIC_ENTRIES = 'entries'
+    TOPIC_FILTERED_FILE_CONTENT = 'filtered_file_content'
 
     def __init__(self, navigator: Navigator):
         super().__init__()
         self._mode = Mode.NORMAL
-        self.current_entry: Entry = None
+        self._current_entry: Entry = None
+        self._entries = []
         self.file_content: List[HighlightedLine] = None
-        self.filtered_file_content: List[HighlightedLine] = []
+        self._filtered_file_content: List[HighlightedLine] = []
         self._filter_pattern: Pattern = re.compile('')
         self.navigator = navigator
         self._show_hidden_files = True
-        self.entries = []
         navigator.entry_notifier.register(self.on_update)
 
     def on_update(self):
@@ -48,14 +51,12 @@ class ViewModel(Observable):
     def process(self):
         if self.current_entry.is_plain_text_file():
             self.filtered_file_content = self.filter_file_content()
-            self.notify_all()
         else:
             entries = list(self.current_entry.children)
             entries = self.filter_entry(entries)
             entries = self.filter_hidden_files(entries)
             entries = sort(entries)
             self.entries = entries
-            self.notify_all()
 
     def filter_entry(self, entries: List[Entry]) -> List[Entry]:
         return [entry for entry in entries if self.filter_pattern.search(entry.name)]
@@ -100,6 +101,33 @@ class ViewModel(Observable):
     def mode(self, mode):
         self._mode = mode
         self.notify_all(topic=ViewModel.TOPIC_MODE)
+
+    @property
+    def current_entry(self) -> Entry:
+        return self._current_entry
+
+    @current_entry.setter
+    def current_entry(self, entry: Entry):
+        self._current_entry = entry
+        self.notify_all(topic=ViewModel.TOPIC_CURRENT_ENTRY)
+
+    @property
+    def entries(self) -> List[Entry]:
+        return self._entries
+
+    @entries.setter
+    def entries(self, entries: List[Entry]):
+        self._entries = entries
+        self.notify_all(ViewModel.TOPIC_ENTRIES)
+
+    @property
+    def filtered_file_content(self) -> List[HighlightedLine]:
+        return self._filtered_file_content
+
+    @filtered_file_content.setter
+    def filtered_file_content(self, content: List[HighlightedLine]):
+        self._filtered_file_content = content
+        self.notify_all(topic=ViewModel.TOPIC_FILTERED_FILE_CONTENT)
 
 
 def sort(entries: List[Entry]):

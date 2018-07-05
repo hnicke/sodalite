@@ -28,12 +28,12 @@ class MainPane(urwid.WidgetWrap):
         self.box = urwid.LineBox(self.frame, title_align='left')
         self.box.title_widget.set_layout('right', 'clip')
         self.colored_box = urwid.AttrMap(self.box, 'navigation_mode')
-        self.model.register(self.update_border, topic=self.model.TOPIC_MODE)
-        self.model.register(self.on_update)
+        self.model.register(self.on_mode_changed, topic=self.model.TOPIC_MODE)
+        self.model.register(self.on_entry_changed, topic=self.model.TOPIC_CURRENT_ENTRY)
 
         super().__init__(self.colored_box)
 
-    def on_update(self):
+    def on_entry_changed(self):
         with graphics.DRAW_LOCK:
             if self.model.current_entry.is_dir():
                 self.body = self.entry_list
@@ -43,6 +43,10 @@ class MainPane(urwid.WidgetWrap):
                 self.frame.set_body(self.file_preview)
             self.update_title()
             graphics.redraw_if_external()
+
+    def on_mode_changed(self):
+        self.update_title()
+        self.update_border()
 
     def update_title(self):
         mode = self.model.mode
@@ -59,6 +63,8 @@ class MainPane(urwid.WidgetWrap):
             attr = theme.navigation_mode
         elif mode in (Mode.ASSIGN_CHOOSE_ENTRY, Mode.ASSIGN_CHOOSE_KEY):
             attr = theme.assign_mode
+        else:
+            raise ValueError
         self.colored_box.set_attr_map({None: attr})
 
     def set_title_to_cwd(self):
