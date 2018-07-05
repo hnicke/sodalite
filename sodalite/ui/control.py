@@ -30,6 +30,8 @@ class Control:
             GlobalAction.exit: self.exit,
             GlobalAction.abort: self.abort,
             GlobalAction.navigate_mode: self.enter_navigate_mode,
+            GlobalAction.assign_mode: self.enter_assign_mode,
+            GlobalAction.operate_mode: self.enter_operate_mode,
             GlobalAction.filter: self.trigger_filter,
             GlobalAction.yank_current_path: self.yank_to_clipboard,
             GlobalAction.toggle_dotfiles: self.toggle_dotfiles,
@@ -73,6 +75,17 @@ class Control:
 
     def enter_navigate_mode(self):
         viewmodel.global_mode.mode = Mode.NAVIGATE
+        self.list.render(self.list_size, True)
+
+    def enter_assign_mode(self):
+        if self.model.current_entry.is_dir():
+            viewmodel.global_mode.mode = Mode.ASSIGN_CHOOSE_ENTRY
+            self.list.render(self.list_size, True)
+
+    def enter_operate_mode(self):
+        if self.model.current_entry.is_dir():
+            viewmodel.global_mode.mode = Mode.OPERATE
+            self.list.render(self.list_size, True)
 
     def trigger_filter(self):
         self.filter.active = True
@@ -118,8 +131,6 @@ class NavigateControl(Control):
             NavigateAction.go_to_root: self.go_to_root,
             NavigateAction.go_to_previous: self.go_to_previous,
             NavigateAction.go_to_next: self.go_to_next,
-            NavigateAction.assign_mode: self.enter_assign_mode,
-            NavigateAction.operate_mode: self.enter_operate_mode,
         })
 
     def handle_key_individually(self, key):
@@ -158,13 +169,6 @@ class NavigateControl(Control):
         if filter:
             filter.hide()
 
-    def enter_assign_mode(self):
-        viewmodel.global_mode.mode = Mode.ASSIGN_CHOOSE_ENTRY
-        self.list.render(self.list_size, True)
-
-    def enter_operate_mode(self):
-        viewmodel.global_mode.mode = Mode.OPERATE
-
 
 class AssignControl(Control):
 
@@ -172,7 +176,6 @@ class AssignControl(Control):
         super().__init__(frame)
         self.entry_for_assignment = None
         self.ACTION_TO_CALL.update({
-            AssignAction.abort: self.abort_assign_mode,
             AssignAction.select_next: self.select_next,
             AssignAction.select_previous: self.select_previous,
         })
@@ -184,10 +187,6 @@ class AssignControl(Control):
         elif viewmodel.global_mode == Mode.ASSIGN_CHOOSE_KEY and key_module.is_navigation_key(key):
             self.keypress_choose_key(key)
             return True
-
-    def abort_assign_mode(self):
-        viewmodel.global_mode.mode = Mode.NAVIGATE
-        self.list.render(self.list_size, True)
 
     def select_next(self):
         try:

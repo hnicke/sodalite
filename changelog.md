@@ -10,6 +10,7 @@
 - 'yank_to_clipboard' now belongs to mode 'global' (before: 'normal')
 - Rename 'normal mode' to 'navigate mode'
 - Rename 'edit mode' to 'operate mode'
+- The actions for entering the different modes now belong to 'global' mode, i.e. they are accessible from everywhere
 
 ## v0.16.1: July 03, 2018
 ##### Features

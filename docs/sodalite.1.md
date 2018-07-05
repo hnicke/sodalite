@@ -23,7 +23,6 @@ Launch sodalite: sodalite \[*path*]
 If *path* is supplied, sodalite will start in given path.
 
 
-
 Shell integration
 -----------------
 
@@ -83,6 +82,14 @@ Following general actions can be triggered everywhere in `sodalite`:
 
 :   Enter navigate mode.
 
+**global.assign_mode (`=`)**
+
+:   Enter assign mode.
+
+**global.operate_mode (` ` [space])**
+
+:   Enter operate mode.
+
 **global.filter (`/`)**
 
 :   Focuses the filter bar on the bottom. Use regular expressions to filter displayed entries. The filtering is case-insensitive. Press `enter` to submit or `esc` to dismiss the filter.
@@ -139,14 +146,6 @@ Valid values for keys are all letters of the alphabet (lower and upper case), so
 **navigate.yank_current_path (`ctrl y`)**
 
 :   Copy current entry's path to the system's clipboard.
-
-**navigate.assign_mode (`=`)**
-
-:   Enter assign mode.
-
-**navigate.operate_mode (` ` [space])**
-
-:   Enter operate mode.
 
 `ASSIGN` mode
 -----------

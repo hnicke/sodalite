@@ -13,14 +13,16 @@ class Action(Enum):
 class GlobalAction(Action):
     exit = 1
     abort = 2
-    filter = 3
-    toggle_dotfiles = 4
-    scroll_page_down = 5
-    scroll_page_up = 6
-    scroll_half_page_down = 7
-    scroll_half_page_up = 8
-    yank_current_path = 9
-    navigate_mode = 10
+    assign_mode = 3
+    operate_mode = 4
+    filter = 5
+    toggle_dotfiles = 6
+    scroll_page_down = 7
+    scroll_page_up = 8
+    scroll_half_page_down = 9
+    scroll_half_page_up = 10
+    yank_current_path = 11
+    navigate_mode = 12
 
 
 class NavigateAction(Action):
@@ -29,8 +31,6 @@ class NavigateAction(Action):
     go_to_root = 3
     go_to_previous = 4
     go_to_next = 5
-    assign_mode = 6
-    operate_mode = 7
 
 
 class AssignAction(Action):
@@ -60,6 +60,9 @@ KEYMAP_TO_ACTION = {
 defaults = {
     GlobalAction.exit: 'enter',
     GlobalAction.abort: 'ctrl c',
+    GlobalAction.navigate_mode: 'esc',
+    GlobalAction.assign_mode: '=',
+    GlobalAction.operate_mode: ' ',
     GlobalAction.filter: '/',
     GlobalAction.toggle_dotfiles: 'meta h',
     GlobalAction.scroll_page_down: 'ctrl f',
@@ -67,26 +70,22 @@ defaults = {
     GlobalAction.scroll_half_page_down: 'ctrl d',
     GlobalAction.scroll_half_page_up: 'ctrl u',
     GlobalAction.yank_current_path: 'ctrl y',
-    GlobalAction.navigate_mode: 'esc',
 
     NavigateAction.go_to_parent: '.',
     NavigateAction.go_to_home: ';',
     NavigateAction.go_to_root: ',',
     NavigateAction.go_to_previous: 'backspace',  # also matches 'ctrl h'
     NavigateAction.go_to_next: 'ctrl l',
-    NavigateAction.assign_mode: '=',
-    NavigateAction.operate_mode: ' ',
 
     AssignAction.select_next: 'ctrl n',
     AssignAction.select_previous: 'ctrl p',
-    AssignAction.abort: 'esc'
 }
 
 _keymap: Dict[type, Dict[str, Action]] = {}
 
 for textual_mode, bindings in config.keymap.items():
     action_type = KEYMAP_TO_ACTION[textual_mode]
-    # ctrl h is backspace in terminal emulators
+    # ctrl h equals backspace in terminal emulators
     for action, keybinding in bindings.items():
         if keybinding == 'ctrl h':
             _keymap[action_type][action] = 'ctrl h'

@@ -94,7 +94,7 @@ class ListEntry(urwid.Text):
         super().__init__((self.color, self.display), wrap='clip')
 
     def render(self, size, focus=False):
-        if focus and viewmodel.global_mode != Mode.NAVIGATE:
+        if focus and viewmodel.global_mode in viewmodel.ANY_ASSIGN_MODE:
             color = AttrSpec(self.color.foreground + ',standout', self.color.background, colors=16)
         else:
             color = self.color
