@@ -17,6 +17,7 @@ class Mode(Enum):
     NORMAL = 1
     ASSIGN_CHOOSE_ENTRY = 2
     ASSIGN_CHOOSE_KEY = 3
+    EDIT = 4
 
 
 class Topic(Enum):

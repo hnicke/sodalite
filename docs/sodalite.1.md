@@ -146,6 +146,9 @@ Valid values for keys are all letters of the alphabet (lower and upper case), so
 
 :   Enter assign mode.
 
+**normal.edit_moe (` ` [space])**
+
+:   Enter edit mode.
 
 `ASSIGN` mode
 -----------

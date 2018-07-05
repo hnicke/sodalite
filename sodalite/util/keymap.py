@@ -25,6 +25,7 @@ class Action(Enum):
     GO_TO_NEXT = 'normal.go_to_next'
     YANK_CURRENT_PATH = 'normal.yank_current_path'
     ASSIGN_MODE = 'normal.assign_mode'
+    EDIT_MODE = 'normal.edit_mode'
     SELECT_NEXT = 'assign.select_next'
     SELECT_PREVIOUS = 'assign.select_previous'
 
@@ -47,6 +48,7 @@ defaults = {
     '=': Action.ASSIGN_MODE,
     'ctrl n': Action.SELECT_NEXT,
     'ctrl p': Action.SELECT_PREVIOUS,
+    ' ': Action.EDIT_MODE,
 }
 
 for key, action in defaults.items():

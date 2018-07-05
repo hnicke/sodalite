@@ -28,6 +28,7 @@ forbidden = urwid.LIGHT_RED
 
 navigation_mode = 'navigation_mode'
 assign_mode = 'assign_mode'
+edit_mode = 'edit_mode'
 
 palette = (
     ('underline', 'underline', ''),
@@ -36,6 +37,7 @@ palette = (
 
     (navigation_mode, '', ''),
     (assign_mode, urwid.DARK_GREEN, ''),
+    (edit_mode, urwid.DARK_RED, ''),
 
     # text preview highlighting
     (line_number, urwid.DARK_GRAY, ''),
@@ -86,6 +88,8 @@ class DynamicAttrMap(urwid.AttrMap):
             attr = theme.navigation_mode
         elif viewmodel.global_mode in (Mode.ASSIGN_CHOOSE_ENTRY, Mode.ASSIGN_CHOOSE_KEY):
             attr = theme.assign_mode
+        elif viewmodel.global_mode == Mode.EDIT:
+            attr = theme.edit_mode
         else:
             raise ValueError
         self.set_attr_map({None: attr})

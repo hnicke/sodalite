@@ -84,6 +84,8 @@ class MainPane(urwid.WidgetWrap):
         if self.navigator.is_navigation_key(key):
             self.navigator.visit_child(key)
             self.clear_filter()
+        elif keymap.matches(Action.EDIT_MODE, key):
+            viewmodel.global_mode.mode = Mode.EDIT
         elif keymap.matches(Action.GO_TO_PARENT, key):
             self.navigator.visit_parent()
             self.clear_filter()
