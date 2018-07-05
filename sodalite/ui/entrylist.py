@@ -96,6 +96,9 @@ class EntryList(List):
         return urwid.Padding(ListEntry(entry, self.model), left=4)
 
     def keypress(self, size, key):
+        if keymap.matches(Action.ASSIGN_MODE, key):
+            self.enter_assign_mode(size)
+            return
         mode = viewmodel.global_mode.mode
         if keymap.matches(Action.TOGGLE_DOTFILES, key):
             self.toggle_hidden_files()

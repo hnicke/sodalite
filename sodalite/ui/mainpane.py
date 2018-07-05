@@ -102,8 +102,6 @@ class MainPane(urwid.WidgetWrap):
             graphics.exit(cwd=self.navigator.history.cwd())
         elif keymap.matches(Action.YANK_CURRENT_PATH, key):
             self.yank_to_clipboard()
-        elif keymap.matches(Action.ASSIGN_MODE, key):
-            self.body.enter_assign_mode(size)
         else:
             return key
 

@@ -3,6 +3,8 @@
 ## Unreleased
 ##### Features
 - Add visual indicator to easily see in which mode the app currently is
+##### Bugfixes
+- Fix crash when pressing `=` in file preview
 
 ## v0.16.1: July 03, 2018
 ##### Features
