@@ -4,7 +4,7 @@ from urwid import Text
 
 from ui import graphics
 from ui.entrylist import List
-from ui.viewmodel import ViewModel
+from ui.viewmodel import ViewModel, Topic
 
 logger = logging.getLogger(__name__)
 
@@ -14,7 +14,7 @@ class FilePreview(List):
         super().__init__()
         self.content = []
         self.model: ViewModel = model
-        self.model.register(self.on_file_content_changed, ViewModel.TOPIC_FILTERED_FILE_CONTENT, immediate_update=False)
+        self.model.register(self.on_file_content_changed, Topic.FILTERED_FILE_CONTENT, immediate_update=False)
 
     def on_file_content_changed(self):
         current = self.model.current_entry

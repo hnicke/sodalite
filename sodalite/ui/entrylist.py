@@ -7,7 +7,7 @@ from core import key as key_module
 from core.entry import Entry, EntryType
 from core.navigator import Navigator
 from ui import theme, graphics
-from ui.viewmodel import ViewModel, Mode
+from ui.viewmodel import ViewModel, Mode, Topic
 from util import keymap
 from util.keymap import Action
 
@@ -82,7 +82,7 @@ class EntryList(List):
         self.model = model
         self.navigator = navigator
         self.entry_for_assignment = None
-        self.model.register(self.on_entries_changed, topic=ViewModel.TOPIC_ENTRIES)
+        self.model.register(self.on_entries_changed, topic=Topic.ENTRIES)
 
     def on_entries_changed(self):
         with graphics.DRAW_LOCK:

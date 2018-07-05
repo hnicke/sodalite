@@ -20,12 +20,14 @@ class Mode(Enum):
     ASSIGN_CHOOSE_KEY = 3
 
 
-class ViewModel(Observable):
-    TOPIC_MODE = 'mode'
-    TOPIC_CURRENT_ENTRY = 'current_entry'
-    TOPIC_ENTRIES = 'entries'
-    TOPIC_FILTERED_FILE_CONTENT = 'filtered_file_content'
+class Topic(Enum):
+    MODE = 'mode'
+    CURRENT_ENTRY = 'current_entry'
+    ENTRIES = 'entries'
+    FILTERED_FILE_CONTENT = 'filtered_file_content'
 
+
+class ViewModel(Observable):
     def __init__(self, navigator: Navigator):
         super().__init__()
         self._mode = Mode.NORMAL
@@ -100,7 +102,7 @@ class ViewModel(Observable):
     @mode.setter
     def mode(self, mode):
         self._mode = mode
-        self.notify_all(topic=ViewModel.TOPIC_MODE)
+        self.notify_all(topic=Topic.MODE)
 
     @property
     def current_entry(self) -> Entry:
@@ -109,7 +111,7 @@ class ViewModel(Observable):
     @current_entry.setter
     def current_entry(self, entry: Entry):
         self._current_entry = entry
-        self.notify_all(topic=ViewModel.TOPIC_CURRENT_ENTRY)
+        self.notify_all(topic=Topic.CURRENT_ENTRY)
 
     @property
     def entries(self) -> List[Entry]:
@@ -118,7 +120,7 @@ class ViewModel(Observable):
     @entries.setter
     def entries(self, entries: List[Entry]):
         self._entries = entries
-        self.notify_all(ViewModel.TOPIC_ENTRIES)
+        self.notify_all(Topic.ENTRIES)
 
     @property
     def filtered_file_content(self) -> List[HighlightedLine]:
@@ -127,7 +129,7 @@ class ViewModel(Observable):
     @filtered_file_content.setter
     def filtered_file_content(self, content: List[HighlightedLine]):
         self._filtered_file_content = content
-        self.notify_all(topic=ViewModel.TOPIC_FILTERED_FILE_CONTENT)
+        self.notify_all(topic=Topic.FILTERED_FILE_CONTENT)
 
 
 def sort(entries: List[Entry]):

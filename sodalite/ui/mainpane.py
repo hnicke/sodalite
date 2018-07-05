@@ -8,7 +8,7 @@ from ui import theme, graphics
 from ui.entrylist import EntryList
 from ui.filepreview import FilePreview
 from ui.filter import Filter
-from ui.viewmodel import ViewModel, Mode
+from ui.viewmodel import ViewModel, Mode, Topic
 from util import environment
 from util import keymap
 from util.keymap import Action
@@ -28,8 +28,8 @@ class MainPane(urwid.WidgetWrap):
         self.box = urwid.LineBox(self.frame, title_align='left')
         self.box.title_widget.set_layout('right', 'clip')
         self.colored_box = urwid.AttrMap(self.box, 'navigation_mode')
-        self.model.register(self.on_mode_changed, topic=self.model.TOPIC_MODE)
-        self.model.register(self.on_entry_changed, topic=self.model.TOPIC_CURRENT_ENTRY)
+        self.model.register(self.on_mode_changed, topic=Topic.MODE)
+        self.model.register(self.on_entry_changed, topic=Topic.CURRENT_ENTRY)
 
         super().__init__(self.colored_box)
 
