@@ -14,11 +14,11 @@ KEY_KEYMAP = 'keymap'
 KEY_KEYMAP_GLOBAL = 'global'
 KEY_KEYMAP_NAVIGATE = 'navigate'
 KEY_KEYMAP_ASSIGN = 'assign'
-KEY_KEYMAP_EDIT = 'edit'
+KEY_KEYMAP_OPERATE = 'operate'
 KEY_KEYMAP_MODES = (KEY_KEYMAP_GLOBAL,
                     KEY_KEYMAP_NAVIGATE,
                     KEY_KEYMAP_ASSIGN,
-                    KEY_KEYMAP_EDIT)
+                    KEY_KEYMAP_OPERATE)
 PREFERRED_NAMES = 'preferred_names'
 
 

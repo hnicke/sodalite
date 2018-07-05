@@ -23,14 +23,14 @@ class GlobalAction(Action):
     navigate_mode = 10
 
 
-class NormalAction(Action):
+class NavigateAction(Action):
     go_to_parent = 1
     go_to_home = 2
     go_to_root = 3
     go_to_previous = 4
     go_to_next = 5
     assign_mode = 6
-    edit_mode = 7
+    operate_mode = 7
 
 
 class AssignAction(Action):
@@ -39,22 +39,22 @@ class AssignAction(Action):
     abort = 3
 
 
-class EditAction(Action):
+class OperateAction(Action):
     pass
 
 
 MODE_TO_ACTION_TYPE = {
-    Mode.NAVIGATE: NormalAction,
+    Mode.NAVIGATE: NavigateAction,
     Mode.ASSIGN_CHOOSE_KEY: AssignAction,
     Mode.ASSIGN_CHOOSE_ENTRY: AssignAction,
-    Mode.EDIT: EditAction
+    Mode.OPERATE: OperateAction
 }
 
 KEYMAP_TO_ACTION = {
     config.KEY_KEYMAP_GLOBAL: GlobalAction,
-    config.KEY_KEYMAP_NAVIGATE: NormalAction,
+    config.KEY_KEYMAP_NAVIGATE: NavigateAction,
     config.KEY_KEYMAP_ASSIGN: AssignAction,
-    config.KEY_KEYMAP_EDIT: EditAction,
+    config.KEY_KEYMAP_OPERATE: OperateAction,
 }
 
 defaults = {
@@ -69,13 +69,13 @@ defaults = {
     GlobalAction.yank_current_path: 'ctrl y',
     GlobalAction.navigate_mode: 'esc',
 
-    NormalAction.go_to_parent: '.',
-    NormalAction.go_to_home: ';',
-    NormalAction.go_to_root: ',',
-    NormalAction.go_to_previous: 'backspace',  # also matches 'ctrl h'
-    NormalAction.go_to_next: 'ctrl l',
-    NormalAction.assign_mode: '=',
-    NormalAction.edit_mode: ' ',
+    NavigateAction.go_to_parent: '.',
+    NavigateAction.go_to_home: ';',
+    NavigateAction.go_to_root: ',',
+    NavigateAction.go_to_previous: 'backspace',  # also matches 'ctrl h'
+    NavigateAction.go_to_next: 'ctrl l',
+    NavigateAction.assign_mode: '=',
+    NavigateAction.operate_mode: ' ',
 
     AssignAction.select_next: 'ctrl n',
     AssignAction.select_previous: 'ctrl p',

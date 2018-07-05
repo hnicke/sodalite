@@ -63,7 +63,7 @@ Like in vim, there are different modi. In each mode, a different set of actions 
 
 - `NAVIGATE`: navigate the file system
 - `ASSIGN`: assign keys to files
-<!-- - `EDIT`: modify the file system -->
+- `OPERATE`: modify the file system
 
 Global actions
 --------------
@@ -107,7 +107,7 @@ Following general actions can be triggered everywhere in `sodalite`:
 
 :   Scroll up half a page.
 
-`NORMAL` mode
+`NAVIGATE` mode
 -----------
 `sodalite` automatically assigns keys to entries in order to enable quick navigation. For navigating to a specific entry, simply press its assigned key.
 Valid values for keys are all letters of the alphabet (lower and upper case), so there are 52 different keys. For every directory, each key is unique. If there are more than 52 entries in a directory, some entries will end up having no key assigned to them. However, you can change this within the `ASSIGN` mode.
@@ -144,9 +144,9 @@ Valid values for keys are all letters of the alphabet (lower and upper case), so
 
 :   Enter assign mode.
 
-**navigate.edit_moe (` ` [space])**
+**navigate.operate_mode (` ` [space])**
 
-:   Enter edit mode.
+:   Enter operate mode.
 
 `ASSIGN` mode
 -----------
@@ -165,6 +165,13 @@ If the newly assigned key is already assigned to another entry in the current di
 **assign.select_previous (`ctrl p`)**
 
 :   Select previous entry.
+
+OPERATE mode
+------------
+The `OPERATE` mode allows for convenient file manipulation.
+
+To be continued.
+
 
 
 Options
@@ -234,7 +241,7 @@ keymap:
 If *built-in* matches the name of a built-in action, given *keybinding* is bound to this action (instead of its default binding).
 
 **global**
-:   Valid values: `global`, `navigate`, `assign`, `edit`.
+:   Valid values: `global`, `navigate`, `assign`, `operate`.
     
 **built-in**
 :   (String, required) The name of a built-in function (e.g., `go_to_home`).

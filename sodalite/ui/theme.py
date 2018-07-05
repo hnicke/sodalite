@@ -26,18 +26,18 @@ unimportant = {
 unused = urwid.DARK_GRAY
 forbidden = urwid.LIGHT_RED
 
-navigation_mode = 'navigation_mode'
+navigate_mode = 'navigate_mode'
 assign_mode = 'assign_mode'
-edit_mode = 'edit_mode'
+operate_mode = 'operate_mode'
 
 palette = (
     ('underline', 'underline', ''),
     (bold, 'bold', ''),
     (reverse, 'standout', ''),
 
-    (navigation_mode, '', ''),
+    (navigate_mode, '', ''),
     (assign_mode, urwid.DARK_GREEN, ''),
-    (edit_mode, urwid.DARK_RED, ''),
+    (operate_mode, urwid.DARK_RED, ''),
 
     # text preview highlighting
     (line_number, urwid.DARK_GRAY, ''),
@@ -80,16 +80,16 @@ palette = (
 class DynamicAttrMap(urwid.AttrMap):
 
     def __init__(self, w):
-        super().__init__(w, theme.navigation_mode)
+        super().__init__(w, theme.navigate_mode)
         viewmodel.global_mode.register(self.update_colors, topic=Topic.MODE)
 
     def update_colors(self, model):
         if viewmodel.global_mode == Mode.NAVIGATE:
-            attr = theme.navigation_mode
+            attr = theme.navigate_mode
         elif viewmodel.global_mode in (Mode.ASSIGN_CHOOSE_ENTRY, Mode.ASSIGN_CHOOSE_KEY):
             attr = theme.assign_mode
-        elif viewmodel.global_mode == Mode.EDIT:
-            attr = theme.edit_mode
+        elif viewmodel.global_mode == Mode.OPERATE:
+            attr = theme.operate_mode
         else:
             raise ValueError
         self.set_attr_map({None: attr})

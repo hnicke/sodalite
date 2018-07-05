@@ -9,7 +9,7 @@ from ui import graphics, viewmodel, notify, theme
 from ui.viewmodel import Mode
 from util import environment
 from util import keybindings
-from util.keybindings import Action, GlobalAction, NormalAction, AssignAction
+from util.keybindings import Action, GlobalAction, NavigateAction, AssignAction
 
 logger = logging.getLogger(__name__)
 
@@ -108,18 +108,18 @@ class Control:
         notify.show(message, duration=0.7)
 
 
-class NormalControl(Control):
+class NavigateControl(Control):
 
     def __init__(self, frame: 'MainFrame'):
         super().__init__(frame)
         self.ACTION_TO_CALL.update({
-            NormalAction.go_to_parent: self.go_to_parent,
-            NormalAction.go_to_home: self.go_to_home,
-            NormalAction.go_to_root: self.go_to_root,
-            NormalAction.go_to_previous: self.go_to_previous,
-            NormalAction.go_to_next: self.go_to_next,
-            NormalAction.assign_mode: self.enter_assign_mode,
-            NormalAction.edit_mode: self.enter_edit_mode,
+            NavigateAction.go_to_parent: self.go_to_parent,
+            NavigateAction.go_to_home: self.go_to_home,
+            NavigateAction.go_to_root: self.go_to_root,
+            NavigateAction.go_to_previous: self.go_to_previous,
+            NavigateAction.go_to_next: self.go_to_next,
+            NavigateAction.assign_mode: self.enter_assign_mode,
+            NavigateAction.operate_mode: self.enter_operate_mode,
         })
 
     def handle_key_individually(self, key):
@@ -162,8 +162,8 @@ class NormalControl(Control):
         viewmodel.global_mode.mode = Mode.ASSIGN_CHOOSE_ENTRY
         self.list.render(self.list_size, True)
 
-    def enter_edit_mode(self):
-        viewmodel.global_mode.mode = Mode.EDIT
+    def enter_operate_mode(self):
+        viewmodel.global_mode.mode = Mode.OPERATE
 
 
 class AssignControl(Control):
@@ -249,7 +249,7 @@ class AssignControl(Control):
             self.list.on_entries_changed(self.model)
 
 
-class EditControl(Control):
+class OperateControl(Control):
 
     def __init__(self, frame: 'MainFrame'):
         super().__init__(frame)

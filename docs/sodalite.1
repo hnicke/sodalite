@@ -80,6 +80,8 @@ In each mode, a different set of actions is available.
 \f[C]NAVIGATE\f[]: navigate the file system
 .IP \[bu] 2
 \f[C]ASSIGN\f[]: assign keys to files
+.IP \[bu] 2
+\f[C]OPERATE\f[]: modify the file system
 .SS Global actions
 .PP
 Following general actions can be triggered everywhere in
@@ -139,7 +141,7 @@ Scroll down half a page.
 Scroll up half a page.
 .RS
 .RE
-.SS \f[C]NORMAL\f[] mode
+.SS \f[C]NAVIGATE\f[] mode
 .PP
 \f[C]sodalite\f[] automatically assigns keys to entries in order to
 enable quick navigation.
@@ -196,8 +198,8 @@ Enter assign mode.
 .RS
 .RE
 .TP
-.B \f[B]navigate.edit_moe (` ` [space])\f[]
-Enter edit mode.
+.B \f[B]navigate.operate_mode (` ` [space])\f[]
+Enter operate mode.
 .RS
 .RE
 .SS \f[C]ASSIGN\f[] mode
@@ -223,6 +225,11 @@ Select next entry.
 Select previous entry.
 .RS
 .RE
+.SS OPERATE mode
+.PP
+The \f[C]OPERATE\f[] mode allows for convenient file manipulation.
+.PP
+To be continued.
 .SS Options
 .TP
 .B \f[B]\-h, \-\-help\f[]
@@ -315,7 +322,7 @@ binding).
 .TP
 .B \f[B]global\f[]
 Valid values: \f[C]global\f[], \f[C]navigate\f[], \f[C]assign\f[],
-\f[C]edit\f[].
+\f[C]operate\f[].
 .RS
 .RE
 .TP

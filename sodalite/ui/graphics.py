@@ -7,7 +7,7 @@ import urwid.curses_display
 from core import dirhistory
 from core.navigator import Navigator
 from ui import theme, viewmodel
-from ui.control import NormalControl, AssignControl, EditControl
+from ui.control import NavigateControl, AssignControl, OperateControl
 from ui.filter import Filter
 from ui.hookbox import HookBox
 from ui.mainpane import MainPane
@@ -39,12 +39,12 @@ class MainFrame(urwid.Frame):
 
     def change_controller(self, mode):
         if mode == Mode.NAVIGATE:
-            self.control = NormalControl(self)
+            self.control = NavigateControl(self)
         elif mode in viewmodel.ANY_ASSIGN_MODE:
             if type(self.control) is not AssignControl:
                 self.control = AssignControl(self)
-        elif mode == Mode.EDIT:
-            self.control = EditControl(self)
+        elif mode == Mode.OPERATE:
+            self.control = OperateControl(self)
         else:
             raise ValueError
 
