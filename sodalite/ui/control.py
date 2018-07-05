@@ -244,7 +244,7 @@ class AssignControl(Control):
     def assign_key(self, key: str):
         if key in key_module.get_all_keys():
             self.navigator.assign_key(key_module.Key(key), self.entry_for_assignment.path)
-            self.abort_assign_mode()
+            self.enter_navigate_mode()
             self.list.on_entries_changed(self.model)
 
 
