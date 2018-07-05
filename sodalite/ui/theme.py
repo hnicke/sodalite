@@ -2,7 +2,7 @@ import urwid
 from pygments import token
 
 from ui import theme, viewmodel
-from ui.viewmodel import ViewModel, Topic, Mode
+from ui.viewmodel import Topic, Mode
 
 file = urwid.WHITE
 file_unimportant = urwid.LIGHT_GRAY

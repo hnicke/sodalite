@@ -11,6 +11,14 @@ logger = logging.getLogger(__name__)
 
 KEY_HOOKS = 'hooks'
 KEY_KEYMAP = 'keymap'
+KEY_KEYMAP_GLOBAL = 'global'
+KEY_KEYMAP_NORMAL = 'normal'
+KEY_KEYMAP_ASSIGN = 'assign'
+KEY_KEYMAP_EDIT = 'edit'
+KEY_KEYMAP_MODES = (KEY_KEYMAP_GLOBAL,
+                    KEY_KEYMAP_NORMAL,
+                    KEY_KEYMAP_ASSIGN,
+                    KEY_KEYMAP_EDIT)
 PREFERRED_NAMES = 'preferred_names'
 
 
@@ -28,6 +36,9 @@ try:
         keymap = config_dict.setdefault(KEY_KEYMAP, {})
         if not keymap:
             keymap = {}
+        for mode in KEY_KEYMAP_MODES:
+            if mode not in keymap or keymap[mode] is None:
+                keymap[mode] = {}
         preferred_names = config_dict.setdefault(PREFERRED_NAMES, [])
         preferred_names = [x.lower() for x in preferred_names]
         if not preferred_names:

@@ -11,6 +11,7 @@ from ui.hookbox import HookBox
 from ui.mainpane import MainPane
 from ui.viewmodel import ViewModel
 from util import environment
+from util.keymap import Action
 
 logger = logging.getLogger(__name__)
 
@@ -31,6 +32,8 @@ class MainFrame(urwid.Frame):
         self.hookbox = HookBox(self.model, self)
 
     def keypress(self, size, key):
+        from util import keymap
+        action: Action = keymap.get_action(key)
         with DRAW_LOCK:
             (maxcol, maxrow) = size
             remaining = maxrow

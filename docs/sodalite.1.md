@@ -204,9 +204,10 @@ The configuration is written in [YAML](https://learnxinyminutes.com/docs/yaml/).
 
 Example configuration
 ---------------------
-<!-- keymap:
-  "*": normal.toggle_bookmark -->
 ```yml
+keymap:
+  normal:
+    filter: '/'
 hooks:
   general:
   dir:
@@ -228,21 +229,22 @@ hooks:
 
 **Customizing the default keymap**
 
-> This feature is **not yet implemented**.
-
 ```yaml
 keymap:
-  <keybinding>: <built-in>
+  <mode>:
+    <built-in>: <keybinding>
 ```
 If *built-in* matches the name of a built-in action, given *keybinding* is bound to this action (instead of its default binding).
+
+**global**
+:   Valid values: `global`, `normal`, `assign`, `edit`.
+    
+**built-in**
+:   (String, required) The name of a built-in function (e.g., `go_to_home`).
     
 **keybinding**:
 :   (String, required) The keybinding which is used to trigger the action. Use `ctrl a` and `meta a` to define the keys `Control a` and `Meta a`. Other special keys: `esc`, `enter`, `f1`
 
-**built-in**
-
-:   (String, required) The name of a built-in function (e.g., `normal.go_to_home`).
-    
     
 Action hooks
 ------------

@@ -1,59 +1,107 @@
 from enum import Enum
+from typing import Dict
 
 from core import config
-
-_keymap = dict((str(v), k) for (k, v) in config.keymap.items())
-
-# ctrl h is backspace in terminal emulators
-if 'ctrl h' in _keymap:
-    _keymap['backspace'] = _keymap['ctrl h']
+from ui import viewmodel
+from ui.viewmodel import Mode
 
 
 class Action(Enum):
-    EXIT = 'global.exit'
-    ABORT = 'global.abort'
-    FILTER = 'global.filter'
-    TOGGLE_DOTFILES = 'global.toggle_dotfiles'
-    SCROLL_PAGE_DOWN = 'global.scroll_page_down'
-    SCROLL_PAGE_UP = 'global.scroll_page_up'
-    SCROLL_HALF_PAGE_DOWN = 'global.scroll_half_page_down'
-    SCROLL_HALF_PAGE_UP = 'global.scroll_half_page_up'
-    GO_TO_PARENT = 'normal.go_to_parent'
-    GO_TO_HOME = 'normal.go_to_home'
-    GO_TO_ROOT = 'normal.go_to_root'
-    GO_TO_PREVIOUS = 'normal.go_to_previous'
-    GO_TO_NEXT = 'normal.go_to_next'
-    YANK_CURRENT_PATH = 'normal.yank_current_path'
-    ASSIGN_MODE = 'normal.assign_mode'
-    EDIT_MODE = 'normal.edit_mode'
-    SELECT_NEXT = 'assign.select_next'
-    SELECT_PREVIOUS = 'assign.select_previous'
+    pass
 
 
-defaults = {
-    'enter': Action.EXIT,
-    'ctrl c': Action.ABORT,
-    '/': Action.FILTER,
-    'meta h': Action.TOGGLE_DOTFILES,
-    'ctrl f': Action.SCROLL_PAGE_DOWN,
-    'ctrl b': Action.SCROLL_PAGE_UP,
-    'ctrl d': Action.SCROLL_HALF_PAGE_DOWN,
-    'ctrl u': Action.SCROLL_HALF_PAGE_UP,
-    '.': Action.GO_TO_PARENT,
-    ';': Action.GO_TO_HOME,
-    ',': Action.GO_TO_ROOT,
-    'backspace': Action.GO_TO_PREVIOUS,  # also matches 'ctrl h'
-    'ctrl l': Action.GO_TO_NEXT,
-    'ctrl y': Action.YANK_CURRENT_PATH,
-    '=': Action.ASSIGN_MODE,
-    'ctrl n': Action.SELECT_NEXT,
-    'ctrl p': Action.SELECT_PREVIOUS,
-    ' ': Action.EDIT_MODE,
+class GlobalAction(Action):
+    exit = 1
+    abort = 2
+    filter = 3
+    toggle_dotfiles = 4
+    scroll_page_down = 5
+    scroll_page_up = 6
+    scroll_half_page_down = 7
+    scroll_half_page_up = 8
+
+
+class NormalAction(Action):
+    go_to_parent = 1
+    go_to_home = 2
+    go_to_root = 3
+    go_to_previous = 4
+    go_to_next = 5
+    yank_current_path = 6
+    assign_mode = 7
+    edit_mode = 8
+
+
+class AssignAction(Action):
+    select_next = 1
+    select_previous = 2
+
+
+class EditAction(Action):
+    pass
+
+
+MODE_TO_ACTION_TYPE = {
+    Mode.NORMAL: NormalAction,
+    Mode.ASSIGN_CHOOSE_KEY: AssignAction,
+    Mode.ASSIGN_CHOOSE_ENTRY: AssignAction,
+    Mode.EDIT: EditAction
 }
 
-for key, action in defaults.items():
-    _keymap.setdefault(key, action.value)
+KEYMAP_TO_ACTION = {
+    config.KEY_KEYMAP_GLOBAL: GlobalAction,
+    config.KEY_KEYMAP_NORMAL: NormalAction,
+    config.KEY_KEYMAP_ASSIGN: AssignAction,
+    config.KEY_KEYMAP_EDIT: EditAction,
+}
+
+defaults = {
+    GlobalAction.exit: 'enter',
+    GlobalAction.abort: 'ctrl c',
+    GlobalAction.filter: '/',
+    GlobalAction.toggle_dotfiles: 'meta h',
+    GlobalAction.scroll_page_down: 'ctrl f',
+    GlobalAction.scroll_page_up: 'ctrl b',
+    GlobalAction.scroll_half_page_down: 'ctrl d',
+    GlobalAction.scroll_half_page_up: 'ctrl u',
+
+    NormalAction.go_to_parent: '.',
+    NormalAction.go_to_home: ';',
+    NormalAction.go_to_root: ',',
+    NormalAction.go_to_previous: 'backspace',  # also matches 'ctrl h'
+    NormalAction.go_to_next: 'ctrl l',
+    NormalAction.yank_current_path: 'ctrl y',
+    NormalAction.assign_mode: '=',
+    NormalAction.edit_mode: ' ',
+
+    AssignAction.select_next: 'ctrl n',
+    AssignAction.select_previous: 'ctrl p',
+}
+
+_keymap: Dict[type, Dict[str, Action]] = {}
+
+for textual_mode, bindings in config.keymap.items():
+    action_type = KEYMAP_TO_ACTION[textual_mode]
+    # ctrl h is backspace in terminal emulators
+    for action, keybinding in bindings.items():
+        if keybinding == 'ctrl h':
+            _keymap[action_type][action] = 'ctrl h'
+    _keymap[action_type] = dict((str(v), action_type[k]) for (k, v) in bindings.items())
+
+for action, keybinding in defaults.items():
+    _keymap[action.__class__].setdefault(keybinding, action)
 
 
-def matches(action: Action, key: str):
-    return action.value == _keymap.get(key)
+def get_action(keybinding: str) -> Action:
+    """
+
+    :param keybinding:
+    :return: None if no action is bound to given keybinding
+    """
+    action_type = MODE_TO_ACTION_TYPE[viewmodel.global_mode.mode]
+    action = None
+    if keybinding in _keymap[action_type]:
+        action = _keymap[action_type][keybinding]
+    elif keybinding in _keymap[GlobalAction]:
+        action = _keymap[GlobalAction][keybinding]
+    return action

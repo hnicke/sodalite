@@ -272,6 +272,9 @@ YAML (https://learnxinyminutes.com/docs/yaml/).
 .IP
 .nf
 \f[C]
+keymap:
+\ \ normal:
+\ \ \ \ filter:\ \[aq]/\[aq]
 hooks:
 \ \ general:
 \ \ dir:
@@ -293,15 +296,12 @@ hooks:
 .fi
 .PP
 \f[B]Customizing the default keymap\f[]
-.RS
-.PP
-This feature is \f[B]not yet implemented\f[].
-.RE
 .IP
 .nf
 \f[C]
 keymap:
-\ \ <keybinding>:\ <built\-in>
+\ \ <mode>:
+\ \ \ \ <built\-in>:\ <keybinding>
 \f[]
 .fi
 .PP
@@ -309,17 +309,23 @@ If \f[I]built\-in\f[] matches the name of a built\-in action, given
 \f[I]keybinding\f[] is bound to this action (instead of its default
 binding).
 .TP
-.B \f[B]keybinding\f[]:
-(String, required) The keybinding which is used to trigger the action.
-Use \f[C]ctrl\ a\f[] and \f[C]meta\ a\f[] to define the keys
-\f[C]Control\ a\f[] and \f[C]Meta\ a\f[].
-Other special keys: \f[C]esc\f[], \f[C]enter\f[], \f[C]f1\f[]
+.B \f[B]global\f[]
+Valid values: \f[C]global\f[], \f[C]normal\f[], \f[C]assign\f[],
+\f[C]edit\f[].
 .RS
 .RE
 .TP
 .B \f[B]built\-in\f[]
 (String, required) The name of a built\-in function (e.g.,
-\f[C]normal.go_to_home\f[]).
+\f[C]go_to_home\f[]).
+.RS
+.RE
+.TP
+.B \f[B]keybinding\f[]:
+(String, required) The keybinding which is used to trigger the action.
+Use \f[C]ctrl\ a\f[] and \f[C]meta\ a\f[] to define the keys
+\f[C]Control\ a\f[] and \f[C]Meta\ a\f[].
+Other special keys: \f[C]esc\f[], \f[C]enter\f[], \f[C]f1\f[]
 .RS
 .RE
 .SS Action hooks
