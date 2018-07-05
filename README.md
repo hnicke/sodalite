@@ -97,10 +97,7 @@ Don't miss out on what has changed: Read the [changelog](changelog.md).
 Do you want to contribute to the project? Check out the [developer guide](docs/developer_guide.md).
 
 ## What the future might bring
-Current plans for the future involve (in roughly this order):
-- Make exploring the file system more awesome
-- Add `tabbing`
-- Add an `operation` mode which allows for `yanking`, `deleting`, `renaming` and `moving` files
+Adding an `edit` mode which allows for `yanking`, `deleting`, `renaming` and `moving` files is currently the highest priority.
 
 ## License
 See [copyyright](copyright).

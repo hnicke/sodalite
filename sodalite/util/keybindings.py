@@ -20,6 +20,7 @@ class GlobalAction(Action):
     scroll_half_page_down = 7
     scroll_half_page_up = 8
     yank_current_path = 9
+    normal_mode = 10
 
 
 class NormalAction(Action):
@@ -66,6 +67,7 @@ defaults = {
     GlobalAction.scroll_half_page_down: 'ctrl d',
     GlobalAction.scroll_half_page_up: 'ctrl u',
     GlobalAction.yank_current_path: 'ctrl y',
+    GlobalAction.normal_mode: 'esc',
 
     NormalAction.go_to_parent: '.',
     NormalAction.go_to_home: ';',

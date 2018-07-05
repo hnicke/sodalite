@@ -29,6 +29,7 @@ class Control:
         self.ACTION_TO_CALL: Dict[Action, Callable[[]]] = {
             GlobalAction.exit: self.exit,
             GlobalAction.abort: self.abort,
+            GlobalAction.normal_mode: self.normal_mode,
             GlobalAction.filter: self.trigger_filter,
             GlobalAction.yank_current_path: self.yank_to_clipboard,
             GlobalAction.toggle_dotfiles: self.toggle_dotfiles,
@@ -69,6 +70,9 @@ class Control:
 
     def abort(self):
         graphics.exit()
+
+    def normal_mode(self):
+        viewmodel.global_mode.mode = Mode.NORMAL
 
     def trigger_filter(self):
         self.filter.active = True

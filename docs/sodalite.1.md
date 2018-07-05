@@ -79,15 +79,13 @@ Following general actions can be triggered everywhere in `sodalite`:
 
 :   Exit `sodalite` without printing current directory to `stdout`.
 
-<!--
-**global.normal_mode (`ESC`)**
+**global.normal_mode (`esc`)**
 
 :   Enter normal mode.
--->
 
 **global.filter (`/`)**
 
-:   Focuses the filter bar on the bottom. Use regular expressions to filter displayed entries. The filtering is case-insensitive. Press `CR` to submit or `ESC` to dismiss the filter.
+:   Focuses the filter bar on the bottom. Use regular expressions to filter displayed entries. The filtering is case-insensitive. Press `enter` to submit or `esc` to dismiss the filter.
 
 **global.toggle_dotfiles  (`meta h`)**
 
@@ -167,11 +165,6 @@ If the newly assigned key is already assigned to another entry in the current di
 **assign.select_previous (`ctrl p`)**
 
 :   Select previous entry.
-
-**assign.abort (`esc`)**
-
-: Exits the assign mode without changes.
-
 
 
 Options
