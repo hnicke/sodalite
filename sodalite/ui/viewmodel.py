@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 class Mode(Enum):
-    NORMAL = 1
+    NAVIGATE = 1
     ASSIGN_CHOOSE_ENTRY = 2
     ASSIGN_CHOOSE_KEY = 3
     EDIT = 4
@@ -34,7 +34,7 @@ class GlobalMode(Observable):
 
     def __init__(self):
         super().__init__()
-        self._mode = Mode.NORMAL
+        self._mode = Mode.NAVIGATE
 
     @property
     def mode(self):

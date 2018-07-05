@@ -61,9 +61,9 @@ Modi
 
 Like in vim, there are different modi. In each mode, a different set of actions is available.
 
-- `NORMAL`: navigate the file system
+- `NAVIGATE`: navigate the file system
 - `ASSIGN`: assign keys to files
-<!-- - `OPERATE`: modify the file system -->
+<!-- - `EDIT`: modify the file system -->
 
 Global actions
 --------------
@@ -79,9 +79,9 @@ Following general actions can be triggered everywhere in `sodalite`:
 
 :   Exit `sodalite` without printing current directory to `stdout`.
 
-**global.normal_mode (`esc`)**
+**global.navigate_mode (`esc`)**
 
-:   Enter normal mode.
+:   Enter navigate mode.
 
 **global.filter (`/`)**
 
@@ -112,39 +112,39 @@ Following general actions can be triggered everywhere in `sodalite`:
 `sodalite` automatically assigns keys to entries in order to enable quick navigation. For navigating to a specific entry, simply press its assigned key.
 Valid values for keys are all letters of the alphabet (lower and upper case), so there are 52 different keys. For every directory, each key is unique. If there are more than 52 entries in a directory, some entries will end up having no key assigned to them. However, you can change this within the `ASSIGN` mode.
 
-**normal.go_to (`[a-zA-Z0-9]`)**
+**naviate.go_to (`[a-zA-Z0-9]`)**
 
 :   Navigate to the entry matching pressed key. Note: This function is not reassinable to another keybinding.
 
-**normal.go_to_home (`;`)**
+**navigate.go_to_home (`;`)**
 
 :   Navigate to the `$HOME` directory.
 
-**normal.go_to_root (`,`)**
+**navigate.go_to_root (`,`)**
 
 :   Navigate to the root directory.
 
-**normal.go_to_parent (`.`)**
+**navigate.go_to_parent (`.`)**
 
 :   Navigate to the parent directory. Does nothing if parent directory does not exist.
 
-**normal.go_to_previous (`ctrl h`)**
+**navigate.go_to_previous (`ctrl h`)**
 
 :   Navigate back in history one step. Does nothing if history does not contain a previous entry. Note: 'ctrl h' equals backslash in terminal emulators.
 
-**normal.go_to_next (`ctrl l`)**
+**navigate.go_to_next (`ctrl l`)**
 
 :   Navigate forward in history. Does nothing if history does not contain a next entry.
 
-**normal.yank_current_path (`ctrl y`)**
+**navigate.yank_current_path (`ctrl y`)**
 
 :   Copy current entry's path to the system's clipboard.
 
-**normal.assign_mode (`=`)**
+**navigate.assign_mode (`=`)**
 
 :   Enter assign mode.
 
-**normal.edit_moe (` ` [space])**
+**navigate.edit_moe (` ` [space])**
 
 :   Enter edit mode.
 
@@ -203,7 +203,7 @@ Example configuration
 ---------------------
 ```yml
 keymap:
-  normal:
+  navigate:
     filter: '/'
 hooks:
   general:
@@ -234,7 +234,7 @@ keymap:
 If *built-in* matches the name of a built-in action, given *keybinding* is bound to this action (instead of its default binding).
 
 **global**
-:   Valid values: `global`, `normal`, `assign`, `edit`.
+:   Valid values: `global`, `navigate`, `assign`, `edit`.
     
 **built-in**
 :   (String, required) The name of a built-in function (e.g., `go_to_home`).

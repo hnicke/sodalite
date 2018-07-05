@@ -49,7 +49,7 @@ class MainPane(urwid.WidgetWrap):
             notify.show("choose entry", duration=0)
         elif viewmodel.global_mode == Mode.ASSIGN_CHOOSE_KEY:
             notify.show("choose new key", duration=0)
-        elif viewmodel.global_mode == Mode.NORMAL:
+        elif viewmodel.global_mode == Mode.NAVIGATE:
             notify.clear()
 
     def set_title_to_cwd(self, model):

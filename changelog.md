@@ -8,6 +8,7 @@
 ##### Misc
 - Change how to specify custom keybindings
 - 'yank_to_clipboard' now belongs to mode 'global' (before: 'normal')
+- Rename 'normal' mode to 'navigate' mode
 
 ## v0.16.1: July 03, 2018
 ##### Features

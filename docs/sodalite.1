@@ -77,7 +77,7 @@ its content to the function.
 Like in vim, there are different modi.
 In each mode, a different set of actions is available.
 .IP \[bu] 2
-\f[C]NORMAL\f[]: navigate the file system
+\f[C]NAVIGATE\f[]: navigate the file system
 .IP \[bu] 2
 \f[C]ASSIGN\f[]: assign keys to files
 .SS Global actions
@@ -102,8 +102,8 @@ Exit \f[C]sodalite\f[] without printing current directory to
 .RS
 .RE
 .TP
-.B \f[B]global.normal_mode (\f[BC]esc\f[B])\f[]
-Enter normal mode.
+.B \f[B]global.navigate_mode (\f[BC]esc\f[B])\f[]
+Enter navigate mode.
 .RS
 .RE
 .TP
@@ -151,52 +151,52 @@ If there are more than 52 entries in a directory, some entries will end
 up having no key assigned to them.
 However, you can change this within the \f[C]ASSIGN\f[] mode.
 .TP
-.B \f[B]normal.go_to (\f[BC][a\-zA\-Z0\-9]\f[B])\f[]
+.B \f[B]naviate.go_to (\f[BC][a\-zA\-Z0\-9]\f[B])\f[]
 Navigate to the entry matching pressed key.
 Note: This function is not reassinable to another keybinding.
 .RS
 .RE
 .TP
-.B \f[B]normal.go_to_home (\f[BC];\f[B])\f[]
+.B \f[B]navigate.go_to_home (\f[BC];\f[B])\f[]
 Navigate to the \f[C]$HOME\f[] directory.
 .RS
 .RE
 .TP
-.B \f[B]normal.go_to_root (\f[BC],\f[B])\f[]
+.B \f[B]navigate.go_to_root (\f[BC],\f[B])\f[]
 Navigate to the root directory.
 .RS
 .RE
 .TP
-.B \f[B]normal.go_to_parent (\f[BC]\&.\f[B])\f[]
+.B \f[B]navigate.go_to_parent (\f[BC]\&.\f[B])\f[]
 Navigate to the parent directory.
 Does nothing if parent directory does not exist.
 .RS
 .RE
 .TP
-.B \f[B]normal.go_to_previous (\f[BC]ctrl\ h\f[B])\f[]
+.B \f[B]navigate.go_to_previous (\f[BC]ctrl\ h\f[B])\f[]
 Navigate back in history one step.
 Does nothing if history does not contain a previous entry.
 Note: `ctrl h' equals backslash in terminal emulators.
 .RS
 .RE
 .TP
-.B \f[B]normal.go_to_next (\f[BC]ctrl\ l\f[B])\f[]
+.B \f[B]navigate.go_to_next (\f[BC]ctrl\ l\f[B])\f[]
 Navigate forward in history.
 Does nothing if history does not contain a next entry.
 .RS
 .RE
 .TP
-.B \f[B]normal.yank_current_path (\f[BC]ctrl\ y\f[B])\f[]
+.B \f[B]navigate.yank_current_path (\f[BC]ctrl\ y\f[B])\f[]
 Copy current entry's path to the system's clipboard.
 .RS
 .RE
 .TP
-.B \f[B]normal.assign_mode (\f[BC]=\f[B])\f[]
+.B \f[B]navigate.assign_mode (\f[BC]=\f[B])\f[]
 Enter assign mode.
 .RS
 .RE
 .TP
-.B \f[B]normal.edit_moe (` ` [space])\f[]
+.B \f[B]navigate.edit_moe (` ` [space])\f[]
 Enter edit mode.
 .RS
 .RE
@@ -277,7 +277,7 @@ YAML (https://learnxinyminutes.com/docs/yaml/).
 .nf
 \f[C]
 keymap:
-\ \ normal:
+\ \ navigate:
 \ \ \ \ filter:\ \[aq]/\[aq]
 hooks:
 \ \ general:
@@ -314,7 +314,7 @@ If \f[I]built\-in\f[] matches the name of a built\-in action, given
 binding).
 .TP
 .B \f[B]global\f[]
-Valid values: \f[C]global\f[], \f[C]normal\f[], \f[C]assign\f[],
+Valid values: \f[C]global\f[], \f[C]navigate\f[], \f[C]assign\f[],
 \f[C]edit\f[].
 .RS
 .RE

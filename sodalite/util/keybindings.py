@@ -20,7 +20,7 @@ class GlobalAction(Action):
     scroll_half_page_down = 7
     scroll_half_page_up = 8
     yank_current_path = 9
-    normal_mode = 10
+    navigate_mode = 10
 
 
 class NormalAction(Action):
@@ -44,7 +44,7 @@ class EditAction(Action):
 
 
 MODE_TO_ACTION_TYPE = {
-    Mode.NORMAL: NormalAction,
+    Mode.NAVIGATE: NormalAction,
     Mode.ASSIGN_CHOOSE_KEY: AssignAction,
     Mode.ASSIGN_CHOOSE_ENTRY: AssignAction,
     Mode.EDIT: EditAction
@@ -52,7 +52,7 @@ MODE_TO_ACTION_TYPE = {
 
 KEYMAP_TO_ACTION = {
     config.KEY_KEYMAP_GLOBAL: GlobalAction,
-    config.KEY_KEYMAP_NORMAL: NormalAction,
+    config.KEY_KEYMAP_NAVIGATE: NormalAction,
     config.KEY_KEYMAP_ASSIGN: AssignAction,
     config.KEY_KEYMAP_EDIT: EditAction,
 }
@@ -67,7 +67,7 @@ defaults = {
     GlobalAction.scroll_half_page_down: 'ctrl d',
     GlobalAction.scroll_half_page_up: 'ctrl u',
     GlobalAction.yank_current_path: 'ctrl y',
-    GlobalAction.normal_mode: 'esc',
+    GlobalAction.navigate_mode: 'esc',
 
     NormalAction.go_to_parent: '.',
     NormalAction.go_to_home: ';',

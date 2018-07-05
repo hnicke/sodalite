@@ -38,7 +38,7 @@ class MainFrame(urwid.Frame):
         viewmodel.global_mode.register(self.change_controller, topic=Topic.MODE)
 
     def change_controller(self, mode):
-        if mode == Mode.NORMAL:
+        if mode == Mode.NAVIGATE:
             self.control = NormalControl(self)
         elif mode in viewmodel.ANY_ASSIGN_MODE:
             if type(self.control) is not AssignControl:

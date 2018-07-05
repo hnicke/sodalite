@@ -84,7 +84,7 @@ class DynamicAttrMap(urwid.AttrMap):
         viewmodel.global_mode.register(self.update_colors, topic=Topic.MODE)
 
     def update_colors(self, model):
-        if viewmodel.global_mode == Mode.NORMAL:
+        if viewmodel.global_mode == Mode.NAVIGATE:
             attr = theme.navigation_mode
         elif viewmodel.global_mode in (Mode.ASSIGN_CHOOSE_ENTRY, Mode.ASSIGN_CHOOSE_KEY):
             attr = theme.assign_mode
