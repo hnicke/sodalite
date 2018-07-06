@@ -77,3 +77,9 @@ class Action:
             if self.is_global or viewmodel.global_mode in self.modes:
                 self.action.__call__()
                 return True
+
+
+class MultiAction(Action):
+
+    def __init__(self, name, action: Callable, modes: List[Mode] = None):
+        super().__init__(name, action, modes=modes)

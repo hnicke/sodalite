@@ -4,7 +4,8 @@ from typing import List
 import pyperclip
 from urwid import AttrSpec
 
-from core import key as key_module, hook
+from core import key as key_module, hook, buffer
+from core.key import Key
 from ui import graphics, viewmodel, notify, theme, action
 from ui.action import Action
 from ui.viewmodel import Mode
@@ -251,9 +252,26 @@ class OperateControl(Control):
 
     def __init__(self, frame: 'MainFrame'):
         super().__init__(frame)
+        self.active_action = None
         self.actions.extend([
             Action(action.yank, self.yank)
         ])
 
-    def yank(self):
+    def handle_key_individually(self, key):
+        if self.active_action:
+            if self.navigator.is_navigation_key(key):
+                target = self.navigator.current_entry.get_child_for_key(Key(key))
+                self.yank(entry=target)
+                return True
+
+    def yank(self, entry=None):
+        if entry:
+            target = entry.path
+
+            buffer.registers[0].write(entry)
+            notify.show(f"yanked {target}")
+            self.active_action = None
+        else:
+            notify.show("yank what?", duration=0)
+            self.active_action = self.yank
         pass

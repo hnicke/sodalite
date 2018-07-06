@@ -11,4 +11,3 @@ class Operation:
         if not timestamp:
             timestamp = int(time.time() * 1000)
         self.timestamp = timestamp
-

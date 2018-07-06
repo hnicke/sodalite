@@ -171,7 +171,7 @@ The `OPERATE` mode allows for convenient file manipulation.
 
 **yank (`y`)**
 
-: Yanks (i.e., copies) the file associated with the next issued key to sodalite's buffer.
+: Yanks (i.e., copies) the entry associated with the next issued key to sodalite's buffer.
 
 
 Options
