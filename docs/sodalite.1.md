@@ -68,49 +68,49 @@ Global actions
 --------------
 Following general actions can be triggered everywhere in `sodalite`:
 
-**global.exit (`ENTER`)**
+**exit (`ENTER`)**
 
 :   Exit `sodalite`. Prints the current entry to `stdout`.
 
     In case `sodalite` was invoked with the provided shell integration key-bindings, will `cd` into current directory. If the current entry is not a directory but a file, will `cd` into the parent directory.
 
-**global.abort (`ctrl c`)**
+**abort (`ctrl c`)**
 
 :   Exit `sodalite` without printing current directory to `stdout`.
 
-**global.navigate_mode (`esc`)**
+**navigate_mode (`esc`)**
 
 :   Enter navigate mode.
 
-**global.assign_mode (`=`)**
+**assign_mode (`=`)**
 
 :   Enter assign mode.
 
-**global.operate_mode (` ` [space])**
+**operate_mode (` ` [space])**
 
 :   Enter operate mode.
 
-**global.filter (`/`)**
+**filter (`/`)**
 
 :   Focuses the filter bar on the bottom. Use regular expressions to filter displayed entries. The filtering is case-insensitive. Press `enter` to submit or `esc` to dismiss the filter.
 
-**global.toggle_dotfiles  (`meta h`)**
+**toggle_dotfiles  (`meta h`)**
 
 :   Toggles visiblity of dotfiles.
 
-**global.scroll_page_down (`ctrl f`)**
+**scroll_page_down (`ctrl f`)**
 
 :   Scroll down one page.
 
-**global.scroll_page_up (`ctrl b`)**
+**scroll_page_up (`ctrl b`)**
 
 :   Scroll up one page.
 
-**global.scroll_half_page_down (`ctrl d`)**
+**scroll_half_page_down (`ctrl d`)**
 
 :   Scroll down half a page.
 
-**global.scroll_half_page_up (`ctrl u`)**
+**scroll_half_page_up (`ctrl u`)**
 
 :   Scroll up half a page.
 
@@ -119,31 +119,31 @@ Following general actions can be triggered everywhere in `sodalite`:
 `sodalite` automatically assigns keys to entries in order to enable quick navigation. For navigating to a specific entry, simply press its assigned key.
 Valid values for keys are all letters of the alphabet (lower and upper case), so there are 52 different keys. For every directory, each key is unique. If there are more than 52 entries in a directory, some entries will end up having no key assigned to them. However, you can change this within the `ASSIGN` mode.
 
-**naviate.go_to (`[a-zA-Z0-9]`)**
+**go_to (`[a-zA-Z0-9]`)**
 
 :   Navigate to the entry matching pressed key. Note: This function is not reassinable to another keybinding.
 
-**navigate.go_to_home (`;`)**
+**go_to_home (`;`)**
 
 :   Navigate to the `$HOME` directory.
 
-**navigate.go_to_root (`,`)**
+**go_to_root (`,`)**
 
 :   Navigate to the root directory.
 
-**navigate.go_to_parent (`.`)**
+**go_to_parent (`.`)**
 
 :   Navigate to the parent directory. Does nothing if parent directory does not exist.
 
-**navigate.go_to_previous (`ctrl h`)**
+**go_to_previous (`ctrl h`)**
 
 :   Navigate back in history one step. Does nothing if history does not contain a previous entry. Note: 'ctrl h' equals backslash in terminal emulators.
 
-**navigate.go_to_next (`ctrl l`)**
+**go_to_next (`ctrl l`)**
 
 :   Navigate forward in history. Does nothing if history does not contain a next entry.
 
-**navigate.yank_current_path (`ctrl y`)**
+**yank_current_path (`ctrl y`)**
 
 :   Copy current entry's path to the system's clipboard.
 
@@ -157,11 +157,11 @@ The `ASSIGN` mode is needed to assign a specific key to an entry. This is accomp
 
 If the newly assigned key is already assigned to another entry in the current directory, keys get swapped.
 
-**assign.select_next (`ctrl n`)**
+**select_next (`ctrl n`)**
 
 :   Select next entry.
 
-**assign.select_previous (`ctrl p`)**
+**select_previous (`ctrl p`)**
 
 :   Select previous entry.
 
@@ -169,8 +169,9 @@ OPERATE mode
 ------------
 The `OPERATE` mode allows for convenient file manipulation.
 
-To be continued.
+**yank (`y`)**
 
+: Yanks (i.e., copies) the file associated with the next issued key to sodalite's buffer.
 
 
 Options
@@ -209,8 +210,7 @@ Example configuration
 ---------------------
 ```yml
 keymap:
-  navigate:
-    filter: '/'
+  filter: '/'
 hooks:
   general:
   dir:
@@ -234,14 +234,10 @@ hooks:
 
 ```yaml
 keymap:
-  <mode>:
-    <built-in>: <keybinding>
+  <built-in>: <keybinding>
 ```
 If *built-in* matches the name of a built-in action, given *keybinding* is bound to this action (instead of its default binding).
 
-**global**
-:   Valid values: `global`, `navigate`, `assign`, `operate`.
-    
 **built-in**
 :   (String, required) The name of a built-in function (e.g., `go_to_home`).
     

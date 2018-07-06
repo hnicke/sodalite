@@ -11,19 +11,18 @@ logger = logging.getLogger(__name__)
 
 KEY_HOOKS = 'hooks'
 KEY_KEYMAP = 'keymap'
-KEY_KEYMAP_GLOBAL = 'global'
-KEY_KEYMAP_NAVIGATE = 'navigate'
-KEY_KEYMAP_ASSIGN = 'assign'
-KEY_KEYMAP_OPERATE = 'operate'
-KEY_KEYMAP_MODES = (KEY_KEYMAP_GLOBAL,
-                    KEY_KEYMAP_NAVIGATE,
-                    KEY_KEYMAP_ASSIGN,
-                    KEY_KEYMAP_OPERATE)
 PREFERRED_NAMES = 'preferred_names'
 
 
 class InvalidConfiguration(Exception):
     pass
+
+
+def fix_keymap():
+    # ctrl h equals backspace in terminal emulators
+    for action, keybinding in keymap.items():
+        if keybinding == 'ctrl h':
+            keymap[action] = 'ctrl h'
 
 
 try:
@@ -36,9 +35,7 @@ try:
         keymap = config_dict.setdefault(KEY_KEYMAP, {})
         if not keymap:
             keymap = {}
-        for mode in KEY_KEYMAP_MODES:
-            if mode not in keymap or keymap[mode] is None:
-                keymap[mode] = {}
+        fix_keymap()
         preferred_names = config_dict.setdefault(PREFERRED_NAMES, [])
         preferred_names = [x.lower() for x in preferred_names]
         if not preferred_names:

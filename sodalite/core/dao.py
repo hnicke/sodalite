@@ -6,6 +6,7 @@ from typing import Dict, Iterable, List
 from core import key as key_module
 from core.entry import Entry
 from core.key import Key
+from ui.operation import Operation
 from util import environment
 
 """
@@ -22,6 +23,11 @@ TABLE_ACCESS = 'access'
 ACCESS_PATH = 'path'
 ACCESS_TIMESTAMP = 'timestamp'
 
+TABLE_OPERATION = 'operation'
+OPERATION_TIMESTAMP = 'timestamp'
+OPERATION_ACTION = 'action'
+OPERATION_PARAMS = 'params'
+
 CREATE_SCHEMA = f"""
 CREATE TABLE IF NOT EXISTS {TABLE_ENTRY} (
     {ENTRY_PATH} TEXT PRIMARY KEY,
@@ -34,6 +40,11 @@ CREATE TABLE IF NOT EXISTS {TABLE_ACCESS} (
         FOREIGN KEY({ACCESS_PATH})
         REFERENCES {TABLE_ENTRY}({ENTRY_PATH})
         ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS {TABLE_OPERATION} (
+    {OPERATION_TIMESTAMP} INTEGER PRIMARY KEY, 
+    {OPERATION_ACTION} TEXT NOT NULL,
+    {OPERATION_PARAMS} TEXT NOT NULL,
 );"""
 
 
@@ -65,6 +76,8 @@ def init():
     conn.cursor().executescript(CREATE_SCHEMA)
     conn.close()
 
+
+# TODO refactor: use decorators for opening / closing the db connection
 
 init()
 
@@ -212,6 +225,39 @@ def insert_access(path: str, access: int):
     conn = open_connection()
     try:
         conn.cursor().execute(query, (path, access))
+        conn.commit()
+    finally:
+        conn.close()
+
+
+def get_operations():
+    query = f"""SELECT ({OPERATION_ACTION},{OPERATION_PARAMS},{OPERATION_TIMESTAMP})
+            FROM {TABLE_OPERATION} SORT BY {OPERATION_TIMESTAMP} ASC"""
+    conn = open_connection()
+    try:
+        cursor = conn.cursor().execute(query)
+        # TODO module core now depends on ui. operation should go to core?
+        return [Operation(row[0], params=eval(row[1]), timestamp=[2]) for row in cursor]
+    finally:
+        conn.close()
+
+
+def insert_operation(operation: Operation):
+    query = f"""INSERT INTO {TABLE_OPERATION} ({OPERATION_ACTION},{OPERATION_PARAMS},{OPERATION_TIMESTAMP})
+    VALUES (?,?,?)"""
+    conn = open_connection()
+    try:
+        conn.cursor().execute(query, (operation.action_name, str(operation.params), operation.timestamp))
+        conn.commit()
+    finally:
+        conn.close()
+
+
+def delete_operation(operation: Operation):
+    query = f"DELETE FROM {TABLE_OPERATION} WHERE {OPERATION_TIMESTAMP} = ?"
+    conn = open_connection()
+    try:
+        conn.cursor().execute(query, (operation.timestamp,))
         conn.commit()
     finally:
         conn.close()

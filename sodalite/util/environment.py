@@ -2,6 +2,8 @@ import logging.handlers
 import os
 
 # setup logger
+import tempfile
+
 _global_logger = logging.getLogger()
 _global_logger.setLevel(logging.DEBUG)
 handler = logging.handlers.SysLogHandler(address='/dev/log')
@@ -16,14 +18,12 @@ logger.info('Starting sodalite')
 exit_cwd = None
 # program will read following environment variables
 ENV_DATA_DIR = 'DATA_DIR'
-ENV_BOOKMARK_DIR = 'BOOKMARK_DIR'
 ENV_DB_PATH = 'DB_PATH'
 ENV_CONFIG_FILE = 'CONFIG_FILE'
 
 home = os.getenv('HOME')
 data = os.getenv(ENV_DATA_DIR, "/usr/share/sodalite/")
 user_data = os.getenv('XDG_DATA_HOME', os.path.join(home, ".local/share/sodalite/"))
-bookmark_dir = os.getenv(ENV_BOOKMARK_DIR, os.path.join(user_data, "bookmarks"))
 user_config = os.getenv('XDG_CONFIG_HOME', os.path.join(home, ".config/sodalite/"))
 db_file = os.getenv(ENV_DB_PATH, os.path.join(user_data, "db.sqlite"))
 history_file = os.path.join(user_data, 'history')
@@ -34,9 +34,12 @@ if not os.path.exists(config_file):
 if not os.path.exists(config_file):
     config_file = "/usr/share/sodalite/sodalite.conf"
 
-dirs = [home, data, user_data, user_config, bookmark_dir]
+buffer = os.path.join(user_data, "buffer")
+
+dirs = [home, data, user_data, user_config, buffer]
 for directory in dirs:
     os.makedirs(directory, exist_ok=True)
+
 
 logger.info(f"Using database: {db_file}")
 logger.info(f"Using config file: {config_file}")

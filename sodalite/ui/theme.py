@@ -35,7 +35,7 @@ palette = (
     (bold, 'bold', ''),
     (reverse, 'standout', ''),
 
-    (navigate_mode, '', ''),
+    (navigate_mode, urwid.DEFAULT, ''),
     (assign_mode, urwid.DARK_GREEN, ''),
     (operate_mode, urwid.DARK_RED, ''),
 

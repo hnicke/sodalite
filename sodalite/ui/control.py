@@ -1,15 +1,14 @@
 import logging
-from typing import Callable, Dict
+from typing import List
 
 import pyperclip
 from urwid import AttrSpec
 
 from core import key as key_module, hook
-from ui import graphics, viewmodel, notify, theme
+from ui import graphics, viewmodel, notify, theme, action
+from ui.action import Action
 from ui.viewmodel import Mode
 from util import environment
-from util import keybindings
-from util.keybindings import Action, GlobalAction, NavigateAction, AssignAction
 
 logger = logging.getLogger(__name__)
 
@@ -17,6 +16,21 @@ logger = logging.getLogger(__name__)
 class Control:
 
     def __init__(self, frame: 'MainFrame'):
+        self.actions: List[Action] = [
+            Action(action.exit, self.exit),
+            Action(action.abort, self.abort),
+            Action(action.navigate_mode, self.enter_navigate_mode),
+            Action(action.assign_mode, self.enter_assign_mode),
+            Action(action.operate_mode, self.enter_operate_mode),
+            Action(action.filter, self.trigger_filter),
+            Action(action.yank_current_path, self.yank_to_clipboard),
+            Action(action.toggle_dotfiles, self.toggle_dotfiles),
+            Action(action.scroll_page_down, self.scroll_page_down),
+            Action(action.scroll_half_page_down, self.scroll_half_page_down),
+            Action(action.scroll_page_up, self.scroll_page_up),
+            Action(action.scroll_half_page_up, self.scroll_half_page_up),
+        ]
+
         self.frame = frame
         self.list = frame.mainpane.body
         self.hookbox = frame.hookbox
@@ -26,21 +40,6 @@ class Control:
         self.list_size = None
         self.filter_size = None
         self.hookbox_size = None
-        self.ACTION_TO_CALL: Dict[Action, Callable[[]]] = {
-            GlobalAction.exit: self.exit,
-            GlobalAction.abort: self.abort,
-            GlobalAction.navigate_mode: self.enter_navigate_mode,
-            GlobalAction.assign_mode: self.enter_assign_mode,
-            GlobalAction.operate_mode: self.enter_operate_mode,
-            GlobalAction.filter: self.trigger_filter,
-            GlobalAction.yank_current_path: self.yank_to_clipboard,
-            GlobalAction.toggle_dotfiles: self.toggle_dotfiles,
-            GlobalAction.scroll_page_down: self.scroll_page_down,
-            GlobalAction.scroll_half_page_down: self.scroll_half_page_down,
-            GlobalAction.scroll_page_up: self.scroll_page_up,
-            GlobalAction.scroll_half_page_up: self.scroll_half_page_up,
-
-        }
 
     def handle_keypress(self, size, key):
         try:
@@ -48,9 +47,9 @@ class Control:
             if self.filter.active:
                 self.filter.keypress(self.filter_size, key)
             elif not self.handle_key_individually(key):
-                action: Action = keybindings.get_action(key)
-                if action in self.ACTION_TO_CALL:
-                    self.ACTION_TO_CALL[action].__call__()
+                for action in self.actions:
+                    if action.handle(key):
+                        break
         except PermissionError:
             notify.show((AttrSpec(theme.forbidden + ',bold', '', colors=16), "PERMISSION DENIED"))
         except FileNotFoundError:
@@ -125,13 +124,13 @@ class NavigateControl(Control):
 
     def __init__(self, frame: 'MainFrame'):
         super().__init__(frame)
-        self.ACTION_TO_CALL.update({
-            NavigateAction.go_to_parent: self.go_to_parent,
-            NavigateAction.go_to_home: self.go_to_home,
-            NavigateAction.go_to_root: self.go_to_root,
-            NavigateAction.go_to_previous: self.go_to_previous,
-            NavigateAction.go_to_next: self.go_to_next,
-        })
+        self.actions.extend([
+            Action(action.go_to_parent, self.go_to_parent),
+            Action(action.go_to_home, self.go_to_home),
+            Action(action.go_to_root, self.go_to_root),
+            Action(action.go_to_previous, self.go_to_previous),
+            Action(action.go_to_next, self.go_to_next),
+        ])
 
     def handle_key_individually(self, key):
         if hook.is_hook(key, self.model.current_entry):
@@ -175,10 +174,10 @@ class AssignControl(Control):
     def __init__(self, frame: 'MainFrame'):
         super().__init__(frame)
         self.entry_for_assignment = None
-        self.ACTION_TO_CALL.update({
-            AssignAction.select_next: self.select_next,
-            AssignAction.select_previous: self.select_previous,
-        })
+        self.actions.extend([
+            Action(action.select_next, self.select_next),
+            Action(action.select_previous, self.select_previous),
+        ])
 
     def handle_key_individually(self, key):
         if viewmodel.global_mode == Mode.ASSIGN_CHOOSE_ENTRY and self.navigator.is_navigation_key(key):
@@ -252,3 +251,9 @@ class OperateControl(Control):
 
     def __init__(self, frame: 'MainFrame'):
         super().__init__(frame)
+        self.actions.extend([
+            Action(action.yank, self.yank)
+        ])
+
+    def yank(self):
+        pass
