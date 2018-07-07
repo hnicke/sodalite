@@ -12,17 +12,16 @@ logger = logging.getLogger(__name__)
 class Register:
     def __init__(self, number: int):
         self.name = "register" + str(number)
-        self.path = os.path.join(environment.buffer, self.name)
+        self._path = os.path.join(environment.buffer, self.name)
 
-    def write(self, src: Union[List[Entry], Entry]):
+    def copy_to(self, src: Union[List[Entry], Entry]):
         """
         Writes given entries or given entry to this register
         """
         def write_single_entry(entry: Entry):
-            logger.info(f"Pushing {entry.name} to {self.name}")
+            logger.info(f"Yanking {entry.name} to {self.name}")
             copy(entry.path, os.path.join(self.path, entry.name))
 
-        os.makedirs(self.path, exist_ok=True)
         self.clear()
         if type(src) is list:
             for entry in src:
@@ -30,13 +29,21 @@ class Register:
         else:
             write_single_entry(src)
 
-    def read(self, target: Entry):
+    def move_to(self, entry: Entry):
+        self.clear()
+        src = entry.path
+        dest = os.path.join(self.path, entry.name)
+        logger.info(f"Moving {src} to {dest}")
+        os.rename(src, dest)
+
+    def read_from(self, target: Entry):
         """
         Copies this registers content into given target dir
         """
         for file in os.listdir(self.path):
             src = os.path.join(self.path, file)
             dest = os.path.join(target.path, file)
+            logger.info(f"Pasting {self.name} to {dest}")
             copy(src, dest)
 
     def clear(self):
@@ -46,6 +53,11 @@ class Register:
                 os.remove(path)
             elif os.path.isdir(path):
                 shutil.rmtree(path)
+
+    @property
+    def path(self):
+        os.makedirs(self._path, exist_ok=True)
+        return self._path
 
 
 registers = [Register(x) for x in range(10)]
@@ -65,7 +77,3 @@ def copy(src: str, dest: str):
             shutil.copy(src, dest)
     except OSError as e:
         logger.error(f"Failed to yank dir. Error: {e}")
-
-
-def move(src: str, dest: str):
-    os.rename(src, dest)

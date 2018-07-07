@@ -33,6 +33,7 @@ select_previous = "select_previous"
 # operate mode actions
 yank = 'yank'
 paste = 'paste'
+delete = 'delete'
 
 default_keybindings = {
     # global
@@ -63,6 +64,7 @@ default_keybindings = {
     # operate mode
     yank: 'y',
     paste: 'p',
+    delete: 'd',
 }
 
 

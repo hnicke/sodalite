@@ -256,21 +256,20 @@ class OperateControl(Control):
         self.actions.extend([
             Action(action.yank, self.yank),
             Action(action.paste, self.paste),
+            Action(action.delete, self.delete),
         ])
 
     def handle_key_individually(self, key):
         if self.active_action:
             if self.navigator.is_navigation_key(key):
                 target = self.navigator.current_entry.get_child_for_key(Key(key))
-                self.yank(entry=target)
+                self.active_action.__call__(entry=target)
                 return True
 
     def yank(self, entry=None):
         if entry:
-            target = entry.path
-
-            buffer.registers[0].write(entry)
-            notify.show(f"yanked {target}")
+            buffer.registers[0].copy_to(entry)
+            notify.show(f"yanked {entry.path}")
             self.active_action = None
         else:
             notify.show("yank what?", duration=0)
@@ -278,4 +277,15 @@ class OperateControl(Control):
 
     def paste(self):
         entry = self.navigator.current_entry
-        buffer.registers[0].read(entry)
+        buffer.registers[0].read_from(entry)
+
+    def delete(self, entry=None):
+        if entry:
+            buffer.registers[0].move_to(entry)
+            self.active_action = None
+        else:
+            notify.show("delete what?", duration=0)
+            self.active_action = self.delete
+
+
+

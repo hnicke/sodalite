@@ -171,11 +171,15 @@ The `OPERATE` mode allows for convenient file manipulation.
 
 **yank (`y`)**
 
-: Yanks (i.e., copies) the entry associated with the next issued key to sodalite's buffer.
+: Yanks (i.e., copies) the entry associated with the next issued keypress to sodalite's buffer.
 
 **paste (`p`)**
 
 : Pastes the content of sodalite's buffer into the current directory.
+
+**delete (`d`)**
+
+: Moves the entry associated with the next issued keypress to sodalite's buffer.
 
 Options
 -------
