@@ -1,4 +1,5 @@
 import logging
+import os
 import re
 import sqlite3
 from typing import Dict, Iterable, List
@@ -6,7 +7,7 @@ from typing import Dict, Iterable, List
 from core import key as key_module
 from core.entry import Entry
 from core.key import Key
-from ui.operation import Operation
+from core.operate import Operation
 from util import environment
 
 """
@@ -219,6 +220,22 @@ def update_entry(entry: Entry):
     finally:
         conn.close()
 
+
+def rename_entry(entry: Entry, new_name: str):
+    # old_path = entry.path
+    # new_path = os.path.join(entry.dir, new_name)
+    # query = f"""-- SELECT {ENTRY_PATH},{ENTRY_KEY} FROM {TABLE_ENTRY} WHERE {ENTRY_PATH} REGEXP ?"""
+    # regex = f"^{re.escape(old_path)}(/.*)*$"
+    # conn = open_connection()
+    # try:
+    #     cursor = conn.cursor().execute(query, (regex,))
+    #     paths_to_rename = [row[0] for row in cursor]
+    #     new_paths = [x.replace(old_path, new_path, 1) for x in paths_to_rename]
+    #     update_entries = f"""UPDATE {TABLE_ENTRY} WHERE """
+    #     pass
+    # finally:
+    #     conn.close()
+    pass
 
 def insert_access(path: str, access: int):
     query = f"INSERT INTO {TABLE_ACCESS} VALUES (?,?)"

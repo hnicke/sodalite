@@ -5,7 +5,7 @@ import threading
 import urwid.curses_display
 
 from core import dirhistory
-from core.navigator import Navigator
+from core.navigate import Navigator
 from ui import theme, viewmodel
 from ui.control import NavigateControl, AssignControl, OperateControl
 from ui.filter import Filter

@@ -1,10 +1,10 @@
 import logging
-from typing import List
+from typing import Dict, Callable
 
 import pyperclip
 from urwid import AttrSpec
 
-from core import key as key_module, hook, buffer
+from core import key as key_module, hook, buffer, operate
 from core.key import Key
 from ui import graphics, viewmodel, notify, theme, action
 from ui.action import Action
@@ -17,20 +17,22 @@ logger = logging.getLogger(__name__)
 class Control:
 
     def __init__(self, frame: 'MainFrame'):
-        self.actions: List[Action] = [
-            Action(action.exit, self.exit),
-            Action(action.abort, self.abort),
-            Action(action.navigate_mode, self.enter_navigate_mode),
-            Action(action.assign_mode, self.enter_assign_mode),
-            Action(action.operate_mode, self.enter_operate_mode),
-            Action(action.filter, self.trigger_filter),
-            Action(action.yank_current_path, self.yank_to_clipboard),
-            Action(action.toggle_dotfiles, self.toggle_dotfiles),
-            Action(action.scroll_page_down, self.scroll_page_down),
-            Action(action.scroll_half_page_down, self.scroll_half_page_down),
-            Action(action.scroll_page_up, self.scroll_page_up),
-            Action(action.scroll_half_page_up, self.scroll_half_page_up),
-        ]
+        self.action_map = {}
+        self._action_name_to_callable: Dict[str, Callable] = {}
+        self.action_name_to_callable = {
+            action.exit: self.exit,
+            action.abort: self.abort,
+            action.navigate_mode: self.enter_navigate_mode,
+            action.assign_mode: self.enter_assign_mode,
+            action.operate_mode: self.enter_operate_mode,
+            action.filter: self.trigger_filter,
+            action.yank_current_path: self.yank_to_clipboard,
+            action.toggle_dotfiles: self.toggle_dotfiles,
+            action.scroll_page_down: self.scroll_page_down,
+            action.scroll_page_up: self.scroll_page_up,
+            action.scroll_half_page_down: self.scroll_half_page_down,
+            action.scroll_half_page_up: self.scroll_half_page_up
+        }
 
         self.frame = frame
         self.list = frame.mainpane.body
@@ -41,16 +43,32 @@ class Control:
         self.list_size = None
         self.filter_size = None
         self.hookbox_size = None
+        self.active_action = None
+
+    @property
+    def action_name_to_callable(self):
+        return self._action_name_to_callable
+
+    @action_name_to_callable.setter
+    def action_name_to_callable(self, mapping):
+        self._action_name_to_callable = mapping
+        self.action_map: Dict[str, Action] = {k: Action(k, v) for (k, v) in mapping.items()}
 
     def handle_keypress(self, size, key):
         try:
             self.calculate_sizes(size)
+            handled = False
             if self.filter.active:
                 self.filter.keypress(self.filter_size, key)
-            elif not self.handle_key_individually(key):
-                for action in self.actions:
-                    if action.handle(key):
-                        break
+                handled = True
+            elif self.active_action:
+                handled = self.active_action.__call__(key=key)
+
+            if not handled:
+                if not self.handle_key_individually(key):
+                    for action in self.action_map.values():
+                        if action.handle(key):
+                            break
         except PermissionError:
             notify.show((AttrSpec(theme.forbidden + ',bold', '', colors=16), "PERMISSION DENIED"))
         except FileNotFoundError:
@@ -125,17 +143,21 @@ class NavigateControl(Control):
 
     def __init__(self, frame: 'MainFrame'):
         super().__init__(frame)
-        self.actions.extend([
-            Action(action.go_to_parent, self.go_to_parent),
-            Action(action.go_to_home, self.go_to_home),
-            Action(action.go_to_root, self.go_to_root),
-            Action(action.go_to_previous, self.go_to_previous),
-            Action(action.go_to_next, self.go_to_next),
-        ])
+
+        actions = {
+            action.go_to_parent: self.go_to_parent,
+            action.go_to_home: self.go_to_home,
+            action.go_to_root: self.go_to_root,
+            action.go_to_previous: self.go_to_previous,
+            action.go_to_next: self.go_to_next,
+        }
+        actions.update(self.action_name_to_callable)
+        self.action_name_to_callable = actions
 
     def handle_key_individually(self, key):
         if hook.is_hook(key, self.model.current_entry):
             hook.trigger_hook(key, self.model.current_entry)
+            return True
         elif self.navigator.is_navigation_key(key):
             self.go_to_key(key)
             return True
@@ -174,10 +196,12 @@ class AssignControl(Control):
 
     def __init__(self, frame: 'MainFrame'):
         super().__init__(frame)
-        self.actions.extend([
-            Action(action.select_next, self.list.select_next),
-            Action(action.select_previous, self.list.select_previous),
-        ])
+        actions = {
+            action.select_next: self.list.select_next,
+            action.select_previous: self.list.select_previous,
+        }
+        actions.update(self.action_name_to_callable)
+        self.action_name_to_callable = actions
 
     def handle_key_individually(self, key):
         if viewmodel.global_mode == Mode.ASSIGN_CHOOSE_ENTRY and self.navigator.is_navigation_key(key):
@@ -212,26 +236,24 @@ class OperateControl(Control):
 
     def __init__(self, frame: 'MainFrame'):
         super().__init__(frame)
-        self.active_action = None
-        self.actions.extend([
-            Action(action.yank, self.yank),
-            Action(action.paste, self.paste),
-            Action(action.delete, self.delete),
-            Action(action.rename, self.rename),
-        ])
+        self.list_entry_for_renaming = None
+        actions = {
+            action.yank: self.yank,
+            action.paste: self.paste,
+            action.delete: self.delete,
+            action.rename: self.rename,
+        }
+        actions.update(self.action_name_to_callable)
+        self.action_name_to_callable = actions
 
-    def handle_key_individually(self, key):
-        if self.active_action:
+    def yank(self, key=None):
+        if key:
             if self.navigator.is_navigation_key(key):
                 target = self.navigator.current_entry.get_child_for_key(Key(key))
-                self.active_action.__call__(entry=target)
-                return True
-
-    def yank(self, entry=None):
-        if entry:
-            buffer.registers[0].copy_to(entry)
-            notify.show(f"yanked {entry.path}")
-            self.active_action = None
+                buffer.registers[0].copy_to(target)
+                notify.show(f"yanked {target.path}")
+                self.active_action = None
+            return True
         else:
             notify.show("yank what?", duration=0)
             self.active_action = self.yank
@@ -240,22 +262,44 @@ class OperateControl(Control):
         entry = self.navigator.current_entry
         buffer.registers[0].read_from(entry)
 
-    def delete(self, entry=None):
-        if entry:
-            buffer.registers[0].move_to(entry)
-            self.active_action = None
+    def delete(self, key=None):
+        if key:
+            if self.navigator.is_navigation_key(key):
+                target = self.navigator.current_entry.get_child_for_key(Key(key))
+                buffer.registers[0].move_to(target)
+                self.active_action = None
+                return True
         else:
             notify.show("delete what?", duration=0)
             self.active_action = self.delete
 
-    def rename(self, entry=None):
-        if entry:
-            notify.clear()
-            results = [x for x in self.list.walker if x.base_widget.entry == entry]
-            if len(results) > 0:
-                chosen_widget = results[0]
-                chosen_widget.editing = True
-            self.active_action = None
+    def rename(self, key=None):
+        if key:
+            if self.list_entry_for_renaming:
+                exit_action_key = self.action_map[action.exit].keybinding
+                navigate_mode_action_key = self.action_map[action.navigate_mode].keybinding
+                if key in (exit_action_key, navigate_mode_action_key):
+                    if key == exit_action_key:
+                        new_name = self.list_entry_for_renaming.edit_text
+                        operate.rename(self.list_entry_for_renaming.entry, new_name)
+                    self.list_entry_for_renaming.editing = False
+                    self.list.render(self.list_size, focus=True)
+                    self.list_entry_for_renaming = None
+                    self.active_action = None
+                else:
+                    self.list_entry_for_renaming.keypress(self.filter_size, key)
+                return True
+            else:
+                if self.navigator.is_navigation_key(key):
+                    target = self.navigator.current_entry.get_child_for_key(Key(key))
+                    notify.clear()
+                    list_entry = self.list.get_list_entry(target)
+                    if list_entry:
+                        list_entry.editing = True
+                        self.list.selection = list_entry
+                        self.list.render(self.list_size, focus=True)
+                        self.list_entry_for_renaming = list_entry
+                    return True
         else:
             notify.show("rename what?", duration=0)
             self.active_action = self.rename

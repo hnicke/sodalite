@@ -16,7 +16,7 @@ class DirHandler(FileSystemEventHandler):
         self.navigator.reload_current_entry()
 
     def on_modified(self, event):
-        logger.debug('Event (entry modifiedl): {}'.format(event.src_path))
+        logger.debug('Event (entry modified): {}'.format(event.src_path))
         self.navigator.reload_current_entry()
 
     def on_deleted(self, event):

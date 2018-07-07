@@ -4,7 +4,7 @@ import urwid
 from urwid import AttrSpec, ListBox
 
 from core.entry import Entry, EntryType
-from core.navigator import Navigator
+from core.navigate import Navigator
 from ui import theme, graphics, viewmodel
 from ui.viewmodel import ViewModel, Topic
 
@@ -59,17 +59,8 @@ class List(ListBox):
 
 
 class CustomEdit(urwid.Edit):
-    def __init__(self, text):
-        self.editing = False
-        super().__init__(text, wrap='clip')
-
-    def get_cursor_coords(self, size):
-        if self.editing:
-            super().get_cursor_coords(size)
-
-    def get_pref_col(self, size):
-        return 'right'
-
+    def __init__(self, text, caption):
+        super().__init__(edit_text=text, caption=caption, wrap='clip')
 
 
 class ListEntry(urwid.WidgetWrap):
@@ -78,24 +69,44 @@ class ListEntry(urwid.WidgetWrap):
         self.entry = entry
         self.model = model
         self.color = compute_color(entry)
-        # TODO setup spacing relative to available space
-        # spacing = min((1 + (self.rows() // 25)), 3)
-        spacing = 4
-        spacing_right = ' ' * spacing
-        key = " " if entry.key.value == "" else entry.key.value
-        self.display = key + spacing_right + entry.name
-        self.editing = False
-        self.edit = CustomEdit((self.color, self.display))
-        padded_edit = urwid.Padding(self.edit, left=4)
-        super().__init__(padded_edit)
+        self.entry_edit = CustomEdit('', '')
+        self.entry_text = urwid.Text('', wrap='clip')
+        self._editing = False
+        super().__init__(self.entry_text)
 
     def render(self, size, focus=False):
+        key = " " if self.entry.key.value == "" else self.entry.key.value
+        caption = "    " + key + "    "
+        text = self.entry.name
+        display = caption + text
         if focus and viewmodel.global_mode in viewmodel.ANY_ASSIGN_MODE:
             color = AttrSpec(self.color.foreground + ',standout', self.color.background, colors=16)
         else:
             color = self.color
-        self.edit.set_caption((color, self.display))
+        self.entry_text.set_text((color, display))
+        self.entry_edit.set_caption((color, caption))
         return super().render(size, focus=focus)
+
+    @property
+    def editing(self):
+        return self._editing
+
+    @editing.setter
+    def editing(self, editing: bool):
+        self._editing = editing
+        if editing:
+            self.entry_edit.set_edit_text(self.entry.name)
+            self.entry_edit.set_edit_pos(len(self.entry_edit.edit_text))
+            self._wrapped_widget = self.entry_edit
+        else:
+            self._wrapped_widget = self.entry_text
+
+    @property
+    def edit_text(self) -> str:
+        return self.entry_edit.edit_text
+
+    def keypress(self, size, key):
+        super().keypress(size, key)
 
 
 def compute_color(entry: Entry) -> AttrSpec:
@@ -170,6 +181,11 @@ class EntryList(List):
             self.set_focus(self.focus_position - 1, coming_from='above')
         except IndexError:
             pass
+
+    def get_list_entry(self, entry: Entry):
+        results = [x for x in self.walker if x.base_widget.entry == entry]
+        if len(results) > 0:
+            return results[0]
 
     @property
     def selection(self):

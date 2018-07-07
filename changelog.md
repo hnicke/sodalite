@@ -2,7 +2,8 @@
 
 ## Unreleased
 ##### Features
-- Add visual indicator to easily see in which mode the app currently is
+- Add mode indicator to easily see in which mode the app currently is
+- Add operation mode: Yanking, pasting, deleting and renaming files is now possible
 ##### Bugfixes
 - Fix crash when pressing `=` in file preview
 ##### Misc

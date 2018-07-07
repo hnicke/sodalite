@@ -1,5 +1,14 @@
+import os
 import time
 from typing import Dict
+
+from core.entry import Entry
+
+
+def rename(entry: Entry, new_name: str):
+    os.rename(entry.path, os.path.join(entry.dir, new_name))
+    entry.name = new_name
+    # dao.rename_entry(entry, new_name)
 
 
 class Operation:
@@ -11,3 +20,9 @@ class Operation:
         if not timestamp:
             timestamp = int(time.time() * 1000)
         self.timestamp = timestamp
+
+    def do(self):
+        pass
+
+    def undo(self):
+        pass

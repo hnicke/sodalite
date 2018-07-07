@@ -7,7 +7,7 @@ from core.dirhistory import DirHistory
 from core.entry import Entry
 from core.entryaccess import EntryAccess
 from core.key import Key
-from core.navigator import Navigator
+from core.navigate import Navigator
 from util import environment
 
 test_dir = os.path.join(os.getcwd(), "tmp_data")
