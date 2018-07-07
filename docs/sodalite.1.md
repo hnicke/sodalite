@@ -173,6 +173,9 @@ The `OPERATE` mode allows for convenient file manipulation.
 
 : Yanks (i.e., copies) the entry associated with the next issued key to sodalite's buffer.
 
+**paste (`p`)**
+
+: Pastes the content of sodalite's buffer into the current directory.
 
 Options
 -------

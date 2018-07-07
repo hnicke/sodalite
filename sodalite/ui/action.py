@@ -9,6 +9,7 @@ exit = "exit"
 abort = "abort"
 navigate_mode = "navigate_mode"
 assign_mode = "assign_mode"
+assign_mode = "assign_mode"
 operate_mode = "operate_mode"
 filter = "filter"
 toggle_dotfiles = "toggle_dotifles"
@@ -31,6 +32,7 @@ select_previous = "select_previous"
 
 # operate mode actions
 yank = 'yank'
+paste = 'paste'
 
 default_keybindings = {
     # global
@@ -60,6 +62,7 @@ default_keybindings = {
 
     # operate mode
     yank: 'y',
+    paste: 'p',
 }
 
 

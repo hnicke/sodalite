@@ -34,7 +34,10 @@ class Register:
         """
         Copies this registers content into given target dir
         """
-        pass
+        for file in os.listdir(self.path):
+            src = os.path.join(self.path, file)
+            dest = os.path.join(target.path, file)
+            copy(src, dest)
 
     def clear(self):
         for file in os.listdir(self.path):

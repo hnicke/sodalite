@@ -254,7 +254,8 @@ class OperateControl(Control):
         super().__init__(frame)
         self.active_action = None
         self.actions.extend([
-            Action(action.yank, self.yank)
+            Action(action.yank, self.yank),
+            Action(action.paste, self.paste),
         ])
 
     def handle_key_individually(self, key):
@@ -274,4 +275,7 @@ class OperateControl(Control):
         else:
             notify.show("yank what?", duration=0)
             self.active_action = self.yank
-        pass
+
+    def paste(self):
+        entry = self.navigator.current_entry
+        buffer.registers[0].read(entry)
