@@ -45,10 +45,6 @@ class Filter(urwid.Edit):
         self.active = False
         self.parent.footer = None
 
-    def render(self, size, focus=False):
-        # hide cursor if not editing
-        canvas = super().render(size, focus=focus)
-        if not focus:
-            canvas = urwid.CompositeCanvas(canvas)
-            canvas.cursor = None
-        return canvas
+    def get_cursor_coords(self, size):
+        if self.active:
+            return super().get_cursor_coords(size)

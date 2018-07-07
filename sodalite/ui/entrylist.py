@@ -6,7 +6,7 @@ from urwid import AttrSpec, ListBox
 from core.entry import Entry, EntryType
 from core.navigator import Navigator
 from ui import theme, graphics, viewmodel
-from ui.viewmodel import ViewModel, Mode, Topic
+from ui.viewmodel import ViewModel, Topic
 
 logger = logging.getLogger(__name__)
 
@@ -58,28 +58,21 @@ class List(ListBox):
         self.set_focus_valign(('relative', relative_position))
 
 
-class EntryList(List):
+class CustomEdit(urwid.Edit):
+    def __init__(self, text):
+        self.editing = False
+        super().__init__(text, wrap='clip')
 
-    def __init__(self, mainpane, model: ViewModel, navigator: Navigator):
-        super().__init__()
-        self.mainpane = mainpane
-        self.box = None
-        self.model = model
-        self.navigator = navigator
-        self.model.register(self.on_entries_changed, topic=Topic.ENTRIES)
+    def get_cursor_coords(self, size):
+        if self.editing:
+            super().get_cursor_coords(size)
 
-    def on_entries_changed(self, model):
-        with graphics.DRAW_LOCK:
-            self.walker.clear()
-            self.walker.extend(
-                [self.create_list_entry(entry) for entry in model.entries])
-            self.walker.set_focus(0)
-
-    def create_list_entry(self, entry):
-        return urwid.Padding(ListEntry(entry, self.model), left=4)
+    def get_pref_col(self, size):
+        return 'right'
 
 
-class ListEntry(urwid.Text):
+
+class ListEntry(urwid.WidgetWrap):
 
     def __init__(self, entry: Entry, model: ViewModel):
         self.entry = entry
@@ -91,20 +84,23 @@ class ListEntry(urwid.Text):
         spacing_right = ' ' * spacing
         key = " " if entry.key.value == "" else entry.key.value
         self.display = key + spacing_right + entry.name
-        super().__init__((self.color, self.display), wrap='clip')
+        self.editing = False
+        self.edit = CustomEdit((self.color, self.display))
+        padded_edit = urwid.Padding(self.edit, left=4)
+        super().__init__(padded_edit)
 
     def render(self, size, focus=False):
         if focus and viewmodel.global_mode in viewmodel.ANY_ASSIGN_MODE:
             color = AttrSpec(self.color.foreground + ',standout', self.color.background, colors=16)
         else:
             color = self.color
-        self.set_text((color, self.display))
+        self.edit.set_caption((color, self.display))
         return super().render(size, focus=focus)
 
 
 def compute_color(entry: Entry) -> AttrSpec:
     rating = entry.rating
-    if entry._parent.unexplored:
+    if entry.parent.unexplored:
         rating = 0.5
     bold = False
     unimportant = False
@@ -130,3 +126,57 @@ def compute_color(entry: Entry) -> AttrSpec:
     if bold:
         color = color + ',bold'
     return AttrSpec(color, '', colors=16)
+
+
+class EntryList(List):
+
+    def __init__(self, mainpane, model: ViewModel, navigator: Navigator):
+        super().__init__()
+        self.mainpane = mainpane
+        self.box = None
+        self.model = model
+        self.navigator = navigator
+        self.model.register(self.on_entries_changed, topic=Topic.ENTRIES)
+        self._selection = None
+
+    def on_entries_changed(self, model):
+        with graphics.DRAW_LOCK:
+            self.walker.clear()
+            self.walker.extend(
+                [self.create_list_entry(entry) for entry in model.entries])
+            self.walker.set_focus(0)
+
+    def create_list_entry(self, entry):
+        return ListEntry(entry, self.model)
+
+    def select(self, entry: Entry):
+        results = [x for x in self.walker if x.base_widget.entry == entry]
+        if len(results) > 0:
+            chosen_widget = results[0]
+        else:
+            # entry is not displayed, probably filtered
+            chosen_widget = self.create_list_entry(entry)
+            self.walker.append(chosen_widget)
+        self.selection = chosen_widget
+
+    def select_next(self):
+        try:
+            self.set_focus(self.focus_position + 1, coming_from='below')
+        except IndexError:
+            pass
+
+    def select_previous(self):
+        try:
+            self.set_focus(self.focus_position - 1, coming_from='above')
+        except IndexError:
+            pass
+
+    @property
+    def selection(self):
+        self._selection = self.walker[self.focus_position]
+        return self._selection
+
+    @selection.setter
+    def selection(self, list_entry: ListEntry):
+        self.walker.set_focus(self.walker.index(list_entry))
+        self._selection = list_entry

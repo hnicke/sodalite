@@ -174,78 +174,38 @@ class AssignControl(Control):
 
     def __init__(self, frame: 'MainFrame'):
         super().__init__(frame)
-        self.entry_for_assignment = None
         self.actions.extend([
-            Action(action.select_next, self.select_next),
-            Action(action.select_previous, self.select_previous),
+            Action(action.select_next, self.list.select_next),
+            Action(action.select_previous, self.list.select_previous),
         ])
 
     def handle_key_individually(self, key):
         if viewmodel.global_mode == Mode.ASSIGN_CHOOSE_ENTRY and self.navigator.is_navigation_key(key):
-            self.keypress_choose_entry(key)
+            self.choose_entry(key)
             return True
         elif viewmodel.global_mode == Mode.ASSIGN_CHOOSE_KEY and key_module.is_navigation_key(key):
-            self.keypress_choose_key(key)
+            self.assign_key(key)
             return True
-
-    def select_next(self):
-        try:
-            self.list.set_focus(self.list.focus_position + 1, coming_from='below')
-        except IndexError:
-            pass
-
-    def select_previous(self):
-        try:
-            self.list.set_focus(self.list.focus_position - 1, coming_from='above')
-        except IndexError:
-            pass
 
     def exit(self):
         if viewmodel.global_mode == Mode.ASSIGN_CHOOSE_ENTRY:
-            self.select_widget(self.list.walker[self.list.focus_position])
+            viewmodel.global_mode.mode = Mode.ASSIGN_CHOOSE_KEY
 
-    def choose(self, key: str):
-        if viewmodel.global_mode == Mode.ASSIGN_CHOOSE_ENTRY:
-            self.keypress_choose_entry(key)
-        elif viewmodel.global_mode == Mode.ASSIGN_CHOOSE_KEY:
-            self.keypress_choose_key(key)
-
-    def keypress_choose_entry(self, key: str):
+    def choose_entry(self, key: str):
         if key in key_module.get_all_keys():
-            self.select_entry_with_key(key)
+            entry = self.navigator.current_entry.get_child_for_key(Key(key))
+            assert entry
+            self.list.select(entry)
+            viewmodel.global_mode.mode = Mode.ASSIGN_CHOOSE_KEY
         elif key == 'enter':
-            self.select_widget(self.list.walker[self.list.focus_position])
-        else:
-            return key
-
-    def keypress_choose_key(self, key: str):
-        if key in key_module.get_all_keys():
-            self.assign_key(key)
-        else:
-            return key
-
-    def select_entry_with_key(self, key):
-        match = self.navigator.current_entry.get_child_for_key(key_module.Key(key))
-        if match:
-            results = [x for x in self.list.walker if x.base_widget.entry == match]
-            if len(results) > 0:
-                chosen_widget = results[0]
-                self.select_widget(chosen_widget)
-            else:
-                # entry is not displayed, probably filtered
-                self.list.walker.append(self.list.create_list_entry(match))
-                self.select_entry_with_key(key)
-
-    def select_widget(self, entry_widget):
-        self.list.walker.set_focus(self.list.walker.index(entry_widget))
-        self.entry_for_assignment = self.list.walker[self.list.walker.focus].base_widget.entry
-        viewmodel.global_mode.mode = Mode.ASSIGN_CHOOSE_KEY
+            viewmodel.global_mode.mode = Mode.ASSIGN_CHOOSE_KEY
 
     def assign_key(self, key: str):
-        if key in key_module.get_all_keys():
-            self.navigator.assign_key(key_module.Key(key), self.entry_for_assignment.path)
-            self.enter_navigate_mode()
+        if key_module.is_navigation_key(key):
+            selected_entry = self.list.selection.entry
+            self.navigator.assign_key(key_module.Key(key), selected_entry.path)
             self.list.on_entries_changed(self.model)
+            self.enter_navigate_mode()
 
 
 class OperateControl(Control):
@@ -257,6 +217,7 @@ class OperateControl(Control):
             Action(action.yank, self.yank),
             Action(action.paste, self.paste),
             Action(action.delete, self.delete),
+            Action(action.rename, self.rename),
         ])
 
     def handle_key_individually(self, key):
@@ -287,5 +248,14 @@ class OperateControl(Control):
             notify.show("delete what?", duration=0)
             self.active_action = self.delete
 
-
-
+    def rename(self, entry=None):
+        if entry:
+            notify.clear()
+            results = [x for x in self.list.walker if x.base_widget.entry == entry]
+            if len(results) > 0:
+                chosen_widget = results[0]
+                chosen_widget.editing = True
+            self.active_action = None
+        else:
+            notify.show("rename what?", duration=0)
+            self.active_action = self.rename

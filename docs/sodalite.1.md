@@ -181,6 +181,10 @@ The `OPERATE` mode allows for convenient file manipulation.
 
 : Moves the entry associated with the next issued keypress to sodalite's buffer.
 
+**rename (`r`)**
+
+: Renames specified entry.
+
 Options
 -------
 

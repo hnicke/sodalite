@@ -36,7 +36,7 @@ class Entry:
         self.unexplored = False
         self.access_history: List[int] = access_history
         self._rating = None
-        self._parent = parent
+        self.parent = parent
         self.dir, self.name = os.path.split(path)
         self._key = key
 
@@ -89,12 +89,12 @@ class Entry:
 
     @key.setter
     def key(self, key: Key):
-        if self._parent and self._key in self._parent.key_to_child:
-            if self._parent.key_to_child[self._key] == self:
-                del self._parent.key_to_child[self._key]
+        if self.parent and self._key in self.parent.key_to_child:
+            if self.parent.key_to_child[self._key] == self:
+                del self.parent.key_to_child[self._key]
         self._key = key
-        if self._parent:
-            self._parent.key_to_child[key] = self
+        if self.parent:
+            self.parent.key_to_child[key] = self
 
     def get_child_for_key(self, key: Key) -> 'Entry' or None:
         return self.key_to_child.get(key, None)
@@ -140,9 +140,9 @@ class Entry:
     @property
     def rating(self):
         if not isinstance(self._rating, (float, int)):
-            if not self._parent:
+            if not self.parent:
                 raise ValueError("Trying to get rating of entry which parent is not set")
-            rating.populate_ratings(self._parent.children)
+            rating.populate_ratings(self.parent.children)
         assert self._rating is not None
         return self._rating
 

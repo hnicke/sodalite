@@ -34,6 +34,7 @@ select_previous = "select_previous"
 yank = 'yank'
 paste = 'paste'
 delete = 'delete'
+rename = 'rename'
 
 default_keybindings = {
     # global
@@ -65,6 +66,7 @@ default_keybindings = {
     yank: 'y',
     paste: 'p',
     delete: 'd',
+    rename: 'r',
 }
 
 

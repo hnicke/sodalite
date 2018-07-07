@@ -28,7 +28,7 @@ def normalize(entries: Dict['Entry', int]) -> Dict['Entry', int]:
     """Maps all frecencies in a way that the max frequency equals 1, in a linear fashion"""
     entries_to_ranking = {}
     biggest = max(entries.values())
-    parent = next(iter(entries.keys()))._parent
+    parent = next(iter(entries.keys())).parent
     if biggest == 0:
         parent.unexplored = True
         return {entry: 0.0 for (entry, rating) in entries.items()}
