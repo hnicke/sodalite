@@ -261,12 +261,14 @@ class OperateControl(Control):
     def paste(self):
         entry = self.navigator.current_entry
         buffer.registers[0].read_from(entry)
+        self.navigator.reload_current_entry()
 
     def delete(self, key=None):
         if key:
             if self.navigator.is_navigation_key(key):
                 target = self.navigator.current_entry.get_child_for_key(Key(key))
                 buffer.registers[0].move_to(target)
+                self.navigator.reload_current_entry()
                 self.active_action = None
                 return True
         else:
