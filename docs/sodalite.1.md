@@ -149,7 +149,8 @@ Valid values for keys are all letters of the alphabet (lower and upper case), so
 
 `ASSIGN` mode
 -----------
-The `ASSIGN` mode is needed to assign a specific key to an entry. This is accomplished within these steps:
+The `ASSIGN` mode is needed to assign a specific key to an entry. While in assign mode, the frame is displayed in green.
+Assigning entries is accomplished within these steps:
 
 1. Enter assign mode
 2. Press a key associated with an entry or select an entry manually
@@ -167,7 +168,7 @@ If the newly assigned key is already assigned to another entry in the current di
 
 OPERATE mode
 ------------
-The `OPERATE` mode allows for convenient file manipulation.
+The `OPERATE` mode allows for convenient file manipulation. While in operate mode, the frame is displayed in red.
 
 **yank (`y`)**
 

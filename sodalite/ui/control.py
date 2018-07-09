@@ -253,6 +253,7 @@ class OperateControl(Control):
                 buffer.registers[0].copy_to(target)
                 notify.show(f"yanked {target.path}")
                 self.active_action = None
+            self.enter_navigate_mode()
             return True
         else:
             notify.show("yank what?", duration=0)
@@ -270,6 +271,7 @@ class OperateControl(Control):
                 buffer.registers[0].move_to(target)
                 self.navigator.reload_current_entry()
                 self.active_action = None
+                self.enter_navigate_mode()
                 return True
         else:
             notify.show("delete what?", duration=0)
@@ -288,6 +290,7 @@ class OperateControl(Control):
                     self.list.render(self.list_size, focus=True)
                     self.list_entry_for_renaming = None
                     self.active_action = None
+                    self.enter_navigate_mode()
                 else:
                     self.list_entry_for_renaming.keypress(self.filter_size, key)
                 return True
