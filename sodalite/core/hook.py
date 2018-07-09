@@ -111,8 +111,7 @@ def get_hooks(entry) -> Collection['Hook']:
     if entry.is_dir():
         matching_hooks.update(as_dict(hooks.get_dir_hooks()))
     elif entry.is_file():
-        extension = os.path.splitext(entry.name)[1].lower().replace(".", "")
-        matching_hooks.update(as_dict(hooks.get_custom_hooks().get(extension, [])))
+        matching_hooks.update(as_dict(hooks.get_custom_hooks().get(entry.extension, [])))
         matching_hooks.update(as_dict(hooks.get_file_hooks()))
         if entry.is_plain_text_file():
             matching_hooks.update(as_dict(hooks.get_plain_text_hooks()))

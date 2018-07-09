@@ -1,4 +1,5 @@
 import logging
+import os
 
 import urwid
 from urwid import AttrSpec, ListBox
@@ -96,7 +97,7 @@ class ListEntry(urwid.WidgetWrap):
         self._editing = editing
         if editing:
             self.entry_edit.set_edit_text(self.entry.name)
-            self.entry_edit.set_edit_pos(len(self.entry_edit.edit_text))
+            self.entry_edit.set_edit_pos(len(os.path.splitext(self.entry.name)[0]))
             self._wrapped_widget = self.entry_edit
         else:
             self._wrapped_widget = self.entry_text

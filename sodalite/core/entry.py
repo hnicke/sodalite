@@ -54,6 +54,7 @@ class Entry:
             self.realpath = os.path.join(os.path.dirname(path), os.readlink(path))
         else:
             self.realpath = path
+        self.extension = os.path.splitext(self.name)[1].lower().replace(".", "")
         """lower precedence number means higher priority, e.g. for displaying"""
         self.name_precedence = compute_name_precedence(self.name)
         self._executable = None
