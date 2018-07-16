@@ -205,7 +205,8 @@ Copy current entry's path to the system's clipboard.
 .SS \f[C]ASSIGN\f[] mode
 .PP
 The \f[C]ASSIGN\f[] mode is needed to assign a specific key to an entry.
-This is accomplished within these steps:
+While in assign mode, the frame is displayed in green.
+Assigning entries is accomplished within these steps:
 .IP "1." 3
 Enter assign mode
 .IP "2." 3
@@ -228,15 +229,27 @@ Select previous entry.
 .SS OPERATE mode
 .PP
 The \f[C]OPERATE\f[] mode allows for convenient file manipulation.
+While in operate mode, the frame is displayed in red.
 .TP
 .B \f[B]yank (\f[BC]y\f[B])\f[]
-Yanks (i.e., copies) the entry associated with the next issued key to
-sodalite's buffer.
+Yanks (i.e., copies) the entry associated with the next issued keypress
+to sodalite's buffer.
 .RS
 .RE
 .TP
 .B \f[B]paste (\f[BC]p\f[B])\f[]
 Pastes the content of sodalite's buffer into the current directory.
+.RS
+.RE
+.TP
+.B \f[B]delete (\f[BC]d\f[B])\f[]
+Moves the entry associated with the next issued keypress to sodalite's
+buffer.
+.RS
+.RE
+.TP
+.B \f[B]rename (\f[BC]r\f[B])\f[]
+Renames specified entry.
 .RS
 .RE
 .SS Options

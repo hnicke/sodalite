@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## v0.17.1: July 16, 2018
 ##### Features
 - Add mode indicator to easily see in which mode the app currently is
 - Add operation mode: Yanking, pasting, deleting and renaming files is now possible
