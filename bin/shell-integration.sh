@@ -66,7 +66,7 @@ fi
 
 if ! [ "$SODALITE_CD_INTERCEPTION" = 'false' ]; then
     function cd { 
-        last=${!#}
+        last=${@: -1}
         # catching the errors here, so user does not see an inconvenient error message
         if [ "$@" ]; then
             if ! [ -e "$last" ]; then

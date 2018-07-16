@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.17.2: July 16, 2018
+##### Bugfixes
+- Fixes cd-interception in zsh
+
 ## v0.17.1: July 16, 2018
 ##### Features
 - Add mode indicator to easily see in which mode the app currently is
