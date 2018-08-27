@@ -59,7 +59,7 @@ class Entry:
         self.name_precedence = compute_name_precedence(self.name)
         self._executable = None
         self._readable = None
-        self._content: List[str] = None
+        self._content: str = None
 
     def chdir(self):
         """
@@ -176,7 +176,6 @@ class Entry:
             with open(self.path) as f:
                 self._content = f.read()
         return self._content
-
 
 def detect_type(mode) -> EntryType:
     if stat.S_ISREG(mode):

@@ -145,7 +145,11 @@ Valid values for keys are all letters of the alphabet (lower and upper case), so
 
 **yank_current_path (`ctrl y`)**
 
-:   Copy current entry's path to the system's clipboard.
+:   Copy current entry's path to the system clipboard.
+
+**yank_file_content (`meta y`)**
+
+:   If current entry is a plain text file, copy file content to the system clipboard.
 
 `ASSIGN` mode
 -----------

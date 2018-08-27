@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.18.1: August 27, 2018
+##### Features
+- Add shortcut to copy the current file content to clipboard (default: 'meta y')
+
 ## v0.17.2: July 16, 2018
 ##### Bugfixes
 - Fixes cd-interception in zsh

@@ -17,6 +17,7 @@ scroll_page_up = "scroll_page_up"
 scroll_half_page_down = "scroll_half_page_down"
 scroll_half_page_up = "scroll_half_page_up"
 yank_current_path = "yank_current_path"
+yank_file_content = "yank_file_content"
 
 # normal mode actions
 go_to_parent = "go_to_parent"
@@ -49,6 +50,7 @@ default_keybindings = {
     scroll_half_page_down: 'ctrl d',
     scroll_half_page_up: 'ctrl u',
     yank_current_path: 'ctrl y',
+    yank_file_content: 'meta y',
 
     # navigate mode
     go_to_parent: '.',

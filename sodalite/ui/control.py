@@ -26,7 +26,8 @@ class Control:
             action.assign_mode: self.enter_assign_mode,
             action.operate_mode: self.enter_operate_mode,
             action.filter: self.trigger_filter,
-            action.yank_current_path: self.yank_to_clipboard,
+            action.yank_current_path: self.yank_cwd_to_clipboard,
+            action.yank_file_content: self.yank_file_content_to_clipboard,
             action.toggle_dotfiles: self.toggle_dotfiles,
             action.scroll_page_down: self.scroll_page_down,
             action.scroll_page_up: self.scroll_page_up,
@@ -120,14 +121,25 @@ class Control:
     def scroll_half_page_up(self):
         self.list.scroll_half_page_up(self.list_size)
 
-    def yank_to_clipboard(self):
+    def yank_cwd_to_clipboard(self):
+        path = self.navigator.current_entry.path
+        self.yank_to_clipboard(path)
+
+    def yank_file_content_to_clipboard(self):
+        entry = self.model.current_entry
+        if entry.is_plain_text_file():
+            self.yank_to_clipboard(entry.content)
+
+    def yank_to_clipboard(self, text: str):
         try:
-            path = self.navigator.current_entry.path
-            pyperclip.copy(path)
-            logger.info(f"Yanked '{path} to system clipboard")
+            pyperclip.copy(text)
+            text_to_log = text[0:60].replace("\n", "")
+            if len(text) > 60:
+                text_to_log += "..."
+            logger.info(f"Yanked '{text_to_log}' to system clipboard")
             notify.show(f"Yanked to clipboard", duration=1)
         except pyperclip.PyperclipException:
-            logger.exception(f"Failed to yank current path '{path}'")
+            logger.exception(f"Failed to yank")
             notify.show("Failed to yank: system has no clipboard", duration=2)
 
     def toggle_dotfiles(self):
