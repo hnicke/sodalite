@@ -78,6 +78,10 @@ Following general actions can be triggered everywhere in `sodalite`:
 
 :   Exit `sodalite` without printing current directory to `stdout`.
 
+**show help (`?`)**
+
+:   Display currently available actions with their associated keybindings. Press any key to close the help.
+
 **navigate_mode (`esc`)**
 
 :   Enter navigate mode.

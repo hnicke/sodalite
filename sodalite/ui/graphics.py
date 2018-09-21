@@ -10,6 +10,7 @@ from ui import theme, viewmodel
 from ui.control import NavigateControl, AssignControl, OperateControl
 from ui.filter import Filter
 from ui.hookbox import HookBox
+from ui.help import HelpLauncher
 from ui.mainpane import MainPane
 from ui.viewmodel import ViewModel, Topic, Mode
 from util import environment
@@ -64,7 +65,7 @@ class MainLoop(urwid.MainLoop):
 
 
 def _create_loop(main):
-    return MainLoop(main, palette=theme.palette, handle_mouse=False)
+    return MainLoop(main, palette=theme.palette, handle_mouse=False, pop_ups=True)
 
 
 MAIN_LOOP = 'MainLoop'
@@ -72,13 +73,16 @@ threading.current_thread().setName(MAIN_LOOP)
 os.environ['ESCDELAY'] = '0'
 frame = None
 loop = None
+popupLauncher = None
 
 
 def run(path: str):
     global frame
     global loop
+    global popupLauncher
     frame = MainFrame(path)
-    loop = _create_loop(frame)
+    popupLauncher = HelpLauncher(frame)
+    loop = _create_loop(popupLauncher)
     loop.run()
 
 

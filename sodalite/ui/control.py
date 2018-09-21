@@ -32,7 +32,8 @@ class Control:
             action.scroll_page_down: self.scroll_page_down,
             action.scroll_page_up: self.scroll_page_up,
             action.scroll_half_page_down: self.scroll_half_page_down,
-            action.scroll_half_page_up: self.scroll_half_page_up
+            action.scroll_half_page_up: self.scroll_half_page_up,
+            action.show_help: self.show_keys
         }
 
         self.frame = frame
@@ -45,7 +46,6 @@ class Control:
         self.filter_size = None
         self.hookbox_size = None
         self.active_action = None
-
 
     @property
     def action_name_to_callable(self):
@@ -154,6 +154,9 @@ class Control:
         else:
             message = 'hide dotfiles'
         notify.show(message, duration=0.7)
+
+    def show_keys(self):
+        graphics.popupLauncher.open_pop_up(self)
 
 
 class NavigateControl(Control):

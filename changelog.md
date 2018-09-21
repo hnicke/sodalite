@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.19.1: September 21, 2018
+##### Features
+- Show help screen which displays the currently available actions and their associated keybindings.
+
 ## v0.18.3: September 21, 2018
 ##### Bugfixes
 - Fixes scrolling in file preview

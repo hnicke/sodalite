@@ -11,13 +11,14 @@ navigate_mode = "navigate_mode"
 assign_mode = "assign_mode"
 operate_mode = "operate_mode"
 filter = "filter"
-toggle_dotfiles = "toggle_dotifles"
+toggle_dotfiles = "toggle_dotfiles"
 scroll_page_down = "scroll_page_down"
 scroll_page_up = "scroll_page_up"
 scroll_half_page_down = "scroll_half_page_down"
 scroll_half_page_up = "scroll_half_page_up"
 yank_current_path = "yank_current_path"
 yank_file_content = "yank_file_content"
+show_help = 'show_help'
 
 # normal mode actions
 go_to_parent = "go_to_parent"
@@ -51,6 +52,7 @@ default_keybindings = {
     scroll_half_page_up: 'ctrl u',
     yank_current_path: 'ctrl y',
     yank_file_content: 'meta y',
+    show_help: '?',
 
     # navigate mode
     go_to_parent: '.',

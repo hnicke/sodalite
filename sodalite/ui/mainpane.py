@@ -3,7 +3,7 @@ import logging
 import urwid
 
 from core.navigate import Navigator
-from ui import theme, graphics, viewmodel
+from ui import theme, graphics
 from ui.entrylist import EntryList
 from ui.filepreview import FilePreview
 from ui.viewmodel import ViewModel, Topic
