@@ -5,3 +5,4 @@ tags
 .pytest_cache
 tmp/
 tests/tmp_data
+venv/

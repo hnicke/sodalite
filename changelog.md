@@ -1,6 +1,10 @@
 # Changelog
 
-## v0.18.2: Septembe 21, 2018
+## v0.18.3: September 21, 2018
+##### Bugfixes
+- Fixes scrolling in file preview
+
+## v0.18.2: September 21, 2018
 ##### Bugfixes
 - sodalite-open can now handle filenames with white spaces
 ## v0.18.1: August 27, 2018

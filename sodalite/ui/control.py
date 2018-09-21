@@ -36,15 +36,16 @@ class Control:
         }
 
         self.frame = frame
-        self.list = frame.mainpane.body
         self.hookbox = frame.hookbox
         self.filter = frame.filter
         self.navigator = frame.navigator
         self.model = frame.model
+        self._list = None
         self.list_size = None
         self.filter_size = None
         self.hookbox_size = None
         self.active_action = None
+
 
     @property
     def action_name_to_callable(self):
@@ -54,6 +55,10 @@ class Control:
     def action_name_to_callable(self, mapping):
         self._action_name_to_callable = mapping
         self.action_map: Dict[str, Action] = {k: Action(k, v) for (k, v) in mapping.items()}
+
+    @property
+    def list(self):
+        return self.frame.mainpane.body
 
     def handle_keypress(self, size, key):
         try:
