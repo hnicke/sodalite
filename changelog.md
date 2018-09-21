@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.18.2: Septembe 21, 2018
+##### Bugfixes
+- sodalite-open can now handle filenames with white spaces
 ## v0.18.1: August 27, 2018
 ##### Features
 - Add shortcut to copy the current file content to clipboard (default: 'meta y')

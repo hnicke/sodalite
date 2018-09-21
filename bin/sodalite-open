@@ -54,16 +54,16 @@ desktop_entry=$(xdg-mime query default "$filetype")
 
 execute=$(cat "$entry" | grep ^Exec= | cut -d"=" -f2)
 
-target_file=${target_file/" "/"\ "}
+target_file="\"$target_file\""
 execute=${execute/"%F"/$target_file}
 execute=${execute/"%f"/$target_file}
 execute=${execute/"%u"/$target_file}
 execute=${execute/"%U"/$target_file}
 
+# expression needs to get reevaluated in order to interpret a target file with white spaces as a single argument
 if [ "$background" ]; then
-    bash -c "nohup $execute >/dev/null 2>&1 &"
+    eval nohup $execute >/dev/null 2>&1 &
 else
-    #$execute
-    bash -c "$execute"
+    eval $execute
 fi
 
