@@ -34,6 +34,8 @@ class AvailableKeys(urwid.Pile):
         key = action.keybinding
         if key == ' ':
             key = "<space>"
+        elif key == 'backspace':
+            key = "ctrl h"
         text = f"{action.name:<{self.column_spacing}}{key}"
         return urwid.Text(text, wrap='clip')
 

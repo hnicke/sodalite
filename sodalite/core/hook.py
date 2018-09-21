@@ -111,7 +111,7 @@ def get_hooks(entry) -> Collection['Hook']:
     if entry.is_dir():
         matching_hooks.update(as_dict(hooks.get_dir_hooks()))
     elif entry.is_file():
-        matching_hooks.update(as_dict(hooks.get_custom_hooks().get(entry.extension, [])))
+        matching_hooks.update(as_dict(get_custom_hooks(entry)))
         matching_hooks.update(as_dict(hooks.get_file_hooks()))
         if entry.is_plain_text_file():
             matching_hooks.update(as_dict(hooks.get_plain_text_hooks()))
@@ -125,6 +125,15 @@ def as_dict(hook_list: List['Hook']) -> Dict[str, 'Hook']:
     for hook in hook_list:
         dict[hook.key] = hook
     return dict
+
+
+def get_custom_hooks(entry) -> List['Hook']:
+    custom_hooks = hooks.get_custom_hooks()
+    matches = list(filter(lambda x: entry.name.endswith(x), custom_hooks.keys()))
+    matching_hooks = []
+    for match in matches:
+        matching_hooks += custom_hooks.get(match)
+    return matching_hooks
 
 
 def is_hook(key: str, entry) -> bool:
