@@ -28,7 +28,7 @@ class Control:
             action.filter: self.trigger_filter,
             action.yank_current_path: self.yank_cwd_to_clipboard,
             action.yank_file_content: self.yank_file_content_to_clipboard,
-            action.toggle_dotfiles: self.toggle_dotfiles,
+            action.toggle_hidden_files: self.toggle_dotfiles,
             action.scroll_page_down: self.scroll_page_down,
             action.scroll_page_up: self.scroll_page_up,
             action.scroll_half_page_down: self.scroll_half_page_down,

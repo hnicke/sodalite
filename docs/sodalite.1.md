@@ -98,9 +98,9 @@ Following general actions can be triggered everywhere in `sodalite`:
 
 :   Focuses the filter bar on the bottom. Use regular expressions to filter displayed entries. The filtering is case-insensitive. Press `enter` to submit or `esc` to dismiss the filter.
 
-**toggle_dotfiles  (`meta h`)**
+**toggle_hidden_files  (`meta h`)**
 
-:   Toggles visiblity of dotfiles.
+:   Toggles visiblity of hidden files.
 
 **scroll_page_down (`ctrl f`)**
 

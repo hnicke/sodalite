@@ -6,6 +6,7 @@
 ##### Misc
 - Add untar hook for `.tar.gz` files to default config
 - Redesign help screen
+- Rename action 'toggle_dotfiles' to 'toggle_hidden_files'
 
 ## v0.19.1: September 21, 2018
 ##### Features

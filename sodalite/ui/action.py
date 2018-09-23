@@ -11,7 +11,7 @@ navigate_mode = "navigate_mode"
 assign_mode = "assign_mode"
 operate_mode = "operate_mode"
 filter = "filter"
-toggle_dotfiles = "toggle_dotfiles"
+toggle_hidden_files = "toggle_hidden_files"
 scroll_page_down = "scroll_page_down"
 scroll_page_up = "scroll_page_up"
 scroll_half_page_down = "scroll_half_page_down"
@@ -45,7 +45,7 @@ default_keybindings = {
     assign_mode: '=',
     operate_mode: ' ',
     filter: '/',
-    toggle_dotfiles: 'meta h',
+    toggle_hidden_files: 'meta h',
     scroll_page_down: 'ctrl f',
     scroll_page_up: 'ctrl b',
     scroll_half_page_down: 'ctrl d',
