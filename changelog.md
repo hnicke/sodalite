@@ -1,8 +1,11 @@
 # Changelog
 
 ## Unreleased
+
+## v0.19.2: September 23, 2018
 ##### Misc
 - Add untar hook for `.tar.gz` files to default config
+- Redesign help screen
 
 ## v0.19.1: September 21, 2018
 ##### Features
