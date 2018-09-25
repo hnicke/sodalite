@@ -380,9 +380,7 @@ AUTHOR
 
 Heiko Nickerl <dev(at)heiko-nickerl.com>
 
-<!--
 SEE ALSO
 ========
 
-**hi(1)**, **hello(3)**, **hello.conf(5)**
--->
+**sodalite-open**
