@@ -5,15 +5,12 @@ function sodalite-widget
   set target (sodalite)
   if [ "$target" ]
       if [ -d "$target" ] 
-        set dirname  "$target"
+        cd "$target"
       else
-        set dirname (dirname "$target")
         set cursor (commandline -C)
-        commandline -i " "(basename "$target")" "
+        commandline -i " $target "
         commandline -C "$cursor"
-        echo $dirname
       end
-      cd "$dirname"
       commandline -f repaint
   end
   if not [ "$DISPLAY" ]

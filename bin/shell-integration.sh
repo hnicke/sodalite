@@ -20,11 +20,10 @@ if [ $shell = 'zsh' ]; then
         if [ "$target" ]; then
             if [ -d "$target" ]; then 
                 dirname=$target
+                builtin cd "$dirname"
             else
-                dirname="$(dirname "$target")"
-                RBUFFER=" $(basename "$target") $RBUFFER"
+                RBUFFER=" $target $RBUFFER"
             fi
-            builtin cd "$dirname"
         fi
         zle reset-prompt
     }
