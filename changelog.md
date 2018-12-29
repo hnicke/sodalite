@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+##### Bugfix
+- Fix rendering first line in file preview
 
 ## v0.19.2: September 23, 2018
 ##### Misc

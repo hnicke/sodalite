@@ -76,5 +76,5 @@ def line_per_line(tokens) -> List[HighlightedLine]:
             line = []
         if token:
             line.append((attr, token))
-    if len(line) > 1:
+    if len(line) >= 1:
         yield HighlightedLine(line, pos)
