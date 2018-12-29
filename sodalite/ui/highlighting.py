@@ -1,4 +1,5 @@
 import logging
+import os
 from typing import List, Pattern
 
 import pygments
@@ -20,13 +21,13 @@ class HighlightedLine:
         self.numbered_content = [formatted_linenumber] + content
 
     def bold_headings(self, content):
-        heading = False
+        heading = None
         new_content = []
         for attr, word in content:
             if attr is token.Generic.Heading or attr is token.Generic.Subheading:
-                heading = True
-            if heading and attr in token.Text:
-                attr = 'bold'
+                heading = attr
+            if heading:
+                attr = heading
             new_content.append((attr, word))
         return new_content
 
@@ -47,8 +48,11 @@ def compute_highlighting(entry: Entry) -> List[HighlightedLine]:
 
 def find_lexer(filename: str, content: str):
     try:
-        lexer = lexers.guess_lexer_for_filename(filename, content, stripnl=False,
-                                                ensurenl=False)
+        if os.path.basename(filename) in ('.gitignore', '.dockerignore'):
+            lexer = BashLexer()
+        else:
+            lexer = lexers.guess_lexer_for_filename(filename, content, stripnl=False,
+                                                    ensurenl=False)
         logger.debug('Detected lexer by filename')
     except pygments.util.ClassNotFound:
         try:
