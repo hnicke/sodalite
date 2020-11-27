@@ -2,8 +2,8 @@ import logging
 import re
 import sre_constants
 from enum import Enum
-from sre_parse import Pattern
-from typing import List
+from re import Pattern
+from typing import List, Optional
 
 from core.entry import Entry
 from ui import highlighting
@@ -56,9 +56,9 @@ class ViewModel(Observable):
 
     def __init__(self):
         super().__init__()
-        self._current_entry: Entry = None
+        self._current_entry: Optional[Entry] = None
         self._entries = []
-        self.file_content: List[HighlightedLine] = None
+        self.file_content: Optional[List[HighlightedLine]] = None
         self._filtered_file_content: List[HighlightedLine] = []
         self._filter_pattern: Pattern = re.compile('')
         self._show_hidden_files = True
