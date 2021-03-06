@@ -66,7 +66,7 @@ fi
 if ! [ "$SODALITE_CD_INTERCEPTION" = 'false' ]; then
     function cd {
         (
-            nohup sodalite --update-access "$last" &
+            nohup nice --adjustment=20 sodalite --update-access "$@" &
         ) >/dev/null 2>&1
         builtin cd "$@"
     }

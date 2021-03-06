@@ -18,10 +18,11 @@ class EntryAccess:
     def get_current(self):
         return self.__current_entry
 
-    def retrieve_entry(self, path: str, populate_children=True, cache=True) -> Entry:
+    def retrieve_entry(self, path: str, populate_children: bool =True, cache: bool =True) -> Entry:
         """
         Returns an entry matching given path.
         :param path: the absolute, canonical path to a file
+        :param populate_children: If true, loads children from database
         :return: the matching entry
         :raise: FileNotFoundError
         """

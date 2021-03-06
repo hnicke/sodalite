@@ -13,7 +13,7 @@ _global_logger.addHandler(handler)
 logging.getLogger('watchdog').setLevel(logging.INFO)
 
 logger = logging.getLogger(__name__)
-logger.info('Starting sodalite')
+logger.debug('Starting sodalite')
 
 exit_cwd = None
 # program will read following environment variables
@@ -41,5 +41,5 @@ for directory in dirs:
     os.makedirs(directory, exist_ok=True)
 
 
-logger.info(f"Using database: {db_file}")
-logger.info(f"Using config file: {config_file}")
+logger.debug(f"Using database: {db_file}")
+logger.debug(f"Using config file: {config_file}")
