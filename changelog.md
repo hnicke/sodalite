@@ -9,6 +9,7 @@
 ##### Technical
 - Replace argparse with click and overhaul the command line interface
 - Fix imports
+- Introduce type checking
 
 ## v0.19.2: September 23, 2018
 ##### Misc

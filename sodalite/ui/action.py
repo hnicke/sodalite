@@ -78,14 +78,14 @@ class Action:
     def __init__(self, name, action: Callable, modes: List[Mode] = None):
         self.name = name
         self.is_global = not modes
-        self.modes = modes
+        self.modes = modes or []
         self.action = action
         self.keybinding = config.keymap.setdefault(name, default_keybindings[name])
 
     def handle(self, input: str):
         if input == self.keybinding:
             if self.is_global or viewmodel.global_mode in self.modes:
-                self.action.__call__()
+                self.action()
                 return True
 
 

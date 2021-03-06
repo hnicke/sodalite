@@ -1,9 +1,14 @@
 import logging
+from typing import TYPE_CHECKING
 
 from watchdog.events import FileSystemEventHandler, PatternMatchingEventHandler
 from watchdog.observers import Observer
 
+if TYPE_CHECKING:
+    from sodalite.core.navigate import Navigator
+
 logger = logging.getLogger(__name__)
+
 
 
 class DirHandler(FileSystemEventHandler):

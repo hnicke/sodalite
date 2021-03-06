@@ -119,7 +119,7 @@ class ViewModel(Observable):
             pass
 
     @property
-    def current_entry(self) -> Entry:
+    def current_entry(self) -> Optional[Entry]:
         return self._current_entry
 
     @current_entry.setter

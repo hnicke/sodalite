@@ -65,3 +65,14 @@ uninstall:
 	@rm -rfv ${bindir}/${APPNAME}
 	@rm -rfv ${bindir}/${APPNAME}-open
 	@rm -rfv ${configfile}
+
+### dev targets ###
+activate = . venv/bin/activate
+venv:
+	virtualenv venv
+	${activate} && pip install -r requirements
+
+lint:
+	${activate} && mypy sodalite
+
+

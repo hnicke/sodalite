@@ -18,7 +18,7 @@ def populate_ratings(entries: List['Entry']):
         entry.rating = rating
 
 
-def calculate_frecency(entries: List['Entry']) -> Dict['Entry', int]:
+def calculate_frecency(entries: List['Entry']) -> Dict['Entry', float]:
     now = int(time.time() * 1000)
     entries_to_rating = {}
     for entry in entries:
@@ -27,18 +27,20 @@ def calculate_frecency(entries: List['Entry']) -> Dict['Entry', int]:
     return entries_to_rating
 
 
-def normalize(entries: Dict['Entry', int]) -> Dict['Entry', int]:
+def normalize(entries: Dict['Entry', float]) -> Dict['Entry', float]:
     """Maps all frecencies in a way that the max frequency equals 1, in a linear fashion"""
     entries_to_ranking = {}
-    biggest = max(entries.values())
+    max_frecency = max(entries.values())
     parent = next(iter(entries.keys())).parent
-    if biggest == 0:
-        parent.unexplored = True
+    if max_frecency == 0:
+        if parent:
+            parent.unexplored = True
         return {entry: 0.0 for (entry, rating) in entries.items()}
     else:
-        parent.unexplored = False
+        if parent:
+            parent.unexplored = False
         for entry, frecency in entries.items():
-            relative_frecency = frecency / biggest
+            relative_frecency = frecency / max_frecency
             entries_to_ranking[entry] = relative_frecency
         return entries_to_ranking
 

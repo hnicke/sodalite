@@ -18,12 +18,12 @@ class Register:
         """
         Writes given entries or given entry to this register
         """
-        def write_single_entry(entry: Entry):
-            logger.info(f"Yanking {entry.name} to {self.name}")
-            copy(entry.path, os.path.join(self.path, entry.name))
+        def write_single_entry(e: Entry):
+            logger.info(f"Yanking {e.name} to {self.name}")
+            copy(e.path, os.path.join(self.path, e.name))
 
         self.clear()
-        if type(src) is list:
+        if isinstance(src, list):
             for entry in src:
                 write_single_entry(entry)
         else:

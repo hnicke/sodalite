@@ -2,12 +2,14 @@ import os
 import stat
 from enum import Enum
 from io import UnsupportedOperation
+from numbers import Number
 from pathlib import Path
-from typing import Dict, Iterable, List
+from typing import Dict, Iterable, List, Optional
 
 from binaryornot.check import is_binary
 
 from sodalite.core import rating, config
+from sodalite.core.hook import Hook
 from sodalite.core.key import Key
 
 
@@ -35,17 +37,17 @@ class Entry:
             access_history = []
         self.unexplored = False
         self.access_history: List[int] = access_history
-        self._rating = None
+        self._rating: Optional[float] = None
         self.parent = parent
         self.dir, self.name = os.path.split(path)
         self._key = key
 
-        self._children: List['Entry'] = []
+        self._children: Iterable['Entry'] = []
         self.path_to_child: Dict[str, Entry] = {}
         self.key_to_child: Dict[Key, Entry] = {}
 
         self.__is_plain_text_file = None
-        self.hooks: list = []
+        self.hooks: List[Hook] = []
         self.stat = os.lstat(path)
         self.size = self.stat.st_size
         self.permissions = oct(self.stat.st_mode)[-3:]
@@ -56,9 +58,9 @@ class Entry:
             self.realpath = path
         """lower precedence number means higher priority, e.g. for displaying"""
         self.name_precedence = compute_name_precedence(self.name)
-        self._executable = None
+        self._executable: Optional[bool] = None
         self._readable = None
-        self._content: str = None
+        self._content: Optional[str] = None
 
     def chdir(self):
         """
@@ -96,10 +98,10 @@ class Entry:
         if self.parent:
             self.parent.key_to_child[key] = self
 
-    def get_child_for_key(self, key: Key) -> 'Entry' or None:
+    def get_child_for_key(self, key: Key) -> Optional['Entry']:
         return self.key_to_child.get(key, None)
 
-    def get_child_for_path(self, path: str) -> 'Entry' or None:
+    def get_child_for_path(self, path: str) -> Optional['Entry']:
         return self.path_to_child.get(path, None)
 
     def __str__(self):
@@ -139,7 +141,7 @@ class Entry:
 
     @property
     def rating(self):
-        if not isinstance(self._rating, (float, int)):
+        if not isinstance(self._rating, Number):
             if not self.parent:
                 raise ValueError("Trying to get rating of entry which parent is not set")
             rating.populate_ratings(self.parent.children)
@@ -176,19 +178,22 @@ class Entry:
                 self._content = f.read()
         return self._content
 
+
 def detect_type(mode) -> EntryType:
     if stat.S_ISREG(mode):
         return EntryType(EntryType.FILE)
-    if stat.S_ISDIR(mode):
+    elif stat.S_ISDIR(mode):
         return EntryType(EntryType.DIRECTORY)
-    if stat.S_ISLNK(mode):
+    elif stat.S_ISLNK(mode):
         return EntryType(EntryType.SYMLINK)
-    if stat.S_ISFIFO(mode):
+    elif stat.S_ISFIFO(mode):
         return EntryType(EntryType.FIFO)
-    if stat.S_ISBLK(mode):
+    elif stat.S_ISBLK(mode):
         return EntryType(EntryType.BLOCK_DEVICE)
-    if stat.S_ISCHR(mode):
+    elif stat.S_ISCHR(mode):
         return EntryType(EntryType.CHARACTER_DEVICE)
+    else:
+        raise Exception(f"Unknown entry type '{mode}'")
 
 
 def compute_name_precedence(name: str) -> int:

@@ -98,10 +98,11 @@ def inject_data(entry: Entry):
     # inject values
     old_entries = {}
     for db_entry in entries_db.values():
-        child: Entry = entry.get_child_for_path(db_entry.path)
-        child.key = db_entry.key
-        child.access_history = db_entry.access_history
-        old_entries[child.path] = child
+        child = entry.get_child_for_path(db_entry.path)
+        if child:
+            child.key = db_entry.key
+            child.access_history = db_entry.access_history
+            old_entries[child.path] = child
     insert_new_entries(entries_fs, old_entries)
 
 
@@ -130,7 +131,7 @@ def read_entries_from_db(regexp: str) -> Dict[str, DbEntry]:
     conn = open_connection()
     try:
         cursor = conn.cursor().execute(query, (regexp,))
-        result = {}
+        result: Dict[str, DbEntry] = {}
         for row in cursor:
             path = row[0]
             access = row[2]

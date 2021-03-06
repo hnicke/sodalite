@@ -21,7 +21,7 @@ ENV_DATA_DIR = 'DATA_DIR'
 ENV_DB_PATH = 'DB_PATH'
 ENV_CONFIG_FILE = 'CONFIG_FILE'
 
-home = os.getenv('HOME')
+home = os.environ['HOME']
 data = os.getenv(ENV_DATA_DIR, "/usr/share/sodalite/")
 user_data = os.getenv('XDG_DATA_HOME', os.path.join(home, ".local/share/sodalite/"))
 user_config = os.getenv('XDG_CONFIG_HOME', os.path.join(home, ".config/sodalite/"))

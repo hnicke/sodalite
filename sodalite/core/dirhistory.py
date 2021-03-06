@@ -3,6 +3,7 @@ import json
 import logging
 import os
 from json import JSONDecodeError
+from typing import List
 
 from sodalite.util import environment
 
@@ -18,7 +19,7 @@ class DirHistory:
     Will never check if a file path is a valid file path.
     """
 
-    def __init__(self, history: str, index: int = 0, persist: bool = False):
+    def __init__(self, history: List[str], index: int = 0, persist: bool = False):
         assert history
         self._history = history
         self._current_index = index

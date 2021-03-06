@@ -1,12 +1,12 @@
 import logging
 import os
-from typing import List, Dict, Collection
+from typing import List, Dict, Collection, Union
 
 from sodalite.core import config
 
 logger = logging.getLogger(__name__)
 
-special_keys = {}
+special_keys: Dict[str, str] = {}
 
 
 class Hook:
@@ -38,8 +38,8 @@ class Hook:
             graphics.resume()
 
 
-def _extract_hook(key: str, hook_definition: [dict, str]) -> 'Hook':
-    if type(hook_definition) is dict:
+def _extract_hook(key: str, hook_definition: Union[dict, str]) -> 'Hook':
+    if isinstance(hook_definition, dict):
         hook = Hook(key, hook_definition['action'], label=hook_definition.get('label'))
     else:
         hook = Hook(key, hook_definition)
@@ -47,7 +47,7 @@ def _extract_hook(key: str, hook_definition: [dict, str]) -> 'Hook':
 
 
 class HookMap:
-    def __init__(self, hooks: dict):
+    def __init__(self, hooks: Dict[str, Dict[str, Union[Dict[str, str], str]]]):
         self.map: Dict[str, List[Hook]] = {}
         self.custom: Dict[str, List[Hook]] = {}
 
@@ -59,31 +59,32 @@ class HookMap:
                 hook = _extract_hook(key, hook_definition)
                 self.map[category].append(hook)
 
-        if hooks['custom'] is not None:
-            for category in hooks['custom'].values():
-                for key, hook_definition in category['hooks'].items():
+        custom_hooks = hooks['custom']
+        if custom_hooks is not None:
+            for category in custom_hooks.values():  # type: ignore
+                for key, hook_definition in category['hooks'].items():  # type: ignore
                     hook = _extract_hook(key, hook_definition)
-                    for extension in category['extensions']:
+                    for extension in category['extensions']:  # type: ignore
                         hook_list = self.custom.get(extension, [])
                         hook_list.append(hook)
                         self.custom[extension] = hook_list
 
-    def get_general_hooks(self) -> List['Hook']:
+    def get_general_hooks(self) -> List[Hook]:
         return self.map['general']
 
-    def get_dir_hooks(self) -> List['Hook']:
+    def get_dir_hooks(self) -> List[Hook]:
         return self.map['dir']
 
-    def get_file_hooks(self) -> List['Hook']:
+    def get_file_hooks(self) -> List[Hook]:
         return self.map['file']
 
-    def get_plain_text_hooks(self) -> List['Hook']:
+    def get_plain_text_hooks(self) -> List[Hook]:
         return self.map['plain_text']
 
-    def get_executable_hooks(self) -> List['Hook']:
+    def get_executable_hooks(self) -> List[Hook]:
         return self.map['executable']
 
-    def get_custom_hooks(self) -> Dict[str, List['Hook']]:
+    def get_custom_hooks(self) -> Dict[str, List[Hook]]:
         return self.custom
 
     def __repr__(self):
@@ -102,11 +103,11 @@ class HookMap:
 hooks = HookMap(config.hooks)
 
 
-def get_hooks(entry) -> Collection['Hook']:
+def get_hooks(entry) -> List[Hook]:
     """
     :return: list of possible actions for given entry
     """
-    matching_hooks = {}
+    matching_hooks: Dict[str, Hook] = {}
     matching_hooks.update(as_dict(hooks.get_general_hooks()))
     if entry.is_dir():
         matching_hooks.update(as_dict(hooks.get_dir_hooks()))
@@ -117,22 +118,22 @@ def get_hooks(entry) -> Collection['Hook']:
             matching_hooks.update(as_dict(hooks.get_plain_text_hooks()))
         if entry.executable:
             matching_hooks.update(as_dict(hooks.get_executable_hooks()))
-    return matching_hooks.values()
+    return list(matching_hooks.values())
 
 
-def as_dict(hook_list: List['Hook']) -> Dict[str, 'Hook']:
-    dict = {}
+def as_dict(hook_list: List[Hook]) -> Dict[str, Hook]:
+    d = {}
     for hook in hook_list:
-        dict[hook.key] = hook
-    return dict
+        d[hook.key] = hook
+    return d
 
 
-def get_custom_hooks(entry) -> List['Hook']:
+def get_custom_hooks(entry) -> List[Hook]:
     custom_hooks = hooks.get_custom_hooks()
     matches = list(filter(lambda x: entry.name.endswith(x), custom_hooks.keys()))
-    matching_hooks = []
+    matching_hooks: List[Hook] = []
     for match in matches:
-        matching_hooks += custom_hooks.get(match)
+        matching_hooks += custom_hooks[match]
     return matching_hooks
 
 
