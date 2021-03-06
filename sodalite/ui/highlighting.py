@@ -1,6 +1,6 @@
 import logging
 import os
-from typing import List, Pattern
+from typing import List, Pattern, Generator
 
 import pygments
 from pygments import lexers, token
@@ -38,7 +38,7 @@ class HighlightedLine:
         return f"[{self.linenumber}: {self.content}]"
 
 
-def compute_highlighting(entry: Entry) -> List[HighlightedLine]:
+def compute_highlighting(entry: Entry) -> Generator[HighlightedLine, None, None]:
     lexer = find_lexer(entry.path, entry.content)
     logger.info("Using {} for highlighting".format(type(lexer).__name__))
     content = entry.content.replace('\t', "    ")
@@ -64,12 +64,11 @@ def find_lexer(filename: str, content: str):
     return lexer
 
 
-def line_per_line(tokens) -> List[HighlightedLine]:
+def line_per_line(tokens) -> Generator[HighlightedLine, None, None]:
     line = []
     pos = 0
     for attr, token in tokens:
         while '\n' in token:
-
             index = token.index('\n')
             begin = token[:index]
             token = token[index + 1:]

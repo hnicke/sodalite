@@ -1,4 +1,5 @@
 from functools import reduce
+from typing import Optional
 
 import urwid
 
@@ -45,7 +46,7 @@ class HelpPopup(urwid.WidgetWrap):
 class HelpLauncher(urwid.PopUpLauncher):
     def __init__(self, original_widget: urwid.Widget):
         super().__init__(original_widget)
-        self.control = None
+        self.control: Optional[Control] = None
         self.pop_up = None
 
     def open_pop_up(self, control: Control):

@@ -1,5 +1,6 @@
 import logging
 from typing import Dict, Callable
+from typing import TYPE_CHECKING
 
 import pyperclip
 from urwid import AttrSpec
@@ -11,13 +12,16 @@ from sodalite.ui.action import Action
 from sodalite.ui.viewmodel import Mode
 from sodalite.util import environment
 
+if TYPE_CHECKING:
+    from sodalite.ui.graphics import MainFrame
+
 logger = logging.getLogger(__name__)
 
 
 class Control:
 
     def __init__(self, frame: 'MainFrame'):
-        self.action_map = {}
+        self.action_map: Dict[str, Action] = {}
         self._action_name_to_callable: Dict[str, Callable] = {}
         self.action_name_to_callable = {
             action.exit: self.exit,

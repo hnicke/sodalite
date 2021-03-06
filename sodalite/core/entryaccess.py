@@ -1,6 +1,7 @@
 import logging
 import os
 import time
+from typing import Dict
 
 from sodalite.core import dao
 from sodalite.core import hook
@@ -18,7 +19,7 @@ class EntryAccess:
     def get_current(self):
         return self.__current_entry
 
-    def retrieve_entry(self, path: str, populate_children: bool =True, cache: bool =True) -> Entry:
+    def retrieve_entry(self, path: str, populate_children: bool = True, cache: bool = True) -> Entry:
         """
         Returns an entry matching given path.
         :param path: the absolute, canonical path to a file
@@ -41,11 +42,11 @@ class EntryAccess:
         return self.__current_entry is not None and path == self.__current_entry
 
     def __populate_children(self, entry: Entry):
-        entries = {}
+        entries: Dict[str, Entry] = {}
         if not entry.is_dir():
             return entries
         with os.scandir(entry.realpath) as dir_entries:
-            entry.__path_to_child = {}
+            entry.path_to_child = {}
             entry.children = list(map(lambda x: Entry(x.path, parent=entry), dir_entries))
         dao.inject_data(entry)
 

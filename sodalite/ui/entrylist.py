@@ -1,5 +1,6 @@
 import logging
 import os
+from typing import Optional
 
 import urwid
 from urwid import AttrSpec, ListBox
@@ -112,7 +113,7 @@ class ListEntry(urwid.WidgetWrap):
 
 def compute_color(entry: Entry) -> AttrSpec:
     rating = entry.rating
-    if entry.parent.unexplored:
+    if entry.parent and entry.parent.unexplored:
         rating = 0.5
     bold = False
     unimportant = False
@@ -149,7 +150,7 @@ class EntryList(List):
         self.model = model
         self.navigator = navigator
         self.model.register(self.on_entries_changed, topic=Topic.ENTRIES)
-        self._selection = None
+        self._selection: Optional[ListEntry] = None
 
     def on_entries_changed(self, model):
         with graphics.DRAW_LOCK:

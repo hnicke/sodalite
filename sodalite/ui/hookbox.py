@@ -13,16 +13,8 @@ class HookBox(urwid.WidgetWrap):
         padded_grid = urwid.Padding(grid, left=1)
         box = urwid.LineBox(padded_grid, tline='')
         super().__init__(box)
-        self._data: ViewModel = None
-        self.data = model
-
-    def data(self, data: ViewModel):
-        if self._data is not None:
-            self._data.unregister(self)
-        self._data = data
+        self._data: ViewModel = model
         self._data.register(self.on_update, topic=Topic.CURRENT_ENTRY)
-
-    data = property(None, data)
 
     def on_update(self, model):
         with graphics.DRAW_LOCK:
