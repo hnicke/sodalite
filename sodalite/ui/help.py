@@ -2,9 +2,9 @@ from functools import reduce
 
 import urwid
 
-from ui import theme
-from ui.action import Action
-from ui.control import Control
+from sodalite.ui import theme
+from sodalite.ui.action import Action
+from sodalite.ui.control import Control
 
 
 class HelpPopup(urwid.WidgetWrap):

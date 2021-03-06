@@ -2,9 +2,9 @@ import logging
 
 from urwid import Text
 
-from ui import graphics
-from ui.entrylist import List
-from ui.viewmodel import Topic
+from sodalite.ui import graphics
+from sodalite.ui.entrylist import List
+from sodalite.ui.viewmodel import Topic
 
 logger = logging.getLogger(__name__)
 

@@ -1,8 +1,8 @@
 from typing import List, Callable
 
-from core import config
-from ui import viewmodel
-from ui.viewmodel import Mode
+from sodalite.core import config
+from sodalite.ui import viewmodel
+from sodalite.ui.viewmodel import Mode
 
 # global actions
 exit = "exit"

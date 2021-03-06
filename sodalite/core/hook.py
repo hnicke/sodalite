@@ -2,8 +2,8 @@ import logging
 import os
 from typing import List, Dict, Collection
 
-from core import config
-from ui import graphics
+from sodalite.core import config
+from sodalite.ui import graphics
 
 logger = logging.getLogger(__name__)
 

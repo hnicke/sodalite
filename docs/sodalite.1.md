@@ -201,7 +201,7 @@ Options
 
 :   Prints brief usage information.
 
-**-v, -\-version**
+**-\-version**
 
 :   Prints the current version number.
 

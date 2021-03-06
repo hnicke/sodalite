@@ -1,10 +1,10 @@
 import logging
 import os
 
-from core import key as key_module
-from core.entrywatcher import EntryWatcher
-from core.key import Key
-from util.observer import Observable
+from sodalite.core import key as key_module
+from sodalite.core.entrywatcher import EntryWatcher
+from sodalite.core.key import Key
+from sodalite.util.observer import Observable
 from .entry import Entry
 from .entryaccess import EntryAccess
 

@@ -4,20 +4,21 @@ import logging
 import os
 from json import JSONDecodeError
 
-from util import environment
+from sodalite.util import environment
 
 logger = logging.getLogger(__name__)
 
 MAX_LENGTH = 50
 
 
+# TODO refactor this class to use Path instead of strings everywhere
 class DirHistory:
     """
     Keeps a history of visited files and offers methods for navigation within this history.
     Will never check if a file path is a valid file path.
     """
 
-    def __init__(self, history, index=0, persist=False):
+    def __init__(self, history: str, index: int = 0, persist: bool = False):
         assert history
         self._history = history
         self._current_index = index

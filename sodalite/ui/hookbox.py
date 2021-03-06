@@ -1,8 +1,8 @@
 import urwid
 
-from core.hook import Hook
-from ui import graphics
-from ui.viewmodel import ViewModel, Topic
+from sodalite.core.hook import Hook
+from sodalite.ui import graphics
+from sodalite.ui.viewmodel import ViewModel, Topic
 
 
 class HookBox(urwid.WidgetWrap):

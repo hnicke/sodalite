@@ -5,7 +5,7 @@ import yaml
 from yaml.parser import ParserError
 from yaml.scanner import ScannerError
 
-from util import environment
+from sodalite.util import environment
 
 logger = logging.getLogger(__name__)
 

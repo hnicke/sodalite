@@ -1,8 +1,7 @@
 import urwid
 from pygments import token
-
-from ui import theme, viewmodel
-from ui.viewmodel import Topic, Mode
+from sodalite.ui import viewmodel
+from sodalite.ui.viewmodel import Topic, Mode
 
 file = urwid.WHITE
 file_unimportant = urwid.LIGHT_GRAY
@@ -85,16 +84,16 @@ palette = (
 class DynamicAttrMap(urwid.AttrMap):
 
     def __init__(self, w):
-        super().__init__(w, theme.navigate_mode)
+        super().__init__(w, navigate_mode)
         viewmodel.global_mode.register(self.update_colors, topic=Topic.MODE)
 
     def update_colors(self, model):
         if viewmodel.global_mode == Mode.NAVIGATE:
-            attr = theme.navigate_mode
+            attr = navigate_mode
         elif viewmodel.global_mode in (Mode.ASSIGN_CHOOSE_ENTRY, Mode.ASSIGN_CHOOSE_KEY):
-            attr = theme.assign_mode
+            attr = assign_mode
         elif viewmodel.global_mode == Mode.OPERATE:
-            attr = theme.operate_mode
+            attr = operate_mode
         else:
             raise ValueError
         self.set_attr_map({None: attr})

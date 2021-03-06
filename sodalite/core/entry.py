@@ -7,8 +7,8 @@ from typing import Dict, Iterable, List
 
 from binaryornot.check import is_binary
 
-from core import rating, config
-from .key import Key
+from sodalite.core import rating, config
+from sodalite.core.key import Key
 
 
 class EntryType(Enum):

@@ -1,7 +1,7 @@
 import urwid
 from urwid import Frame
 
-from ui.viewmodel import ViewModel
+from sodalite.ui.viewmodel import ViewModel
 
 
 class Filter(urwid.Edit):
