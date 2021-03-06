@@ -13,7 +13,7 @@ from sodalite.core.entryaccess import EntryAccess
 from sodalite.util import environment
 
 PROGRAM_NAME = 'sodalite'
-VERSION = f'0.19.2'
+VERSION = '0.19.3'
 
 logger = logging.getLogger(__name__)
 

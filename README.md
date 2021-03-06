@@ -67,6 +67,7 @@ In case it doesn't it's considered a bug - please file a bug report.
 > **Necessary dependencies**:  
 > - [python3](https://www.python.org/downloads/release/python-364/)  (>=3.6)
 > - [urwid](http://urwid.org)
+> - [click](https://click.palletsprojects.com/en/7.x/)
 > - [pygments](http://pygments.org)
 > - [binaryornot](https://github.com/audreyr/binaryornot)
 > - [PyYAML](https://github.com/yaml/pyyaml)

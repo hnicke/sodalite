@@ -15,8 +15,9 @@ The project is auto-formatted with PyCharm (default settings).
 ### Release Checklist
 ##### before
 - update changelog
-- update VERSION variable in main.py
+- update VERSION variable in __main__.py
 - new Dependencies? Update readme!
+- push tag
 
 ##### after
 - contact dev(at)heiko-nickerl.com and ask to update the aur packages
