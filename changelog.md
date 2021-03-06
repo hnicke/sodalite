@@ -1,6 +1,10 @@
 # Changelog
 
-## Unreleased
+## v0.19.4: March 7, 2021
+##### Bugfix
+- Fix problem with bootstrapping
+
+## v0.19.3: March 7, 2021
 ##### Bugfix
 - Fix rendering first line in file preview
 - Fix zsh integration for powerlevel9k users 

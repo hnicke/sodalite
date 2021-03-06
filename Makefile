@@ -36,7 +36,7 @@ install: installdirs
 
 	${INSTALL_PROGRAM} ${srcdir}/bin/${APPNAME}-open ${DESTDIR}${bindir}
 	@for file in $(shell cd ${srcdir}/${APPNAME}; find . -name '*.py'); do\
-		${INSTALL_DATA} -D ${srcdir}/${APPNAME}/$$file ${DESTDIR}${applibdir}/$$file;\
+		${INSTALL_DATA} -D ${srcdir}/${APPNAME}/$$file ${DESTDIR}${applibdir}/${APPNAME}/$$file;\
 	done
 	${INSTALL_DATA} ${srcdir}/bin/shell-integration.sh bin/shell-integration.fish ${DESTDIR}${appdatadir}
 	${INSTALL_DATA} ${srcdir}/${APPNAME}.desktop ${DESTDIR}${mimedir}
