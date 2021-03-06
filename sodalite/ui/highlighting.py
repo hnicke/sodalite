@@ -6,8 +6,8 @@ import pygments
 from pygments import lexers, token
 from pygments.lexers.shell import BashLexer
 
-from core.entry import Entry
-from ui import theme
+from sodalite.core.entry import Entry
+from sodalite.ui import theme
 
 logger = logging.getLogger(__name__)
 

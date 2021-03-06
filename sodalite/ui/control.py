@@ -4,12 +4,12 @@ from typing import Dict, Callable
 import pyperclip
 from urwid import AttrSpec
 
-from core import key as key_module, hook, buffer, operate
-from core.key import Key
-from ui import graphics, viewmodel, notify, theme, action
-from ui.action import Action
-from ui.viewmodel import Mode
-from util import environment
+from sodalite.core import key as key_module, hook, buffer, operate
+from sodalite.core.key import Key
+from sodalite.ui import graphics, viewmodel, notify, theme, action
+from sodalite.ui.action import Action
+from sodalite.ui.viewmodel import Mode
+from sodalite.util import environment
 
 logger = logging.getLogger(__name__)
 

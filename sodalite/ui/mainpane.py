@@ -2,12 +2,12 @@ import logging
 
 import urwid
 
-from core.navigate import Navigator
-from ui import theme, graphics
-from ui.entrylist import EntryList
-from ui.filepreview import FilePreview
-from ui.viewmodel import ViewModel, Topic
-from util import environment
+from sodalite.core.navigate import Navigator
+from sodalite.ui import theme, graphics
+from sodalite.ui.entrylist import EntryList
+from sodalite.ui.filepreview import FilePreview
+from sodalite.ui.viewmodel import ViewModel, Topic
+from sodalite.util import environment
 
 logger = logging.getLogger(__name__)
 

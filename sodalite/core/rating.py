@@ -1,6 +1,9 @@
 import math
 import time
-from typing import List, Dict
+from typing import List, Dict, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from sodalite.core.entry import Entry
 
 FACTOR = 1
 RESIDUAL_VALUE = 1  # eventually, an old access will have this value

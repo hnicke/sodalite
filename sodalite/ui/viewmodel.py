@@ -5,10 +5,10 @@ from enum import Enum
 from re import Pattern
 from typing import List, Optional
 
-from core.entry import Entry
-from ui import highlighting
-from ui.highlighting import HighlightedLine
-from util.observer import Observable
+from sodalite.core.entry import Entry
+from sodalite.ui import highlighting
+from sodalite.ui.highlighting import HighlightedLine
+from sodalite.util.observer import Observable
 
 logger = logging.getLogger(__name__)
 

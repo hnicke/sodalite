@@ -3,8 +3,8 @@ import time
 
 import urwid
 
-from ui import graphics, theme, viewmodel
-from ui.viewmodel import Topic, Mode
+from sodalite.ui import graphics, theme, viewmodel
+from sodalite.ui.viewmodel import Topic, Mode
 
 txt = urwid.AttrMap(urwid.Text('', align='center'), urwid.DEFAULT)
 _notify_box = theme.DynamicAttrMap(urwid.LineBox(txt, tline=''))

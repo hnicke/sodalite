@@ -7,3 +7,4 @@ pyperclip
 pyyaml
 urwid
 watchdog
+click

@@ -2,9 +2,9 @@ import logging
 import os
 import time
 
-from core import dao
-from core import hook
-from core.key import Key
+from sodalite.core import dao
+from sodalite.core import hook
+from sodalite.core.key import Key
 from .entry import Entry
 
 logger = logging.getLogger(__name__)

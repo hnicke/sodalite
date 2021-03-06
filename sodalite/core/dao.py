@@ -4,11 +4,11 @@ import re
 import sqlite3
 from typing import Dict, Iterable, List
 
-from core import key as key_module
-from core.entry import Entry
-from core.key import Key
-from core.operate import Operation
-from util import environment
+from sodalite.core import key as key_module
+from sodalite.core.entry import Entry
+from sodalite.core.key import Key
+from sodalite.core.operate import Operation
+from sodalite.util import environment
 
 """
 Handles database access

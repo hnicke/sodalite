@@ -1,31 +1,31 @@
 import logging
 import os
 import threading
+from pathlib import Path
 
 import urwid.curses_display
-
-from core import dirhistory
-from core.navigate import Navigator
-from ui import theme, viewmodel
-from ui.control import NavigateControl, AssignControl, OperateControl
-from ui.filter import Filter
-from ui.hookbox import HookBox
-from ui.help import HelpLauncher
-from ui.mainpane import MainPane
-from ui.viewmodel import ViewModel, Topic, Mode
-from util import environment
+from sodalite.core import dirhistory
+from sodalite.core.navigate import Navigator
+from sodalite.ui import theme, viewmodel
+from sodalite.ui.control import NavigateControl, AssignControl, OperateControl
+from sodalite.ui.filter import Filter
+from sodalite.ui.help import HelpLauncher
+from sodalite.ui.hookbox import HookBox
+from sodalite.ui.mainpane import MainPane
+from sodalite.ui.viewmodel import ViewModel, Topic, Mode
+from sodalite.util import environment
 
 logger = logging.getLogger(__name__)
 
 
 class MainFrame(urwid.Frame):
 
-    def __init__(self, path: str):
+    def __init__(self, path: Path):
         """
 
         :param path: the start entry
         """
-        history = dirhistory.load(path)
+        history = dirhistory.load(str(path))
         self.navigator = Navigator(history)
         self.model = ViewModel()
         self.navigator.register(self.model.on_update)
@@ -76,7 +76,7 @@ loop = None
 popupLauncher = None
 
 
-def run(path: str):
+def run(path: Path):
     global frame
     global loop
     global popupLauncher

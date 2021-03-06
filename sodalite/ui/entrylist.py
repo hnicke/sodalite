@@ -4,10 +4,10 @@ import os
 import urwid
 from urwid import AttrSpec, ListBox
 
-from core.entry import Entry, EntryType
-from core.navigate import Navigator
-from ui import theme, graphics, viewmodel
-from ui.viewmodel import ViewModel, Topic
+from sodalite.core.entry import Entry, EntryType
+from sodalite.core.navigate import Navigator
+from sodalite.ui import theme, graphics, viewmodel
+from sodalite.ui.viewmodel import ViewModel, Topic
 
 logger = logging.getLogger(__name__)
 

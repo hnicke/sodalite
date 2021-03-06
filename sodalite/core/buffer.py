@@ -3,8 +3,8 @@ import os
 import shutil
 from typing import List, Union
 
-from core.entry import Entry
-from util import environment
+from sodalite.core.entry import Entry
+from sodalite.util import environment
 
 logger = logging.getLogger(__name__)
 

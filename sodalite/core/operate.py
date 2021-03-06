@@ -2,7 +2,7 @@ import os
 import time
 from typing import Dict
 
-from core.entry import Entry
+from sodalite.core.entry import Entry
 
 
 def rename(entry: Entry, new_name: str):
