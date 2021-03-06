@@ -8,3 +8,4 @@ pyyaml
 urwid
 watchdog
 click
+mypy
