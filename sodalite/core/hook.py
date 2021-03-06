@@ -3,7 +3,6 @@ import os
 from typing import List, Dict, Collection
 
 from sodalite.core import config
-from sodalite.ui import graphics
 
 logger = logging.getLogger(__name__)
 
@@ -32,6 +31,7 @@ class Hook:
         logger.info("Executing command: {}".format(self.action))
         result = os.system(f"( {self.action} ) > /dev/tty < /dev/tty")
         logger.info(f"Result is {result}")
+        from sodalite.ui import graphics
         if self.finally_exit:
             graphics.exit(cwd=entry.path)
         else:

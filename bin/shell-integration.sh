@@ -64,24 +64,9 @@ elif [ $shell = 'bash' ]; then
 fi
 
 if ! [ "$SODALITE_CD_INTERCEPTION" = 'false' ]; then
-    function cd { 
-        last=${@: -1}
-        # catching the errors here, so user does not see an inconvenient error message
-        if [ "$@" ]; then
-            if ! [ -e "$last" ]; then
-                echo "cd: no such file or directory: $last" > /dev/stderr
-                return 1
-            elif ! [ -d "$last" ]; then
-                echo "cd: not a directory: $last" > /dev/stderr
-                return 1
-            elif ! [ -x "$last" ]; then
-                echo "cd: permission denied: $last" > /dev/stderr
-                return 1
-            fi
-        fi
-        [[ "$argv[-1]" =~ ^(\.|\.\.)$ ]] ||
+    function cd {
         (
-            nohup sodalite --update-access "$last" &
+            nohup nice --adjustment=20 sodalite --update-access "$@" &
         ) >/dev/null 2>&1
         builtin cd "$@"
     }

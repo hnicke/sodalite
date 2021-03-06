@@ -82,7 +82,7 @@ class DirHistory:
         else:
             return self.cwd()
 
-    def _truncate(self):
+    def truncate(self):
         """
         In case the history is longer than MAX_LENGTH, discards parts of it.
         """
@@ -96,7 +96,7 @@ class DirHistory:
 
 
 def load(start_entry: str) -> DirHistory:
-    logger.info('Load navigation history')
+    logger.debug('Loading navigation history')
     if not os.path.isfile(environment.history_file):
         return DirHistory([start_entry], persist=True)
     with open(environment.history_file, 'r') as file:
@@ -119,8 +119,8 @@ def object_decoder(obj) -> DirHistory:
 
 
 def save(history: DirHistory):
-    history._truncate()
-    logger.info('Persist navigation history')
+    history.truncate()
     text = json.dumps(history.__dict__, indent=4)
     with open(environment.history_file, 'w') as file:
         file.write(text)
+    logger.debug('Persisted navigation history')

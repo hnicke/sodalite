@@ -1,5 +1,8 @@
 from random import shuffle
-from typing import List
+from typing import List, Dict, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from sodalite.core.entry import Entry
 
 all_keys: List[List[str]] = []
 all_keys.append(['a', 's', 'd', 'f', 'j', 'k', 'l'])
@@ -68,7 +71,7 @@ def _get_available_keys(old_entries: dict) -> List[str]:
     return unused_keys
 
 
-def assign_keys(entries_to_assign: dict, old_entries: dict):
+def assign_keys(entries_to_assign: Dict[str, 'Entry'], old_entries: Dict[str, 'Entry']):
     """ assigns keys to the given new entries. Needs old entries
     :param entries_to_assign: entries without key, these will receive a key
     :param old_entries: all entries of this domain which already have a key
@@ -83,7 +86,7 @@ def assign_keys(entries_to_assign: dict, old_entries: dict):
     sorted_new_entries = _sort(entries_to_assign.values())
     _assign(sorted_new_entries, available_keys)
 
-    # now try reassign keys to these entries who just lost their key
+    # now try reassign keys to these entries which just lost their key
     reassigned_keys = [x for x in reassignable_keys if x not in available_keys]
     entries_to_reassign = [x for x in old_entries.values() if x.key.value in reassigned_keys]
     for entry in entries_to_reassign:

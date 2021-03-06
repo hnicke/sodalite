@@ -1,5 +1,4 @@
 import logging
-import os
 import re
 import sqlite3
 from typing import Dict, Iterable, List
@@ -59,6 +58,9 @@ class DbEntry:
         self.key: Key = key
         self.access_history: List[int] = access_history
 
+    def to_entry(self, parent: Entry) -> Entry:
+        return Entry(path=self.path, key=self.key, access_history=self.access_history, parent=parent)
+
 
 def regexp(expr, item):
     reg = re.compile(expr)
@@ -83,7 +85,7 @@ def init():
 init()
 
 
-def inject_data(entry):
+def inject_data(entry: Entry):
     """
     Injects key and frequency information into children of given entry
     """
@@ -236,6 +238,7 @@ def rename_entry(entry: Entry, new_name: str):
     # finally:
     #     conn.close()
     pass
+
 
 def insert_access(path: str, access: int):
     query = f"INSERT INTO {TABLE_ACCESS} VALUES (?,?)"

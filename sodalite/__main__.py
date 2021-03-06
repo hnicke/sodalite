@@ -9,6 +9,7 @@ import click
 
 from sodalite.core import dao, key
 from sodalite.core.entry import Entry
+from sodalite.core.entryaccess import EntryAccess
 from sodalite.util import environment
 
 PROGRAM_NAME = 'sodalite'
@@ -41,9 +42,8 @@ _CLICK_CONTEXT = dict(help_option_names=['-h', '--help'])
 @click.command('sodalite', context_settings=_CLICK_CONTEXT)
 @click.version_option(VERSION)
 @click.argument('path', required=False, type=click.Path(exists=True), default=Path.cwd())
-@click.option('-u', '--update-access', type=click.Path(exists=True),
-              help="Store access for given path in the database and quit")
-def run(path: Path, update_access: Optional[Path]):
+@click.option('-u', '--update-access', help="Store access for given path in the database and quit")
+def run(path: Path, update_access: Optional[str]):
     """Opens the sodalite file navigator at given PATH"""
     if update_access:
         update(update_access)
@@ -58,16 +58,21 @@ def run(path: Path, update_access: Optional[Path]):
                 sys.__stdout__ = sys.stdout = open('/dev/stdout', 'w')
                 _io_to_std()
                 print(environment.exit_cwd)
-            logger.info("Shutting down")
-        except KeyboardInterrupt as e:
-            logger.info('Received SIGINT - shutting down')
+            logger.debug("Shutting down")
+        except KeyboardInterrupt:
+            logger.debug('Received SIGINT - shutting down')
             exit(1)
 
 
-def update(target: Path):
-    # make this update run without bothering the user
-    os.nice(20)
-    target_name = str(target)
+def update(target: str):
+    if target in ['.', '..']:
+        # do nothing
+        return
+    target_path = Path(target)
+    if not target_path.exists():
+        logger.warning(f'Not updating target {target}: no such file or directory')
+        exit(1)
+    target_name = str(target_path)
     if target_name.startswith("/"):
         target_name = target_name[1:]
         cwd = "/"
@@ -78,9 +83,9 @@ def update(target: Path):
     for segment in route:
         entry_path = os.path.join(cwd, segment)
         if not dao.entry_exists(entry_path):
-            old_entries = dao.get_children(cwd)
+            old_entries = EntryAccess().retrieve_entry(cwd).children
             entry = Entry(entry_path)
-            key.assign_keys({entry.path: entry}, old_entries)
+            key.assign_keys({entry.path: entry}, {x.path: x for x in old_entries})
             dao.insert_entry(entry)
         now = int(time.time() * 1000)
         dao.insert_access(entry_path, now)
