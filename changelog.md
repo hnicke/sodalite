@@ -3,6 +3,7 @@
 ## Unreleased
 ##### Bugfix
 - Fix rendering first line in file preview
+- Fix zsh integration for powerlevel9k users 
 ##### Misc
 - Improve file preview syntax highlighting
 ##### Technical

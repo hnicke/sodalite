@@ -21,11 +21,12 @@ if [ $shell = 'zsh' ]; then
             if [ -d "$target" ]; then 
                 dirname=$target
                 builtin cd "$dirname"
+                zle accept-line
             else
                 RBUFFER=" $target $RBUFFER"
+                zle reset-prompt
             fi
         fi
-        zle reset-prompt
     }
 
     function sodalite-vim-widget {
