@@ -3,20 +3,20 @@ import os
 
 from pathlib import Path
 
+VERSION = '0.19.4'
+PROGRAM_NAME = 'sodalite'
+
 # setup logger
 _global_logger = logging.getLogger()
-_global_logger.setLevel(logging.DEBUG)
+_global_logger.setLevel(logging.INFO)
 handler = logging.handlers.SysLogHandler(address='/dev/log')
-formatter = logging.Formatter('sodalite: %(name)-18s - %(levelname)-5s - %(message)s')
+formatter = logging.Formatter(f'{PROGRAM_NAME}: %(name)-18s - %(levelname)-5s - %(message)s')
 handler.setFormatter(formatter)
 _global_logger.addHandler(handler)
-logging.getLogger('watchdog').setLevel(logging.INFO)
+logging.getLogger('sodalite').setLevel(logging.DEBUG)
 
 logger = logging.getLogger(__name__)
 logger.debug('Starting sodalite')
-
-VERSION = '0.19.4'
-PROGRAM_NAME = 'sodalite'
 
 exit_cwd = None
 # program will read following environment variables
