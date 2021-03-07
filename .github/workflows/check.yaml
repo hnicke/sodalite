@@ -20,6 +20,9 @@ jobs:
       - name: Install virtualenv
         run: sudo apt-get install virtualenv
 
+      - name: Setup venv
+        run: make deps
+
       - name: Lint
         run: make lint
 
