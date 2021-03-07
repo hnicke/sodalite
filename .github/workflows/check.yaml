@@ -13,8 +13,12 @@ jobs:
         with:
           python-version: '3.9.2'
 
+      - name: Print python version
+        run: python --version
+
       - name: Install virtualenv
         run: sudo pip install virtualenv
+
 
       - name: Setup venv
         run: make venv
