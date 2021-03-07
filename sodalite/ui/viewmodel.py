@@ -119,7 +119,9 @@ class ViewModel(Observable):
             pass
 
     @property
-    def current_entry(self) -> Optional[Entry]:
+    def current_entry(self) -> Entry:
+        if not self._current_entry:
+            raise Exception('Model was not properly initialized')
         return self._current_entry
 
     @current_entry.setter

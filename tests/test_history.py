@@ -16,14 +16,14 @@ def test_cwd(history: History, entry_1):
 
 
 def test_visit(history):
-    new_entry = '/dir/two'
+    new_entry = Path('/dir/two')
     history.visit(new_entry)
     assert history.cwd() == new_entry
 
 
 def test_visit_parent(history: History):
-    parent = '/parent'
-    child = parent + '/child'
+    parent = Path('/parent')
+    child = parent / 'child'
     history.visit(child)
     history.visit_parent()
     assert history.cwd() == parent
@@ -33,7 +33,7 @@ def test_backward(history: History):
     before = history.cwd()
     times = 3
     for i in range(times):
-        history.visit(str(i))
+        history.visit(Path(str(i)))
     for _ in range(times):
         history.backward()
     after = history.cwd()
@@ -43,22 +43,22 @@ def test_backward(history: History):
 def test_forward(history: History):
     times = 10
     for i in range(times):
-        history.visit(str(i))
+        history.visit(Path(str(i)))
     for _ in range(times):
         history.backward()
     for _ in range(times):
         history.forward()
-    assert history.cwd() == str(times - 1)
+    assert history.cwd() == Path(str(times - 1))
 
 
 def test_visit_discard_future(history: History):
     times = 10
     for i in range(times):
-        history.visit(str(i))
+        history.visit(Path(str(i)))
     for i in range(5):
         history.backward()
     # this should truncate the 'future' history
-    history.visit('truncate-entry')
+    history.visit(Path('truncate-entry'))
     entry = history.cwd()
     history.forward()
     forward_entry = history.cwd()
@@ -66,8 +66,8 @@ def test_visit_discard_future(history: History):
     assert entry == forward_entry
 
 
-def test_visit_same(history: History, entry_1: str):
-    new_entry = '/dir/two'
+def test_visit_same(history: History, entry_1: Path):
+    new_entry = Path('/dir/two')
     history.visit(new_entry)
     history.visit(new_entry)
     history.backward()
@@ -80,10 +80,10 @@ def history_file(tmp_path: Path) -> Path:
 
 
 @fixture
-def entry_1() -> str:
-    return '/dir/one'
+def entry_1() -> Path:
+    return Path('/dir/one')
 
 
 @fixture
-def history(entry_1) -> History:
+def history(entry_1: Path) -> History:
     return History([entry_1])

@@ -1,5 +1,6 @@
 import logging
 import os
+from pathlib import Path
 
 from sodalite.core import key as key_module
 from sodalite.core.entrywatcher import EntryWatcher
@@ -7,6 +8,7 @@ from sodalite.core.key import Key
 from sodalite.util.observer import Observable
 from .entry import Entry
 from .entryaccess import EntryAccess
+from .history import History
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +18,7 @@ class Navigator(Observable):
     Clients (e.g., GUI) may use the navigator class for interaction
     """
 
-    def __init__(self, history, entry_access: EntryAccess = EntryAccess()):
+    def __init__(self, history: History, entry_access: EntryAccess = EntryAccess()):
         super().__init__()
         self.history = history
         self.entry_access = entry_access
@@ -30,7 +32,7 @@ class Navigator(Observable):
         or None in case the current directory does not exist anymore
         """
         path = self.history.cwd()
-        entry = self.entry_access.retrieve_entry(path)
+        entry = self.entry_access.retrieve_entry(str(path))
         self._chdir(entry)
         return entry
 
@@ -50,11 +52,11 @@ class Navigator(Observable):
             entry = self.entry_access.retrieve_entry_for_key(Key(key))
         except FileNotFoundError:
             # try to rescan dir
-            self.current_entry = self.entry_access.retrieve_entry(self.history.cwd(), cache=False)
+            self.current_entry = self.entry_access.retrieve_entry(str(self.history.cwd()), cache=False)
             raise FileNotFoundError
         if entry is None:
             entry = self.current()
-        self.history.visit(entry.path)
+        self.history.visit(Path(entry.path))
         self.current_entry = entry
         self._access(entry)
         self._chdir(entry)
@@ -67,7 +69,7 @@ class Navigator(Observable):
         :return:the matching entry
         :raises: PermissionError
         """
-        self.history.visit(path)
+        self.history.visit(Path(path))
         entry = self.entry_access.retrieve_entry(path)
         self.current_entry = entry
         self._access(entry)
@@ -76,14 +78,14 @@ class Navigator(Observable):
 
     def visit_previous(self) -> Entry:
         path = self.history.backward()
-        entry = self.entry_access.retrieve_entry(path)
+        entry = self.entry_access.retrieve_entry(str(path))
         self.current_entry = entry
         self._chdir(entry)
         return entry
 
     def visit_next(self) -> Entry:
         path = self.history.forward()
-        entry = self.entry_access.retrieve_entry(path)
+        entry = self.entry_access.retrieve_entry(str(path))
         self.current_entry = entry
         self._chdir(entry)
         return entry
@@ -91,7 +93,7 @@ class Navigator(Observable):
     def visit_parent(self) -> Entry:
         path = self.history.visit_parent()
         try:
-            entry = self.entry_access.retrieve_entry(path)
+            entry = self.entry_access.retrieve_entry(str(path))
             if not entry.path == self.current_entry.path:
                 self.current_entry = entry
                 self._chdir(entry)
@@ -141,8 +143,8 @@ class Navigator(Observable):
         except FileNotFoundError:
             self.recursive_try_visit(self.current_entry.dir)
 
-    def recursive_try_visit(self, path):
+    def recursive_try_visit(self, path: str):
         try:
             self.visit_path(path)
         except FileNotFoundError:
-            self.recursive_try_visit(os.path.pardir(path))
+            self.recursive_try_visit(str(Path(path).parent))

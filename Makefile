@@ -78,8 +78,9 @@ venv: setup.py
 check: lint type-check test
 .PHONY: check
 
+color = true
 type-check: venv
-	${activate} && mypy ${pkg} tests
+	${activate} && mypy ${pkg} tests ${shell [ ${color} != 'true' ] && echo '--no-color-output'}
 .PHONY: type-check
 
 

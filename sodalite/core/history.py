@@ -1,7 +1,6 @@
 import atexit
 import json
 import logging
-import os
 from pathlib import Path
 from typing import List
 
@@ -18,15 +17,14 @@ class HistoryLoadException(Exception):
     pass
 
 
-# TODO refactor this class to use Path instead of strings everywhere
 class History:
     """
     Keeps a history of visited files and offers methods for navigation within this history.
     Will never check if a file path is a valid file path.
     """
 
-    def __init__(self, history: List[str] = None, index: int = 0, persist: bool = False):
-        self._history = history or [str(env.HOME)]
+    def __init__(self, history: List[Path] = None, index: int = 0, persist: bool = False):
+        self._history = history or [env.HOME]
         self._index = index
         if persist:
             atexit.register(self.save)
@@ -46,42 +44,45 @@ class History:
 
     def save(self, file: Path = _HISTORY_FILE):
         self._truncate()
-        json_history = json.dumps(self.__dict__, indent=4)
+        json_history = json.dumps({
+            'history': [str(x.absolute()) for x in self._history],
+            'index': self._index
+        }, indent=4)
         file.write_text(json_history)
         logger.debug(f"Persisted navigation history to '{file}'")
 
-    def cwd(self) -> str:
+    def cwd(self) -> Path:
         """
         :return: The current absolute, canonical path
         """
         return self._history[self._index]
 
-    def visit(self, path: str):
+    def visit(self, path: Path):
         """
         Adds given path to the dir history as most recent entry.
         Does nothing if the most recent entry is the same as given path.
         :param path: An absolute, canonical file path. No checks regarding existence of this file are made
         """
         if self.cwd() != path:
-            logger.info("Visiting '{}'".format(path))
-            self.__discard_future()
+            logger.info(f"Visiting '{path}'")
+            self._discard_future()
             self._history.append(path)
             self._index += 1
 
-    def __discard_future(self):
+    def _discard_future(self):
         del self._history[self._index + 1:]
 
-    def visit_parent(self) -> str:
+    def visit_parent(self) -> Path:
         """
         Adds the parent file (relative to the current file) to the history.
         Does not append file to history if the most recent entry is the same as its parent entry.
         :return: The absolute, canonical file path of the current file's parent
         """
-        parent = os.path.dirname(self.cwd())
+        parent = self.cwd().parent
         self.visit(parent)
-        return self.cwd()
+        return parent
 
-    def backward(self) -> str:
+    def backward(self) -> Path:
         """
         Goes one step backwards in history
         :return: The previously visited file path.
@@ -89,12 +90,12 @@ class History:
         if self._index > 0:
             self._index -= 1
             path = self.cwd()
-            logger.info("Going back to '{}'".format(path))
+            logger.info(f"Going back to '{path}'")
             return path
         else:
             return self.cwd()
 
-    def forward(self) -> str:
+    def forward(self) -> Path:
         """
         Replays one step in history (redo). Returns current file path, if this is not possible
         :return: The next file path, if exists - or the current file path
@@ -102,7 +103,7 @@ class History:
         if len(self._history) > self._index + 1:
             self._index += 1
             path = self.cwd()
-            logger.info("Going forward to '{}'".format(path))
+            logger.info(f"Going forward to '{path}'")
             return path
         else:
             return self.cwd()
@@ -120,10 +121,10 @@ class History:
             self._index -= lower
 
     def __repr__(self) -> str:
-        before = ' <-- '.join(self._history[:self._index])
+        before = ' <-- '.join([str(x) for x in self._history[:self._index]])
         if before:
             before += ' <--'
-        after = '-->'.join(self._history[self._index + 1:])
+        after = '-->'.join([str(x) for x in self._history[self._index + 1:]])
         if after:
             after = '--> ' + after
         return f'{before} [_{self.cwd()}_] {after}'
@@ -134,7 +135,7 @@ class History:
 
 def _object_decoder(obj) -> History:
     try:
-        return History(obj['_history'], obj['_index'], persist=True)
+        return History([Path(x) for x in obj['history']], obj['index'], persist=True)
     except KeyError as e:
         logger.warning(f"Failed to load navigation history: {e}")
         raise HistoryLoadException()

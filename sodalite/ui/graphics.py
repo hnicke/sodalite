@@ -27,7 +27,7 @@ class MainFrame(urwid.Frame):
         :param path: the start entry
         """
         history = History.load()
-        history.visit(str(path))
+        history.visit(path)
         self.navigator = Navigator(history)
         self.model = ViewModel()
         self.navigator.register(self.model.on_update)

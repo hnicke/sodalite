@@ -40,7 +40,7 @@ class MainPane(urwid.WidgetWrap):
             self.set_title_to_cwd(model)
             graphics.redraw_if_external()
 
-    def set_title_to_cwd(self, model):
+    def set_title_to_cwd(self, model: ViewModel):
         cwd = model.current_entry.path
         if cwd.startswith(str(env.HOME)):
             cwd = "~" + cwd[len(str(env.HOME)):]
