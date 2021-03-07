@@ -2,7 +2,6 @@ import logging
 import os
 import sys
 from pathlib import Path
-from typing import Dict
 
 import yaml
 from yaml.parser import ParserError
@@ -24,7 +23,7 @@ class InvalidConfiguration(Exception):
     pass
 
 
-def _sanitize_keymap(keys: Dict) -> Dict:
+def _sanitize_keymap(keys: dict[str, str]) -> dict[str, str]:
     # ctrl h equals backspace in terminal emulators
     for action, keybinding in keys.items():
         if keybinding == 'ctrl h':

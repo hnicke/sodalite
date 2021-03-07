@@ -1,6 +1,6 @@
 import logging
 import os
-from typing import Dict, Union, TYPE_CHECKING
+from typing import Union, TYPE_CHECKING
 
 from sodalite.core import config
 
@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger(__name__)
 
-special_keys: Dict[str, str] = {}
+special_keys: dict[str, str] = {}
 
 
 class Hook:
@@ -50,9 +50,9 @@ def _extract_hook(key: str, hook_definition: Union[dict, str]) -> Hook:
 
 
 class HookMap:
-    def __init__(self, hooks: Dict[str, Dict[str, Union[Dict[str, str], str]]]):
-        self.map: Dict[str, list[Hook]] = {}
-        self.custom: Dict[str, list[Hook]] = {}
+    def __init__(self, hooks: dict[str, dict[str, Union[dict[str, str], str]]]):
+        self.map: dict[str, list[Hook]] = {}
+        self.custom: dict[str, list[Hook]] = {}
 
         for category in ['general', 'dir', 'file', 'plain_text', 'executable']:
             self.map[category] = []
@@ -87,7 +87,7 @@ class HookMap:
     def get_executable_hooks(self) -> list[Hook]:
         return self.map['executable']
 
-    def get_custom_hooks(self) -> Dict[str, list[Hook]]:
+    def get_custom_hooks(self) -> dict[str, list[Hook]]:
         return self.custom
 
     def __repr__(self):
@@ -110,7 +110,7 @@ def get_hooks(entry) -> list[Hook]:
     """
     :return: list of possible actions for given entry
     """
-    matching_hooks: Dict[str, Hook] = {}
+    matching_hooks: dict[str, Hook] = {}
     matching_hooks.update(as_dict(hook_map.get_general_hooks()))
     if entry.is_dir():
         matching_hooks.update(as_dict(hook_map.get_dir_hooks()))
@@ -124,7 +124,7 @@ def get_hooks(entry) -> list[Hook]:
     return list(matching_hooks.values())
 
 
-def as_dict(hook_list: list[Hook]) -> Dict[str, Hook]:
+def as_dict(hook_list: list[Hook]) -> dict[str, Hook]:
     d = {}
     for hook in hook_list:
         d[hook.key] = hook

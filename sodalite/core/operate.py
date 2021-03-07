@@ -1,18 +1,15 @@
-import os
 import time
-from typing import Dict
 
 from sodalite.core.entry import Entry
 
 
 def rename(entry: Entry, new_name: str):
-    os.rename(entry.path, os.path.join(entry.dir, new_name))
+    entry.path.rename(entry.dir / new_name)
     entry.name = new_name
-    # dao.rename_entry(entry, new_name)
 
 
 class Operation:
-    def __init__(self, action_name, params: Dict[str, str] = None, timestamp=None):
+    def __init__(self, action_name, params: dict[str, str] = None, timestamp=None):
         self.action_name = action_name
         if not params:
             params = {}

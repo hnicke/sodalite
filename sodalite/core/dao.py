@@ -2,7 +2,7 @@ import logging
 import re
 import sqlite3
 from pathlib import Path
-from typing import Dict, Iterable
+from typing import Iterable
 
 from sodalite.core import key as key_module
 from sodalite.core.entry import Entry
@@ -90,8 +90,8 @@ def inject_data(entry: Entry):
     """
     Injects key and frequency information into children of given entry
     """
-    entries_fs: Dict[Path, Entry] = entry.path_to_child
-    entries_db: Dict[Path, DbEntry] = get_children(entry.path)
+    entries_fs: dict[Path, Entry] = entry.path_to_child
+    entries_db: dict[Path, DbEntry] = get_children(entry.path)
     # remove obsolete entries
     obsolete_paths = entries_db.keys() - entries_fs.keys()
     remove_entries(obsolete_paths)
@@ -107,7 +107,7 @@ def inject_data(entry: Entry):
     insert_new_entries(entries_fs, old_entries)
 
 
-def get_children(path: Path) -> Dict[Path, DbEntry]:
+def get_children(path: Path) -> dict[Path, DbEntry]:
     """
     Queries the database for all child entries belonging to given entry
     """
@@ -120,10 +120,10 @@ def get_children(path: Path) -> Dict[Path, DbEntry]:
     return read_entries_from_db(query)
 
 
-def read_entries_from_db(regex: str) -> Dict[Path, DbEntry]:
+def read_entries_from_db(regex: str) -> dict[Path, DbEntry]:
     """
     :param regex:
-    :return: Dict: path -> (key, frequency)
+    :return: dict: path -> (key, frequency)
     """
     query = f"""
     SELECT {TABLE_ENTRY}.{ENTRY_PATH}, {TABLE_ENTRY}.{ENTRY_KEY}, {TABLE_ACCESS}.{ACCESS_TIMESTAMP}
@@ -134,7 +134,7 @@ def read_entries_from_db(regex: str) -> Dict[Path, DbEntry]:
     conn = open_connection()
     try:
         cursor = conn.cursor().execute(query, (regex,))
-        result: Dict[Path, DbEntry] = {}
+        result: dict[Path, DbEntry] = {}
         for row in cursor:
             path = Path(row[0])
             access = row[2]
@@ -153,7 +153,7 @@ def read_entries_from_db(regex: str) -> Dict[Path, DbEntry]:
         conn.close()
 
 
-def insert_new_entries(entries_fs: Dict[Path, Entry], entries_db: Dict[Path, Entry]):
+def insert_new_entries(entries_fs: dict[Path, Entry], entries_db: dict[Path, Entry]):
     new_paths = entries_fs.keys() - entries_db.keys()
     if not new_paths:
         return

@@ -1,4 +1,4 @@
-from typing import Set, Dict, Callable
+from typing import Callable
 
 
 class Observer:
@@ -8,7 +8,7 @@ class Observer:
 
 class Observable:
     def __init__(self):
-        self._observers: Dict[str, Set[Callable]] = {}
+        self._observers: dict[str, set[Callable]] = {}
 
     def register(self, callback: Callable, topic=None, immediate_update=True):
         if topic not in self._observers:

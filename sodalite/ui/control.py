@@ -1,6 +1,6 @@
 import logging
 from pathlib import Path
-from typing import Dict, Callable
+from typing import Callable
 from typing import TYPE_CHECKING
 
 import pyperclip
@@ -22,8 +22,8 @@ logger = logging.getLogger(__name__)
 class Control:
 
     def __init__(self, frame: 'MainFrame'):
-        self.action_map: Dict[str, Action] = {}
-        self._action_name_to_callable: Dict[str, Callable] = {}
+        self.action_map: dict[str, Action] = {}
+        self._action_name_to_callable: dict[str, Callable] = {}
         self.action_name_to_callable = {
             action.exit: self.exit,
             action.abort: self.abort,
@@ -59,7 +59,7 @@ class Control:
     @action_name_to_callable.setter
     def action_name_to_callable(self, mapping):
         self._action_name_to_callable = mapping
-        self.action_map: Dict[str, Action] = {k: Action(k, v) for (k, v) in mapping.items()}
+        self.action_map: dict[str, Action] = {k: Action(k, v) for (k, v) in mapping.items()}
 
     @property
     def list(self):

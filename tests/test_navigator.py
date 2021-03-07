@@ -1,7 +1,7 @@
 import os
 import shutil
 from pathlib import Path
-from typing import Dict, Optional
+from typing import Optional
 
 import pytest
 
@@ -20,8 +20,8 @@ test_dir = Path.cwd() / "tmp_data"
 intermediate_count = 10
 file_count = 10
 top_level_entry: Optional[Entry] = None
-intermediate_entries: Dict[Key, Entry] = {}
-file_entries: list[Dict[Key, Entry]] = []
+intermediate_entries: dict[Key, Entry] = {}
+file_entries: list[dict[Key, Entry]] = []
 
 
 def test_assign_key_conflict_swap():

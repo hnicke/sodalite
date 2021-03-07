@@ -4,7 +4,7 @@ from enum import Enum
 from io import UnsupportedOperation
 from numbers import Number
 from pathlib import Path
-from typing import Dict, Optional
+from typing import Optional
 
 from binaryornot.check import is_binary
 
@@ -39,13 +39,13 @@ class Entry:
         self.access_history: list[int] = access_history
         self._rating: Optional[float] = None
         self.parent = parent
-        self.dir = path.parent
+        self.dir: Path = self.path.parent
         self.name = path.name
         self._key = key
 
         self._children: list['Entry'] = []
-        self.path_to_child: Dict[Path, Entry] = {}
-        self.key_to_child: Dict[Key, Entry] = {}
+        self.path_to_child: dict[Path, Entry] = {}
+        self.key_to_child: dict[Key, Entry] = {}
 
         self.__is_plain_text_file = None
         self.hooks: list[Hook] = []

@@ -1,6 +1,6 @@
 import math
 import time
-from typing import Dict, TYPE_CHECKING
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from sodalite.core.entry import Entry
@@ -18,7 +18,7 @@ def populate_ratings(entries: list['Entry']):
         entry.rating = rating
 
 
-def calculate_frecency(entries: list['Entry']) -> Dict['Entry', float]:
+def calculate_frecency(entries: list['Entry']) -> dict['Entry', float]:
     now = int(time.time() * 1000)
     entries_to_rating = {}
     for entry in entries:
@@ -27,7 +27,7 @@ def calculate_frecency(entries: list['Entry']) -> Dict['Entry', float]:
     return entries_to_rating
 
 
-def normalize(entries: Dict['Entry', float]) -> Dict['Entry', float]:
+def normalize(entries: dict['Entry', float]) -> dict['Entry', float]:
     """Maps all frecencies in a way that the max frequency equals 1, in a linear fashion"""
     entries_to_ranking = {}
     max_frecency = max(entries.values())
