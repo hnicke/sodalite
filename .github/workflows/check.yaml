@@ -11,11 +11,17 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
       - name: Set up python
         uses: actions/setup-python@v2
         with:
           python-version: '3.9'
+
+      - name: Install virtualenv
+        run: sudo apt-get install virtualenv
+
       - name: Lint
         run: make lint
+
       - name: Type-Check
         run: make type-check

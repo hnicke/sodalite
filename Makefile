@@ -84,7 +84,7 @@ type-check: venv
 
 
 lint: venv
-	${activate} && flake8 ${pkg}
+	${activate} && flake8 ${pkg} tests
 .PHONY: lint
 
 
