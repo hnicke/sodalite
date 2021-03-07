@@ -20,7 +20,7 @@ jobs:
         run: sudo pip install virtualenv
 
       - name: Print python version in venv
-        run: sourve venv/bin/activate && python --version
+        run: source venv/bin/activate && python --version
 
       - name: Setup venv
         run: make venv
