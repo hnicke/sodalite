@@ -16,11 +16,11 @@ jobs:
       - name: Print python version
         run: python --version
 
-      - name: Install virtualenv
-        run: sudo pip install virtualenv
+#      - name: Install virtualenv
+#        run: sudo pip install virtualenv
 
       - name: create venv
-        run: virtualenv venv
+        run: python -m virtualenv venv
 
       - name: Print python version in venv
         run: source venv/bin/activate && python --version
