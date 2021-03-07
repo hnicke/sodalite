@@ -1,6 +1,6 @@
 import logging
 import os
-from typing import List, Pattern, Generator
+from typing import Pattern, Generator
 
 import pygments
 from pygments import lexers, token
@@ -67,17 +67,17 @@ def find_lexer(filename: str, content: str):
 def line_per_line(tokens) -> Generator[HighlightedLine, None, None]:
     line = []
     pos = 0
-    for attr, token in tokens:
-        while '\n' in token:
-            index = token.index('\n')
-            begin = token[:index]
-            token = token[index + 1:]
+    for attr, _token in tokens:
+        while '\n' in _token:
+            index = _token.index('\n')
+            begin = _token[:index]
+            _token = _token[index + 1:]
             if begin:
                 line.append((attr, begin))
             pos += 1
             yield HighlightedLine(line, pos)
             line = []
-        if token:
-            line.append((attr, token))
+        if _token:
+            line.append((attr, _token))
     if len(line) >= 1:
         yield HighlightedLine(line, pos)
