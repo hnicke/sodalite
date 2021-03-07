@@ -1,5 +1,5 @@
 import logging
-import os
+from pathlib import Path
 from typing import Pattern, Generator
 
 import pygments
@@ -46,12 +46,12 @@ def compute_highlighting(entry: Entry) -> Generator[HighlightedLine, None, None]
     return line_per_line(tokens)
 
 
-def find_lexer(filename: str, content: str):
+def find_lexer(file: Path, content: str):
     try:
-        if os.path.basename(filename) in ('.gitignore', '.dockerignore'):
+        if file.name in ('.gitignore', '.dockerignore'):
             lexer = BashLexer()
         else:
-            lexer = lexers.guess_lexer_for_filename(filename, content, stripnl=False,
+            lexer = lexers.guess_lexer_for_filename(str(file), content, stripnl=False,
                                                     ensurenl=False)
         logger.debug('Detected lexer by filename')
     except pygments.util.ClassNotFound:

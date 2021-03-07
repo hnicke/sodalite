@@ -1,3 +1,4 @@
+from pathlib import Path
 from random import shuffle
 from typing import Dict, TYPE_CHECKING
 
@@ -71,7 +72,7 @@ def _get_available_keys(old_entries: dict) -> list[str]:
     return unused_keys
 
 
-def assign_keys(entries_to_assign: Dict[str, 'Entry'], old_entries: Dict[str, 'Entry']):
+def assign_keys(entries_to_assign: Dict[Path, 'Entry'], old_entries: Dict[Path, 'Entry']):
     """ assigns keys to the given new entries. Needs old entries
     :param entries_to_assign: entries without key, these will receive a key
     :param old_entries: all entries of this domain which already have a key

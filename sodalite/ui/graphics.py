@@ -2,6 +2,7 @@ import logging
 import os
 import threading
 from pathlib import Path
+from typing import Optional
 
 import urwid.curses_display
 
@@ -93,7 +94,7 @@ def resume():
     loop.start()
 
 
-def exit(cwd=None):
+def exit(cwd: Optional[Path] = None):
     env.exit_cwd = cwd
     raise urwid.ExitMainLoop()
 

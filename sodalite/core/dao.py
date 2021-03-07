@@ -1,6 +1,7 @@
 import logging
 import re
 import sqlite3
+from pathlib import Path
 from typing import Dict, Iterable
 
 from sodalite.core import key as key_module
@@ -49,17 +50,17 @@ CREATE TABLE IF NOT EXISTS {TABLE_OPERATION} (
 
 
 class DbEntry:
-    def __init__(self, path: str, key: Key = None, access_history: list[int] = None):
+    def __init__(self, path: Path, key: Key = None, access_history: list[int] = None):
         if not key:
             key = Key('')
         if not access_history:
             access_history = []
-        self.path: str = path
+        self.path: Path = path
         self.key: Key = key
         self.access_history: list[int] = access_history
 
     def to_entry(self, parent: Entry) -> Entry:
-        return Entry(path=self.path, key=self.key, access_history=self.access_history, parent=parent)
+        return Entry(path=Path(self.path), key=self.key, access_history=self.access_history, parent=parent)
 
 
 def regexp(expr, item):
@@ -89,8 +90,8 @@ def inject_data(entry: Entry):
     """
     Injects key and frequency information into children of given entry
     """
-    entries_fs: Dict[str, Entry] = entry.path_to_child
-    entries_db: Dict[str, DbEntry] = get_children(entry.realpath)
+    entries_fs: Dict[Path, Entry] = entry.path_to_child
+    entries_db: Dict[Path, DbEntry] = get_children(entry.path)
     # remove obsolete entries
     obsolete_paths = entries_db.keys() - entries_fs.keys()
     remove_entries(obsolete_paths)
@@ -106,18 +107,20 @@ def inject_data(entry: Entry):
     insert_new_entries(entries_fs, old_entries)
 
 
-def get_children(path: str) -> Dict[str, DbEntry]:
+def get_children(path: Path) -> Dict[Path, DbEntry]:
     """
     Queries the database for all child entries belonging to given entry
     """
     # fix regex for root
-    if path == '/':
-        path = ''
-    query = f"^{path}/[^/]+$"
+    if str(path) == '/':
+        expr = ''
+    else:
+        expr = str(path)
+    query = f"^{expr}/[^/]+$"
     return read_entries_from_db(query)
 
 
-def read_entries_from_db(regex: str) -> Dict[str, DbEntry]:
+def read_entries_from_db(regex: str) -> Dict[Path, DbEntry]:
     """
     :param regex:
     :return: Dict: path -> (key, frequency)
@@ -131,9 +134,9 @@ def read_entries_from_db(regex: str) -> Dict[str, DbEntry]:
     conn = open_connection()
     try:
         cursor = conn.cursor().execute(query, (regex,))
-        result: Dict[str, DbEntry] = {}
+        result: Dict[Path, DbEntry] = {}
         for row in cursor:
-            path = row[0]
+            path = Path(row[0])
             access = row[2]
             if access is not None and path in result:
                 result[path].access_history.append(access)
@@ -150,7 +153,7 @@ def read_entries_from_db(regex: str) -> Dict[str, DbEntry]:
         conn.close()
 
 
-def insert_new_entries(entries_fs: Dict[str, Entry], entries_db: Dict[str, Entry]):
+def insert_new_entries(entries_fs: Dict[Path, Entry], entries_db: Dict[Path, Entry]):
     new_paths = entries_fs.keys() - entries_db.keys()
     if not new_paths:
         return
@@ -164,7 +167,7 @@ def insert_new_entries(entries_fs: Dict[str, Entry], entries_db: Dict[str, Entry
     parameters = []
     for entry in new_entries.values():
         query += "(?,?),"
-        parameters += [entry.path, entry.key.value]
+        parameters += [str(entry.path), entry.key.value]
     query = query[:-1] + ';'
     conn = open_connection()
     try:
@@ -176,11 +179,11 @@ def insert_new_entries(entries_fs: Dict[str, Entry], entries_db: Dict[str, Entry
         conn.close()
 
 
-def entry_exists(path: str) -> bool:
+def entry_exists(path: Path) -> bool:
     query = f"""SELECT EXISTS (SELECT 1 FROM {TABLE_ENTRY} WHERE ({ENTRY_PATH}) = ?)"""
     conn = open_connection()
     try:
-        exists = conn.cursor().execute(query, (path,)).fetchone()[0]
+        exists = conn.cursor().execute(query, (str(path),)).fetchone()[0]
         return exists
     finally:
         conn.close()
@@ -196,7 +199,7 @@ def insert_entry(entry):
         conn.close()
 
 
-def remove_entries(obsolete_paths: Iterable[str]):
+def remove_entries(obsolete_paths: Iterable[Path]):
     """Deletes obsolete entries in the db"""
     if not obsolete_paths:
         return
@@ -205,7 +208,7 @@ def remove_entries(obsolete_paths: Iterable[str]):
     try:
         regex = '^('
         for path in obsolete_paths:
-            regex += re.escape(path) + '(/.*)*|'
+            regex += re.escape(str(path)) + '(/.*)*|'
         regex = regex[:-1] + ')$'
         conn.cursor().execute(query, (regex,))
         conn.commit()
@@ -224,28 +227,11 @@ def update_entry(entry: Entry):
         conn.close()
 
 
-def rename_entry(entry: Entry, new_name: str):
-    # old_path = entry.path
-    # new_path = os.path.join(entry.dir, new_name)
-    # query = f"""-- SELECT {ENTRY_PATH},{ENTRY_KEY} FROM {TABLE_ENTRY} WHERE {ENTRY_PATH} REGEXP ?"""
-    # regex = f"^{re.escape(old_path)}(/.*)*$"
-    # conn = open_connection()
-    # try:
-    #     cursor = conn.cursor().execute(query, (regex,))
-    #     paths_to_rename = [row[0] for row in cursor]
-    #     new_paths = [x.replace(old_path, new_path, 1) for x in paths_to_rename]
-    #     update_entries = f"""UPDATE {TABLE_ENTRY} WHERE """
-    #     pass
-    # finally:
-    #     conn.close()
-    pass
-
-
-def insert_access(path: str, access: int):
+def insert_access(path: Path, access: int):
     query = f"INSERT INTO {TABLE_ACCESS} VALUES (?,?)"
     conn = open_connection()
     try:
-        conn.cursor().execute(query, (path, access))
+        conn.cursor().execute(query, (str(path), access))
         conn.commit()
     finally:
         conn.close()

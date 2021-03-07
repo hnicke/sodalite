@@ -30,7 +30,7 @@ class Hook:
         return str(self)
 
     def trigger(self, entry):
-        os.environ['entry'] = entry.path
+        os.environ['entry'] = str(entry.path)
         logger.info("Executing command: {}".format(self.action))
         result = os.system(f"( {self.action} ) > /dev/tty < /dev/tty")
         logger.info(f"Result is {result}")

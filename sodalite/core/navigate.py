@@ -33,7 +33,7 @@ class Navigator(Observable):
         or None in case the current directory does not exist anymore
         """
         path = self.history.cwd()
-        entry = self.entry_access.retrieve_entry(str(path))
+        entry = self.entry_access.retrieve_entry(path)
         self._chdir(entry)
         return entry
 
@@ -53,7 +53,7 @@ class Navigator(Observable):
             entry = self.entry_access.retrieve_entry_for_key(key)
         except FileNotFoundError:
             # try to rescan dir
-            self.current_entry = self.entry_access.retrieve_entry(str(self.history.cwd()), cache=False)
+            self.current_entry = self.entry_access.retrieve_entry(self.history.cwd(), cache=False)
             raise FileNotFoundError
         if entry is None:
             entry = self.current()
@@ -71,7 +71,7 @@ class Navigator(Observable):
         :raises: PermissionError
         """
         self.history.visit(Path(path))
-        entry = self.entry_access.retrieve_entry(str(path))
+        entry = self.entry_access.retrieve_entry(path)
         self.current_entry = entry
         self._access(entry)
         self._chdir(entry)
@@ -79,14 +79,14 @@ class Navigator(Observable):
 
     def visit_previous(self) -> Entry:
         path = self.history.backward()
-        entry = self.entry_access.retrieve_entry(str(path))
+        entry = self.entry_access.retrieve_entry(path)
         self.current_entry = entry
         self._chdir(entry)
         return entry
 
     def visit_next(self) -> Entry:
         path = self.history.forward()
-        entry = self.entry_access.retrieve_entry(str(path))
+        entry = self.entry_access.retrieve_entry(path)
         self.current_entry = entry
         self._chdir(entry)
         return entry
@@ -94,7 +94,7 @@ class Navigator(Observable):
     def visit_parent(self) -> Entry:
         path = self.history.visit_parent()
         try:
-            entry = self.entry_access.retrieve_entry(str(path))
+            entry = self.entry_access.retrieve_entry(path)
             if not entry.path == self.current_entry.path:
                 self.current_entry = entry
                 self._chdir(entry)

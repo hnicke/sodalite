@@ -42,6 +42,10 @@ class MainPane(urwid.WidgetWrap):
 
     def set_title_to_cwd(self, model: ViewModel):
         cwd = model.current_entry.path
-        if cwd.startswith(str(env.HOME)):
-            cwd = "~" + cwd[len(str(env.HOME)):]
-        self.box.set_title(cwd)
+        if cwd == env.HOME:
+            title = '~'
+        elif cwd.is_relative_to(env.HOME):
+            title = f"~/{cwd.relative_to(env.HOME)}"
+        else:
+            title = str(cwd)
+        self.box.set_title(title)

@@ -1,6 +1,7 @@
 import logging
 import os
 import shutil
+from pathlib import Path
 from typing import Union
 
 from sodalite.core.entry import Entry
@@ -11,16 +12,17 @@ logger = logging.getLogger(__name__)
 
 class Register:
     def __init__(self, number: int):
-        self.name = "register" + str(number)
-        self._path = os.path.join(env.buffer, self.name)
+        self.name = f"register{number}"
+        self._path = env.buffer / self.name
 
     def copy_to(self, src: Union[list[Entry], Entry]):
         """
         Writes given entries or given entry to this register
         """
+
         def write_single_entry(e: Entry):
             logger.info(f"Yanking {e.name} to {self.name}")
-            copy(e.path, os.path.join(self.path, e.name))
+            copy(e.path, self.path / e.name)
 
         self.clear()
         if isinstance(src, list):
@@ -31,18 +33,17 @@ class Register:
 
     def move_to(self, entry: Entry):
         self.clear()
-        src = entry.path
-        dest = os.path.join(self.path, entry.name)
-        logger.info(f"Moving {src} to {dest}")
-        os.rename(src, dest)
+        dest = self.path / entry.name
+        logger.info(f"Moving {entry.path} to {dest}")
+        entry.path.rename(dest)
 
     def read_from(self, target: Entry):
         """
         Copies this registers content into given target dir
         """
-        for file in os.listdir(self.path):
-            src = os.path.join(self.path, file)
-            dest = os.path.join(target.path, file)
+        for file in self.path:
+            src = self.path / file
+            dest = target.path / file
             logger.info(f"Pasting {self.name} to {dest}")
             copy(src, dest)
 
@@ -63,7 +64,7 @@ class Register:
 registers = [Register(x) for x in range(10)]
 
 
-def copy(src: str, dest: str):
+def copy(src: Path, dest: Path):
     """
     Recursively copy src to dest
     :param src:
