@@ -27,6 +27,7 @@ setuptools.setup(
             'mypy',
             'pytest',
             'flake8',
+            'commitizen',
         ]
     }
 )
