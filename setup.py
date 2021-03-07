@@ -25,6 +25,7 @@ setuptools.setup(
         'dev': [
             'mypy',
             'pytest',
+            'flake8',
         ]
     }
 )

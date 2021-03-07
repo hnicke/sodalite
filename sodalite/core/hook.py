@@ -1,6 +1,6 @@
 import logging
 import os
-from typing import List, Dict, Collection, Union
+from typing import List, Dict, Union
 
 from sodalite.core import config
 

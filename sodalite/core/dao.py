@@ -110,16 +110,16 @@ def get_children(path: str) -> Dict[str, DbEntry]:
     """
     Queries the database for all child entries belonging to given entry
     """
-    # fix regexp for root
+    # fix regex for root
     if path == '/':
         path = ''
     query = f"^{path}/[^/]+$"
     return read_entries_from_db(query)
 
 
-def read_entries_from_db(regexp: str) -> Dict[str, DbEntry]:
+def read_entries_from_db(regex: str) -> Dict[str, DbEntry]:
     """
-    :param regexp:
+    :param regex:
     :return: Dict: path -> (key, frequency)
     """
     query = f"""
@@ -130,7 +130,7 @@ def read_entries_from_db(regexp: str) -> Dict[str, DbEntry]:
     """
     conn = open_connection()
     try:
-        cursor = conn.cursor().execute(query, (regexp,))
+        cursor = conn.cursor().execute(query, (regex,))
         result: Dict[str, DbEntry] = {}
         for row in cursor:
             path = row[0]

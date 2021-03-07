@@ -5,6 +5,8 @@
     <option name="PARENT_ENVS" value="true" />
     <envs>
       <env name="PYTHONUNBUFFERED" value="1" />
+      <env name="DB_PATH" value="db.sqlite" />
+      <env name="CONFIG_FILE" value="docs/sodalite.conf" />
     </envs>
     <option name="SDK_HOME" value="$PROJECT_DIR$/venv/bin/python" />
     <option name="WORKING_DIRECTORY" value="" />

@@ -68,13 +68,30 @@ uninstall:
 
 ### dev targets ###
 activate = . venv/bin/activate
+pkg = sodalite
 
 venv: setup.py
 	virtualenv venv
 	${activate} && pip install '.[dev]'
 	@touch venv
 
+check: lint type-check
+.PHONY: check
+
 type-check: venv
-	${activate} && mypy sodalite
+	${activate} && mypy ${pkg}
+.PHONY: type-check
 
 
+lint: venv
+	${activate} && flake8 ${pkg}
+.PHONY: lint
+
+
+# logs are written to journald in order not to interfere with the TUI
+logs:
+	journalctl --identifier sodalite --follow
+.PHONY: logs
+
+clean:
+	rm -rf venv db.sqlite
