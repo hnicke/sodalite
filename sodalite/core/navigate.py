@@ -1,14 +1,15 @@
 import logging
 import os
 from pathlib import Path
+from typing import Optional
 
 from sodalite.core import key as key_module
+from sodalite.core.entry import Entry
+from sodalite.core.entryaccess import EntryAccess
 from sodalite.core.entrywatcher import EntryWatcher
+from sodalite.core.history import History
 from sodalite.core.key import Key
 from sodalite.util.observer import Observable
-from .entry import Entry
-from .entryaccess import EntryAccess
-from .history import History
 
 logger = logging.getLogger(__name__)
 
@@ -18,10 +19,10 @@ class Navigator(Observable):
     Clients (e.g., GUI) may use the navigator class for interaction
     """
 
-    def __init__(self, history: History, entry_access: EntryAccess = EntryAccess()):
+    def __init__(self, history: History, entry_access: Optional[EntryAccess] = None):
         super().__init__()
         self.history = history
-        self.entry_access = entry_access
+        self.entry_access = entry_access or EntryAccess()
         self._current_entry = None
         self.register(EntryWatcher(self).on_update, immediate_update=False)
         self.current_entry = self.current()

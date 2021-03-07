@@ -38,7 +38,7 @@ class Hook:
             graphics.resume()
 
 
-def _extract_hook(key: str, hook_definition: Union[dict, str]) -> 'Hook':
+def _extract_hook(key: str, hook_definition: Union[dict, str]) -> Hook:
     if isinstance(hook_definition, dict):
         hook = Hook(key, hook_definition['action'], label=hook_definition.get('label'))
     else:
@@ -100,7 +100,7 @@ class HookMap:
             self.custom)
 
 
-hooks = HookMap(config.hooks)
+hook_map = HookMap(config.hooks)
 
 
 def get_hooks(entry) -> List[Hook]:
@@ -108,16 +108,16 @@ def get_hooks(entry) -> List[Hook]:
     :return: list of possible actions for given entry
     """
     matching_hooks: Dict[str, Hook] = {}
-    matching_hooks.update(as_dict(hooks.get_general_hooks()))
+    matching_hooks.update(as_dict(hook_map.get_general_hooks()))
     if entry.is_dir():
-        matching_hooks.update(as_dict(hooks.get_dir_hooks()))
+        matching_hooks.update(as_dict(hook_map.get_dir_hooks()))
     elif entry.is_file():
         matching_hooks.update(as_dict(get_custom_hooks(entry)))
-        matching_hooks.update(as_dict(hooks.get_file_hooks()))
+        matching_hooks.update(as_dict(hook_map.get_file_hooks()))
         if entry.is_plain_text_file():
-            matching_hooks.update(as_dict(hooks.get_plain_text_hooks()))
+            matching_hooks.update(as_dict(hook_map.get_plain_text_hooks()))
         if entry.executable:
-            matching_hooks.update(as_dict(hooks.get_executable_hooks()))
+            matching_hooks.update(as_dict(hook_map.get_executable_hooks()))
     return list(matching_hooks.values())
 
 
@@ -129,7 +129,7 @@ def as_dict(hook_list: List[Hook]) -> Dict[str, Hook]:
 
 
 def get_custom_hooks(entry) -> List[Hook]:
-    custom_hooks = hooks.get_custom_hooks()
+    custom_hooks = hook_map.get_custom_hooks()
     matches = list(filter(lambda x: entry.name.endswith(x), custom_hooks.keys()))
     matching_hooks: List[Hook] = []
     for match in matches:
@@ -138,10 +138,10 @@ def get_custom_hooks(entry) -> List[Hook]:
 
 
 def is_hook(key: str, entry) -> bool:
-    matches = [hook for hook in entry.hooks if hook.key.lower() == key.lower()]
+    matches = [hook for hook in entry.hook_map if hook.key.lower() == key.lower()]
     return len(matches) > 0
 
 
 def trigger_hook(key: str, entry):
-    hook = [hook for hook in entry.hooks if hook.key.lower() == key.lower()][0]
+    hook = [hook for hook in entry.hook_map if hook.key.lower() == key.lower()][0]
     hook.trigger(entry)

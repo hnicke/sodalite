@@ -61,7 +61,7 @@ class EntryAccess:
         if not entry.exists():
             raise FileNotFoundError
         check_permission(entry)
-        entry.hooks = hook.get_hooks(entry)
+        entry.hook_map = hook.get_hooks(entry)
         # TODO removed update of frequency. add again somewhere else!
         self.__populate_children(entry)
         self.__current_entry = entry
