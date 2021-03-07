@@ -68,7 +68,7 @@ def regexp(expr, item):
 
 
 def open_connection():
-    conn = sqlite3.connect(environment.db_file)
+    conn = sqlite3.connect(environment.db_file.absolute())
     conn.create_function("REGEXP", 2, regexp)
     conn.execute("PRAGMA foreign_keys = ON")
     return conn

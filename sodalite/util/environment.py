@@ -22,13 +22,13 @@ ENV_DB_PATH = 'DB_PATH'
 ENV_CONFIG_FILE = 'CONFIG_FILE'
 
 home = Path(os.environ['HOME'])
-data = Path(os.getenv(ENV_DATA_DIR, '/usr/share/sodalite/'))
-user_data = Path(os.getenv('XDG_DATA_HOME', home / '.local/share/sodalite/'))
-user_config = Path(os.getenv('XDG_CONFIG_HOME', home / '.config/sodalite/'))
-db_file = Path(os.getenv(ENV_DB_PATH, user_data / 'db.sqlite'))
+data = Path(os.getenv(ENV_DATA_DIR, '/usr/share/sodalite/')).absolute()
+user_data = Path(os.getenv('XDG_DATA_HOME', home / '.local/share/sodalite/')).absolute()
 history_file = user_data / 'history'
+user_config = Path(os.getenv('XDG_CONFIG_HOME', home / '.config/sodalite/')).absolute()
+db_file = Path(os.getenv(ENV_DB_PATH, user_data / 'db.sqlite')).absolute()
 
-config_file = Path(os.getenv(ENV_CONFIG_FILE, user_config / 'sodalite/sodalite.conf'))
+config_file = Path(os.getenv(ENV_CONFIG_FILE, user_config / 'sodalite/sodalite.conf')).absolute()
 if not config_file.exists():
     config_file = Path('/etc/sodalite.conf')
     if not config_file.exists():
