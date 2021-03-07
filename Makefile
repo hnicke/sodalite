@@ -71,7 +71,7 @@ activate = . venv/bin/activate
 pkg = sodalite
 
 venv: setup.py
-	virtualenv venv
+	virtualenv venv -p $(shell which python)
 	${activate} && pip install '.[dev]'
 	@touch venv
 
