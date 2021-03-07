@@ -75,7 +75,7 @@ venv: setup.py
 	${activate} && pip install '.[dev]'
 	@touch venv
 
-check: lint type-check
+check: lint type-check test
 .PHONY: check
 
 type-check: venv
@@ -93,11 +93,10 @@ logs:
 	journalctl --identifier sodalite --follow
 .PHONY: logs
 
-clean:
-	rm -rf venv db.sqlite
-.PHONY: clean
-
 test: venv
 	${activate} && python -m pytest tests
 .PHONY: test
 
+clean:
+	rm -rf venv db.sqlite
+.PHONY: clean

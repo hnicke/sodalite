@@ -2,7 +2,7 @@ import atexit
 import json
 import logging
 import os
-from json import JSONDecodeError
+from pathlib import Path
 from typing import List
 
 from sodalite.util import env
@@ -10,6 +10,12 @@ from sodalite.util import env
 logger = logging.getLogger(__name__)
 
 MAX_LENGTH = 50
+
+_HISTORY_FILE = env.USER_DATA / 'history.json'
+
+
+class HistoryLoadException(Exception):
+    pass
 
 
 # TODO refactor this class to use Path instead of strings everywhere
@@ -19,11 +25,30 @@ class DirHistory:
     Will never check if a file path is a valid file path.
     """
 
-    def __init__(self, history: List[str], index: int = 0, persist: bool = False):
-        self._history = history
+    def __init__(self, history: List[str] = None, index: int = 0, persist: bool = False):
+        self._history = history or []
         self._current_index = index
         if persist:
-            atexit.register(save, self)
+            atexit.register(self.save)
+
+    @classmethod
+    def load(cls, file: Path = _HISTORY_FILE) -> 'DirHistory':
+        if file.is_file():
+            json_history = file.read_text()
+            try:
+                history: DirHistory = json.loads(json_history, object_hook=_object_decoder)
+                logger.debug(f"Loaded navigation history from '{file}'")
+                return history
+            except HistoryLoadException:
+                return DirHistory(persist=True)
+        else:
+            return DirHistory(persist=True)
+
+    def save(self, file: Path = _HISTORY_FILE):
+        self._truncate()
+        json_history = json.dumps(self.__dict__, indent=4)
+        file.write_text(json_history)
+        logger.debug(f"Persisted navigation history to '{file}'")
 
     def cwd(self) -> str:
         """
@@ -82,7 +107,7 @@ class DirHistory:
         else:
             return self.cwd()
 
-    def truncate(self):
+    def _truncate(self):
         """
         In case the history is longer than MAX_LENGTH, discards parts of it.
         """
@@ -94,33 +119,16 @@ class DirHistory:
             self._history = self._history[lower:upper]
             self._current_index -= lower
 
+    def __repr__(self) -> str:
+        return str(self._history)
 
-def load(start_entry: str) -> DirHistory:
-    logger.debug('Loading navigation history')
-    if not os.path.isfile(env.history_file):
-        return DirHistory([start_entry], persist=True)
-    with open(env.history_file, 'r') as file:
-        text = file.read()
-        try:
-            history: DirHistory = json.loads(text, object_hook=object_decoder)
-            history._history.insert(history._current_index + 1, start_entry)
-            history._current_index += 1
-            return history
-        except JSONDecodeError:
-            return DirHistory([start_entry], persist=True)
+    def __eq__(self, other):
+        return isinstance(other, DirHistory) and self.__dict__ == other.__dict__
 
 
-def object_decoder(obj) -> DirHistory:
+def _object_decoder(obj) -> DirHistory:
     try:
         return DirHistory(obj['_history'], obj['_current_index'], persist=True)
-    except KeyError:
-        logger.warning("Failed to load navigation history")
-        raise JSONDecodeError
-
-
-def save(history: DirHistory):
-    history.truncate()
-    text = json.dumps(history.__dict__, indent=4)
-    with open(env.history_file, 'w') as file:
-        file.write(text)
-    logger.debug('Persisted navigation history')
+    except KeyError as e:
+        logger.warning(f"Failed to load navigation history: {e}")
+        raise HistoryLoadException()

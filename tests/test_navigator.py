@@ -4,7 +4,6 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 import pytest
-from pytest import skip
 
 from sodalite.core import entry as entry_module
 from sodalite.core.dirhistory import DirHistory
@@ -59,7 +58,7 @@ def setup_test_data():
     pass
 
 
-@pytest.yield_fixture(autouse=True)
+@pytest.fixture(autouse=True)
 def fixture():
     pytest.skip('needs refactoring')
     global navigator

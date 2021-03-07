@@ -4,7 +4,8 @@ import threading
 from pathlib import Path
 
 import urwid.curses_display
-from sodalite.core import dirhistory
+
+from core import DirHistory
 from sodalite.core.navigate import Navigator
 from sodalite.ui import theme, viewmodel
 from sodalite.ui.control import NavigateControl, AssignControl, OperateControl
@@ -25,7 +26,8 @@ class MainFrame(urwid.Frame):
 
         :param path: the start entry
         """
-        history = dirhistory.load(str(path))
+        history = DirHistory.load()
+        history.visit(str(path))
         self.navigator = Navigator(history)
         self.model = ViewModel()
         self.navigator.register(self.model.on_update)
