@@ -6,7 +6,7 @@ from typing import Dict, List, Optional
 import pytest
 
 from sodalite.core import entry as entry_module
-from sodalite.core.dirhistory import DirHistory
+from sodalite.core.history import History
 from sodalite.core.entry import Entry
 from sodalite.core.entryaccess import EntryAccess
 from sodalite.core.key import Key
@@ -65,6 +65,6 @@ def fixture():
     shutil.rmtree(test_dir, ignore_errors=True)
     setup_test_data()
     env.db_file = test_dir / "tmp_db.sqlite"
-    navigator = Navigator(DirHistory([str(test_dir)]), EntryAccess())
+    navigator = Navigator(History([str(test_dir)]), EntryAccess())
     yield
     shutil.rmtree(test_dir)

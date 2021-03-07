@@ -19,7 +19,7 @@ class HistoryLoadException(Exception):
 
 
 # TODO refactor this class to use Path instead of strings everywhere
-class DirHistory:
+class History:
     """
     Keeps a history of visited files and offers methods for navigation within this history.
     Will never check if a file path is a valid file path.
@@ -27,22 +27,22 @@ class DirHistory:
 
     def __init__(self, history: List[str] = None, index: int = 0, persist: bool = False):
         self._history = history or [str(env.HOME)]
-        self._current_index = index
+        self._index = index
         if persist:
             atexit.register(self.save)
 
     @classmethod
-    def load(cls, file: Path = _HISTORY_FILE) -> 'DirHistory':
+    def load(cls, file: Path = _HISTORY_FILE) -> 'History':
         if file.is_file():
             json_history = file.read_text()
             try:
-                history: DirHistory = json.loads(json_history, object_hook=_object_decoder)
+                history: History = json.loads(json_history, object_hook=_object_decoder)
                 logger.debug(f"Loaded navigation history from '{file}'")
                 return history
             except HistoryLoadException:
-                return DirHistory(persist=True)
+                return History(persist=True)
         else:
-            return DirHistory(persist=True)
+            return History(persist=True)
 
     def save(self, file: Path = _HISTORY_FILE):
         self._truncate()
@@ -54,7 +54,7 @@ class DirHistory:
         """
         :return: The current absolute, canonical path
         """
-        return self._history[self._current_index]
+        return self._history[self._index]
 
     def visit(self, path: str):
         """
@@ -66,10 +66,10 @@ class DirHistory:
             logger.info("Visiting '{}'".format(path))
             self.__discard_future()
             self._history.append(path)
-            self._current_index += 1
+            self._index += 1
 
     def __discard_future(self):
-        del self._history[self._current_index + 1:]
+        del self._history[self._index + 1:]
 
     def visit_parent(self) -> str:
         """
@@ -86,8 +86,8 @@ class DirHistory:
         Goes one step backwards in history
         :return: The previously visited file path.
         If there is no previously visited file path, returns the current file path."""
-        if self._current_index > 0:
-            self._current_index -= 1
+        if self._index > 0:
+            self._index -= 1
             path = self.cwd()
             logger.info("Going back to '{}'".format(path))
             return path
@@ -99,8 +99,8 @@ class DirHistory:
         Replays one step in history (redo). Returns current file path, if this is not possible
         :return: The next file path, if exists - or the current file path
         """
-        if len(self._history) > self._current_index + 1:
-            self._current_index += 1
+        if len(self._history) > self._index + 1:
+            self._index += 1
             path = self.cwd()
             logger.info("Going forward to '{}'".format(path))
             return path
@@ -113,22 +113,28 @@ class DirHistory:
         """
         if len(self._history) > MAX_LENGTH:
             half = MAX_LENGTH // 2
-            lower = max(self._current_index - half, 0)
+            lower = max(self._index - half, 0)
             upper = min(lower + MAX_LENGTH, len(self._history))
             lower = min(upper - MAX_LENGTH, lower)
             self._history = self._history[lower:upper]
-            self._current_index -= lower
+            self._index -= lower
 
     def __repr__(self) -> str:
-        return str(self._history)
+        before = ' <-- '.join(self._history[:self._index])
+        if before:
+            before += ' <--'
+        after = '-->'.join(self._history[self._index + 1:])
+        if after:
+            after = '--> ' + after
+        return f'{before} [_{self.cwd()}_] {after}'
 
     def __eq__(self, other):
-        return isinstance(other, DirHistory) and self.__dict__ == other.__dict__
+        return isinstance(other, History) and self.__dict__ == other.__dict__
 
 
-def _object_decoder(obj) -> DirHistory:
+def _object_decoder(obj) -> History:
     try:
-        return DirHistory(obj['_history'], obj['_current_index'], persist=True)
+        return History(obj['_history'], obj['_index'], persist=True)
     except KeyError as e:
         logger.warning(f"Failed to load navigation history: {e}")
         raise HistoryLoadException()

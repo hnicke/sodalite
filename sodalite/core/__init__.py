@@ -1,3 +1,3 @@
-from .dirhistory import DirHistory
+from .history import History
 
-__all__ = ['DirHistory']
+__all__ = ['History']
