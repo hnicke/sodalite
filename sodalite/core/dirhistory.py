@@ -20,7 +20,6 @@ class DirHistory:
     """
 
     def __init__(self, history: List[str], index: int = 0, persist: bool = False):
-        assert history
         self._history = history
         self._current_index = index
         if persist:

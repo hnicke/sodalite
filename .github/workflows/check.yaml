@@ -1,12 +1,8 @@
 name: Check
-
-# Run this workflow every time a new commit pushed to your repository
 on: push
-
 jobs:
   check:
-    # Name the Job
-    name: Lint and type-check the code base
+    name: Lint, type-check and test the code base
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -28,3 +24,6 @@ jobs:
 
       - name: Type-Check
         run: make type-check
+
+      - name: Run tests
+        run: make test

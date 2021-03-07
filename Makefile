@@ -95,3 +95,9 @@ logs:
 
 clean:
 	rm -rf venv db.sqlite
+.PHONY: clean
+
+test: venv
+	${activate} && python -m pytest tests
+.PHONY: test
+
