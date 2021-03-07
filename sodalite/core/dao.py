@@ -1,7 +1,7 @@
 import logging
 import re
 import sqlite3
-from typing import Dict, Iterable, List
+from typing import Dict, Iterable
 
 from sodalite.core import key as key_module
 from sodalite.core.entry import Entry
@@ -49,14 +49,14 @@ CREATE TABLE IF NOT EXISTS {TABLE_OPERATION} (
 
 
 class DbEntry:
-    def __init__(self, path: str, key: Key = None, access_history: List[int] = None):
+    def __init__(self, path: str, key: Key = None, access_history: list[int] = None):
         if not key:
             key = Key('')
         if not access_history:
             access_history = []
         self.path: str = path
         self.key: Key = key
-        self.access_history: List[int] = access_history
+        self.access_history: list[int] = access_history
 
     def to_entry(self, parent: Entry) -> Entry:
         return Entry(path=self.path, key=self.key, access_history=self.access_history, parent=parent)

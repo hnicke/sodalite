@@ -1,4 +1,4 @@
-from typing import List, Callable
+from typing import Callable
 
 from sodalite.core import config
 from sodalite.ui import viewmodel
@@ -75,7 +75,7 @@ default_keybindings = {
 
 class Action:
 
-    def __init__(self, name, action: Callable, modes: List[Mode] = None):
+    def __init__(self, name, action: Callable, modes: list[Mode] = None):
         self.name = name
         self.is_global = not modes
         self.modes = modes or []
@@ -91,5 +91,5 @@ class Action:
 
 class MultiAction(Action):
 
-    def __init__(self, name, action: Callable, modes: List[Mode] = None):
+    def __init__(self, name, action: Callable, modes: list[Mode] = None):
         super().__init__(name, action, modes=modes)

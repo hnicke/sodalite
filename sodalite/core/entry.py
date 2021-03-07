@@ -4,7 +4,7 @@ from enum import Enum
 from io import UnsupportedOperation
 from numbers import Number
 from pathlib import Path
-from typing import Dict, Iterable, List, Optional
+from typing import Dict, Iterable, Optional
 
 from binaryornot.check import is_binary
 
@@ -28,7 +28,7 @@ class Entry:
     defines the entry class which represents a file or directory
     """
 
-    def __init__(self, path: str, access_history: List[int] = None, parent: 'Entry' = None, key: Key = Key('')):
+    def __init__(self, path: str, access_history: list[int] = None, parent: 'Entry' = None, key: Key = Key('')):
         """
         :param path: the absolute, canonical path of this entry
         """
@@ -36,7 +36,7 @@ class Entry:
         if not access_history:
             access_history = []
         self.unexplored = False
-        self.access_history: List[int] = access_history
+        self.access_history: list[int] = access_history
         self._rating: Optional[float] = None
         self.parent = parent
         self.dir, self.name = os.path.split(path)
@@ -47,7 +47,7 @@ class Entry:
         self.key_to_child: Dict[Key, Entry] = {}
 
         self.__is_plain_text_file = None
-        self.hooks: List[Hook] = []
+        self.hooks: list[Hook] = []
         self.stat = os.lstat(path)
         self.size = self.stat.st_size
         self.permissions = oct(self.stat.st_mode)[-3:]

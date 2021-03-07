@@ -1,6 +1,6 @@
 import logging
 import os
-from typing import List, Dict, Union, TYPE_CHECKING
+from typing import Dict, Union, TYPE_CHECKING
 
 from sodalite.core import config
 
@@ -51,8 +51,8 @@ def _extract_hook(key: str, hook_definition: Union[dict, str]) -> Hook:
 
 class HookMap:
     def __init__(self, hooks: Dict[str, Dict[str, Union[Dict[str, str], str]]]):
-        self.map: Dict[str, List[Hook]] = {}
-        self.custom: Dict[str, List[Hook]] = {}
+        self.map: Dict[str, list[Hook]] = {}
+        self.custom: Dict[str, list[Hook]] = {}
 
         for category in ['general', 'dir', 'file', 'plain_text', 'executable']:
             self.map[category] = []
@@ -72,22 +72,22 @@ class HookMap:
                         hook_list.append(hook)
                         self.custom[extension] = hook_list
 
-    def get_general_hooks(self) -> List[Hook]:
+    def get_general_hooks(self) -> list[Hook]:
         return self.map['general']
 
-    def get_dir_hooks(self) -> List[Hook]:
+    def get_dir_hooks(self) -> list[Hook]:
         return self.map['dir']
 
-    def get_file_hooks(self) -> List[Hook]:
+    def get_file_hooks(self) -> list[Hook]:
         return self.map['file']
 
-    def get_plain_text_hooks(self) -> List[Hook]:
+    def get_plain_text_hooks(self) -> list[Hook]:
         return self.map['plain_text']
 
-    def get_executable_hooks(self) -> List[Hook]:
+    def get_executable_hooks(self) -> list[Hook]:
         return self.map['executable']
 
-    def get_custom_hooks(self) -> Dict[str, List[Hook]]:
+    def get_custom_hooks(self) -> Dict[str, list[Hook]]:
         return self.custom
 
     def __repr__(self):
@@ -106,7 +106,7 @@ class HookMap:
 hook_map = HookMap(config.hooks)
 
 
-def get_hooks(entry) -> List[Hook]:
+def get_hooks(entry) -> list[Hook]:
     """
     :return: list of possible actions for given entry
     """
@@ -124,17 +124,17 @@ def get_hooks(entry) -> List[Hook]:
     return list(matching_hooks.values())
 
 
-def as_dict(hook_list: List[Hook]) -> Dict[str, Hook]:
+def as_dict(hook_list: list[Hook]) -> Dict[str, Hook]:
     d = {}
     for hook in hook_list:
         d[hook.key] = hook
     return d
 
 
-def get_custom_hooks(entry) -> List[Hook]:
+def get_custom_hooks(entry) -> list[Hook]:
     custom_hooks = hook_map.get_custom_hooks()
     matches = list(filter(lambda x: entry.name.endswith(x), custom_hooks.keys()))
-    matching_hooks: List[Hook] = []
+    matching_hooks: list[Hook] = []
     for match in matches:
         matching_hooks += custom_hooks[match]
     return matching_hooks

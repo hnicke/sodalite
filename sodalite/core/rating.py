@@ -1,6 +1,6 @@
 import math
 import time
-from typing import List, Dict, TYPE_CHECKING
+from typing import Dict, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from sodalite.core.entry import Entry
@@ -12,13 +12,13 @@ STEEPNESS = 35  # e.g. 50 would make recent accesses much more valuable
 _MILLIS_TO_HOURS = 1000 * 60 * 60 * 24
 
 
-def populate_ratings(entries: List['Entry']):
+def populate_ratings(entries: list['Entry']):
     dict = normalize(calculate_frecency(entries))
     for entry, rating in dict.items():
         entry.rating = rating
 
 
-def calculate_frecency(entries: List['Entry']) -> Dict['Entry', float]:
+def calculate_frecency(entries: list['Entry']) -> Dict['Entry', float]:
     now = int(time.time() * 1000)
     entries_to_rating = {}
     for entry in entries:

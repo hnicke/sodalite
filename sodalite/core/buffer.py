@@ -1,7 +1,7 @@
 import logging
 import os
 import shutil
-from typing import List, Union
+from typing import Union
 
 from sodalite.core.entry import Entry
 from sodalite.util import env
@@ -14,7 +14,7 @@ class Register:
         self.name = "register" + str(number)
         self._path = os.path.join(env.buffer, self.name)
 
-    def copy_to(self, src: Union[List[Entry], Entry]):
+    def copy_to(self, src: Union[list[Entry], Entry]):
         """
         Writes given entries or given entry to this register
         """

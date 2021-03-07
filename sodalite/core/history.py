@@ -2,7 +2,6 @@ import atexit
 import json
 import logging
 from pathlib import Path
-from typing import List
 
 from sodalite.util import env
 
@@ -23,7 +22,7 @@ class History:
     Will never check if a file path is a valid file path.
     """
 
-    def __init__(self, history: List[Path] = None, index: int = 0, persist: bool = False):
+    def __init__(self, history: list[Path] = None, index: int = 0, persist: bool = False):
         self._history = history or [env.HOME]
         self._index = index
         if persist:

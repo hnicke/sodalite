@@ -1,7 +1,7 @@
 import os
 import shutil
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, Optional
 
 import pytest
 
@@ -21,7 +21,7 @@ intermediate_count = 10
 file_count = 10
 top_level_entry: Optional[Entry] = None
 intermediate_entries: Dict[Key, Entry] = {}
-file_entries: List[Dict[Key, Entry]] = []
+file_entries: list[Dict[Key, Entry]] = []
 
 
 def test_assign_key_conflict_swap():
