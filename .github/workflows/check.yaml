@@ -18,7 +18,7 @@ jobs:
           python-version: '3.9'
 
       - name: Install virtualenv
-        run: sudo apt-get install virtualenv
+        run: sudo pip install virtualenv
 
       - name: Setup venv
         run: make deps
