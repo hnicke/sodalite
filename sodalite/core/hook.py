@@ -1,8 +1,11 @@
 import logging
 import os
-from typing import List, Dict, Union
+from typing import List, Dict, Union, TYPE_CHECKING
 
 from sodalite.core import config
+
+if TYPE_CHECKING:
+    from sodalite.core.entry import Entry
 
 logger = logging.getLogger(__name__)
 
@@ -137,11 +140,11 @@ def get_custom_hooks(entry) -> List[Hook]:
     return matching_hooks
 
 
-def is_hook(key: str, entry) -> bool:
-    matches = [hook for hook in entry.hook_map if hook.key.lower() == key.lower()]
+def is_hook(key: str, entry: 'Entry') -> bool:
+    matches = [hook for hook in entry.hooks if hook.key.lower() == key.lower()]
     return len(matches) > 0
 
 
-def trigger_hook(key: str, entry):
-    hook = [hook for hook in entry.hook_map if hook.key.lower() == key.lower()][0]
+def trigger_hook(key: str, entry: 'Entry'):
+    hook = [hook for hook in entry.hooks if hook.key.lower() == key.lower()][0]
     hook.trigger(entry)

@@ -1,11 +1,12 @@
 import logging
+from pathlib import Path
 from typing import Dict, Callable
 from typing import TYPE_CHECKING
 
 import pyperclip
 from urwid import AttrSpec
 
-from sodalite.core import key as key_module, hook, buffer, operate
+from sodalite.core import key as key_module, hook, buffer, operate, Navigator
 from sodalite.core.key import Key
 from sodalite.ui import graphics, viewmodel, notify, theme, action
 from sodalite.ui.action import Action
@@ -43,7 +44,7 @@ class Control:
         self.frame = frame
         self.hookbox = frame.hookbox
         self.filter = frame.filter
-        self.navigator = frame.navigator
+        self.navigator: Navigator = frame.navigator
         self.model = frame.model
         self._list = None
         self.list_size = None
@@ -178,15 +179,15 @@ class NavigateControl(Control):
         actions.update(self.action_name_to_callable)
         self.action_name_to_callable = actions
 
-    def handle_key_individually(self, key):
+    def handle_key_individually(self, key: str):
         if hook.is_hook(key, self.model.current_entry):
             hook.trigger_hook(key, self.model.current_entry)
             return True
         elif self.navigator.is_navigation_key(key):
-            self.go_to_key(key)
+            self.go_to_key(Key(key))
             return True
 
-    def go_to_key(self, key: str):
+    def go_to_key(self, key: Key):
         self.navigator.visit_child(key)
         self.clear_filter()
 
@@ -199,7 +200,7 @@ class NavigateControl(Control):
         self.clear_filter()
 
     def go_to_root(self):
-        self.navigator.visit_path('/')
+        self.navigator.visit_path(Path('/'))
         self.clear_filter()
 
     def go_to_previous(self):
@@ -251,7 +252,7 @@ class AssignControl(Control):
     def assign_key(self, key: str):
         if key_module.is_navigation_key(key):
             selected_entry = self.list.selection.entry
-            self.navigator.assign_key(key_module.Key(key), selected_entry.path)
+            self.navigator.assign_key(Key(key), Path(selected_entry.path))
             self.list.on_entries_changed(self.model)
             self.enter_navigate_mode()
 
