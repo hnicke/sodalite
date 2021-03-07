@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 import pytest
+from pytest import skip
 
 from sodalite.core import entry as entry_module
 from sodalite.core.dirhistory import DirHistory
@@ -24,8 +25,8 @@ intermediate_entries: Dict[Key, Entry] = {}
 file_entries: List[Dict[Key, Entry]] = []
 
 
+@skip('needs refactoring')
 def test_assign_key_conflict_swap():
-    return
     """When assigning a key to an entry and the key is already assigned to another entry, keys are swapped"""
     # entry = navigator.visit_path(test_dir)
     # entry.get_child(key)
@@ -34,8 +35,8 @@ def test_assign_key_conflict_swap():
     navigator.assign_key(key.value, intermediate_entries[other_key].path)
 
 
+@skip('needs refactoring')
 def setup_test_data():
-    return
     global top_level_entry
     global intermediate_entries
     global file_entries
@@ -58,13 +59,13 @@ def setup_test_data():
     pass
 
 
-#@pytest.yield_fixture(autouse=True)
-#def fixture():
-#    global navigator
-#    shutil.rmtree(test_dir, ignore_errors=True)
-#    setup_test_data()
-#    env.db_file = test_dir / "tmp_db.sqlite"
-#    navigator = Navigator(DirHistory([str(test_dir)]), EntryAccess())
-#    yield
-#    shutil.rmtree(test_dir)
-#
+@skip('needs refactoring')
+@pytest.yield_fixture(autouse=True)
+def fixture():
+    global navigator
+    shutil.rmtree(test_dir, ignore_errors=True)
+    setup_test_data()
+    env.db_file = test_dir / "tmp_db.sqlite"
+    navigator = Navigator(DirHistory([str(test_dir)]), EntryAccess())
+    yield
+    shutil.rmtree(test_dir)
