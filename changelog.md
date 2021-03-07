@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+##### Technical
+- Replace requirements.txt with setup.py
+
 ## v0.19.4: March 7, 2021
 ##### Bugfix
 - Fix problem with bootstrapping

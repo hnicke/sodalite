@@ -68,11 +68,13 @@ uninstall:
 
 ### dev targets ###
 activate = . venv/bin/activate
-venv:
-	virtualenv venv
-	${activate} && pip install -r requirements
 
-lint:
+venv: setup.py
+	virtualenv venv
+	${activate} && pip install '.[dev]'
+	@touch venv
+
+type-check: venv
 	${activate} && mypy sodalite
 
 
