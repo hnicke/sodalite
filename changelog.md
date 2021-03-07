@@ -3,6 +3,7 @@
 ## Unreleased
 ##### Technical
 - Replace requirements.txt with setup.py
+- Add github action which type-checks and lints the code
 
 ## v0.19.4: March 7, 2021
 ##### Bugfix

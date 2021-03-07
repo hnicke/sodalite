@@ -1,0 +1,21 @@
+name: Check
+
+# Run this workflow every time a new commit pushed to your repository
+on: push
+
+jobs:
+  check:
+    # Name the Job
+    name: Lint and type-check the code base
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up python
+        uses: actions/setup-python
+        with:
+          python-version: '3.9'
+      - name: Lint
+        run: make lint
+      - name: Type-Check
+        run: make type-check
