@@ -25,9 +25,9 @@ intermediate_entries: Dict[Key, Entry] = {}
 file_entries: List[Dict[Key, Entry]] = []
 
 
-@skip('needs refactoring')
 def test_assign_key_conflict_swap():
     """When assigning a key to an entry and the key is already assigned to another entry, keys are swapped"""
+    pytest.skip('needs refactoring')
     # entry = navigator.visit_path(test_dir)
     # entry.get_child(key)
     key = Key('a')
@@ -35,8 +35,8 @@ def test_assign_key_conflict_swap():
     navigator.assign_key(key.value, intermediate_entries[other_key].path)
 
 
-@skip('needs refactoring')
 def setup_test_data():
+    pytest.skip('needs refactoring')
     global top_level_entry
     global intermediate_entries
     global file_entries
@@ -59,9 +59,9 @@ def setup_test_data():
     pass
 
 
-@skip('needs refactoring')
 @pytest.yield_fixture(autouse=True)
 def fixture():
+    pytest.skip('needs refactoring')
     global navigator
     shutil.rmtree(test_dir, ignore_errors=True)
     setup_test_data()
