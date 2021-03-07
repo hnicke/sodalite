@@ -79,7 +79,7 @@ check: lint type-check
 .PHONY: check
 
 type-check: venv
-	${activate} && mypy ${pkg}
+	${activate} && mypy ${pkg} tests
 .PHONY: type-check
 
 

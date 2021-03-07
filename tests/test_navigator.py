@@ -1,14 +1,13 @@
 import os
 import shutil
-from typing import Dict, List
+from typing import Dict, List, Optional
 
-from core import entry as entry_module
-from core.dirhistory import DirHistory
-from core.entry import Entry
-from core.entryaccess import EntryAccess
-from core.key import Key
-from core.navigate import Navigator
-from util import environment
+import pytest
+
+from sodalite.core import entry as entry_module
+from sodalite.core.entry import Entry
+from sodalite.core.key import Key
+from sodalite.util import environment
 
 test_dir = os.path.join(os.getcwd(), "tmp_data")
 
@@ -16,7 +15,7 @@ test_dir = os.path.join(os.getcwd(), "tmp_data")
 # resulting count of files: intermediate_count * file_count
 intermediate_count = 10
 file_count = 10
-top_level_entry: Entry = None
+top_level_entry: Optional[Entry] = None
 intermediate_entries: Dict[Key, Entry] = {}
 file_entries: List[Dict[Key, Entry]] = []
 
@@ -62,6 +61,6 @@ def fixture():
         pass
     setup_test_data()
     environment.db_file = os.path.join(test_dir, "tmp_db.sqlite")
-    navigator = Navigator(DirHistory(), EntryAccess(EntryDao()))
+    # navigator = Navigator(DirHistory(), EntryAccess(EntryDao()))
     yield
     shutil.rmtree(test_dir)

@@ -76,8 +76,8 @@ class Control:
 
             if not handled:
                 if not self.handle_key_individually(key):
-                    for action in self.action_map.values():
-                        if action.handle(key):
+                    for _action in self.action_map.values():
+                        if _action.handle(key):
                             break
         except PermissionError:
             notify.show((AttrSpec(theme.forbidden + ',bold', '', colors=16), "PERMISSION DENIED"))
@@ -146,9 +146,9 @@ class Control:
             if len(text) > 60:
                 text_to_log += "..."
             logger.info(f"Yanked '{text_to_log}' to system clipboard")
-            notify.show(f"Yanked to clipboard", duration=1)
+            notify.show("Yanked to clipboard", duration=1)
         except pyperclip.PyperclipException:
-            logger.exception(f"Failed to yank")
+            logger.exception("Failed to yank")
             notify.show("Failed to yank: system has no clipboard", duration=2)
 
     def toggle_dotfiles(self):
