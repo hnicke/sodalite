@@ -21,7 +21,7 @@ jobs:
         run: sudo pip install virtualenv
 
       - name: Setup venv
-        run: make deps
+        run: make venv
 
       - name: Lint
         run: make lint
