@@ -26,7 +26,7 @@ class DirHistory:
     """
 
     def __init__(self, history: List[str] = None, index: int = 0, persist: bool = False):
-        self._history = history or []
+        self._history = history or [str(env.HOME)]
         self._current_index = index
         if persist:
             atexit.register(self.save)
