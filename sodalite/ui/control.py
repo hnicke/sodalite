@@ -195,7 +195,7 @@ class NavigateControl(Control):
         self.clear_filter()
 
     def go_to_home(self):
-        self.navigator.visit_path(env.home)
+        self.navigator.visit_path(env.HOME)
         self.clear_filter()
 
     def go_to_root(self):

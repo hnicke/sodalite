@@ -75,11 +75,12 @@ venv: setup.py
 	${activate} && pip install '.[dev]'
 	@touch venv
 
-check: lint type-check
+check: lint type-check test
 .PHONY: check
 
+color = true
 type-check: venv
-	${activate} && mypy ${pkg} tests
+	${activate} && mypy ${pkg} tests ${shell [ ${color} != 'true' ] && echo '--no-color-output'}
 .PHONY: type-check
 
 
@@ -93,5 +94,10 @@ logs:
 	journalctl --identifier sodalite --follow
 .PHONY: logs
 
+test: venv
+	${activate} && CONFIG_FILE=docs/sodalite.conf python -m pytest tests
+.PHONY: test
+
 clean:
 	rm -rf venv db.sqlite
+.PHONY: clean

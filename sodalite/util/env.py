@@ -22,26 +22,18 @@ exit_cwd = None
 # program will read following environment variables
 ENV_DATA_DIR = 'DATA_DIR'
 ENV_DB_PATH = 'DB_PATH'
-ENV_CONFIG_FILE = 'CONFIG_FILE'
 
-home = Path(os.environ['HOME'])
-data = Path(os.getenv(ENV_DATA_DIR, '/usr/share/sodalite/')).absolute()
-user_data = Path(os.getenv('XDG_DATA_HOME', home / '.local/share/sodalite/')).absolute()
-history_file = user_data / 'history'
-user_config = Path(os.getenv('XDG_CONFIG_HOME', home / '.config/sodalite/')).absolute()
-db_file = Path(os.getenv(ENV_DB_PATH, user_data / 'db.sqlite')).absolute()
+HOME = Path.home()
+DATA = Path(os.getenv(ENV_DATA_DIR, f'/usr/share/{PROGRAM_NAME}/')).absolute()
+USER_DATA = Path(os.getenv('XDG_DATA_HOME', HOME / '.local/share')).absolute() / PROGRAM_NAME
+USER_CONFIG = Path(os.getenv('XDG_CONFIG_HOME', HOME / '.config/')).absolute() / PROGRAM_NAME
+db_file = Path(os.getenv(ENV_DB_PATH, USER_DATA / 'db.sqlite')).absolute()
 
-config_file = Path(os.getenv(ENV_CONFIG_FILE, user_config / 'sodalite/sodalite.conf')).absolute()
-if not config_file.exists():
-    config_file = Path('/etc/sodalite.conf')
-    if not config_file.exists():
-        config_file = Path('/usr/share/sodalite/sodalite.conf')
 
-buffer = user_data / 'buffer'
+buffer = USER_DATA / 'buffer'
 
-dirs = [home, data, user_data, user_config, buffer]
+dirs = [HOME, DATA, USER_DATA, USER_CONFIG, buffer]
 for directory in dirs:
     os.makedirs(directory, exist_ok=True)
 
 logger.debug(f"Using database: {db_file.absolute()}")
-logger.debug(f"Using config file: {config_file.absolute()}")
