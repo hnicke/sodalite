@@ -4,7 +4,7 @@ import shutil
 from typing import List, Union
 
 from sodalite.core.entry import Entry
-from sodalite.util import environment
+from sodalite.util import env
 
 logger = logging.getLogger(__name__)
 
@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 class Register:
     def __init__(self, number: int):
         self.name = "register" + str(number)
-        self._path = os.path.join(environment.buffer, self.name)
+        self._path = os.path.join(env.buffer, self.name)
 
     def copy_to(self, src: Union[List[Entry], Entry]):
         """

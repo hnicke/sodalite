@@ -7,7 +7,7 @@ from sodalite.ui import theme, graphics
 from sodalite.ui.entrylist import EntryList
 from sodalite.ui.filepreview import FilePreview
 from sodalite.ui.viewmodel import ViewModel, Topic
-from sodalite.util import environment
+from sodalite.util import env
 
 logger = logging.getLogger(__name__)
 
@@ -42,6 +42,6 @@ class MainPane(urwid.WidgetWrap):
 
     def set_title_to_cwd(self, model):
         cwd = model.current_entry.path
-        if cwd.startswith(str(environment.home)):
-            cwd = "~" + cwd[len(str(environment.home)):]
+        if cwd.startswith(str(env.home)):
+            cwd = "~" + cwd[len(str(env.home)):]
         self.box.set_title(cwd)

@@ -7,7 +7,7 @@ import pytest
 from sodalite.core import entry as entry_module
 from sodalite.core.entry import Entry
 from sodalite.core.key import Key
-from sodalite.util import environment
+from sodalite.util import env
 
 test_dir = os.path.join(os.getcwd(), "tmp_data")
 
@@ -60,7 +60,7 @@ def fixture():
     except FileNotFoundError:
         pass
     setup_test_data()
-    environment.db_file = os.path.join(test_dir, "tmp_db.sqlite")
+    env.db_file = os.path.join(test_dir, "tmp_db.sqlite")
     # navigator = Navigator(DirHistory(), EntryAccess(EntryDao()))
     yield
     shutil.rmtree(test_dir)

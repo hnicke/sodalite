@@ -10,7 +10,7 @@ from sodalite.core.key import Key
 from sodalite.ui import graphics, viewmodel, notify, theme, action
 from sodalite.ui.action import Action
 from sodalite.ui.viewmodel import Mode
-from sodalite.util import environment
+from sodalite.util import env
 
 if TYPE_CHECKING:
     from sodalite.ui.graphics import MainFrame
@@ -195,7 +195,7 @@ class NavigateControl(Control):
         self.clear_filter()
 
     def go_to_home(self):
-        self.navigator.visit_path(environment.home)
+        self.navigator.visit_path(env.home)
         self.clear_filter()
 
     def go_to_root(self):

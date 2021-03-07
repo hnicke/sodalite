@@ -5,7 +5,7 @@ import os
 from json import JSONDecodeError
 from typing import List
 
-from sodalite.util import environment
+from sodalite.util import env
 
 logger = logging.getLogger(__name__)
 
@@ -98,9 +98,9 @@ class DirHistory:
 
 def load(start_entry: str) -> DirHistory:
     logger.debug('Loading navigation history')
-    if not os.path.isfile(environment.history_file):
+    if not os.path.isfile(env.history_file):
         return DirHistory([start_entry], persist=True)
-    with open(environment.history_file, 'r') as file:
+    with open(env.history_file, 'r') as file:
         text = file.read()
         try:
             history: DirHistory = json.loads(text, object_hook=object_decoder)
@@ -122,6 +122,6 @@ def object_decoder(obj) -> DirHistory:
 def save(history: DirHistory):
     history.truncate()
     text = json.dumps(history.__dict__, indent=4)
-    with open(environment.history_file, 'w') as file:
+    with open(env.history_file, 'w') as file:
         file.write(text)
     logger.debug('Persisted navigation history')

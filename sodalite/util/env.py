@@ -15,6 +15,9 @@ logging.getLogger('watchdog').setLevel(logging.INFO)
 logger = logging.getLogger(__name__)
 logger.debug('Starting sodalite')
 
+VERSION = '0.19.4'
+PROGRAM_NAME = 'sodalite'
+
 exit_cwd = None
 # program will read following environment variables
 ENV_DATA_DIR = 'DATA_DIR'

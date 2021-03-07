@@ -10,10 +10,8 @@ import click
 from sodalite.core import dao, key
 from sodalite.core.entry import Entry
 from sodalite.core.entryaccess import EntryAccess
-from sodalite.util import environment
+from sodalite.util import env
 
-PROGRAM_NAME = 'sodalite'
-VERSION = '0.19.4'
 
 logger = logging.getLogger(__name__)
 
@@ -40,7 +38,7 @@ _CLICK_CONTEXT = dict(help_option_names=['-h', '--help'])
 
 
 @click.command('sodalite', context_settings=_CLICK_CONTEXT)
-@click.version_option(VERSION)
+@click.version_option(env.VERSION)
 @click.argument('path', required=False, type=click.Path(exists=True), default=Path.cwd())
 @click.option('-u', '--update-access', help="Store access for given path in the database and quit")
 def run(path: Path, update_access: Optional[str]):
@@ -54,10 +52,10 @@ def run(path: Path, update_access: Optional[str]):
 
             graphics.run(path)
 
-            if environment.exit_cwd:
+            if env.exit_cwd:
                 sys.__stdout__ = sys.stdout = open('/dev/stdout', 'w')
                 _io_to_std()
-                print(environment.exit_cwd)
+                print(env.exit_cwd)
             logger.debug("Shutting down")
         except KeyboardInterrupt:
             logger.debug('Received SIGINT - shutting down')
@@ -94,4 +92,4 @@ def update(target: str):
 
 
 if __name__ == "__main__":
-    run(prog_name=PROGRAM_NAME)
+    run(prog_name=env.PROGRAM_NAME)

@@ -13,7 +13,7 @@ from sodalite.ui.help import HelpLauncher
 from sodalite.ui.hookbox import HookBox
 from sodalite.ui.mainpane import MainPane
 from sodalite.ui.viewmodel import ViewModel, Topic, Mode
-from sodalite.util import environment
+from sodalite.util import env
 
 logger = logging.getLogger(__name__)
 
@@ -92,7 +92,7 @@ def resume():
 
 
 def exit(cwd=None):
-    environment.exit_cwd = cwd
+    env.exit_cwd = cwd
     raise urwid.ExitMainLoop()
 
 

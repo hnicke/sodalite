@@ -7,7 +7,7 @@ from sodalite.core import key as key_module
 from sodalite.core.entry import Entry
 from sodalite.core.key import Key
 from sodalite.core.operate import Operation
-from sodalite.util import environment
+from sodalite.util import env
 
 """
 Handles database access
@@ -68,7 +68,7 @@ def regexp(expr, item):
 
 
 def open_connection():
-    conn = sqlite3.connect(environment.db_file.absolute())
+    conn = sqlite3.connect(env.db_file.absolute())
     conn.create_function("REGEXP", 2, regexp)
     conn.execute("PRAGMA foreign_keys = ON")
     return conn
