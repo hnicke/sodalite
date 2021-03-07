@@ -1,12 +1,15 @@
 import logging
 import os
-from typing import List, Dict, Union
+from typing import Union, TYPE_CHECKING
 
 from sodalite.core import config
 
+if TYPE_CHECKING:
+    from sodalite.core.entry import Entry
+
 logger = logging.getLogger(__name__)
 
-special_keys: Dict[str, str] = {}
+special_keys: dict[str, str] = {}
 
 
 class Hook:
@@ -27,7 +30,7 @@ class Hook:
         return str(self)
 
     def trigger(self, entry):
-        os.environ['entry'] = entry.path
+        os.environ['entry'] = str(entry.path)
         logger.info("Executing command: {}".format(self.action))
         result = os.system(f"( {self.action} ) > /dev/tty < /dev/tty")
         logger.info(f"Result is {result}")
@@ -47,9 +50,9 @@ def _extract_hook(key: str, hook_definition: Union[dict, str]) -> Hook:
 
 
 class HookMap:
-    def __init__(self, hooks: Dict[str, Dict[str, Union[Dict[str, str], str]]]):
-        self.map: Dict[str, List[Hook]] = {}
-        self.custom: Dict[str, List[Hook]] = {}
+    def __init__(self, hooks: dict[str, dict[str, Union[dict[str, str], str]]]):
+        self.map: dict[str, list[Hook]] = {}
+        self.custom: dict[str, list[Hook]] = {}
 
         for category in ['general', 'dir', 'file', 'plain_text', 'executable']:
             self.map[category] = []
@@ -69,22 +72,22 @@ class HookMap:
                         hook_list.append(hook)
                         self.custom[extension] = hook_list
 
-    def get_general_hooks(self) -> List[Hook]:
+    def get_general_hooks(self) -> list[Hook]:
         return self.map['general']
 
-    def get_dir_hooks(self) -> List[Hook]:
+    def get_dir_hooks(self) -> list[Hook]:
         return self.map['dir']
 
-    def get_file_hooks(self) -> List[Hook]:
+    def get_file_hooks(self) -> list[Hook]:
         return self.map['file']
 
-    def get_plain_text_hooks(self) -> List[Hook]:
+    def get_plain_text_hooks(self) -> list[Hook]:
         return self.map['plain_text']
 
-    def get_executable_hooks(self) -> List[Hook]:
+    def get_executable_hooks(self) -> list[Hook]:
         return self.map['executable']
 
-    def get_custom_hooks(self) -> Dict[str, List[Hook]]:
+    def get_custom_hooks(self) -> dict[str, list[Hook]]:
         return self.custom
 
     def __repr__(self):
@@ -103,11 +106,11 @@ class HookMap:
 hook_map = HookMap(config.hooks)
 
 
-def get_hooks(entry) -> List[Hook]:
+def get_hooks(entry) -> list[Hook]:
     """
     :return: list of possible actions for given entry
     """
-    matching_hooks: Dict[str, Hook] = {}
+    matching_hooks: dict[str, Hook] = {}
     matching_hooks.update(as_dict(hook_map.get_general_hooks()))
     if entry.is_dir():
         matching_hooks.update(as_dict(hook_map.get_dir_hooks()))
@@ -121,27 +124,27 @@ def get_hooks(entry) -> List[Hook]:
     return list(matching_hooks.values())
 
 
-def as_dict(hook_list: List[Hook]) -> Dict[str, Hook]:
+def as_dict(hook_list: list[Hook]) -> dict[str, Hook]:
     d = {}
     for hook in hook_list:
         d[hook.key] = hook
     return d
 
 
-def get_custom_hooks(entry) -> List[Hook]:
+def get_custom_hooks(entry) -> list[Hook]:
     custom_hooks = hook_map.get_custom_hooks()
     matches = list(filter(lambda x: entry.name.endswith(x), custom_hooks.keys()))
-    matching_hooks: List[Hook] = []
+    matching_hooks: list[Hook] = []
     for match in matches:
         matching_hooks += custom_hooks[match]
     return matching_hooks
 
 
-def is_hook(key: str, entry) -> bool:
-    matches = [hook for hook in entry.hook_map if hook.key.lower() == key.lower()]
+def is_hook(key: str, entry: 'Entry') -> bool:
+    matches = [hook for hook in entry.hooks if hook.key.lower() == key.lower()]
     return len(matches) > 0
 
 
-def trigger_hook(key: str, entry):
-    hook = [hook for hook in entry.hook_map if hook.key.lower() == key.lower()][0]
+def trigger_hook(key: str, entry: 'Entry'):
+    hook = [hook for hook in entry.hooks if hook.key.lower() == key.lower()][0]
     hook.trigger(entry)

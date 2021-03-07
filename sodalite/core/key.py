@@ -1,10 +1,11 @@
+from pathlib import Path
 from random import shuffle
-from typing import List, Dict, TYPE_CHECKING
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from sodalite.core.entry import Entry
 
-all_keys: List[List[str]] = []
+all_keys: list[list[str]] = []
 all_keys.append(['a', 's', 'd', 'f', 'j', 'k', 'l'])
 all_keys.append(['g', 'h', 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'z', 'x', 'c', 'v', 'b', 'n', 'm'])
 all_keys.append([x.upper() for x in all_keys[0]])
@@ -58,7 +59,7 @@ def get_all_keys():
     return keys
 
 
-def _get_available_keys(old_entries: dict) -> List[str]:
+def _get_available_keys(old_entries: dict) -> list[str]:
     """returns a list of keys which are not yet used by given entries
     :param old_entries: list of Entry which already have a key"""
     used_keys = set(map(lambda x: x.key.value, old_entries.values()))
@@ -71,7 +72,7 @@ def _get_available_keys(old_entries: dict) -> List[str]:
     return unused_keys
 
 
-def assign_keys(entries_to_assign: Dict[str, 'Entry'], old_entries: Dict[str, 'Entry']):
+def assign_keys(entries_to_assign: dict[Path, 'Entry'], old_entries: dict[Path, 'Entry']):
     """ assigns keys to the given new entries. Needs old entries
     :param entries_to_assign: entries without key, these will receive a key
     :param old_entries: all entries of this domain which already have a key
@@ -96,7 +97,7 @@ def assign_keys(entries_to_assign: Dict[str, 'Entry'], old_entries: Dict[str, 'E
     return entries_to_reassign
 
 
-def _assign(entries: List, available_keys: List[str]):
+def _assign(entries: list, available_keys: list[str]):
     entries_assign_later = []
     for entry in entries:
         if len(available_keys) > 0:

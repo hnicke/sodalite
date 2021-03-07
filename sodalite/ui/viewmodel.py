@@ -3,7 +3,7 @@ import re
 import sre_constants
 from enum import Enum
 from re import Pattern
-from typing import List, Optional
+from typing import Optional
 
 from sodalite.core.entry import Entry
 from sodalite.ui import highlighting
@@ -58,8 +58,8 @@ class ViewModel(Observable):
         super().__init__()
         self._current_entry: Optional[Entry] = None
         self._entries = []
-        self.file_content: Optional[List[HighlightedLine]] = None
-        self._filtered_file_content: List[HighlightedLine] = []
+        self.file_content: Optional[list[HighlightedLine]] = None
+        self._filtered_file_content: list[HighlightedLine] = []
         self._filter_pattern: Pattern = re.compile('')
         self._show_hidden_files = True
 
@@ -83,13 +83,13 @@ class ViewModel(Observable):
             entries = sort(entries)
             self.entries = entries
 
-    def filter_entry(self, entries: List[Entry]) -> List[Entry]:
+    def filter_entry(self, entries: list[Entry]) -> list[Entry]:
         return [entry for entry in entries if self.filter_pattern.search(entry.name)]
 
     def filter_file_content(self):
         return [line for line in self.file_content if line.matches(self.filter_pattern)]
 
-    def filter_hidden_files(self, entries: List[Entry]) -> List[Entry]:
+    def filter_hidden_files(self, entries: list[Entry]) -> list[Entry]:
         if self.show_hidden_files:
             return entries
         else:
@@ -130,25 +130,25 @@ class ViewModel(Observable):
         self.notify_all(topic=Topic.CURRENT_ENTRY)
 
     @property
-    def entries(self) -> List[Entry]:
+    def entries(self) -> list[Entry]:
         return self._entries
 
     @entries.setter
-    def entries(self, entries: List[Entry]):
+    def entries(self, entries: list[Entry]):
         self._entries = entries
         self.notify_all(Topic.ENTRIES)
 
     @property
-    def filtered_file_content(self) -> List[HighlightedLine]:
+    def filtered_file_content(self) -> list[HighlightedLine]:
         return self._filtered_file_content
 
     @filtered_file_content.setter
-    def filtered_file_content(self, content: List[HighlightedLine]):
+    def filtered_file_content(self, content: list[HighlightedLine]):
         self._filtered_file_content = content
         self.notify_all(topic=Topic.FILTERED_FILE_CONTENT)
 
 
-def sort(entries: List[Entry]):
+def sort(entries: list[Entry]):
     sorted_entries = sorted(entries, key=lambda x: x.name)
     sorted_entries.sort(key=lambda x: x.is_dir(), reverse=True)
     sorted_entries.sort(key=lambda x: x.is_hidden())

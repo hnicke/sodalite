@@ -1,5 +1,4 @@
 import logging
-import os
 import sys
 import time
 from pathlib import Path
@@ -11,7 +10,6 @@ from sodalite.core import dao, key
 from sodalite.core.entry import Entry
 from sodalite.core.entryaccess import EntryAccess
 from sodalite.util import env
-
 
 logger = logging.getLogger(__name__)
 
@@ -55,7 +53,7 @@ def run(path: Path, update_access: Optional[str]):
             if env.exit_cwd:
                 sys.__stdout__ = sys.stdout = open('/dev/stdout', 'w')
                 _io_to_std()
-                print(env.exit_cwd)
+                print(str(env.exit_cwd))
             logger.debug("Shutting down")
         except KeyboardInterrupt:
             logger.debug('Received SIGINT - shutting down')
@@ -73,13 +71,13 @@ def update(target: str):
     target_name = str(target_path)
     if target_name.startswith("/"):
         target_name = target_name[1:]
-        cwd = "/"
+        cwd = Path("/")
     else:
         target_name = target_name
-        cwd = str(Path.cwd())
+        cwd = Path.cwd()
     route = target_name.split("/")
     for segment in route:
-        entry_path = os.path.join(cwd, segment)
+        entry_path = cwd / segment
         if not dao.entry_exists(entry_path):
             old_entries = EntryAccess().retrieve_entry(cwd).children
             entry = Entry(entry_path)

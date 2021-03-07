@@ -4,7 +4,7 @@ from enum import Enum
 from io import UnsupportedOperation
 from numbers import Number
 from pathlib import Path
-from typing import Dict, Iterable, List, Optional
+from typing import Optional
 
 from binaryornot.check import is_binary
 
@@ -28,32 +28,33 @@ class Entry:
     defines the entry class which represents a file or directory
     """
 
-    def __init__(self, path: str, access_history: List[int] = None, parent: 'Entry' = None, key: Key = Key('')):
+    def __init__(self, path: Path, access_history: list[int] = None, parent: 'Entry' = None, key: Key = Key('')):
         """
         :param path: the absolute, canonical path of this entry
         """
-        self.path = path
+        self.path = Path(os.path.normpath(str(path)))
         if not access_history:
             access_history = []
         self.unexplored = False
-        self.access_history: List[int] = access_history
+        self.access_history: list[int] = access_history
         self._rating: Optional[float] = None
         self.parent = parent
-        self.dir, self.name = os.path.split(path)
+        self.dir: Path = self.path.parent
+        self.name = path.name
         self._key = key
 
-        self._children: Iterable['Entry'] = []
-        self.path_to_child: Dict[str, Entry] = {}
-        self.key_to_child: Dict[Key, Entry] = {}
+        self._children: list['Entry'] = []
+        self.path_to_child: dict[Path, Entry] = {}
+        self.key_to_child: dict[Key, Entry] = {}
 
         self.__is_plain_text_file = None
-        self.hooks: List[Hook] = []
+        self.hooks: list[Hook] = []
         self.stat = os.lstat(path)
         self.size = self.stat.st_size
         self.permissions = oct(self.stat.st_mode)[-3:]
         self.type = detect_type(self.stat.st_mode)
         if self.is_link():
-            self.realpath = os.path.join(os.path.dirname(path), os.readlink(path))
+            self.realpath = self.path.resolve(strict=False)
         else:
             self.realpath = path
         """lower precedence number means higher priority, e.g. for displaying"""
@@ -77,7 +78,7 @@ class Entry:
         return self._children
 
     @children.setter
-    def children(self, children: Iterable['Entry']):
+    def children(self, children: list['Entry']):
         self._children = children
         self.path_to_child.clear()
         self.key_to_child.clear()
@@ -101,7 +102,7 @@ class Entry:
     def get_child_for_key(self, key: Key) -> Optional['Entry']:
         return self.key_to_child.get(key, None)
 
-    def get_child_for_path(self, path: str) -> Optional['Entry']:
+    def get_child_for_path(self, path: Path) -> Optional['Entry']:
         return self.path_to_child.get(path, None)
 
     def __str__(self):
@@ -124,7 +125,8 @@ class Entry:
 
     def is_plain_text_file(self):
         if self.__is_plain_text_file is None:
-            self.__is_plain_text_file = self.is_file() and not self.name.endswith('.pdf') and not is_binary(self.path)
+            self.__is_plain_text_file = self.is_file() \
+                                        and not self.name.endswith('.pdf') and not is_binary(str(self.path))
         return self.__is_plain_text_file
 
     def is_dir(self) -> bool:

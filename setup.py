@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import setuptools
+
 from sodalite.util import env
 
 setuptools.setup(
@@ -10,6 +11,7 @@ setuptools.setup(
     author_email="dev@hnicke.de",
     description='Keyboard-driven terminal file navigator and launcher',
     license_files=('copyright',),
+    python_requires='>3.9.0',
     url="https://github.com/hnicke/sodalite",
     packages=setuptools.find_packages(),
     long_description=Path('README.md').read_text(),
