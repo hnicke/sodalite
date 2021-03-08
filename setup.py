@@ -28,6 +28,7 @@ setuptools.setup(
         'dev': [
             'mypy',
             'pytest',
+            'pytest-mock',
             'flake8',
             'commitizen',
         ]

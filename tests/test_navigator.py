@@ -6,9 +6,9 @@ from typing import Optional
 import pytest
 
 from sodalite.core import entry as entry_module
-from sodalite.core.history import History
 from sodalite.core.entry import Entry
 from sodalite.core.entryaccess import EntryAccess
+from sodalite.core.history import History
 from sodalite.core.key import Key
 from sodalite.core.navigate import Navigator
 from sodalite.util import env

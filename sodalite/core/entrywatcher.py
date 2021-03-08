@@ -1,7 +1,9 @@
 import logging
+import time
 from pathlib import Path
-from typing import TYPE_CHECKING, Optional
+from threading import Lock
 
+from typing import TYPE_CHECKING, Optional
 from watchdog.events import FileSystemEventHandler, PatternMatchingEventHandler, DirModifiedEvent, DirDeletedEvent, \
     DirCreatedEvent, FileDeletedEvent, FileModifiedEvent
 from watchdog.observers import Observer
@@ -12,42 +14,59 @@ from sodalite.core.entry import Entry
 if TYPE_CHECKING:
     from sodalite.core.navigate import Navigator
 
-logger = logging.getLogger(__name__)
+_logger = logging.getLogger(__name__)
+
+
+class DeduplicatedReload:
+    _lock = Lock()
+    _last_reload: float = 0
+    _deduplication_interval_seconds = 0.1
+
+    def __init__(self, navigator: 'Navigator'):
+        self.navigator = navigator
+
+    def reload(self):
+        current_time = time.time()
+        if self._lock.locked():
+            return
+        with self._lock:
+            if self._last_reload + self._deduplication_interval_seconds < current_time:
+                time.sleep(self._deduplication_interval_seconds)
+                self._last_reload = time.time()
+                self.navigator.reload_current_entry()
 
 
 class DirHandler(FileSystemEventHandler):
 
     def __init__(self, navigator: 'Navigator'):
-        self.navigator = navigator
+        self.reloader = DeduplicatedReload(navigator)
 
-    # TODO these methods happen to call reload_current_entry() too often if many changes happen
-    # this needs some serious debouncing
     def on_created(self, event: DirCreatedEvent):
-        logger.debug('Event (entry created): {}'.format(event.src_path))
-        self.navigator.reload_current_entry()
+        _logger.debug('Event (dir created): {}'.format(event.src_path))
+        self.reloader.reload()
 
     def on_modified(self, event: DirModifiedEvent):
-        logger.debug('Event (entry modified): {}'.format(event.src_path))
-        self.navigator.reload_current_entry()
+        _logger.debug('Event (dir modified): {}'.format(event.src_path))
+        self.reloader.reload()
 
     def on_deleted(self, event: DirDeletedEvent):
-        logger.debug('Event (entry deleted): {}'.format(event.src_path))
-        self.navigator.reload_current_entry()
+        _logger.debug('Event (dir deleted): {}'.format(event.src_path))
+        self.reloader.reload()
 
 
 class FileHandler(PatternMatchingEventHandler):
 
     def __init__(self, navigator: 'Navigator', path: Path):
-        self.navigator = navigator
-        super().__init__(patterns=[str(path)], case_sensitive=True)
+        self.reloader = DeduplicatedReload(navigator)
+        super(FileHandler, self).__init__(patterns=[str(path)], case_sensitive=True)
 
     def on_deleted(self, event: FileDeletedEvent):
-        logger.debug('Event (file deleted): {}'.format(event.src_path))
-        self.navigator.visit_parent()
+        _logger.debug(f"Event (file deleted): {event.src_path}")
+        self.reloader.reload()
 
     def on_modified(self, event: FileModifiedEvent):
-        logger.debug('Event (file modified): {}'.format(event.src_path))
-        self.navigator.reload_current_entry()
+        _logger.debug(f"Event (file modified): {event.src_path}")
+        self.reloader.reload()
 
 
 class EntryWatcher:
@@ -65,22 +84,20 @@ class EntryWatcher:
             return
         if self.watch:
             self.unregister(self.watch)
-        self.watch = None
         self.entry = self.navigator.current_entry
         self.watch = self.register()
 
     def unregister(self, watch: ObservedWatch):
         if self.watch:
             self.observer.unschedule(watch)
+            self.watch = None
 
     def register(self) -> ObservedWatch:
         entry = self.navigator.current_entry
         if entry.is_dir():
-            path = entry.path
             handler = DirHandler(self.navigator)
-            logger.debug('Watching {} for changes'.format(entry.path))
+            _logger.debug(f"Watching {entry.path} for changes")
         else:
-            path = entry.dir
-            handler = FileHandler(self.navigator, Path(entry.path))
-        watch = self.observer.schedule(handler, path, recursive=False)
+            handler = FileHandler(self.navigator, entry.path)
+        watch = self.observer.schedule(handler, entry.path, recursive=False)
         return watch
