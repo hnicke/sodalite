@@ -221,7 +221,7 @@ def update_entry(entry: Entry):
     query = f"UPDATE {TABLE_ENTRY} SET {ENTRY_KEY}=? WHERE {ENTRY_PATH}=?"
     conn = open_connection()
     try:
-        conn.cursor().execute(query, (entry.key.value, entry.path))
+        conn.cursor().execute(query, (entry.key.value, str(entry.path)))
         conn.commit()
     finally:
         conn.close()
