@@ -24,7 +24,7 @@ class Navigator(Observable):
         self.history = history
         self.entry_access = entry_access or EntryAccess()
         self._current_entry: Optional[Entry] = None
-        self.register(EntryWatcher(self).on_update, immediate_update=False)
+        self.register(EntryWatcher().on_update, immediate_update=False)
         self.current_entry = self.current()
 
     def current(self) -> Entry:
