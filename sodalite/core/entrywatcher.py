@@ -25,7 +25,7 @@ class DeduplicatedReload:
     def __init__(self, navigator: 'Navigator'):
         self.navigator = navigator
 
-    def reload(self):
+    def reload(self) -> None:
         current_time = time.time()
         if self._lock.locked():
             return
@@ -41,15 +41,15 @@ class DirHandler(FileSystemEventHandler):
     def __init__(self, navigator: 'Navigator'):
         self.reloader = DeduplicatedReload(navigator)
 
-    def on_created(self, event: DirCreatedEvent):
+    def on_created(self, event: DirCreatedEvent) -> None:
         _logger.debug('Event (dir created): {}'.format(event.src_path))
         self.reloader.reload()
 
-    def on_modified(self, event: DirModifiedEvent):
+    def on_modified(self, event: DirModifiedEvent) -> None:
         _logger.debug('Event (dir modified): {}'.format(event.src_path))
         self.reloader.reload()
 
-    def on_deleted(self, event: DirDeletedEvent):
+    def on_deleted(self, event: DirDeletedEvent) -> None:
         _logger.debug('Event (dir deleted): {}'.format(event.src_path))
         self.reloader.reload()
 
@@ -60,11 +60,11 @@ class FileHandler(PatternMatchingEventHandler):
         self.reloader = DeduplicatedReload(navigator)
         super(FileHandler, self).__init__(patterns=[str(path)], case_sensitive=True)
 
-    def on_deleted(self, event: FileDeletedEvent):
+    def on_deleted(self, event: FileDeletedEvent) -> None:
         _logger.debug(f"Event (file deleted): {event.src_path}")
         self.reloader.reload()
 
-    def on_modified(self, event: FileModifiedEvent):
+    def on_modified(self, event: FileModifiedEvent) -> None:
         _logger.debug(f"Event (file modified): {event.src_path}")
         self.reloader.reload()
 
@@ -79,7 +79,7 @@ class EntryWatcher:
         self.entry: Optional[Entry] = None
         self.watch: Optional[ObservedWatch] = None
 
-    def on_update(self, _):
+    def on_update(self, _: 'Navigator') -> None:
         if self.watch and self.entry == self.navigator.current_entry:
             return
         if self.watch:
@@ -87,7 +87,7 @@ class EntryWatcher:
         self.entry = self.navigator.current_entry
         self.watch = self.register()
 
-    def unregister(self, watch: ObservedWatch):
+    def unregister(self, watch: ObservedWatch) -> None:
         if self.watch:
             self.observer.unschedule(watch)
             self.watch = None

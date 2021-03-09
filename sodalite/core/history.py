@@ -2,6 +2,7 @@ import atexit
 import json
 import logging
 from pathlib import Path
+from typing import Any, Dict
 
 from sodalite.util import env
 
@@ -41,7 +42,7 @@ class History:
         else:
             return History(persist=True)
 
-    def save(self, file: Path = _HISTORY_FILE):
+    def save(self, file: Path = _HISTORY_FILE) -> None:
         self._truncate()
         json_history = json.dumps({
             'history': [str(x.absolute()) for x in self._history],
@@ -56,7 +57,7 @@ class History:
         """
         return self._history[self._index]
 
-    def visit(self, path: Path):
+    def visit(self, path: Path) -> None:
         """
         Adds given path to the dir history as most recent entry.
         Does nothing if the most recent entry is the same as given path.
@@ -68,7 +69,7 @@ class History:
             self._history.append(path)
             self._index += 1
 
-    def _discard_future(self):
+    def _discard_future(self) -> None:
         del self._history[self._index + 1:]
 
     def visit_parent(self) -> Path:
@@ -107,7 +108,7 @@ class History:
         else:
             return self.cwd()
 
-    def _truncate(self):
+    def _truncate(self) -> None:
         """
         In case the history is longer than MAX_LENGTH, discards parts of it.
         """
@@ -128,11 +129,11 @@ class History:
             after = '--> ' + after
         return f'{before} [_{self.cwd()}_] {after}'
 
-    def __eq__(self, other):
+    def __eq__(self, other: Any) -> bool:
         return isinstance(other, History) and self.__dict__ == other.__dict__
 
 
-def _object_decoder(obj) -> History:
+def _object_decoder(obj: Dict[str, Any]) -> History:
     try:
         return History([Path(x) for x in obj['history']], obj['index'], persist=True)
     except KeyError as e:

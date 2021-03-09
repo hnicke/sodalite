@@ -140,7 +140,7 @@ class Navigator(Observable):
         self._current_entry = entry
         self.notify_all()
 
-    def reload_current_entry(self):
+    def reload_current_entry(self) -> None:
         logger.info('Reloading current entry')
         try:
             self.current_entry = self.entry_access.retrieve_entry(self.current_entry.path, cache=False)
