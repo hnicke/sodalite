@@ -12,9 +12,9 @@ from sodalite.util import env
 logger = logging.getLogger(__name__)
 
 
-class MainPane(urwid.WidgetWrap):
+class MainPane(urwid.WidgetWrap):  # type: ignore
 
-    def __init__(self, model: ViewModel, navigator: Navigator):
+    def __init__(self, model: ViewModel, navigator: Navigator) -> None:
         self.model = model
         self.navigator = navigator
         self.entry_list = EntryList(self, self.model, self.navigator)
@@ -29,7 +29,7 @@ class MainPane(urwid.WidgetWrap):
 
         super().__init__(self.colored_box)
 
-    def on_entry_changed(self, model):
+    def on_entry_changed(self, model: ViewModel) -> None:
         with graphics.DRAW_LOCK:
             if model.current_entry.is_dir():
                 self.body = self.entry_list
@@ -40,7 +40,7 @@ class MainPane(urwid.WidgetWrap):
             self.set_title_to_cwd(model)
             graphics.redraw_if_external()
 
-    def set_title_to_cwd(self, model: ViewModel):
+    def set_title_to_cwd(self, model: ViewModel) -> None:
         cwd = model.current_entry.path
         if cwd == env.HOME:
             title = '~'

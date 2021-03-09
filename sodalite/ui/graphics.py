@@ -2,14 +2,15 @@ import logging
 import os
 import threading
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Tuple
 
 import urwid.curses_display
+from urwid import Widget
 
 from sodalite.core import History
 from sodalite.core.navigate import Navigator
 from sodalite.ui import theme, viewmodel
-from sodalite.ui.control import NavigateControl, AssignControl, OperateControl
+from sodalite.ui.control import NavigateControl, AssignControl, OperateControl, Control
 from sodalite.ui.filter import Filter
 from sodalite.ui.help import HelpLauncher
 from sodalite.ui.hookbox import HookBox
@@ -20,7 +21,7 @@ from sodalite.util import env
 logger = logging.getLogger(__name__)
 
 
-class MainFrame(urwid.Frame):
+class MainFrame(urwid.Frame):  # type: ignore
 
     def __init__(self, path: Path):
         """
@@ -38,10 +39,10 @@ class MainFrame(urwid.Frame):
         self.hookbox = HookBox(self.model, self)
 
         # setup controllers
-        self.control = None
+        self.control: Control = NavigateControl(self)
         viewmodel.global_mode.register(self.change_controller, topic=Topic.MODE)
 
-    def change_controller(self, mode):
+    def change_controller(self, mode: Mode) -> None:
         if mode == Mode.NAVIGATE:
             self.control = NavigateControl(self)
         elif mode in viewmodel.ANY_ASSIGN_MODE:
@@ -50,9 +51,9 @@ class MainFrame(urwid.Frame):
         elif mode == Mode.OPERATE:
             self.control = OperateControl(self)
         else:
-            raise ValueError
+            raise ValueError()
 
-    def keypress(self, size, key):
+    def keypress(self, size: Tuple[int, int], key: str) -> None:
         with DRAW_LOCK:
             self.control.handle_keypress(size, key)
 
@@ -60,14 +61,14 @@ class MainFrame(urwid.Frame):
 DRAW_LOCK = threading.RLock()
 
 
-class MainLoop(urwid.MainLoop):
+class MainLoop(urwid.MainLoop):  # type: ignore
 
-    def draw_screen(self):
+    def draw_screen(self) -> None:
         with DRAW_LOCK:
             super(MainLoop, self).draw_screen()
 
 
-def _create_loop(main):
+def _create_loop(main: Widget) -> MainLoop:
     return MainLoop(main, palette=theme.palette, handle_mouse=False, pop_ups=True)
 
 
@@ -75,11 +76,11 @@ MAIN_LOOP = 'MainLoop'
 threading.current_thread().setName(MAIN_LOOP)
 os.environ['ESCDELAY'] = '0'
 frame = None
-loop = None
+loop: MainLoop
 popupLauncher = None
 
 
-def run(path: Path):
+def run(path: Path) -> None:
     global frame
     global loop
     global popupLauncher
@@ -89,17 +90,17 @@ def run(path: Path):
     loop.run()
 
 
-def resume():
+def resume() -> None:
     loop.stop()
     loop.start()
 
 
-def exit(cwd: Optional[Path] = None):
+def exit(cwd: Optional[Path] = None) -> None:
     env.exit_cwd = cwd
     raise urwid.ExitMainLoop()
 
 
-def redraw_if_external():
+def redraw_if_external() -> None:
     """
     Redraws the screen if and only if the current thread is NOT the main event loop.
     Use this function in case you need to redraw the screen from outside the main event loop.

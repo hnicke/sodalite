@@ -18,19 +18,16 @@ class Key:
     the first group is the group of keys which is intended to be assigned first, the last one last.
     """
 
-    def compute_key_rank(self):
-        """"# returns integer 1-5, depending on the key rank. the lower, the better.
-        """
-        self.rank = len(all_keys)
+    def __init__(self, value: str) -> None:
+        self.value = value
+        self.rank = self._compute_rank()
+
+    def _compute_rank(self) -> int:
+        """# returns integer 1-5, depending on the key rank. the lower, the better."""
         for x in range(len(all_keys) - 1):
             if self.value in all_keys[x]:
-                self.rank = x
-                break
-
-    def __init__(self, value):
-        self.value = value
-        self.rank = None
-        self.compute_key_rank()
+                return x
+        return len(all_keys)
 
     def __str__(self):
         return self.value

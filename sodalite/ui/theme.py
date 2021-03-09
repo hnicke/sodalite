@@ -83,7 +83,7 @@ palette = (
 
 class DynamicAttrMap(urwid.AttrMap):
 
-    def __init__(self, w):
+    def __init__(self, w) -> None:
         super().__init__(w, navigate_mode)
         viewmodel.global_mode.register(self.update_colors, topic=Topic.MODE)
 

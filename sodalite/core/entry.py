@@ -105,25 +105,25 @@ class Entry:
     def get_child_for_path(self, path: Path) -> Optional['Entry']:
         return self.path_to_child.get(path, None)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "[path:{}, key:{}, type:{}]".format(self.path, self.key, self.type)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return str(self)
 
-    def __key(self):
-        return self.path
+    def __key(self) -> str:
+        return str(self.path)
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         return type(self) == type(other) and self.__key() == other.__key()
 
-    def __hash__(self):
+    def __hash__(self) -> int:
         return hash(self.__key())
 
-    def is_hidden(self):
+    def is_hidden(self) -> bool:
         return self.name.startswith('.')
 
-    def is_plain_text_file(self):
+    def is_plain_text_file(self) -> bool:
         if self.__is_plain_text_file is None:
             self.__is_plain_text_file = self.is_file() \
                                         and not self.name.endswith('.pdf') and not is_binary(str(self.path))

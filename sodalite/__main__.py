@@ -2,7 +2,7 @@ import logging
 import sys
 import time
 from pathlib import Path
-from typing import Optional
+from typing import Optional, TextIO
 
 import click
 
@@ -13,8 +13,11 @@ from sodalite.util import env
 
 logger = logging.getLogger(__name__)
 
+_old_stdin: TextIO
+_old_stdout: TextIO
 
-def _io_to_tty():
+
+def _io_to_tty() -> None:
     global _old_stdin
     global _old_stdout
     _old_stdin = sys.stdin
@@ -27,7 +30,7 @@ def _io_to_tty():
         pass
 
 
-def _io_to_std():
+def _io_to_std() -> None:
     sys.__stdin__ = sys.stdin = _old_stdin
     sys.__stdout__ = sys.stdout = _old_stdout
 
@@ -39,7 +42,7 @@ _CLICK_CONTEXT = dict(help_option_names=['-h', '--help'])
 @click.version_option(env.VERSION)
 @click.argument('path', required=False, type=click.Path(exists=True), default=Path.cwd())
 @click.option('-u', '--update-access', help="Store access for given path in the database and quit")
-def run(path: Path, update_access: Optional[str]):
+def run(path: Path, update_access: Optional[str]) -> None:
     """Opens the sodalite file navigator at given PATH"""
     if update_access:
         update(update_access)
@@ -60,7 +63,7 @@ def run(path: Path, update_access: Optional[str]):
             exit(1)
 
 
-def update(target: str):
+def update(target: str) -> None:
     if target in ['.', '..']:
         # do nothing
         return

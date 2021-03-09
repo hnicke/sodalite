@@ -2,6 +2,7 @@ from functools import reduce
 from typing import Optional
 
 import urwid
+from urwid import CompositeCanvas
 
 from sodalite.ui import theme
 from sodalite.ui.action import Action
@@ -47,19 +48,19 @@ class HelpLauncher(urwid.PopUpLauncher):
     def __init__(self, original_widget: urwid.Widget):
         super().__init__(original_widget)
         self.control: Optional[Control] = None
-        self.pop_up = None
+        self.pop_up: Optional[HelpPopup] = None
 
-    def open_pop_up(self, control: Control):
+    def open_pop_up(self, control: Control) -> None:
         self.control = control
         super().open_pop_up()
 
-    def create_pop_up(self):
+    def create_pop_up(self) -> HelpPopup:
         self.pop_up = HelpPopup(self.control)
         urwid.connect_signal(self.pop_up, 'close',
                              lambda button: self.close_pop_up())
         return self.pop_up
 
-    def render(self, size, focus=False):
+    def render(self, size, focus=False) -> CompositeCanvas:
         (self.screen_width, self.screen_height) = size
         return super().render(size, focus=focus)
 

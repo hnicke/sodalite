@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 class EntryAccess:
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._current_entry: Entry = None
 
     def get_current(self):

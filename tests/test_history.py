@@ -5,23 +5,23 @@ from pytest import fixture
 from sodalite.core import History
 
 
-def test_save_and_load(history: History, history_file: Path):
+def test_save_and_load(history: History, history_file: Path) -> None:
     history.save(file=history_file)
     loaded_history = History.load(file=history_file)
     assert history == loaded_history
 
 
-def test_cwd(history: History, entry_1):
+def test_cwd(history: History, entry_1: Path) -> None:
     assert history.cwd() == entry_1
 
 
-def test_visit(history):
+def test_visit(history: History) -> None:
     new_entry = Path('/dir/two')
     history.visit(new_entry)
     assert history.cwd() == new_entry
 
 
-def test_visit_parent(history: History):
+def test_visit_parent(history: History) -> None:
     parent = Path('/parent')
     child = parent / 'child'
     history.visit(child)
@@ -29,7 +29,7 @@ def test_visit_parent(history: History):
     assert history.cwd() == parent
 
 
-def test_backward(history: History):
+def test_backward(history: History) -> None:
     before = history.cwd()
     times = 3
     for i in range(times):
@@ -40,7 +40,7 @@ def test_backward(history: History):
     assert before == after
 
 
-def test_forward(history: History):
+def test_forward(history: History) -> None:
     times = 10
     for i in range(times):
         history.visit(Path(str(i)))
@@ -51,7 +51,7 @@ def test_forward(history: History):
     assert history.cwd() == Path(str(times - 1))
 
 
-def test_visit_discard_future(history: History):
+def test_visit_discard_future(history: History) -> None:
     times = 10
     for i in range(times):
         history.visit(Path(str(i)))
@@ -66,7 +66,7 @@ def test_visit_discard_future(history: History):
     assert entry == forward_entry
 
 
-def test_visit_same(history: History, entry_1: Path):
+def test_visit_same(history: History, entry_1: Path) -> None:
     new_entry = Path('/dir/two')
     history.visit(new_entry)
     history.visit(new_entry)

@@ -189,7 +189,7 @@ def entry_exists(path: Path) -> bool:
         conn.close()
 
 
-def insert_entry(entry):
+def insert_entry(entry: Entry):
     query = f"""INSERT INTO {TABLE_ENTRY} ({ENTRY_PATH},{ENTRY_KEY}) VALUES (?,?)"""
     conn = open_connection()
     try:

@@ -1,6 +1,6 @@
 import logging
 from pathlib import Path
-from typing import Callable
+from typing import Callable, Tuple
 from typing import TYPE_CHECKING
 
 import pyperclip
@@ -65,7 +65,7 @@ class Control:
     def list(self):
         return self.frame.mainpane.body
 
-    def handle_keypress(self, size, key):
+    def handle_keypress(self, size: Tuple[int, int], key: str):
         try:
             self.calculate_sizes(size)
             handled = False

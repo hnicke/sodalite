@@ -15,11 +15,11 @@ logger = logging.getLogger(__name__)
 
 class List(ListBox):
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.walker = urwid.SimpleFocusListWalker([])
         super().__init__(self.walker)
 
-    def scroll(self, offset: int, coming_from=None, valign=None):
+    def scroll(self, offset: int, coming_from=None, valign=None) -> None:
         try:
             index = self.focus_position + offset
             self.set_focus(index, coming_from=coming_from)
@@ -28,23 +28,23 @@ class List(ListBox):
         except IndexError:
             pass
 
-    def scroll_page_down(self, size):
+    def scroll_page_down(self, size) -> None:
         _, max_row = size
         self._scroll_down(size, max_row)
 
-    def scroll_page_up(self, size):
+    def scroll_page_up(self, size) -> None:
         _, max_row = size
         self._scroll_up(size, max_row)
 
-    def scroll_half_page_down(self, size):
+    def scroll_half_page_down(self, size) -> None:
         _, max_row = size
         self._scroll_down(size, max_row // 2)
 
-    def scroll_half_page_up(self, size):
+    def scroll_half_page_up(self, size) -> None:
         _, max_row = size
         self._scroll_up(size, max_row // 2)
 
-    def _scroll_down(self, size, amount):
+    def _scroll_down(self, size, amount) -> None:
         middle, top, bottom = self.calculate_visible(size)
         relative_position = (len(top[1]) / (len(top[1]) + 1 + len(bottom[1]))) * 100
         max_line = len(self.body) - 1
@@ -52,7 +52,7 @@ class List(ListBox):
         self.set_focus(new_focus)
         self.set_focus_valign(('relative', relative_position))
 
-    def _scroll_up(self, size, amount):
+    def _scroll_up(self, size, amount) -> None:
         middle, top, bottom = self.calculate_visible(size)
         relative_position = ((len(top[1]) + 1) / (len(top[1]) + 1 + len(bottom[1]))) * 100
         new_focus = max(self.focus_position - amount, 0)

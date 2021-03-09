@@ -54,7 +54,7 @@ global_mode = GlobalMode()
 
 class ViewModel(Observable):
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self._current_entry: Optional[Entry] = None
         self._entries = []
