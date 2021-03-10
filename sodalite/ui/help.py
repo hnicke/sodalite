@@ -55,6 +55,8 @@ class HelpLauncher(urwid.PopUpLauncher):
         super().open_pop_up()
 
     def create_pop_up(self) -> HelpPopup:
+        if self.control is None:
+            raise ValueError()
         self.pop_up = HelpPopup(self.control)
         urwid.connect_signal(self.pop_up, 'close',
                              lambda button: self.close_pop_up())

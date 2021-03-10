@@ -45,13 +45,13 @@ def _show(message, duration):
     _notify_lock.release()
 
 
-def clear():
+def clear() -> None:
     if graphics.frame and graphics.frame.footer == _notify_box:
         graphics.frame.footer = None
         graphics.loop.draw_screen()
 
 
-def trigger_notifications(model):
+def trigger_notifications(model) -> None:
     if viewmodel.global_mode == Mode.ASSIGN_CHOOSE_ENTRY:
         show("choose entry", duration=0)
     elif viewmodel.global_mode == Mode.ASSIGN_CHOOSE_KEY:

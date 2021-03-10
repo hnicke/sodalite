@@ -15,7 +15,8 @@ logger = logging.getLogger(__name__)
 class EntryAccess:
 
     def __init__(self) -> None:
-        self._current_entry: Entry = None
+        # TODO make this non optional
+        self._current_entry: Optional[Entry] = None
 
     def get_current(self):
         return self._current_entry
@@ -29,7 +30,7 @@ class EntryAccess:
         :raise: FileNotFoundError
         """
 
-        if cache and self.is_cached(path):
+        if cache and self._current_entry is not None and path == self._current_entry.path:
             return self._current_entry
         entry = Entry(path)
         entry.hooks = hook.get_hooks(entry)
@@ -38,9 +39,6 @@ class EntryAccess:
             self.__populate_children(entry)
             self._current_entry = entry
         return entry
-
-    def is_cached(self, path: Path):
-        return self._current_entry is not None and path == self._current_entry
 
     def __populate_children(self, entry: Entry):
         if not entry.is_dir():
@@ -55,6 +53,8 @@ class EntryAccess:
         :return: the matching entry on None, if no entry with given key exists
         :raise: FileNotFoundError, PermissionError
         """
+        if not self._current_entry:
+            raise ValueError()
         entry = self._current_entry.get_child_for_key(key)
         if not entry:
             return None
@@ -71,6 +71,8 @@ class EntryAccess:
         dao.update_entry(entry)
 
     def is_possible(self, key: Key):
+        if self._current_entry is None:
+            raise ValueError()
         return self._current_entry.get_child_for_key(key) is not None
 
     def access_now(self, entry):

@@ -57,7 +57,7 @@ class ViewModel(Observable):
     def __init__(self) -> None:
         super().__init__()
         self._current_entry: Optional[Entry] = None
-        self._entries = []
+        self._entries: list[Entry] = []
         self.file_content: Optional[list[HighlightedLine]] = None
         self._filtered_file_content: list[HighlightedLine] = []
         self._filter_pattern: Pattern = re.compile('')

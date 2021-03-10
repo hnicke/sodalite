@@ -47,7 +47,7 @@ class Entry:
         self.path_to_child: dict[Path, Entry] = {}
         self.key_to_child: dict[Key, Entry] = {}
 
-        self.__is_plain_text_file = None
+        self.__is_plain_text_file: Optional[bool] = None
         self.hooks: list[Hook] = []
         self.stat = os.lstat(path)
         self.size = self.stat.st_size

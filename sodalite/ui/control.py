@@ -236,11 +236,11 @@ class AssignControl(Control):
             self.assign_key(key)
             return True
 
-    def exit(self):
+    def exit(self) -> None:
         if viewmodel.global_mode == Mode.ASSIGN_CHOOSE_ENTRY:
             viewmodel.global_mode.mode = Mode.ASSIGN_CHOOSE_KEY
 
-    def choose_entry(self, key: str):
+    def choose_entry(self, key: str) -> None:
         if key in key_module.get_all_keys():
             entry = self.navigator.current_entry.get_child_for_key(Key(key))
             assert entry
@@ -279,12 +279,11 @@ class OperateControl(Control):
                 notify.show(f"yanked {target.path}")
                 self.active_action = None
             self.enter_navigate_mode()
-            return True
         else:
             notify.show("yank what?", duration=0)
             self.active_action = self.yank
 
-    def paste(self):
+    def paste(self) -> None:
         entry = self.navigator.current_entry
         buffer.registers[0].read_from(entry)
         self.navigator.reload_current_entry()
