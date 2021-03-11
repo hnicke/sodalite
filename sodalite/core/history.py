@@ -2,7 +2,7 @@ import atexit
 import json
 import logging
 from pathlib import Path
-from typing import Any, Dict, Union
+from typing import Dict, Union
 
 from sodalite.util import env
 
