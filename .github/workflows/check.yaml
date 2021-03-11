@@ -23,11 +23,16 @@ jobs:
         run: make lint
 
       - name: Type-Check
-        run: make type-check
+        id: type-check
+        run: |
+          make type-check
+          export TYPE_COVERAGE=$(make type-coverage)
+          echo "::set-output name=TYPE_COVERAGE::$TYPE_COVERAGE"
 
       - name: Run tests
         run: make test
 
+      # see https://github.com/marketplace/actions/dynamic-badges
       - name: Create type coverage badge
         # if: github.ref == 'refs/head/master'
         uses: schneegans/dynamic-badges-action@v1.0.0
@@ -36,5 +41,5 @@ jobs:
           gistID: dfd1ab3f3a19522e0d2b0c94c409ba78
           filename: sodalite-type-coverage.json
           label: typing
-          message: 1%
+          message: ${{ steps.type-check.outputs.TYPE_COVERAGE }}%
           color: orange

@@ -1,4 +1,5 @@
 [![Check Action Status](https://github.com/hnicke/sodalite/workflows/Check/badge.svg)](https://github.com/hnicke/sodalite/actions/workflows/check.yaml)
+![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/hnicke/dfd1ab3f3a19522e0d2b0c94c409ba78/raw/sodalite-type-coverage.json)
 
 # Sodalite: Exploration at the speed of thought
 
