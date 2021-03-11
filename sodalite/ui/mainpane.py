@@ -31,7 +31,7 @@ class MainPane(urwid.WidgetWrap):  # type: ignore
 
     def on_entry_changed(self, model: ViewModel) -> None:
         with graphics.DRAW_LOCK:
-            if model.current_entry.is_dir():
+            if model.current_entry.is_dir:
                 self.body = self.entry_list
                 self.frame.set_body(self.entry_list)
             else:

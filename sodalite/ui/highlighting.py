@@ -13,12 +13,12 @@ logger = logging.getLogger(__name__)
 
 
 class HighlightedLine:
-    def __init__(self, content, linenumber):
+    def __init__(self, content, line_number):
         self.content = self.bold_headings(content)
         self.raw_content = ''.join([word for attr, word in self.content])
-        self.linenumber = linenumber
-        formatted_linenumber = [(theme.line_number, u'{:>2} '.format(linenumber))]
-        self.numbered_content = [formatted_linenumber] + content
+        self.line_number = line_number
+        formatted_line_number = [(theme.line_number, f'{line_number:>2} ')]
+        self.numbered_content = [formatted_line_number] + content
 
     def bold_headings(self, content):
         heading = None
@@ -35,12 +35,12 @@ class HighlightedLine:
         return not pattern.pattern or pattern.search(self.raw_content)
 
     def __str__(self):
-        return f"[{self.linenumber}: {self.content}]"
+        return f"[{self.line_number}: {self.content}]"
 
 
 def compute_highlighting(entry: Entry) -> Generator[HighlightedLine, None, None]:
     lexer = find_lexer(entry.path, entry.content)
-    logger.info("Using {} for highlighting".format(type(lexer).__name__))
+    logger.info(f"Using {type(lexer).__name__} for highlighting")
     content = entry.content.replace('\t', "    ")
     tokens = list(lexer.get_tokens(content))
     return line_per_line(tokens)

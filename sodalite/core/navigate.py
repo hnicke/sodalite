@@ -106,7 +106,7 @@ class Navigator(Observable):
     def assign_key(self, key: Key, path: Path):
         """Assigns given key to given entry.
         if the new key is already taken by another entry on the same level, keys are swapped"""
-        logger.info("Assigning key '{}' to entry '{}'".format(key, path))
+        logger.info(f"Assigning key '{key}' to entry '{path}'")
         parent = self.entry_access.get_current()
         entry = parent.get_child_for_path(path)
         conflicting_entry = parent.get_child_for_key(key)
@@ -116,14 +116,14 @@ class Navigator(Observable):
         if conflicting_entry is not None:
             conflicting_entry.key = old_key
             self.entry_access.update_entry(conflicting_entry)
-            logger.debug("Swapped key of conflicting entry '{}'".format(conflicting_entry))
+            logger.debug(f"Swapped key of conflicting entry '{conflicting_entry}'")
 
     def _access(self, entry: Entry):
         """Adds an access to given entry"""
         self.entry_access.access_now(entry)
 
     def _chdir(self, entry: Entry):
-        if entry.is_dir():
+        if entry.is_dir:
             pwd = entry.path
         else:
             pwd = entry.dir

@@ -29,5 +29,5 @@ class FilePreview(List):
 
     def on_entry_changed(self, model: ViewModel) -> None:
         current = model.current_entry
-        if not current.is_plain_text_file() and current.is_file():
+        if not current.is_plain_text_file and current.is_file:
             self.body.clear()

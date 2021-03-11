@@ -27,11 +27,12 @@ setuptools.setup(
     extras_require={
         'dev': [
             'mypy',
-            'lxml', # mypy report generation
+            'lxml',  # mypy report generation
             'pytest',
             'pytest-mock',
             'flake8',
-            'commitizen',
+            'flake8-sfs',
+            'commitizen',  # enforce conventional commit messages
         ]
     }
 )

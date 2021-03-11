@@ -25,14 +25,14 @@ class Hook:
         self.action = action
 
     def __str__(self):
-        return "<key: '{}', hook: '{}', label: '{}'>".format(self.key, self.action, self.label)
+        return f"<key: '{self.key}', hook: '{self.action}', label: '{self.label}'>"
 
     def __repr__(self):
         return str(self)
 
     def trigger(self, entry):
         os.environ['entry'] = str(entry.path)
-        logger.info("Executing command: {}".format(self.action))
+        logger.info(f"Executing command: {self.action}")
         result = os.system(f"( {self.action} ) > /dev/tty < /dev/tty")
         logger.info(f"Result is {result}")
         from sodalite.ui import graphics
@@ -105,19 +105,19 @@ def _hook_map() -> HookMap:
     return HookMap(config.get().hooks)
 
 
-def get_hooks(entry) -> list[Hook]:
+def get_hooks(entry: 'Entry') -> list[Hook]:
     """
     :return: list of possible actions for given entry
     """
     hook_map = _hook_map()
     matching_hooks: dict[str, Hook] = {}
     matching_hooks.update(_as_dict(hook_map.get_general_hooks()))
-    if entry.is_dir():
+    if entry.is_dir:
         matching_hooks.update(_as_dict(hook_map.get_dir_hooks()))
-    elif entry.is_file():
+    elif entry.is_file:
         matching_hooks.update(_as_dict(get_custom_hooks(entry)))
         matching_hooks.update(_as_dict(hook_map.get_file_hooks()))
-        if entry.is_plain_text_file():
+        if entry.is_plain_text_file:
             matching_hooks.update(_as_dict(hook_map.get_plain_text_hooks()))
         if entry.executable:
             matching_hooks.update(_as_dict(hook_map.get_executable_hooks()))
