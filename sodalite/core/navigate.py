@@ -6,10 +6,9 @@ from typing import Optional
 from sodalite.core import key as key_module
 from sodalite.core.entry import Entry
 from sodalite.core.entryaccess import EntryAccess
-from sodalite.core.entrywatcher import EntryWatcher
 from sodalite.core.history import History
 from sodalite.core.key import Key
-from sodalite.util.observer import Observable
+from sodalite.util import topic
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +21,7 @@ def _chdir(entry: Entry) -> None:
     os.chdir(pwd)
 
 
-class Navigator(Observable):
+class Navigator:
     """Public interface of the core package.
     Clients (e.g., GUI) may use the navigator class for interaction
     """
@@ -32,7 +31,7 @@ class Navigator(Observable):
         self.history = history
         self.entry_access = entry_access or EntryAccess()
         self._current_entry: Optional[Entry] = None
-        self.register(EntryWatcher().on_update, immediate_update=False)  # type: ignore
+        topic.filesystem.connect(self.reload_current_entry)
         self.current_entry = self.current()
 
     def current(self) -> Entry:
@@ -67,7 +66,7 @@ class Navigator(Observable):
             entry = self.current()
         self.history.visit(Path(entry.path))
         self.current_entry = entry
-        self._access(entry)
+        self.entry_access.access_now(entry)
         _chdir(entry)
         return entry
 
@@ -81,7 +80,7 @@ class Navigator(Observable):
         self.history.visit(Path(path))
         entry = self.entry_access.retrieve_entry(path)
         self.current_entry = entry
-        self._access(entry)
+        self.entry_access.access_now(entry)
         _chdir(entry)
         return entry
 
@@ -130,10 +129,6 @@ class Navigator(Observable):
             self.entry_access.update_entry(conflicting_entry)
             logger.debug(f"Swapped key of conflicting entry '{conflicting_entry}'")
 
-    def _access(self, entry: Entry) -> None:
-        """Adds an access to given entry"""
-        self.entry_access.access_now(entry)
-
     @property
     def current_entry(self) -> Entry:
         if not self._current_entry:
@@ -143,7 +138,7 @@ class Navigator(Observable):
     @current_entry.setter
     def current_entry(self, entry: Entry) -> None:
         self._current_entry = entry
-        self.notify_all()
+        topic.entry.send(self._current_entry)
 
     def reload_current_entry(self) -> None:
         logger.info('Reloading current entry')

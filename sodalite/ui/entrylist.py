@@ -8,7 +8,8 @@ from urwid import AttrSpec, ListBox
 from sodalite.core.entry import Entry, EntryType
 from sodalite.core.navigate import Navigator
 from sodalite.ui import theme, graphics, viewmodel
-from sodalite.ui.viewmodel import ViewModel, Topic
+from sodalite.ui.viewmodel import ViewModel
+from sodalite.util import topic
 
 logger = logging.getLogger(__name__)
 
@@ -149,14 +150,14 @@ class EntryList(List):
         self.box = None
         self.model = model
         self.navigator = navigator
-        self.model.register(self.on_entries_changed, topic=Topic.ENTRIES)
+        topic.entry_list.connect(self.on_entries_changed)
         self._selection: Optional[ListEntry] = None
 
-    def on_entries_changed(self, model):
+    def on_entries_changed(self, entries: list[Entry]) -> None:
         with graphics.DRAW_LOCK:
             self.walker.clear()
             self.walker.extend(
-                [self.create_list_entry(entry) for entry in model.entries])
+                [self.create_list_entry(entry) for entry in entries])
             self.walker.set_focus(0)
 
     def create_list_entry(self, entry):

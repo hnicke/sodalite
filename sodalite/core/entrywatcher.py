@@ -1,14 +1,14 @@
 import logging
 import time
 from threading import Lock
-from typing import TYPE_CHECKING, Optional
+from typing import Optional
 
 from watchdog.events import FileSystemEventHandler, FileSystemEvent
 from watchdog.observers import Observer
 from watchdog.observers.api import ObservedWatch
 
-if TYPE_CHECKING:
-    from sodalite.core.navigate import Navigator
+from sodalite.core.entry import Entry
+from sodalite.util import topic
 
 _logger = logging.getLogger(__name__)
 
@@ -17,9 +17,8 @@ class DeduplicatedReload:
     _lock = Lock()
     _last_reload: float = 0
 
-    def __init__(self, navigator: 'Navigator', deduplication_interval_millis: int):
+    def __init__(self, deduplication_interval_millis: int):
         self.deduplication_interval_millis = deduplication_interval_millis
-        self.navigator = navigator
 
     def reload(self) -> None:
         current_time = time.time()
@@ -29,13 +28,13 @@ class DeduplicatedReload:
             if self._last_reload + self.deduplication_interval_millis / 1000 < current_time:
                 time.sleep(self.deduplication_interval_millis / 1000)
                 self._last_reload = time.time()
-                self.navigator.reload_current_entry()
+                topic.filesystem.send()
 
 
 class PathHandler(FileSystemEventHandler):  # type: ignore
 
-    def __init__(self, navigator: 'Navigator', deduplication_interval_millis: int):
-        self.reloader = DeduplicatedReload(navigator, deduplication_interval_millis)
+    def __init__(self, deduplication_interval_millis: int):
+        self.reloader = DeduplicatedReload(deduplication_interval_millis)
 
     def on_any_event(self, event: FileSystemEvent) -> None:
         _logger.debug(f"Event ({event.event_type}): {event.src_path}")
@@ -52,13 +51,13 @@ class EntryWatcher:
         self._watch: Optional[ObservedWatch] = None
         self._update_lock = Lock()
 
-    def on_update(self, navigator: 'Navigator') -> None:
+    def on_navigated(self, entry: Entry) -> None:
         with self._update_lock:
-            path = navigator.current_entry.path
+            path = entry.path
             if self._watch:
                 if self._watch.path == str(path):
                     return
                 self._observer.unschedule(self._watch)
                 self._watch = None
-            handler = PathHandler(navigator, deduplication_interval_millis=self.deduplication_interval_millis)
+            handler = PathHandler(self.deduplication_interval_millis)
             self._watch = self._observer.schedule(handler, path, recursive=False)

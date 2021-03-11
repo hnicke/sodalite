@@ -10,8 +10,8 @@ class Filter(urwid.Edit):
         self.parent = parent
         self.cursor_col = 1
         self._active = False
-        urwid.connect_signal(self, 'postchange', self.update_filter)
         super().__init__(caption=u'/')
+        urwid.connect_signal(self, 'postchange', self.update_filter)
 
     @property
     def active(self) -> bool:

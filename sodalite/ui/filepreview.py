@@ -2,25 +2,25 @@ import logging
 
 from urwid import Text
 
+from sodalite.core.entry import Entry
 from sodalite.ui import graphics
 from sodalite.ui.entrylist import List
 from sodalite.ui.highlighting import HighlightedLine
-from sodalite.ui.viewmodel import Topic, ViewModel
+from sodalite.util import topic
 
 logger = logging.getLogger(__name__)
 
 
 class FilePreview(List):
-    def __init__(self, model: ViewModel) -> None:
+    def __init__(self) -> None:
         super().__init__()
         self.content: list[HighlightedLine] = []
-        model.register(self.on_file_content_changed, Topic.FILTERED_FILE_CONTENT,  # type: ignore
-                       immediate_update=False)
-        model.register(self.on_entry_changed, Topic.CURRENT_ENTRY)  # type: ignore
+        topic.filtered_file_content.connect(self.on_file_content_changed)
+        topic.entry.connect(self.on_entry_changed)
 
-    def on_file_content_changed(self, model: ViewModel) -> None:
-        if model.filtered_file_content != self.content:
-            self.content = model.filtered_file_content
+    def on_file_content_changed(self, content: list[HighlightedLine]) -> None:
+        if content != self.content:
+            self.content = content
             with graphics.DRAW_LOCK:
                 self.body.clear()
                 self.body.extend([Text(line.numbered_content) for line in self.content])
@@ -28,7 +28,6 @@ class FilePreview(List):
                     self.focus_position = 0
             graphics.redraw_if_external()
 
-    def on_entry_changed(self, model: ViewModel) -> None:
-        current = model.current_entry
-        if not current.is_plain_text_file and current.is_file:
+    def on_entry_changed(self, entry: Entry) -> None:
+        if not entry.is_plain_text_file and entry.is_file:
             self.body.clear()

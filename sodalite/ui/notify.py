@@ -4,7 +4,8 @@ import time
 import urwid
 
 from sodalite.ui import graphics, theme, viewmodel
-from sodalite.ui.viewmodel import Topic, Mode
+from sodalite.ui.viewmodel import Mode
+from sodalite.util import topic
 
 txt = urwid.AttrMap(urwid.Text('', align='center'), urwid.DEFAULT)
 _notify_box = theme.DynamicAttrMap(urwid.LineBox(txt, tline=''))
@@ -51,7 +52,7 @@ def clear() -> None:
         graphics.loop.draw_screen()
 
 
-def trigger_notifications(model) -> None:
+def trigger_notifications(mode: Mode) -> None:
     if viewmodel.global_mode == Mode.ASSIGN_CHOOSE_ENTRY:
         show("choose entry", duration=0)
     elif viewmodel.global_mode == Mode.ASSIGN_CHOOSE_KEY:
@@ -60,4 +61,4 @@ def trigger_notifications(model) -> None:
         clear()
 
 
-viewmodel.global_mode.register(trigger_notifications, topic=Topic.MODE, immediate_update=False)
+topic.mode.connect(trigger_notifications)
