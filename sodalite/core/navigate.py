@@ -123,7 +123,7 @@ class Navigator(Observable):
         self.entry_access.access_now(entry)
 
     def _chdir(self, entry: Entry):
-        if entry.is_dir():
+        if entry.is_dir:
             pwd = entry.path
         else:
             pwd = entry.dir

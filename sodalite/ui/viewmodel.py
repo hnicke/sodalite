@@ -65,7 +65,7 @@ class ViewModel(Observable):
 
     def on_update(self, navigator):
         self.current_entry = navigator.current_entry
-        if self.current_entry.is_plain_text_file():
+        if self.current_entry.is_plain_text_file:
             self.file_content = list(highlighting.compute_highlighting(self.current_entry))
         else:
             self.file_content = None
@@ -74,7 +74,7 @@ class ViewModel(Observable):
         self.process()
 
     def process(self):
-        if self.current_entry.is_plain_text_file():
+        if self.current_entry.is_plain_text_file:
             self.filtered_file_content = self.filter_file_content()
         else:
             entries = list(self.current_entry.children)
@@ -93,7 +93,7 @@ class ViewModel(Observable):
         if self.show_hidden_files:
             return entries
         else:
-            return [x for x in entries if x.is_hidden() is False]
+            return [x for x in entries if not x.is_hidden]
 
     @property
     def show_hidden_files(self) -> bool:
@@ -150,8 +150,8 @@ class ViewModel(Observable):
 
 def sort(entries: list[Entry]):
     sorted_entries = sorted(entries, key=lambda x: x.name)
-    sorted_entries.sort(key=lambda x: x.is_dir(), reverse=True)
-    sorted_entries.sort(key=lambda x: x.is_hidden())
+    sorted_entries.sort(key=lambda x: x.is_dir, reverse=True)
+    sorted_entries.sort(key=lambda x: x.is_hidden)
     sorted_entries.sort(key=lambda x: x.name_precedence)
     sorted_entries.sort(key=lambda x: x.rating, reverse=True)
     sorted_entries.sort(key=lambda x: x.key.value == "")

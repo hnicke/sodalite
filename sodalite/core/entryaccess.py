@@ -41,7 +41,7 @@ class EntryAccess:
         return entry
 
     def __populate_children(self, entry: Entry):
-        if not entry.is_dir():
+        if not entry.is_dir:
             return
         entry.children = [Entry(Path(x), parent=entry) for x in entry.path.glob('*')]
         dao.inject_data(entry)
@@ -58,7 +58,7 @@ class EntryAccess:
         entry = self._current_entry.get_child_for_key(key)
         if not entry:
             return None
-        if not entry.exists():
+        if not entry.exists:
             raise FileNotFoundError()
         check_permission(entry)
         entry.hooks = hook.get_hooks(entry)
@@ -85,7 +85,7 @@ class EntryAccess:
 
 
 def check_permission(entry: Entry):
-    if entry.is_dir():
+    if entry.is_dir:
         access = os.access(entry.path, os.X_OK)
     else:
         access = os.access(entry.path, os.R_OK)

@@ -6,7 +6,7 @@ from io import UnsupportedOperation
 from pathlib import Path
 from typing import Optional
 
-from binaryornot.check import is_binary
+from binaryornot import check
 
 from sodalite.core import rating, config
 from sodalite.core.hook import Hook
@@ -22,6 +22,23 @@ class EntryType(Enum):
     BLOCK_DEVICE = 6
     CHARACTER_DEVICE = 7
 
+    @classmethod
+    def from_mode(cls, mode: int) -> 'EntryType':
+        if stat.S_ISREG(mode):
+            return EntryType(EntryType.FILE)
+        elif stat.S_ISDIR(mode):
+            return EntryType(EntryType.DIRECTORY)
+        elif stat.S_ISLNK(mode):
+            return EntryType(EntryType.SYMLINK)
+        elif stat.S_ISFIFO(mode):
+            return EntryType(EntryType.FIFO)
+        elif stat.S_ISBLK(mode):
+            return EntryType(EntryType.BLOCK_DEVICE)
+        elif stat.S_ISCHR(mode):
+            return EntryType(EntryType.CHARACTER_DEVICE)
+        else:
+            raise Exception(f"Unknown entry type '{mode}'")
+
 
 class Entry:
     """
@@ -33,10 +50,8 @@ class Entry:
         :param path: the absolute, canonical path of this entry
         """
         self.path = Path(os.path.normpath(str(path)))
-        if not access_history:
-            access_history = []
         self.unexplored = False
-        self.access_history: list[int] = access_history
+        self.access_history: list[int] = access_history or []
         self._rating: Optional[float] = None
         self.parent = parent
         self.dir: Path = self.path.parent
@@ -47,25 +62,23 @@ class Entry:
         self.path_to_child: dict[Path, Entry] = {}
         self.key_to_child: dict[Key, Entry] = {}
 
-        self.__is_plain_text_file: Optional[bool] = None
         self.hooks: list[Hook] = []
         self.stat = os.lstat(path)
         self.size = self.stat.st_size
         self.permissions = oct(self.stat.st_mode)[-3:]
-        self.type = detect_type(self.stat.st_mode)
-        if self.is_link():
-            self.realpath = self.path.resolve(strict=False)
+
+    @functools.cached_property
+    def realpath(self) -> Path:
+        if self.is_link:
+            return self.path.resolve(strict=False)
         else:
-            self.realpath = path
-        """lower precedence number means higher priority, e.g. for displaying"""
-        self._executable: Optional[bool] = None
-        self._readable: Optional[bool] = None
+            return self.path
 
     def chdir(self) -> None:
         """
         Change current (os) directory to this entry. If this entry is not a directory, changes to the parent directory.
         """
-        if self.is_dir():
+        if self.is_dir:
             cwd = self.realpath
         else:
             cwd = self.realpath.parent
@@ -105,6 +118,7 @@ class Entry:
 
     @functools.cached_property
     def name_precedence(self) -> int:
+        """lower precedence number means higher priority, e.g. for displaying"""
         return config.get().preferred_names.index(self.name.lower())
 
     def __str__(self) -> str:
@@ -122,26 +136,29 @@ class Entry:
     def __hash__(self) -> int:
         return hash(self.__key())
 
+    @property
     def is_hidden(self) -> bool:
         return self.name.startswith('.')
 
+    @functools.cached_property
     def is_plain_text_file(self) -> bool:
-        if self.__is_plain_text_file is None:
-            self.__is_plain_text_file = self.is_file() \
-                                        and not self.name.endswith('.pdf') and not is_binary(str(self.path))
-        return self.__is_plain_text_file
+        return self.is_file and not self.name.endswith('.pdf') and not check.is_binary(str(self.path))
 
+    @functools.cached_property
     def is_dir(self) -> bool:
-        return self.type == EntryType.DIRECTORY or self.is_link() and os.path.isdir(self.realpath)
+        return self.type == EntryType.DIRECTORY or self.is_link and os.path.isdir(self.realpath)
 
+    @functools.cached_property
     def is_file(self) -> bool:
-        return self.type == EntryType.FILE or self.is_link() and os.path.isfile(self.realpath)
+        return self.type == EntryType.FILE or self.is_link and os.path.isfile(self.realpath)
 
+    @property
     def is_link(self) -> bool:
         return self.type == EntryType.SYMLINK
 
+    @property
     def exists(self) -> bool:
-        return Path(self.path).exists()
+        return self.path.exists()
 
     # TODO use cache_property here
     @property
@@ -157,42 +174,25 @@ class Entry:
     def rating(self, rating: float) -> None:
         self._rating = rating
 
-    @property
+    @functools.cached_property
     def executable(self) -> bool:
-        if not self._executable:
-            if self.is_link():
-                self._executable = os.access(self.realpath, os.X_OK)
-            else:
-                owner = self.permissions[0]
-                self._executable = owner == '1' or owner == '5' or owner == '7'
-        return self._executable
+        if self.is_link:
+            return os.access(self.realpath, os.X_OK)
+        else:
+            owner = self.permissions[0]
+            return owner == '1' or owner == '5' or owner == '7'
 
-    @property
+    @functools.cached_property
     def readable(self) -> bool:
-        if self._readable is None:
-            owner = int(self.permissions[0])
-            self._readable = owner >= 4
-        return self._readable
+        owner = int(self.permissions[0])
+        return owner >= 4
 
     @functools.cached_property
     def content(self) -> str:
-        if not self.is_plain_text_file():
+        if not self.is_plain_text_file:
             raise UnsupportedOperation
         return self.path.read_text()
 
-
-def detect_type(mode: int) -> EntryType:
-    if stat.S_ISREG(mode):
-        return EntryType(EntryType.FILE)
-    elif stat.S_ISDIR(mode):
-        return EntryType(EntryType.DIRECTORY)
-    elif stat.S_ISLNK(mode):
-        return EntryType(EntryType.SYMLINK)
-    elif stat.S_ISFIFO(mode):
-        return EntryType(EntryType.FIFO)
-    elif stat.S_ISBLK(mode):
-        return EntryType(EntryType.BLOCK_DEVICE)
-    elif stat.S_ISCHR(mode):
-        return EntryType(EntryType.CHARACTER_DEVICE)
-    else:
-        raise Exception(f"Unknown entry type '{mode}'")
+    @functools.cached_property
+    def type(self) -> EntryType:
+        return EntryType.from_mode(self.stat.st_mode)
