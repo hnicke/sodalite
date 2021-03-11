@@ -1,7 +1,8 @@
 import urwid
 from pygments import token
-from sodalite.ui import viewmodel
-from sodalite.ui.viewmodel import Topic, Mode
+
+from sodalite.ui.viewmodel import Mode
+from sodalite.util import topic
 
 file = urwid.WHITE
 file_unimportant = urwid.LIGHT_GRAY
@@ -85,14 +86,14 @@ class DynamicAttrMap(urwid.AttrMap):
 
     def __init__(self, w) -> None:
         super().__init__(w, navigate_mode)
-        viewmodel.global_mode.register(self.update_colors, topic=Topic.MODE)
+        topic.mode.connect(self.update_colors)
 
-    def update_colors(self, model):
-        if viewmodel.global_mode == Mode.NAVIGATE:
+    def update_colors(self, mode: Mode):
+        if mode == Mode.NAVIGATE:
             attr = navigate_mode
-        elif viewmodel.global_mode in (Mode.ASSIGN_CHOOSE_ENTRY, Mode.ASSIGN_CHOOSE_KEY):
+        elif mode in (Mode.ASSIGN_CHOOSE_ENTRY, Mode.ASSIGN_CHOOSE_KEY):
             attr = assign_mode
-        elif viewmodel.global_mode == Mode.OPERATE:
+        elif mode == Mode.OPERATE:
             attr = operate_mode
         else:
             raise ValueError

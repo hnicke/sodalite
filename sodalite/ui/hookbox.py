@@ -1,25 +1,25 @@
 import urwid
 
+from sodalite.core.entry import Entry
 from sodalite.core.hook import Hook
 from sodalite.ui import graphics
-from sodalite.ui.viewmodel import ViewModel, Topic
+from sodalite.util import topic
 
 
 class HookBox(urwid.WidgetWrap):
-    def __init__(self, model: ViewModel, parent: urwid.Frame):
+    def __init__(self, parent: urwid.Frame):
         self.padding = 4
         self.parent = parent
         grid = urwid.GridFlow([], 1, self.padding, 0, 'left')
         padded_grid = urwid.Padding(grid, left=1)
         box = urwid.LineBox(padded_grid, tline='')
         super().__init__(box)
-        self._data: ViewModel = model
-        self._data.register(self.on_update, topic=Topic.CURRENT_ENTRY)
+        topic.entry.connect(self.on_navigated)
 
-    def on_update(self, model):
+    def on_navigated(self, entry: Entry):
         with graphics.DRAW_LOCK:
             self._w.base_widget.contents = [(HookCell(hook), self._w.base_widget.options()) for hook in
-                                            self._data.current_entry.hooks if hook.label]
+                                            entry.hooks if hook.label]
             if len(self._w.base_widget.contents) > 0:
                 self.update_cell_width()
                 self.parent.footer = self

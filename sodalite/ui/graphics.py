@@ -15,8 +15,8 @@ from sodalite.ui.filter import Filter
 from sodalite.ui.help import HelpLauncher
 from sodalite.ui.hookbox import HookBox
 from sodalite.ui.mainpane import MainPane
-from sodalite.ui.viewmodel import ViewModel, Topic, Mode
-from sodalite.util import env
+from sodalite.ui.viewmodel import ViewModel, Mode
+from sodalite.util import env, topic
 
 logger = logging.getLogger(__name__)
 
@@ -32,17 +32,19 @@ class MainFrame(urwid.Frame):  # type: ignore
         history.visit(path)
         self.navigator = Navigator(history)
         self.model = ViewModel()
-        self.navigator.register(self.model.on_update)
         self.mainpane = MainPane(self.model, self.navigator)
         self.filter = Filter(self.model, self.mainpane.frame)
         super().__init__(self.mainpane)
-        self.hookbox = HookBox(self.model, self)
+        self.hookbox = HookBox(self)
+
+        # TODO do not load two times...
+        self.navigator.reload_current_entry()
 
         # setup controllers
         self.control: Control = NavigateControl(self)
-        viewmodel.global_mode.register(self.change_controller, topic=Topic.MODE)  # type: ignore
+        topic.mode.connect(self.on_mode_changed)
 
-    def change_controller(self, mode: Mode) -> None:
+    def on_mode_changed(self, mode: Mode) -> None:
         if mode == Mode.NAVIGATE:
             self.control = NavigateControl(self)
         elif mode in viewmodel.ANY_ASSIGN_MODE:
