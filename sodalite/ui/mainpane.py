@@ -25,7 +25,7 @@ class MainPane(urwid.WidgetWrap):  # type: ignore
         self.box.title_widget.set_layout('right', 'clip')
         self.colored_box = theme.DynamicAttrMap(self.box)
         self.filter = self.frame.footer
-        self.model.register(self.on_entry_changed, topic=Topic.CURRENT_ENTRY)
+        self.model.register(self.on_entry_changed, topic=Topic.CURRENT_ENTRY)  # type: ignore
 
         super().__init__(self.colored_box)
 

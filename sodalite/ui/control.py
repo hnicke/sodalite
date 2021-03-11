@@ -10,7 +10,7 @@ from sodalite.core import key as key_module, hook, buffer, operate, Navigator
 from sodalite.core.key import Key
 from sodalite.ui import graphics, viewmodel, notify, theme, action
 from sodalite.ui.action import Action
-from sodalite.ui.viewmodel import Mode
+from sodalite.ui.viewmodel import Mode, ViewModel
 from sodalite.util import env
 
 if TYPE_CHECKING:
@@ -45,7 +45,7 @@ class Control:
         self.hookbox = frame.hookbox
         self.filter = frame.filter
         self.navigator: Navigator = frame.navigator
-        self.model = frame.model
+        self.model: ViewModel = frame.model
         self._list = None
         self.list_size = None
         self.filter_size = None
@@ -107,12 +107,12 @@ class Control:
         self.list.render(self.list_size, True)
 
     def enter_assign_mode(self):
-        if self.model.current_entry.is_dir():
+        if self.model.current_entry.is_dir:
             viewmodel.global_mode.mode = Mode.ASSIGN_CHOOSE_ENTRY
             self.list.render(self.list_size, True)
 
     def enter_operate_mode(self):
-        if self.model.current_entry.is_dir():
+        if self.model.current_entry.is_dir:
             viewmodel.global_mode.mode = Mode.OPERATE
             self.list.render(self.list_size, True)
 
@@ -137,7 +137,7 @@ class Control:
 
     def yank_file_content_to_clipboard(self):
         entry = self.model.current_entry
-        if entry.is_plain_text_file():
+        if entry.is_plain_text_file:
             self.yank_to_clipboard(entry.content)
 
     def yank_to_clipboard(self, text: str):

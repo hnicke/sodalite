@@ -15,12 +15,12 @@ class Register:
         self.name = f"register{number}"
         self._path = env.buffer / self.name
 
-    def copy_to(self, src: Union[list[Entry], Entry]):
+    def copy_to(self, src: Union[list[Entry], Entry]) -> None:
         """
         Writes given entries or given entry to this register
         """
 
-        def write_single_entry(e: Entry):
+        def write_single_entry(e: Entry) -> None:
             logger.info(f"Yanking {e.name} to {self.name}")
             copy(e.path, self.path / e.name)
 
@@ -31,23 +31,23 @@ class Register:
         else:
             write_single_entry(src)
 
-    def move_to(self, entry: Entry):
+    def move_to(self, entry: Entry) -> None:
         self.clear()
         dest = self.path / entry.name
         logger.info(f"Moving {entry.path} to {dest}")
         entry.path.rename(dest)
 
-    def read_from(self, target: Entry):
+    def read_from(self, target: Entry) -> None:
         """
         Copies this registers content into given target dir
         """
-        for file in self.path:
+        for file in self.path.iterdir():
             src = self.path / file
             dest = target.path / file
             logger.info(f"Pasting {self.name} to {dest}")
             copy(src, dest)
 
-    def clear(self):
+    def clear(self) -> None:
         for file in os.listdir(self.path):
             path = os.path.join(self.path, file)
             if os.path.isfile(path):
@@ -56,7 +56,7 @@ class Register:
                 shutil.rmtree(path)
 
     @property
-    def path(self):
+    def path(self) -> Path:
         os.makedirs(self._path, exist_ok=True)
         return self._path
 
@@ -64,7 +64,7 @@ class Register:
 registers = [Register(x) for x in range(10)]
 
 
-def copy(src: Path, dest: Path):
+def copy(src: Path, dest: Path) -> None:
     """
     Recursively copy src to dest
     :param src:
