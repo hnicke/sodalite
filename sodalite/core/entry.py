@@ -1,8 +1,8 @@
+import functools
 import os
 import stat
 from enum import Enum
 from io import UnsupportedOperation
-from numbers import Number
 from pathlib import Path
 from typing import Optional
 
@@ -58,27 +58,25 @@ class Entry:
         else:
             self.realpath = path
         """lower precedence number means higher priority, e.g. for displaying"""
-        self.name_precedence = compute_name_precedence(self.name)
         self._executable: Optional[bool] = None
-        self._readable = None
-        self._content: Optional[str] = None
+        self._readable: Optional[bool] = None
 
-    def chdir(self):
+    def chdir(self) -> None:
         """
         Change current (os) directory to this entry. If this entry is not a directory, changes to the parent directory.
         """
         if self.is_dir():
             cwd = self.realpath
         else:
-            cwd = os.path.dirname(self.realpath)
+            cwd = self.realpath.parent
         os.chdir(cwd)
 
     @property
-    def children(self):
+    def children(self) -> list['Entry']:
         return self._children
 
     @children.setter
-    def children(self, children: list['Entry']):
+    def children(self, children: list['Entry']) -> None:
         self._children = children
         self.path_to_child.clear()
         self.key_to_child.clear()
@@ -87,11 +85,11 @@ class Entry:
             self.key_to_child[entry.key] = entry
 
     @property
-    def key(self):
+    def key(self) -> Key:
         return self._key
 
     @key.setter
-    def key(self, key: Key):
+    def key(self, key: Key) -> None:
         if self.parent and self._key in self.parent.key_to_child:
             if self.parent.key_to_child[self._key] == self:
                 del self.parent.key_to_child[self._key]
@@ -105,6 +103,10 @@ class Entry:
     def get_child_for_path(self, path: Path) -> Optional['Entry']:
         return self.path_to_child.get(path, None)
 
+    @functools.cached_property
+    def name_precedence(self) -> int:
+        return config.get().preferred_names.index(self.name.lower())
+
     def __str__(self) -> str:
         return "[path:{}, key:{}, type:{}]".format(self.path, self.key, self.type)
 
@@ -114,8 +116,8 @@ class Entry:
     def __key(self) -> str:
         return str(self.path)
 
-    def __eq__(self, other) -> bool:
-        return type(self) == type(other) and self.__key() == other.__key()
+    def __eq__(self, other: object) -> bool:
+        return isinstance(other, Entry) and self.__key() == other.__key()
 
     def __hash__(self) -> int:
         return hash(self.__key())
@@ -141,9 +143,10 @@ class Entry:
     def exists(self) -> bool:
         return Path(self.path).exists()
 
+    # TODO use cache_property here
     @property
-    def rating(self):
-        if not isinstance(self._rating, Number):
+    def rating(self) -> float:
+        if not isinstance(self._rating, float):
             if not self.parent:
                 raise ValueError("Trying to get rating of entry which parent is not set")
             rating.populate_ratings(self.parent.children)
@@ -151,7 +154,7 @@ class Entry:
         return self._rating
 
     @rating.setter
-    def rating(self, rating):
+    def rating(self, rating: float) -> None:
         self._rating = rating
 
     @property
@@ -165,23 +168,20 @@ class Entry:
         return self._executable
 
     @property
-    def readable(self):
-        if not self._executable:
+    def readable(self) -> bool:
+        if self._readable is None:
             owner = int(self.permissions[0])
             self._readable = owner >= 4
         return self._readable
 
-    @property
-    def content(self):
+    @functools.cached_property
+    def content(self) -> str:
         if not self.is_plain_text_file():
             raise UnsupportedOperation
-        if not self._content:
-            with open(self.path) as f:
-                self._content = f.read()
-        return self._content
+        return self.path.read_text()
 
 
-def detect_type(mode) -> EntryType:
+def detect_type(mode: int) -> EntryType:
     if stat.S_ISREG(mode):
         return EntryType(EntryType.FILE)
     elif stat.S_ISDIR(mode):
@@ -196,10 +196,3 @@ def detect_type(mode) -> EntryType:
         return EntryType(EntryType.CHARACTER_DEVICE)
     else:
         raise Exception(f"Unknown entry type '{mode}'")
-
-
-def compute_name_precedence(name: str) -> int:
-    try:
-        return config.get().preferred_names.index(name.lower())
-    except ValueError:
-        return len(config.get().preferred_names)
