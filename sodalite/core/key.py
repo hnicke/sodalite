@@ -1,6 +1,6 @@
 from pathlib import Path
 from random import shuffle
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Collection
 
 if TYPE_CHECKING:
     from sodalite.core.entry import Entry
@@ -128,9 +128,9 @@ def is_navigation_key(key: str):
     return False
 
 
-def _sort(entries):
+def _sort(entries: Collection['Entry']):
     sorted_entries = sorted(entries, key=lambda x: x.name)
-    sorted_entries.sort(key=lambda x: x.is_dir(), reverse=True)
-    sorted_entries.sort(key=lambda x: x.is_hidden())
+    sorted_entries.sort(key=lambda x: x.is_dir, reverse=True)
+    sorted_entries.sort(key=lambda x: x.is_hidden)
     sorted_entries.sort(key=lambda x: x.name_precedence)
     return sorted_entries

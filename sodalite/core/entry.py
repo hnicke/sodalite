@@ -119,7 +119,10 @@ class Entry:
     @functools.cached_property
     def name_precedence(self) -> int:
         """lower precedence number means higher priority, e.g. for displaying"""
-        return config.get().preferred_names.index(self.name.lower())
+        try:
+            return config.get().preferred_names.index(self.name.lower())
+        except ValueError:
+            return len(config.get().preferred_names)
 
     def __str__(self) -> str:
         return f"[path:{self.path}, key:{self.key}, type:{self.type}]"

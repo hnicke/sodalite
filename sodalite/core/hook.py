@@ -105,19 +105,19 @@ def _hook_map() -> HookMap:
     return HookMap(config.get().hooks)
 
 
-def get_hooks(entry) -> list[Hook]:
+def get_hooks(entry: 'Entry') -> list[Hook]:
     """
     :return: list of possible actions for given entry
     """
     hook_map = _hook_map()
     matching_hooks: dict[str, Hook] = {}
     matching_hooks.update(_as_dict(hook_map.get_general_hooks()))
-    if entry.is_dir():
+    if entry.is_dir:
         matching_hooks.update(_as_dict(hook_map.get_dir_hooks()))
-    elif entry.is_file():
+    elif entry.is_file:
         matching_hooks.update(_as_dict(get_custom_hooks(entry)))
         matching_hooks.update(_as_dict(hook_map.get_file_hooks()))
-        if entry.is_plain_text_file():
+        if entry.is_plain_text_file:
             matching_hooks.update(_as_dict(hook_map.get_plain_text_hooks()))
         if entry.executable:
             matching_hooks.update(_as_dict(hook_map.get_executable_hooks()))
