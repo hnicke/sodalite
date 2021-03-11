@@ -27,3 +27,14 @@ jobs:
 
       - name: Run tests
         run: make test
+
+      - name: Create type coverage badge
+        # if: github.ref == 'refs/head/master'
+        uses: schneegans/dynamic-badges-action@v1.0.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: dfd1ab3f3a19522e0d2b0c94c409ba78
+          filename: sodalite-type-coverage.json
+          label: typing
+          message: 1%
+          color: orange

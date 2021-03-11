@@ -8,3 +8,4 @@ tests/tmp_data
 venv/
 sodalite.egg-info/
 db.sqlite
+build
