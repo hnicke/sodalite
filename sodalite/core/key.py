@@ -48,7 +48,7 @@ class Key:
         return str(self)
 
 
-def get_all_keys() -> list:
+def get_all_keys() -> list[str]:
     keys = []
     for rank in all_keys:
         shuffle(rank)
@@ -56,10 +56,10 @@ def get_all_keys() -> list:
     return keys
 
 
-def _get_available_keys(old_entries: dict) -> list[str]:
+def _get_available_keys(old_entries: dict[Path, 'Entry']) -> list[str]:
     """returns a list of keys which are not yet used by given entries
     :param old_entries: list of Entry which already have a key"""
-    used_keys = set(map(lambda x: x.key.value, old_entries.values()))
+    used_keys = set([x.key.value for x in old_entries.values()])
     used_keys.discard('')
     unused_keys = []
     for key_rank in all_keys:
@@ -92,7 +92,7 @@ def assign_keys(entries_to_assign: dict[Path, 'Entry'], old_entries: dict[Path, 
     return entries_to_reassign
 
 
-def _assign(entries: list, available_keys: list[str]) -> None:
+def _assign(entries: list['Entry'], available_keys: list[str]) -> None:
     entries_assign_later = []
     for entry in entries:
         if len(available_keys) > 0:
