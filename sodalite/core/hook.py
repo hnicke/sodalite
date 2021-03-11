@@ -1,7 +1,7 @@
 import functools
 import logging
 import os
-from typing import Union, TYPE_CHECKING
+from typing import Union, TYPE_CHECKING, Optional
 
 from sodalite.core import config
 from sodalite.core.config import HooksConfig
@@ -15,7 +15,7 @@ special_keys: dict[str, str] = {}
 
 
 class Hook:
-    def __init__(self, key: str, action: str, label=None):
+    def __init__(self, key: str, action: str, label: Optional[str] = None) -> None:
         key = str(key)
         self.key = special_keys.get(key, key)
         self.label = label
@@ -25,13 +25,13 @@ class Hook:
             action = action[:-2]
         self.action = action
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"<key: '{self.key}', hook: '{self.action}', label: '{self.label}'>"
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return str(self)
 
-    def trigger(self, entry):
+    def trigger(self, entry: 'Entry') -> None:
         os.environ['entry'] = str(entry.path)
         logger.info(f"Executing command: {self.action}")
         result = os.system(f"( {self.action} ) > /dev/tty < /dev/tty")
@@ -43,7 +43,7 @@ class Hook:
             graphics.resume()
 
 
-def _extract_hook(key: str, hook_definition: Union[dict, str]) -> Hook:
+def _extract_hook(key: str, hook_definition: Union[dict[str, str], str]) -> Hook:
     if isinstance(hook_definition, dict):
         hook = Hook(key, hook_definition['action'], label=hook_definition.get('label'))
     else:
@@ -91,10 +91,10 @@ class HookMap:
     def get_custom_hooks(self) -> dict[str, list[Hook]]:
         return self.custom
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return str(self)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"general: {self.get_general_hooks()}, dir: {self.get_dir_hooks()}, " \
                f"file: {self.get_file_hooks()} plain_text: {self.get_plain_text_hooks()}, " \
                f"executable: {self.get_executable_hooks()}, custom: {self.custom}"
@@ -131,9 +131,9 @@ def _as_dict(hook_list: list[Hook]) -> dict[str, Hook]:
     return d
 
 
-def get_custom_hooks(entry) -> list[Hook]:
+def get_custom_hooks(entry: 'Entry') -> list[Hook]:
     custom_hooks = _hook_map().get_custom_hooks()
-    matches = list(filter(lambda x: entry.name.endswith(x), custom_hooks.keys()))
+    matches = [x for x in custom_hooks.keys() if entry.name.endswith(x)]
     matching_hooks: list[Hook] = []
     for match in matches:
         matching_hooks += custom_hooks[match]
@@ -145,6 +145,6 @@ def is_hook(key: str, entry: 'Entry') -> bool:
     return len(matches) > 0
 
 
-def trigger_hook(key: str, entry: 'Entry'):
+def trigger_hook(key: str, entry: 'Entry') -> None:
     hook = [hook for hook in entry.hooks if hook.key.lower() == key.lower()][0]
     hook.trigger(entry)

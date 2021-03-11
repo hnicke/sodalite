@@ -2,7 +2,7 @@ import logging
 import re
 import sqlite3
 from pathlib import Path
-from typing import Iterable
+from typing import Iterable, Collection
 
 from sodalite.core import key as key_module
 from sodalite.core.entry import Entry
@@ -63,19 +63,19 @@ class DbEntry:
         return Entry(path=Path(self.path), key=self.key, access_history=self.access_history, parent=parent)
 
 
-def regexp(expr, item):
+def regexp(expr: str, item: str) -> bool:
     reg = re.compile(expr)
     return reg.search(item) is not None
 
 
-def open_connection():
+def open_connection() -> sqlite3.Connection:
     conn = sqlite3.connect(env.db_file.absolute())
     conn.create_function("REGEXP", 2, regexp)
     conn.execute("PRAGMA foreign_keys = ON")
     return conn
 
 
-def init():
+def init() -> None:
     conn = open_connection()
     conn.cursor().executescript(CREATE_SCHEMA)
     conn.close()
@@ -86,7 +86,7 @@ def init():
 init()
 
 
-def inject_data(entry: Entry):
+def inject_data(entry: Entry) -> None:
     """
     Injects key and frequency information into children of given entry
     """
@@ -153,7 +153,7 @@ def read_entries_from_db(regex: str) -> dict[Path, DbEntry]:
         conn.close()
 
 
-def insert_new_entries(entries_fs: dict[Path, Entry], entries_db: dict[Path, Entry]):
+def insert_new_entries(entries_fs: dict[Path, Entry], entries_db: dict[Path, Entry]) -> None:
     new_paths = entries_fs.keys() - entries_db.keys()
     if not new_paths:
         return
@@ -189,7 +189,7 @@ def entry_exists(path: Path) -> bool:
         conn.close()
 
 
-def insert_entry(entry: Entry):
+def insert_entry(entry: Entry) -> None:
     query = f"""INSERT INTO {TABLE_ENTRY} ({ENTRY_PATH},{ENTRY_KEY}) VALUES (?,?)"""
     conn = open_connection()
     try:
@@ -199,7 +199,7 @@ def insert_entry(entry: Entry):
         conn.close()
 
 
-def remove_entries(obsolete_paths: Iterable[Path]):
+def remove_entries(obsolete_paths: Iterable[Path]) -> None:
     """Deletes obsolete entries in the db"""
     if not obsolete_paths:
         return
@@ -216,7 +216,7 @@ def remove_entries(obsolete_paths: Iterable[Path]):
         conn.close()
 
 
-def update_entry(entry: Entry):
+def update_entry(entry: Entry) -> None:
     """Updates given entry in database"""
     query = f"UPDATE {TABLE_ENTRY} SET {ENTRY_KEY}=? WHERE {ENTRY_PATH}=?"
     conn = open_connection()
@@ -227,7 +227,7 @@ def update_entry(entry: Entry):
         conn.close()
 
 
-def insert_access(path: Path, access: int):
+def insert_access(path: Path, access: int) -> None:
     query = f"INSERT INTO {TABLE_ACCESS} VALUES (?,?)"
     conn = open_connection()
     try:
@@ -237,19 +237,19 @@ def insert_access(path: Path, access: int):
         conn.close()
 
 
-def get_operations():
+def get_operations() -> Collection[Operation]:
     query = f"""SELECT ({OPERATION_ACTION},{OPERATION_PARAMS},{OPERATION_TIMESTAMP})
             FROM {TABLE_OPERATION} SORT BY {OPERATION_TIMESTAMP} ASC"""
     conn = open_connection()
     try:
         cursor = conn.cursor().execute(query)
         # TODO module core now depends on ui. operation should go to core?
-        return [Operation(row[0], params=eval(row[1]), timestamp=[2]) for row in cursor]
+        return [Operation(row[0], params=eval(row[1]), timestamp=row[2]) for row in cursor]
     finally:
         conn.close()
 
 
-def insert_operation(operation: Operation):
+def insert_operation(operation: Operation) -> None:
     query = f"""INSERT INTO {TABLE_OPERATION} ({OPERATION_ACTION},{OPERATION_PARAMS},{OPERATION_TIMESTAMP})
     VALUES (?,?,?)"""
     conn = open_connection()
@@ -260,7 +260,7 @@ def insert_operation(operation: Operation):
         conn.close()
 
 
-def delete_operation(operation: Operation):
+def delete_operation(operation: Operation) -> None:
     query = f"DELETE FROM {TABLE_OPERATION} WHERE {OPERATION_TIMESTAMP} = ?"
     conn = open_connection()
     try:

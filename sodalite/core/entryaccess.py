@@ -18,7 +18,9 @@ class EntryAccess:
         # TODO make this non optional
         self._current_entry: Optional[Entry] = None
 
-    def get_current(self):
+    def get_current(self) -> Entry:
+        if self._current_entry is None:
+            raise ValueError()
         return self._current_entry
 
     def retrieve_entry(self, path: Path, populate_children: bool = True, cache: bool = True) -> Entry:
@@ -40,7 +42,7 @@ class EntryAccess:
             self._current_entry = entry
         return entry
 
-    def __populate_children(self, entry: Entry):
+    def __populate_children(self, entry: Entry) -> None:
         if not entry.is_dir:
             return
         entry.children = [Entry(Path(x), parent=entry) for x in entry.path.glob('*')]
@@ -67,15 +69,15 @@ class EntryAccess:
         self._current_entry = entry
         return entry
 
-    def update_entry(self, entry: Entry):
+    def update_entry(self, entry: Entry) -> None:
         dao.update_entry(entry)
 
-    def is_possible(self, key: Key):
+    def is_possible(self, key: Key) -> bool:
         if self._current_entry is None:
             raise ValueError()
         return self._current_entry.get_child_for_key(key) is not None
 
-    def access_now(self, entry):
+    def access_now(self, entry: Entry) -> None:
         """Adds a new access to given entry"""
         if not dao.entry_exists(entry.path):
             dao.insert_entry(entry)
@@ -84,7 +86,7 @@ class EntryAccess:
         dao.insert_access(entry.path, access)
 
 
-def check_permission(entry: Entry):
+def check_permission(entry: Entry) -> None:
     if entry.is_dir:
         access = os.access(entry.path, os.X_OK)
     else:

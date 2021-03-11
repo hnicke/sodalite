@@ -40,7 +40,7 @@ class MainFrame(urwid.Frame):  # type: ignore
 
         # setup controllers
         self.control: Control = NavigateControl(self)
-        viewmodel.global_mode.register(self.change_controller, topic=Topic.MODE)
+        viewmodel.global_mode.register(self.change_controller, topic=Topic.MODE)  # type: ignore
 
     def change_controller(self, mode: Mode) -> None:
         if mode == Mode.NAVIGATE:

@@ -12,7 +12,7 @@ STEEPNESS = 35  # e.g. 50 would make recent accesses much more valuable
 _MILLIS_TO_HOURS = 1000 * 60 * 60 * 24
 
 
-def populate_ratings(entries: list['Entry']):
+def populate_ratings(entries: list['Entry']) -> None:
     dict = normalize(calculate_frecency(entries))
     for entry, rating in dict.items():
         entry.rating = rating

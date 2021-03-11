@@ -14,8 +14,9 @@ class FilePreview(List):
     def __init__(self, model: ViewModel) -> None:
         super().__init__()
         self.content: list[HighlightedLine] = []
-        model.register(self.on_file_content_changed, Topic.FILTERED_FILE_CONTENT, immediate_update=False)
-        model.register(self.on_entry_changed, Topic.CURRENT_ENTRY)
+        model.register(self.on_file_content_changed, Topic.FILTERED_FILE_CONTENT,  # type: ignore
+                       immediate_update=False)
+        model.register(self.on_entry_changed, Topic.CURRENT_ENTRY)  # type: ignore
 
     def on_file_content_changed(self, model: ViewModel) -> None:
         if model.filtered_file_content != self.content:

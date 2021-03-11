@@ -2,6 +2,7 @@ import logging.handlers
 import os
 
 from pathlib import Path
+from typing import Optional
 
 VERSION = '0.19.4'
 PROGRAM_NAME = 'sodalite'
@@ -19,7 +20,7 @@ logging.getLogger('sodalite').setLevel(logging.DEBUG)
 logger = logging.getLogger(__name__)
 logger.debug('Starting sodalite')
 
-exit_cwd = None
+exit_cwd: Optional[Path] = None
 # program will read following environment variables
 ENV_DATA_DIR = 'DATA_DIR'
 ENV_DB_PATH = 'DB_PATH'
