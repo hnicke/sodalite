@@ -13,10 +13,12 @@ from sodalite.util import env
 
 logger = logging.getLogger(__name__)
 
+ENV_CONFIG_FILE = 'CONFIG_FILE'
+
 
 @functools.cache
 def _config_file() -> Path:
-    config_file_paths = [Path(os.getenv('CONFIG_FILE', env.USER_CONFIG / 'sodalite.conf')).absolute(),
+    config_file_paths = [Path(os.getenv(ENV_CONFIG_FILE, env.USER_CONFIG / 'sodalite.conf')).absolute(),
                          Path('/etc/sodalite.conf'),
                          Path('/usr/share/sodalite/sodalite.conf')]
     for file in config_file_paths:
