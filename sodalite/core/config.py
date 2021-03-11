@@ -1,7 +1,9 @@
+import functools
 import logging
 import os
-import sys
+from dataclasses import dataclass
 from pathlib import Path
+from typing import Any
 
 import yaml
 from yaml.parser import ParserError
@@ -11,16 +13,18 @@ from sodalite.util import env
 
 logger = logging.getLogger(__name__)
 
-config_file = Path(os.getenv('CONFIG_FILE', env.USER_CONFIG / 'sodalite.conf')).absolute()
-if not config_file.exists():
-    config_file = Path('/etc/sodalite.conf')
-    if not config_file.exists():
-        config_file = Path('/usr/share/sodalite/sodalite.conf')
-logger.debug(f"Using config file: {config_file.absolute()}")
 
-
-class InvalidConfiguration(Exception):
-    pass
+@functools.cache
+def _config_file() -> Path:
+    config_file_paths = [Path(os.getenv('CONFIG_FILE', env.USER_CONFIG / 'sodalite.conf')).absolute(),
+                         Path('/etc/sodalite.conf'),
+                         Path('/usr/share/sodalite/sodalite.conf')]
+    for file in config_file_paths:
+        if file.exists():
+            logger.debug(f"Using config file '{file}'")
+            return file
+    logger.error('No config file found')
+    exit(1)
 
 
 def _sanitize_keymap(keys: dict[str, str]) -> dict[str, str]:
@@ -31,25 +35,23 @@ def _sanitize_keymap(keys: dict[str, str]) -> dict[str, str]:
     return keys
 
 
-try:
-    config_str = config_file.read_text()
-    config_dict = yaml.safe_load(config_str)
-    hooks = config_dict.setdefault('hooks', {})
-    if not hooks:
-        hooks = {}
-    keymap = config_dict.setdefault('keymap', {})
-    if not keymap:
-        keymap = {}
-    keymap = _sanitize_keymap(keymap)
-    preferred_names = config_dict.setdefault('preferred_names', [])
-    preferred_names = [x.lower() for x in preferred_names]
-except ScannerError:
-    message = f"Error while parsing config file '{config_file}'"
-    print(message, file=sys.stderr)
-    logger.exception(message)
-    exit(1)
-except ParserError:
-    message = f"Invalid configuration file '{config_file}': Faulty syntax."
-    print(message, file=sys.stderr)
-    logger.exception(message)
-    exit(1)
+@dataclass
+class Configuration:
+    hooks: dict[str, Any]
+    keymap: dict[str, Any]
+    preferred_names: list[str]
+
+
+@functools.cache
+def get() -> Configuration:
+    try:
+        config_str = _config_file().read_text()
+        config_dict = yaml.safe_load(config_str)
+        return Configuration(
+            hooks=config_dict.get('hooks') or {},
+            keymap=_sanitize_keymap(config_dict.get('keymap') or {}),
+            preferred_names=[x.lower() for x in config_dict.get('preferred_names')] or [],
+        )
+    except (ParserError, ScannerError):
+        logger.exception(f"Failed to parse config file'{_config_file()}': Invalid yaml.", exc_info=True)
+        exit(1)

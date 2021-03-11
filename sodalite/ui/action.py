@@ -80,7 +80,7 @@ class Action:
         self.is_global = not modes
         self.modes = modes or []
         self.action = action
-        self.keybinding = config.keymap.setdefault(name, default_keybindings[name])
+        self.keybinding = config.get().keymap.setdefault(name, default_keybindings[name])
 
     def handle(self, input: str):
         if input == self.keybinding:

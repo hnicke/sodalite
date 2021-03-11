@@ -1,3 +1,4 @@
+import functools
 import logging
 import os
 from typing import Union, TYPE_CHECKING
@@ -94,37 +95,36 @@ class HookMap:
         return str(self)
 
     def __str__(self):
-        return "general: {}, dir: {}, file: {} plain_text: {}, executable: {}, custom: {}".format(
-            self.get_general_hooks(),
-            self.get_dir_hooks(),
-            self.get_file_hooks(),
-            self.get_plain_text_hooks(),
-            self.get_executable_hooks(),
-            self.custom)
+        return f"general: {self.get_general_hooks()}, dir: {self.get_dir_hooks()}, " \
+               f"file: {self.get_file_hooks()} plain_text: {self.get_plain_text_hooks()}, " \
+               f"executable: {self.get_executable_hooks()}, custom: {self.custom}"
 
 
-hook_map = HookMap(config.hooks)
+@functools.cache
+def _hook_map() -> HookMap:
+    return HookMap(config.get().hooks)
 
 
 def get_hooks(entry) -> list[Hook]:
     """
     :return: list of possible actions for given entry
     """
+    hook_map = _hook_map()
     matching_hooks: dict[str, Hook] = {}
-    matching_hooks.update(as_dict(hook_map.get_general_hooks()))
+    matching_hooks.update(_as_dict(hook_map.get_general_hooks()))
     if entry.is_dir():
-        matching_hooks.update(as_dict(hook_map.get_dir_hooks()))
+        matching_hooks.update(_as_dict(hook_map.get_dir_hooks()))
     elif entry.is_file():
-        matching_hooks.update(as_dict(get_custom_hooks(entry)))
-        matching_hooks.update(as_dict(hook_map.get_file_hooks()))
+        matching_hooks.update(_as_dict(get_custom_hooks(entry)))
+        matching_hooks.update(_as_dict(hook_map.get_file_hooks()))
         if entry.is_plain_text_file():
-            matching_hooks.update(as_dict(hook_map.get_plain_text_hooks()))
+            matching_hooks.update(_as_dict(hook_map.get_plain_text_hooks()))
         if entry.executable:
-            matching_hooks.update(as_dict(hook_map.get_executable_hooks()))
+            matching_hooks.update(_as_dict(hook_map.get_executable_hooks()))
     return list(matching_hooks.values())
 
 
-def as_dict(hook_list: list[Hook]) -> dict[str, Hook]:
+def _as_dict(hook_list: list[Hook]) -> dict[str, Hook]:
     d = {}
     for hook in hook_list:
         d[hook.key] = hook
@@ -132,7 +132,7 @@ def as_dict(hook_list: list[Hook]) -> dict[str, Hook]:
 
 
 def get_custom_hooks(entry) -> list[Hook]:
-    custom_hooks = hook_map.get_custom_hooks()
+    custom_hooks = _hook_map().get_custom_hooks()
     matches = list(filter(lambda x: entry.name.endswith(x), custom_hooks.keys()))
     matching_hooks: list[Hook] = []
     for match in matches:

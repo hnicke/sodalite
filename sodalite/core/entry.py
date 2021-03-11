@@ -200,6 +200,6 @@ def detect_type(mode) -> EntryType:
 
 def compute_name_precedence(name: str) -> int:
     try:
-        return config.preferred_names.index(name.lower())
+        return config.get().preferred_names.index(name.lower())
     except ValueError:
-        return len(config.preferred_names)
+        return len(config.get().preferred_names)

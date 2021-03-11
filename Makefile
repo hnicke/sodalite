@@ -95,7 +95,7 @@ logs:
 .PHONY: logs
 
 test: venv
-	${activate} && CONFIG_FILE=docs/sodalite.conf python -m pytest tests
+	${activate} && python -m pytest tests
 .PHONY: test
 
 clean:
