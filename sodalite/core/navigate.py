@@ -3,6 +3,8 @@ import os
 from pathlib import Path
 from typing import Optional
 
+from blinker import signal
+
 from sodalite.core import key as key_module
 from sodalite.core.entry import Entry
 from sodalite.core.entryaccess import EntryAccess
@@ -32,6 +34,7 @@ class Navigator(Observable):
         self.history = history
         self.entry_access = entry_access or EntryAccess()
         self._current_entry: Optional[Entry] = None
+        signal('')
         self.register(EntryWatcher().on_update, immediate_update=False)  # type: ignore
         self.current_entry = self.current()
 
@@ -67,7 +70,7 @@ class Navigator(Observable):
             entry = self.current()
         self.history.visit(Path(entry.path))
         self.current_entry = entry
-        self._access(entry)
+        self.entry_access.access_now(entry)
         _chdir(entry)
         return entry
 
@@ -81,7 +84,7 @@ class Navigator(Observable):
         self.history.visit(Path(path))
         entry = self.entry_access.retrieve_entry(path)
         self.current_entry = entry
-        self._access(entry)
+        self.entry_access.access_now(entry)
         _chdir(entry)
         return entry
 
@@ -129,10 +132,6 @@ class Navigator(Observable):
             conflicting_entry.key = old_key
             self.entry_access.update_entry(conflicting_entry)
             logger.debug(f"Swapped key of conflicting entry '{conflicting_entry}'")
-
-    def _access(self, entry: Entry) -> None:
-        """Adds an access to given entry"""
-        self.entry_access.access_now(entry)
 
     @property
     def current_entry(self) -> Entry:

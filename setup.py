@@ -23,6 +23,7 @@ setuptools.setup(
         'pyyaml',
         'urwid',
         'watchdog',
+        'blinker'
     ],
     extras_require={
         'dev': [
