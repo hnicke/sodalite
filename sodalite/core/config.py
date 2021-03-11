@@ -3,7 +3,7 @@ import logging
 import os
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional, Union
 
 import yaml
 from yaml.parser import ParserError
@@ -37,10 +37,13 @@ def _sanitize_keymap(keys: dict[str, str]) -> dict[str, str]:
     return keys
 
 
+HooksConfig = dict[str, Optional[dict[str, Union[str, dict[str, str]]]]]
+
+
 @dataclass
 class Configuration:
-    hooks: dict[str, Any]
-    keymap: dict[str, Any]
+    hooks: HooksConfig
+    keymap: dict[str, str]
     preferred_names: list[str]
 
 
