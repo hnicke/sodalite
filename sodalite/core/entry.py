@@ -108,7 +108,7 @@ class Entry:
         return config.get().preferred_names.index(self.name.lower())
 
     def __str__(self) -> str:
-        return "[path:{}, key:{}, type:{}]".format(self.path, self.key, self.type)
+        return f"[path:{self.path}, key:{self.key}, type:{self.type}]"
 
     def __repr__(self) -> str:
         return str(self)

@@ -17,7 +17,7 @@ class HighlightedLine:
         self.content = self.bold_headings(content)
         self.raw_content = ''.join([word for attr, word in self.content])
         self.linenumber = linenumber
-        formatted_linenumber = [(theme.line_number, u'{:>2} '.format(linenumber))]
+        formatted_linenumber = [(theme.line_number, f'{linenumber:>2} ')]
         self.numbered_content = [formatted_linenumber] + content
 
     def bold_headings(self, content):
@@ -40,7 +40,7 @@ class HighlightedLine:
 
 def compute_highlighting(entry: Entry) -> Generator[HighlightedLine, None, None]:
     lexer = find_lexer(entry.path, entry.content)
-    logger.info("Using {} for highlighting".format(type(lexer).__name__))
+    logger.info(f"Using {type(lexer).__name__} for highlighting")
     content = entry.content.replace('\t', "    ")
     tokens = list(lexer.get_tokens(content))
     return line_per_line(tokens)

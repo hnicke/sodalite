@@ -159,7 +159,7 @@ def insert_new_entries(entries_fs: dict[Path, Entry], entries_db: dict[Path, Ent
         return
     new_entries = {path: entries_fs[path] for path in new_paths}
     for path in new_paths:
-        logger.info("Persisting new entry: {}".format(path))
+        logger.info(f"Persisting new entry: {path}")
     reassigned_old_entries = key_module.assign_keys(new_entries, entries_db)
     for entry in reassigned_old_entries:
         update_entry(entry)

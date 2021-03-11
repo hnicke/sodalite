@@ -25,14 +25,14 @@ class Hook:
         self.action = action
 
     def __str__(self):
-        return "<key: '{}', hook: '{}', label: '{}'>".format(self.key, self.action, self.label)
+        return f"<key: '{self.key}', hook: '{self.action}', label: '{self.label}'>"
 
     def __repr__(self):
         return str(self)
 
     def trigger(self, entry):
         os.environ['entry'] = str(entry.path)
-        logger.info("Executing command: {}".format(self.action))
+        logger.info(f"Executing command: {self.action}")
         result = os.system(f"( {self.action} ) > /dev/tty < /dev/tty")
         logger.info(f"Result is {result}")
         from sodalite.ui import graphics
