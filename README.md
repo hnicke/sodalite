@@ -1,3 +1,5 @@
+[![Check Action Status](https://github.com/hnicke/sodalite/workflows/Check/badge.svg)](https://github.com/hnicke/sodalite/actions/workflows/check.yaml)
+
 # Sodalite: Exploration at the speed of thought
 
 ## Yet another file explorer
