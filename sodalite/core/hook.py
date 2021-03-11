@@ -4,6 +4,7 @@ import os
 from typing import Union, TYPE_CHECKING
 
 from sodalite.core import config
+from sodalite.core.config import HooksConfig
 
 if TYPE_CHECKING:
     from sodalite.core.entry import Entry
@@ -51,17 +52,16 @@ def _extract_hook(key: str, hook_definition: Union[dict, str]) -> Hook:
 
 
 class HookMap:
-    def __init__(self, hooks: dict[str, dict[str, Union[dict[str, str], str]]]):
+    def __init__(self, hooks: HooksConfig):
         self.map: dict[str, list[Hook]] = {}
         self.custom: dict[str, list[Hook]] = {}
 
         for category in ['general', 'dir', 'file', 'plain_text', 'executable']:
             self.map[category] = []
-            if hooks.get(category) is None:
-                continue
-            for key, hook_definition in hooks[category].items():
-                hook = _extract_hook(key, hook_definition)
-                self.map[category].append(hook)
+            if hooks.get(category) is not None:
+                for key, hook_definition in hooks[category].items():  # type: ignore
+                    hook = _extract_hook(key, hook_definition)
+                    self.map[category].append(hook)
 
         custom_hooks = hooks['custom']
         if custom_hooks is not None:

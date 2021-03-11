@@ -2,7 +2,7 @@ import atexit
 import json
 import logging
 from pathlib import Path
-from typing import Any, Dict
+from typing import Dict, Union
 
 from sodalite.util import env
 
@@ -129,13 +129,13 @@ class History:
             after = '--> ' + after
         return f'{before} [_{self.cwd()}_] {after}'
 
-    def __eq__(self, other: Any) -> bool:
+    def __eq__(self, other: object) -> bool:
         return isinstance(other, History) and self.__dict__ == other.__dict__
 
 
-def _object_decoder(obj: Dict[str, Any]) -> History:
+def _object_decoder(obj: Dict[str, Union[list[str], int]]) -> History:
     try:
-        return History([Path(x) for x in obj['history']], obj['index'], persist=True)
+        return History([Path(x) for x in obj['history']], obj['index'], persist=True)  # type: ignore
     except KeyError as e:
         logger.warning(f"Failed to load navigation history: {e}")
         raise HistoryLoadException()

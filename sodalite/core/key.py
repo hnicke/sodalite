@@ -29,26 +29,26 @@ class Key:
                 return x
         return len(all_keys)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.value
 
-    def __key(self):
+    def __key(self) -> str:
         return self.value
 
-    def __eq__(self, other):
-        return self.__key() == other.__key()
+    def __eq__(self, other: object) -> bool:
+        return isinstance(other, self.__class__) and self.__key() == other.__key()
 
-    def __hash__(self):
+    def __hash__(self) -> int:
         return hash(self.__key())
 
-    def __lt__(self, other):
+    def __lt__(self, other: 'Key') -> bool:
         return self.rank > other.rank
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return str(self)
 
 
-def get_all_keys():
+def get_all_keys() -> list[str]:
     keys = []
     for rank in all_keys:
         shuffle(rank)
@@ -56,10 +56,10 @@ def get_all_keys():
     return keys
 
 
-def _get_available_keys(old_entries: dict) -> list[str]:
+def _get_available_keys(old_entries: dict[Path, 'Entry']) -> list[str]:
     """returns a list of keys which are not yet used by given entries
     :param old_entries: list of Entry which already have a key"""
-    used_keys = set(map(lambda x: x.key.value, old_entries.values()))
+    used_keys = set([x.key.value for x in old_entries.values()])
     used_keys.discard('')
     unused_keys = []
     for key_rank in all_keys:
@@ -69,15 +69,13 @@ def _get_available_keys(old_entries: dict) -> list[str]:
     return unused_keys
 
 
-def assign_keys(entries_to_assign: dict[Path, 'Entry'], old_entries: dict[Path, 'Entry']):
+def assign_keys(entries_to_assign: dict[Path, 'Entry'], old_entries: dict[Path, 'Entry']) -> list['Entry']:
     """ assigns keys to the given new entries. Needs old entries
     :param entries_to_assign: entries without key, these will receive a key
     :param old_entries: all entries of this domain which already have a key
     :return list of old entries whose keys got reassigned and therefore need to get persisted
     """
 
-    if not entries_to_assign:
-        return
     free_keys = _get_available_keys(old_entries)
     reassignable_keys = [x.key.value for x in old_entries.values() if x.rating < 0.05 and x.key.value != '']
     available_keys = free_keys + reassignable_keys
@@ -94,7 +92,7 @@ def assign_keys(entries_to_assign: dict[Path, 'Entry'], old_entries: dict[Path, 
     return entries_to_reassign
 
 
-def _assign(entries: list, available_keys: list[str]):
+def _assign(entries: list['Entry'], available_keys: list[str]) -> None:
     entries_assign_later = []
     for entry in entries:
         if len(available_keys) > 0:
@@ -121,14 +119,14 @@ def _assign(entries: list, available_keys: list[str]):
             return
 
 
-def is_navigation_key(key: str):
+def is_navigation_key(key: str) -> bool:
     for key_rank in all_keys:
         if key in key_rank:
             return True
     return False
 
 
-def _sort(entries: Collection['Entry']):
+def _sort(entries: Collection['Entry']) -> list['Entry']:
     sorted_entries = sorted(entries, key=lambda x: x.name)
     sorted_entries.sort(key=lambda x: x.is_dir, reverse=True)
     sorted_entries.sort(key=lambda x: x.is_hidden)

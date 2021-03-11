@@ -32,7 +32,7 @@ class DeduplicatedReload:
                 self.navigator.reload_current_entry()
 
 
-class PathHandler(FileSystemEventHandler):
+class PathHandler(FileSystemEventHandler):  # type: ignore
 
     def __init__(self, navigator: 'Navigator', deduplication_interval_millis: int):
         self.reloader = DeduplicatedReload(navigator, deduplication_interval_millis)
