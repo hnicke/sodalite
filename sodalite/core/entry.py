@@ -1,7 +1,5 @@
 import functools
 import os
-import stat
-from enum import Enum
 from io import UnsupportedOperation
 from pathlib import Path
 from typing import Optional
@@ -11,33 +9,6 @@ from binaryornot import check
 from sodalite.core import rating, config
 from sodalite.core.hook import Hook
 from sodalite.core.key import Key
-
-
-class EntryType(Enum):
-    DIRECTORY = 1
-    FILE = 2
-    SYMLINK = 3
-    FIFO = 4
-    SOCKET = 5
-    BLOCK_DEVICE = 6
-    CHARACTER_DEVICE = 7
-
-    @classmethod
-    def from_mode(cls, mode: int) -> 'EntryType':
-        if stat.S_ISREG(mode):
-            return EntryType(EntryType.FILE)
-        elif stat.S_ISDIR(mode):
-            return EntryType(EntryType.DIRECTORY)
-        elif stat.S_ISLNK(mode):
-            return EntryType(EntryType.SYMLINK)
-        elif stat.S_ISFIFO(mode):
-            return EntryType(EntryType.FIFO)
-        elif stat.S_ISBLK(mode):
-            return EntryType(EntryType.BLOCK_DEVICE)
-        elif stat.S_ISCHR(mode):
-            return EntryType(EntryType.CHARACTER_DEVICE)
-        else:
-            raise Exception(f"Unknown entry type '{mode}'")
 
 
 class Entry:
@@ -125,7 +96,7 @@ class Entry:
             return len(config.get().preferred_names)
 
     def __str__(self) -> str:
-        return f"[path:{self.path}, key:{self.key}, type:{self.type}]"
+        return f"[path:{self.path}, key:{self.key}]"
 
     def __repr__(self) -> str:
         return str(self)
@@ -149,15 +120,15 @@ class Entry:
 
     @functools.cached_property
     def is_dir(self) -> bool:
-        return self.type == EntryType.DIRECTORY or self.is_link and os.path.isdir(self.realpath)
+        return self.path.is_dir()
 
     @functools.cached_property
     def is_file(self) -> bool:
-        return self.type == EntryType.FILE or self.is_link and os.path.isfile(self.realpath)
+        return self.path.is_file()
 
     @property
     def is_link(self) -> bool:
-        return self.type == EntryType.SYMLINK
+        return self.path.is_symlink()
 
     @property
     def exists(self) -> bool:
@@ -195,7 +166,3 @@ class Entry:
         if not self.is_plain_text_file:
             raise UnsupportedOperation
         return self.path.read_text()
-
-    @functools.cached_property
-    def type(self) -> EntryType:
-        return EntryType.from_mode(self.stat.st_mode)
