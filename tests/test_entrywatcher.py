@@ -9,7 +9,7 @@ from sodalite.util import pubsub
 
 
 def test_deduplicated_reload(callback: Mock) -> None:
-    pubsub._filesystem_signal.connect(callback)
+    pubsub.filesystem_connect(callback)
 
     reloader = DeduplicatedReload(100)
 
@@ -26,7 +26,7 @@ def test_deduplicated_reload(callback: Mock) -> None:
 
 def test_file_created(tmp_path: Path) -> None:
     callback = Mock(spec=lambda: None)
-    pubsub._filesystem_signal.connect(callback)
+    pubsub.filesystem_connect(callback)
 
     watcher = EntryWatcher(10)
     watcher.on_navigated(Entry(tmp_path))

@@ -77,9 +77,9 @@ def _create_loop(main: Widget) -> MainLoop:
 MAIN_LOOP = 'MainLoop'
 threading.current_thread().setName(MAIN_LOOP)
 os.environ['ESCDELAY'] = '0'
-frame = None
+frame: MainFrame
 loop: MainLoop
-popupLauncher = None
+popupLauncher: HelpLauncher
 
 
 def run(path: Path) -> None:

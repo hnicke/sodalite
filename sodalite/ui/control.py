@@ -1,15 +1,16 @@
 import logging
 from pathlib import Path
-from typing import Callable, Tuple
+from typing import Callable, Tuple, Optional
 from typing import TYPE_CHECKING
 
 import pyperclip
 from urwid import AttrSpec
 
-from sodalite.core import key as key_module, hook, buffer, operate, Navigator
+from sodalite.core import key as key_module, hook, buffer, operate, Navigator, action
+from sodalite.core.action import Action
 from sodalite.core.key import Key
-from sodalite.ui import graphics, viewmodel, notify, theme, action
-from sodalite.ui.action import Action
+from sodalite.ui import graphics, viewmodel, notify, theme
+from sodalite.ui.entrylist import EntryList
 from sodalite.ui.viewmodel import Mode, ViewModel
 from sodalite.util import env
 
@@ -47,9 +48,9 @@ class Control:
         self.navigator: Navigator = frame.navigator
         self.model: ViewModel = frame.model
         self._list = None
-        self.list_size = None
-        self.filter_size = None
-        self.hookbox_size = None
+        self.list_size: Optional[Tuple[int, int]] = None
+        self.filter_size: Optional[Tuple[int]] = None
+        self.hookbox_size: Optional[Tuple[int, int]] = None
         self.active_action = None
 
     @property
@@ -62,7 +63,7 @@ class Control:
         self.action_map: dict[str, Action] = {k: Action(k, v) for (k, v) in mapping.items()}
 
     @property
-    def list(self):
+    def list(self) -> EntryList:
         return self.frame.mainpane.body
 
     def handle_keypress(self, size: Tuple[int, int], key: str):
@@ -88,7 +89,7 @@ class Control:
     def handle_key_individually(self, key):
         pass
 
-    def calculate_sizes(self, size):
+    def calculate_sizes(self, size: Tuple[int, int]) -> None:
         (maxcol, maxrow) = size
         remaining = maxrow
         remaining -= self.hookbox.rows((maxcol,))
@@ -96,51 +97,51 @@ class Control:
         self.hookbox_size = (maxcol, remaining)
         self.filter_size = (maxcol,)
 
-    def exit(self):
+    def exit(self) -> None:
         graphics.exit(cwd=self.navigator.history.cwd())
 
-    def abort(self):
+    def abort(self) -> None:
         graphics.exit()
 
-    def enter_navigate_mode(self):
-        viewmodel.global_mode._mode_signal = Mode.NAVIGATE
+    def enter_navigate_mode(self) -> None:
+        viewmodel.global_mode.mode = Mode.NAVIGATE
         self.list.render(self.list_size, True)
 
-    def enter_assign_mode(self):
+    def enter_assign_mode(self) -> None:
         if self.model.current_entry.is_dir:
-            viewmodel.global_mode._mode_signal = Mode.ASSIGN_CHOOSE_ENTRY
+            viewmodel.global_mode.mode = Mode.ASSIGN_CHOOSE_ENTRY
             self.list.render(self.list_size, True)
 
-    def enter_operate_mode(self):
+    def enter_operate_mode(self) -> None:
         if self.model.current_entry.is_dir:
-            viewmodel.global_mode._mode_signal = Mode.OPERATE
+            viewmodel.global_mode.mode = Mode.OPERATE
             self.list.render(self.list_size, True)
 
-    def trigger_filter(self):
+    def trigger_filter(self) -> None:
         self.filter.active = True
 
-    def scroll_page_down(self):
+    def scroll_page_down(self) -> None:
         self.list.scroll_page_down(self.list_size)
 
-    def scroll_half_page_down(self):
+    def scroll_half_page_down(self) -> None:
         self.list.scroll_half_page_down(self.list_size)
 
-    def scroll_page_up(self):
+    def scroll_page_up(self) -> None:
         self.list.scroll_page_up(self.list_size)
 
-    def scroll_half_page_up(self):
+    def scroll_half_page_up(self) -> None:
         self.list.scroll_half_page_up(self.list_size)
 
-    def yank_cwd_to_clipboard(self):
+    def yank_cwd_to_clipboard(self) -> None:
         path = self.navigator.current_entry.path
-        self.yank_to_clipboard(path)
+        self.yank_to_clipboard(str(path.absolute()))
 
-    def yank_file_content_to_clipboard(self):
+    def yank_file_content_to_clipboard(self) -> None:
         entry = self.model.current_entry
         if entry.is_plain_text_file:
             self.yank_to_clipboard(entry.content)
 
-    def yank_to_clipboard(self, text: str):
+    def yank_to_clipboard(self, text: str) -> None:
         try:
             pyperclip.copy(text)
             text_to_log = text[0:60].replace("\n", "")
@@ -152,7 +153,7 @@ class Control:
             logger.exception("Failed to yank")
             notify.show("Failed to yank: system has no clipboard", duration=2)
 
-    def toggle_dotfiles(self):
+    def toggle_dotfiles(self) -> None:
         self.model.show_hidden_files = not self.model.show_hidden_files
         if self.model.show_hidden_files:
             message = 'show dotfiles'
@@ -160,7 +161,7 @@ class Control:
             message = 'hide dotfiles'
         notify.show(message, duration=0.7)
 
-    def show_keys(self):
+    def show_keys(self) -> None:
         graphics.popupLauncher.open_pop_up(self)
 
 
@@ -251,9 +252,9 @@ class AssignControl(Control):
 
     def assign_key(self, key: str):
         if key_module.is_navigation_key(key):
-            selected_entry = self.list.selection._entry_signal
+            selected_entry = self.list.selection.entry
             self.navigator.assign_key(Key(key), Path(selected_entry.path))
-            self.list.on_entries_changed(self.model)
+            self.list.on_entries_changed(self.model.entries)
             self.enter_navigate_mode()
 
 
@@ -309,7 +310,7 @@ class OperateControl(Control):
                 if key in (exit_action_key, navigate_mode_action_key):
                     if key == exit_action_key:
                         new_name = self.list_entry_for_renaming.edit_text
-                        operate.rename(self.list_entry_for_renaming._entry_signal, new_name)
+                        operate.rename(self.list_entry_for_renaming.entry, new_name)
                     self.list_entry_for_renaming.editing = False
                     self.list.render(self.list_size, focus=True)
                     self.list_entry_for_renaming = None
