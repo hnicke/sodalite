@@ -1,0 +1,7 @@
+venv
+db.sqlite
+.idea
+sodalite.egg-info
+build
+*.pyc
+.pytest_cache

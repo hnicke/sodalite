@@ -1,0 +1,15 @@
+FROM python:3.9-slim-buster
+ENV CONFIG_FILE /sodalite/docs/sodalite.conf
+ENV LOG_LEVEL OFF
+
+RUN apt update && apt install -y \
+        virtualenv \
+        make
+WORKDIR /sodalite
+COPY Makefile setup.py README.md ./
+
+RUN make venv
+COPY . .
+
+ENTRYPOINT ["make"]
+CMD ["run", "-s"]

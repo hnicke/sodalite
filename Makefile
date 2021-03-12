@@ -76,9 +76,13 @@ mypy = ${activate} && mypy --config mypy.ini -p ${pkg} -p tests ${shell [ ${colo
 reportDir = ${buildDir}/reports
 
 venv: setup.py
-	virtualenv venv -p $(shell which python)
-	${activate} && pip install '.[dev]'
+	virtualenv venv -p $(shell which python3)
+	${activate} && pip3 install '.[dev]'
 	@touch venv
+
+run: venv
+	${activate} && bin/sodalite
+.PHONY: run
 
 check: lint type-check test
 .PHONY: check
@@ -114,11 +118,6 @@ type-coverage: ${reportDir}/linecount.txt
 		}'
 .PHONY: type-coverage
 
-
-
-
-
-
 lint: venv
 	${activate} && flake8 ${pkg} tests
 .PHONY: lint
@@ -130,8 +129,14 @@ logs:
 .PHONY: logs
 
 test: venv
-	${activate} && python -m pytest tests
+	${activate} && python3 -m pytest tests
 .PHONY: test
+
+e2e: venv
+	docker build -f Dockerfile.e2e -t sodalite-e2e .
+	docker run --rm -it sodalite-e2e
+	#${activate} && python3 -m pytest --capture=no tests_e2e
+.PHONY: e2e
 
 prune: clean
 	rm -rf venv

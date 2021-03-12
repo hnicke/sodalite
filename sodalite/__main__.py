@@ -6,6 +6,7 @@ from typing import Optional, TextIO
 
 import click
 
+import setup
 from sodalite.core import dao, key
 from sodalite.core.entry import Entry
 from sodalite.core.entryaccess import EntryAccess
@@ -39,7 +40,7 @@ _CLICK_CONTEXT = dict(help_option_names=['-h', '--help'])
 
 
 @click.command('sodalite', context_settings=_CLICK_CONTEXT)
-@click.version_option(env.VERSION)
+@click.version_option(setup.VERSION)
 @click.argument('path', required=False, type=click.Path(exists=True), default=Path.cwd())
 @click.option('-u', '--update-access', help="Store access for given path in the database and quit")
 def run(path: Path, update_access: Optional[str]) -> None:
@@ -93,4 +94,4 @@ def update(target: str) -> None:
 
 
 if __name__ == "__main__":
-    run(prog_name=env.PROGRAM_NAME)
+    run(prog_name=setup.PROGRAM_NAME)
