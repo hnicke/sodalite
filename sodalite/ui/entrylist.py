@@ -156,15 +156,14 @@ class EntryList(List):
     def on_entries_changed(self, entries: list[Entry]) -> None:
         with graphics.DRAW_LOCK:
             self.walker.clear()
-            self.walker.extend(
-                [self.create_list_entry(entry) for entry in entries])
+            self.walker.extend([self.create_list_entry(entry) for entry in entries])
             self.walker.set_focus(0)
 
     def create_list_entry(self, entry):
         return ListEntry(entry, self.model)
 
     def select(self, entry: Entry):
-        results = [x for x in self.walker if x.base_widget._entry_signal == entry]
+        results = [x for x in self.walker if x.base_widget.entry == entry]
         if len(results) > 0:
             chosen_widget = results[0]
         else:
@@ -186,7 +185,7 @@ class EntryList(List):
             pass
 
     def get_list_entry(self, entry: Entry):
-        results = [x for x in self.walker if x.base_widget._entry_signal == entry]
+        results = [x for x in self.walker if x.base_widget.entry == entry]
         if len(results) > 0:
             return results[0]
 
