@@ -2,7 +2,7 @@ import urwid
 from pygments import token
 
 from sodalite.ui.viewmodel import Mode
-from sodalite.util import topic
+from sodalite.util import pubsub
 
 file = urwid.WHITE
 file_unimportant = urwid.LIGHT_GRAY
@@ -86,7 +86,7 @@ class DynamicAttrMap(urwid.AttrMap):
 
     def __init__(self, w) -> None:
         super().__init__(w, navigate_mode)
-        topic.mode.connect(self.update_colors)
+        pubsub.mode_connect(self.update_colors)
 
     def update_colors(self, mode: Mode):
         if mode == Mode.NAVIGATE:

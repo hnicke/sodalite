@@ -103,17 +103,17 @@ class Control:
         graphics.exit()
 
     def enter_navigate_mode(self):
-        viewmodel.global_mode.mode = Mode.NAVIGATE
+        viewmodel.global_mode._mode_signal = Mode.NAVIGATE
         self.list.render(self.list_size, True)
 
     def enter_assign_mode(self):
         if self.model.current_entry.is_dir:
-            viewmodel.global_mode.mode = Mode.ASSIGN_CHOOSE_ENTRY
+            viewmodel.global_mode._mode_signal = Mode.ASSIGN_CHOOSE_ENTRY
             self.list.render(self.list_size, True)
 
     def enter_operate_mode(self):
         if self.model.current_entry.is_dir:
-            viewmodel.global_mode.mode = Mode.OPERATE
+            viewmodel.global_mode._mode_signal = Mode.OPERATE
             self.list.render(self.list_size, True)
 
     def trigger_filter(self):
@@ -251,7 +251,7 @@ class AssignControl(Control):
 
     def assign_key(self, key: str):
         if key_module.is_navigation_key(key):
-            selected_entry = self.list.selection.entry
+            selected_entry = self.list.selection._entry_signal
             self.navigator.assign_key(Key(key), Path(selected_entry.path))
             self.list.on_entries_changed(self.model)
             self.enter_navigate_mode()
@@ -309,7 +309,7 @@ class OperateControl(Control):
                 if key in (exit_action_key, navigate_mode_action_key):
                     if key == exit_action_key:
                         new_name = self.list_entry_for_renaming.edit_text
-                        operate.rename(self.list_entry_for_renaming.entry, new_name)
+                        operate.rename(self.list_entry_for_renaming._entry_signal, new_name)
                     self.list_entry_for_renaming.editing = False
                     self.list.render(self.list_size, focus=True)
                     self.list_entry_for_renaming = None

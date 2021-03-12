@@ -8,7 +8,7 @@ from watchdog.observers import Observer
 from watchdog.observers.api import ObservedWatch
 
 from sodalite.core.entry import Entry
-from sodalite.util import topic
+from sodalite.util import pubsub
 
 _logger = logging.getLogger(__name__)
 
@@ -28,7 +28,7 @@ class DeduplicatedReload:
             if self._last_reload + self.deduplication_interval_millis / 1000 < current_time:
                 time.sleep(self.deduplication_interval_millis / 1000)
                 self._last_reload = time.time()
-                topic.filesystem.send()
+                pubsub.filesystem_send()
 
 
 class PathHandler(FileSystemEventHandler):  # type: ignore

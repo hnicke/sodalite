@@ -9,7 +9,7 @@ from sodalite.core.entry import Entry, EntryType
 from sodalite.core.navigate import Navigator
 from sodalite.ui import theme, graphics, viewmodel
 from sodalite.ui.viewmodel import ViewModel
-from sodalite.util import topic
+from sodalite.util import pubsub
 
 logger = logging.getLogger(__name__)
 
@@ -150,7 +150,7 @@ class EntryList(List):
         self.box = None
         self.model = model
         self.navigator = navigator
-        topic.entry_list.connect(self.on_entries_changed)
+        pubsub.entry_list_connect(self.on_entries_changed)
         self._selection: Optional[ListEntry] = None
 
     def on_entries_changed(self, entries: list[Entry]) -> None:
@@ -164,7 +164,7 @@ class EntryList(List):
         return ListEntry(entry, self.model)
 
     def select(self, entry: Entry):
-        results = [x for x in self.walker if x.base_widget.entry == entry]
+        results = [x for x in self.walker if x.base_widget._entry_signal == entry]
         if len(results) > 0:
             chosen_widget = results[0]
         else:
@@ -186,7 +186,7 @@ class EntryList(List):
             pass
 
     def get_list_entry(self, entry: Entry):
-        results = [x for x in self.walker if x.base_widget.entry == entry]
+        results = [x for x in self.walker if x.base_widget._entry_signal == entry]
         if len(results) > 0:
             return results[0]
 

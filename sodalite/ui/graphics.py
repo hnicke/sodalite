@@ -16,7 +16,7 @@ from sodalite.ui.help import HelpLauncher
 from sodalite.ui.hookbox import HookBox
 from sodalite.ui.mainpane import MainPane
 from sodalite.ui.viewmodel import ViewModel, Mode
-from sodalite.util import env, topic
+from sodalite.util import env, pubsub
 
 logger = logging.getLogger(__name__)
 
@@ -42,7 +42,7 @@ class MainFrame(urwid.Frame):  # type: ignore
 
         # setup controllers
         self.control: Control = NavigateControl(self)
-        topic.mode.connect(self.on_mode_changed)
+        pubsub.mode_connect(self.on_mode_changed)
 
     def on_mode_changed(self, mode: Mode) -> None:
         if mode == Mode.NAVIGATE:
