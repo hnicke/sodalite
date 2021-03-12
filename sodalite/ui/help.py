@@ -5,7 +5,7 @@ import urwid
 from urwid import CompositeCanvas
 
 from sodalite.ui import theme
-from sodalite.ui.action import Action
+from sodalite.core.action import Action
 from sodalite.ui.control import Control
 
 

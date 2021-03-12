@@ -75,21 +75,25 @@ default_keybindings = {
 
 class Action:
 
-    def __init__(self, name, action: Callable, modes: list[Mode] = None):
+    def __init__(self, name: str, action: Callable[[], None], modes: list[Mode] = None) -> None:
         self.name = name
         self.is_global = not modes
         self.modes = modes or []
         self.action = action
         self.keybinding = config.get().keymap.setdefault(name, default_keybindings[name])
 
-    def handle(self, input: str):
-        if input == self.keybinding:
+    def handle(self, key: str) -> bool:
+        if key == self.keybinding:
             if self.is_global or viewmodel.global_mode in self.modes:
                 self.action()
                 return True
+        return False
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class MultiAction(Action):
 
-    def __init__(self, name, action: Callable, modes: list[Mode] = None):
+    def __init__(self, name: str, action: Callable[[], None], modes: list[Mode] = None) -> None:
         super().__init__(name, action, modes=modes)

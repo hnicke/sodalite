@@ -6,10 +6,10 @@ from typing import TYPE_CHECKING
 import pyperclip
 from urwid import AttrSpec
 
-from sodalite.core import key as key_module, hook, buffer, operate, Navigator
+from sodalite.core import key as key_module, hook, buffer, operate, Navigator, action
 from sodalite.core.key import Key
-from sodalite.ui import graphics, viewmodel, notify, theme, action
-from sodalite.ui.action import Action
+from sodalite.ui import graphics, viewmodel, notify, theme
+from sodalite.core.action import Action
 from sodalite.ui.viewmodel import Mode, ViewModel
 from sodalite.util import env
 
