@@ -8,7 +8,7 @@ from typing import Optional
 from sodalite.core.entry import Entry
 from sodalite.ui import highlighting
 from sodalite.ui.highlighting import HighlightedLine
-from sodalite.util import topic
+from sodalite.util import pubsub
 
 logger = logging.getLogger(__name__)
 
@@ -36,7 +36,7 @@ class GlobalMode:
     @mode.setter
     def mode(self, mode: Mode):
         self._mode = mode
-        topic.mode.send(self._mode)
+        pubsub.mode_send(self._mode)
 
     def __eq__(self, other):
         return self._mode == other or super.__eq__(self, other)
@@ -55,7 +55,7 @@ class ViewModel:
         self._filtered_file_content: list[HighlightedLine] = []
         self._filter_pattern: Pattern = re.compile('')
         self._show_hidden_files = True
-        topic.entry.connect(self.on_navigated)
+        pubsub.entry_connect(self.on_navigated)
 
     def on_navigated(self, entry: Entry):
         self.current_entry = entry
@@ -129,7 +129,7 @@ class ViewModel:
     @entries.setter
     def entries(self, entries: list[Entry]):
         self._entries = entries
-        topic.entry_list.send(entries)
+        pubsub.entry_list_send(entries)
 
     @property
     def filtered_file_content(self) -> list[HighlightedLine]:
@@ -138,7 +138,7 @@ class ViewModel:
     @filtered_file_content.setter
     def filtered_file_content(self, content: list[HighlightedLine]):
         self._filtered_file_content = content
-        topic.filtered_file_content.send(content)
+        pubsub.filtered_file_content_send(content)
 
 
 def sort(entries: list[Entry]):

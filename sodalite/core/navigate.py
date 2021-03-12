@@ -8,7 +8,7 @@ from sodalite.core.entry import Entry
 from sodalite.core.entryaccess import EntryAccess
 from sodalite.core.history import History
 from sodalite.core.key import Key
-from sodalite.util import topic
+from sodalite.util import pubsub
 
 logger = logging.getLogger(__name__)
 
@@ -31,7 +31,7 @@ class Navigator:
         self.history = history
         self.entry_access = entry_access or EntryAccess()
         self._current_entry: Optional[Entry] = None
-        topic.filesystem.connect(self.reload_current_entry)
+        pubsub.filesystem_connect(self.reload_current_entry)
         self.current_entry = self.current()
 
     def current(self) -> Entry:
@@ -138,7 +138,7 @@ class Navigator:
     @current_entry.setter
     def current_entry(self, entry: Entry) -> None:
         self._current_entry = entry
-        topic.entry.send(self._current_entry)
+        pubsub.entry_send(entry)
 
     def reload_current_entry(self) -> None:
         logger.info('Reloading current entry')

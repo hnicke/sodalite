@@ -8,7 +8,7 @@ from sodalite.ui import theme, graphics
 from sodalite.ui.entrylist import EntryList
 from sodalite.ui.filepreview import FilePreview
 from sodalite.ui.viewmodel import ViewModel
-from sodalite.util import env, topic
+from sodalite.util import env, pubsub
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +28,7 @@ class MainPane(urwid.WidgetWrap):  # type: ignore
         self.filter = self.frame.footer
 
         super().__init__(self.colored_box)
-        topic.entry.connect(self.on_entry_changed)
+        pubsub.entry_connect(self.on_entry_changed)
 
     def on_entry_changed(self, entry: Entry) -> None:
         with graphics.DRAW_LOCK:

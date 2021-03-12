@@ -5,7 +5,7 @@ import urwid
 
 from sodalite.ui import graphics, theme, viewmodel
 from sodalite.ui.viewmodel import Mode
-from sodalite.util import topic
+from sodalite.util import pubsub
 
 txt = urwid.AttrMap(urwid.Text('', align='center'), urwid.DEFAULT)
 _notify_box = theme.DynamicAttrMap(urwid.LineBox(txt, tline=''))
@@ -61,4 +61,4 @@ def trigger_notifications(mode: Mode) -> None:
         clear()
 
 
-topic.mode.connect(trigger_notifications)
+pubsub.mode_connect(trigger_notifications)

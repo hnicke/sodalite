@@ -3,7 +3,7 @@ import urwid
 from sodalite.core.entry import Entry
 from sodalite.core.hook import Hook
 from sodalite.ui import graphics
-from sodalite.util import topic
+from sodalite.util import pubsub
 
 
 class HookBox(urwid.WidgetWrap):
@@ -14,7 +14,7 @@ class HookBox(urwid.WidgetWrap):
         padded_grid = urwid.Padding(grid, left=1)
         box = urwid.LineBox(padded_grid, tline='')
         super().__init__(box)
-        topic.entry.connect(self.on_navigated)
+        pubsub.entry_connect(self.on_navigated)
 
     def on_navigated(self, entry: Entry):
         with graphics.DRAW_LOCK:
