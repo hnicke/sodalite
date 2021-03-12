@@ -5,7 +5,7 @@ from typing import Optional
 import urwid
 from urwid import AttrSpec, ListBox
 
-from sodalite.core.entry import Entry, EntryType
+from sodalite.core.entry import Entry
 from sodalite.core.navigate import Navigator
 from sodalite.ui import theme, graphics, viewmodel
 from sodalite.ui.viewmodel import ViewModel
@@ -127,9 +127,9 @@ def compute_color(entry: Entry) -> AttrSpec:
             bold = True
         elif rating < 0.2:
             unimportant = True
-        if entry.type == EntryType.DIRECTORY:
+        if entry.is_dir:
             color = theme.directory
-        elif entry.type == EntryType.SYMLINK:
+        elif entry.is_link:
             color = theme.symlink
         elif entry.executable:
             color = theme.executable
