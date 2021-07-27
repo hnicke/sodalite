@@ -42,8 +42,9 @@ _CLICK_CONTEXT = dict(help_option_names=['-h', '--help'])
 @click.version_option(env.VERSION)
 @click.argument('path', required=False, type=click.Path(exists=True), default=Path.cwd())
 @click.option('-u', '--update-access', help="Store access for given path in the database and quit")
-def run(path: Path, update_access: Optional[str]) -> None:
+def run(path: str, update_access: Optional[str]) -> None:
     """Opens the sodalite file navigator at given PATH"""
+    path = Path(path)
     if update_access:
         update(update_access)
     else:

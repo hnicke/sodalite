@@ -63,6 +63,7 @@ class History:
         Does nothing if the most recent entry is the same as given path.
         :param path: An absolute, canonical file path. No checks regarding existence of this file are made
         """
+        path = path.absolute()
         if self.cwd() != path:
             logger.info(f"Visiting '{path}'")
             self._discard_future()
