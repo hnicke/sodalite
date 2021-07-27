@@ -27,7 +27,7 @@ setuptools.setup(
     ],
     extras_require={
         'dev': [
-            'mypy',
+            'mypy==0.910',
             'lxml',  # mypy report generation
             'pytest',
             'pytest-mock',

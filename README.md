@@ -28,18 +28,6 @@ Once setup, and muscle memory kicks in, all directories will be reachable in a b
 
 #### Linux
 
-##### Debian and derivates
-You can use this two-liner and you're ready to go:
-```bash
-curl -sL repo.hnicke.de/apt/debian/add-repo | sudo bash
-sudo apt-get install sodalite
-```
-The `add-repo` script adds the repository `repo.hnicke.de/apt/debian/repos` to your apt repositories and installs the necessary public keys.
-
-*Note:* Sodalite depends on python3 (>=3.6). If you're running debian (stable), you probably have to manually install it first.
-
-> We're working on getting the package into the official debian repo.
-
 ##### Arch Linux
 AUR package [sodalite](https://aur.archlinux.org/packages/sodalite/) (stable release):
 > `yaourt -S sodalite`

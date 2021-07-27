@@ -31,6 +31,7 @@ def _io_to_tty() -> None:
 
 
 def _io_to_std() -> None:
+    global _old_stdin, _old_stdout
     sys.__stdin__ = sys.stdin = _old_stdin
     sys.__stdout__ = sys.stdout = _old_stdout
 
@@ -40,9 +41,9 @@ _CLICK_CONTEXT = dict(help_option_names=['-h', '--help'])
 
 @click.command('sodalite', context_settings=_CLICK_CONTEXT)
 @click.version_option(env.VERSION)
-@click.argument('path', required=False, type=click.Path(exists=True), default=Path.cwd())
+@click.argument('path', required=False, type=click.Path(exists=True, resolve_path=True), default=Path.cwd())
 @click.option('-u', '--update-access', help="Store access for given path in the database and quit")
-def run(path: Path, update_access: Optional[str]) -> None:
+def run(path: str, update_access: Optional[str]) -> None:
     """Opens the sodalite file navigator at given PATH"""
     if update_access:
         update(update_access)
@@ -51,7 +52,7 @@ def run(path: Path, update_access: Optional[str]) -> None:
             _io_to_tty()
             from sodalite.ui import graphics
 
-            graphics.run(path)
+            graphics.run(Path(path))
 
             if env.exit_cwd:
                 sys.__stdout__ = sys.stdout = open('/dev/stdout', 'w')
