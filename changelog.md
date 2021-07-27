@@ -1,10 +1,14 @@
 # Changelog
 
 ## Unreleased
+
+## v0.19.8
+##### Bugfix
+- Fix crash when starting the program with a path parameter
 ##### Technical
 - Replace requirements.txt with setup.py
 - Add github action which type-checks and lints the code
-
+- 
 ## v0.19.4: March 7, 2021
 ##### Bugfix
 - Fix problem with bootstrapping
