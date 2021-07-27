@@ -93,6 +93,7 @@ def run(path: Path) -> None:
 
 
 def resume() -> None:
+    global loop
     loop.stop()
     loop.start()
 
@@ -110,5 +111,6 @@ def redraw_if_external() -> None:
     :return:
     """
     if not threading.current_thread().getName() == MAIN_LOOP:
+        global loop
         if loop:
             loop.draw_screen()
