@@ -193,7 +193,7 @@ def insert_entry(entry: Entry) -> None:
     query = f"""INSERT INTO {TABLE_ENTRY} ({ENTRY_PATH},{ENTRY_KEY}) VALUES (?,?)"""
     conn = open_connection()
     try:
-        conn.cursor().execute(query, (entry.path, entry.key.value))
+        conn.cursor().execute(query, (str(entry.path), entry.key.value))
         conn.commit()
     finally:
         conn.close()

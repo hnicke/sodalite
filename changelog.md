@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+##### Bugfix
+- Fix visiting root via ',' hotkey
 
 ## v0.19.9
 ##### Bugfix
