@@ -7,6 +7,7 @@ from typing import Optional, TextIO
 import click
 
 from sodalite.core import dao, key
+from sodalite.core.config import ConfigNotFound
 from sodalite.core.entry import Entry
 from sodalite.core.entryaccess import EntryAccess
 from sodalite.util import env
@@ -61,6 +62,9 @@ def run(path: str, update_access: Optional[str]) -> None:
             logger.debug("Shutting down")
         except KeyboardInterrupt:
             logger.debug('Received SIGINT - shutting down')
+            exit(1)
+        except ConfigNotFound:
+            click.echo("Config file not found", file=sys.stderr)
             exit(1)
 
 

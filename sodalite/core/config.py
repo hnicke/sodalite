@@ -13,6 +13,10 @@ from sodalite.util import env
 logger = logging.getLogger(__name__)
 
 
+class ConfigNotFound(Exception):
+    pass
+
+
 @functools.cache
 def _config_file() -> Path:
     config_file_paths = [env.CONFIG_FILE,
@@ -24,8 +28,7 @@ def _config_file() -> Path:
         if file.exists():
             logger.debug(f"Using config file '{file}'")
             return file
-    logger.error('No config file found')
-    exit(1)
+    raise ConfigNotFound()
 
 
 def _sanitize_keymap(keys: dict[str, str]) -> dict[str, str]:
