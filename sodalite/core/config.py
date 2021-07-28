@@ -19,11 +19,14 @@ class ConfigNotFound(Exception):
 
 @functools.cache
 def _config_file() -> Path:
-    config_file_paths = [env.CONFIG_FILE,
-                         env.USER_CONFIG / 'sodalite.conf',
-                         Path('/etc/sodalite.conf'),
-                         Path('/usr/local/etc/sodalite.conf'),
-                         Path('/usr/share/sodalite/sodalite.conf')]
+    config_file_paths = [
+        env.config_file(),
+        env.USER_CONFIG / 'sodalite.conf',
+        Path('/etc/sodalite.conf'),
+        Path('/usr/local/etc/sodalite.conf'),
+        Path('/usr/share/sodalite/sodalite.conf'),
+    ]
+
     for file in config_file_paths:
         if file.exists():
             logger.debug(f"Using config file '{file}'")

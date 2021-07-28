@@ -1,3 +1,4 @@
+import functools
 import logging.handlers
 import os
 
@@ -30,7 +31,13 @@ DATA = Path(os.getenv(ENV_DATA_DIR, f'/usr/share/{PROGRAM_NAME}/')).absolute()
 USER_DATA = Path(os.getenv('XDG_DATA_HOME', HOME / '.local/share')).absolute() / PROGRAM_NAME
 USER_CONFIG = Path(os.getenv('XDG_CONFIG_HOME', HOME / '.config/')).absolute() / PROGRAM_NAME
 ENV_CONFIG_FILE = 'CONFIG_FILE'
-CONFIG_FILE = Path(os.getenv(ENV_CONFIG_FILE, '/etc/sodalite.conf')).absolute()
+
+
+@functools.lru_cache
+def config_file() -> Path:
+    return Path(os.getenv(ENV_CONFIG_FILE, '/etc/sodalite.conf')).absolute()
+
+
 db_file = Path(os.getenv(ENV_DB_PATH, USER_DATA / 'db.sqlite')).absolute()
 
 buffer = USER_DATA / 'buffer'
