@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## v0.19.9
+##### Bugfix
+- Improve loading of config file
+
 ## v0.19.8
 ##### Bugfix
 - Fix crash when starting the program with a path parameter
