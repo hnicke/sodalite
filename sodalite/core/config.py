@@ -1,6 +1,5 @@
 import functools
 import logging
-import os
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional, Union
@@ -13,20 +12,26 @@ from sodalite.util import env
 
 logger = logging.getLogger(__name__)
 
-ENV_CONFIG_FILE = 'CONFIG_FILE'
+
+class ConfigNotFound(Exception):
+    pass
 
 
 @functools.cache
 def _config_file() -> Path:
-    config_file_paths = [Path(os.getenv(ENV_CONFIG_FILE, env.USER_CONFIG / 'sodalite.conf')).absolute(),
-                         Path('/etc/sodalite.conf'),
-                         Path('/usr/share/sodalite/sodalite.conf')]
+    config_file_paths = [
+        env.config_file(),
+        env.USER_CONFIG / 'sodalite.conf',
+        Path('/etc/sodalite.conf'),
+        Path('/usr/local/etc/sodalite.conf'),
+        Path('/usr/share/sodalite/sodalite.conf'),
+    ]
+
     for file in config_file_paths:
         if file.exists():
             logger.debug(f"Using config file '{file}'")
             return file
-    logger.error('No config file found')
-    exit(1)
+    raise ConfigNotFound()
 
 
 def _sanitize_keymap(keys: dict[str, str]) -> dict[str, str]:
