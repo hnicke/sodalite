@@ -1,6 +1,6 @@
 import threading
 import time
-from typing import Union, Tuple
+from typing import Union, Tuple, Optional
 
 import urwid
 from urwid import AttrSpec
@@ -12,7 +12,7 @@ from sodalite.util import pubsub
 txt = urwid.AttrMap(urwid.Text('', align='center'), urwid.DEFAULT)
 _notify_box = theme.DynamicAttrMap(urwid.LineBox(txt, tline=''))
 _notify_lock = threading.Lock()
-_last_message = ''
+_last_message: Optional[Union[str, Tuple[AttrSpec, str]]] = ''
 _original_footer = None
 
 

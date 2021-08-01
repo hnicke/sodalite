@@ -291,7 +291,7 @@ class OperateControl(Control):
         buffer.registers[0].read_from(entry)
         self.navigator.reload_current_entry()
         self.enter_navigate_mode()
-        notify.show(f"pasted file(s)")
+        notify.show("pasted file(s)")
 
     def delete(self, key=None):
         if key:
