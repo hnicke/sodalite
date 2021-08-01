@@ -328,7 +328,7 @@ class OperateControl(Control):
             else:
                 if self.navigator.is_navigation_key(key):
                     target = self.navigator.current_entry.get_child_for_key(Key(key))
-                    notify.clear()
+                    notify.show(f"renaming {target.name}", duration=0)
                     list_entry = self.list.get_list_entry(target)
                     if list_entry:
                         list_entry.editing = True
