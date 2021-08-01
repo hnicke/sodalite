@@ -61,7 +61,9 @@ elif [ $shell = 'bash' ]; then
     bind -m vi-command -x '"\200": sodalite-bash'
     bind -m vi-command -x '"\201": tput cuu 2; tput ed; READLINE_LINE=$TMP_READLINE_LINE; READLINE_POINT=$TMP_READLINE_POINT; unset {TMP_READLINE_LINE,TMP_READLINE_POINT}'
     bind -m vi-command '"f": "\200 dd\C-m \e \201 i"'
-    bind -m emacs '"\C-f":"\200 \C-u\C-m \201'
+    bind -m emacs -x '"\200": sodalite-bash'
+    bind -m emacs -x '"\201": tput cuu 2; tput ed; READLINE_LINE=$TMP_READLINE_LINE; READLINE_POINT=$TMP_READLINE_POINT; unset {TMP_READLINE_LINE,TMP_READLINE_POINT}'
+    bind -m emacs '"\C-f":"\200 \C-u\C-m \201"'
 fi
 
 if ! [ "$SODALITE_CD_INTERCEPTION" = 'false' ]; then

@@ -3,6 +3,7 @@
 ## Unreleased
 ##### Bugfix
 - Fix visiting root via ',' hotkey
+- Fix broken bash integration
 
 ## v0.19.9
 ##### Bugfix
