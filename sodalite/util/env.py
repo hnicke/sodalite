@@ -13,7 +13,7 @@ _global_logger = logging.getLogger()
 _global_logger.setLevel(logging.INFO)
 handler = logging.handlers.SysLogHandler(address='/dev/log')
 formatter = logging.Formatter(
-    f'{PROGRAM_NAME}: %(threadName)-12s - %(name)-18s - %(levelname)-5s - %(message)s')
+    f'{PROGRAM_NAME}: %(threadName)-10s - %(name)s:%(funcName)s:%(lineno)d - %(levelname)-5s - %(message)s')
 handler.setFormatter(formatter)
 _global_logger.addHandler(handler)
 logging.getLogger('sodalite').setLevel(logging.DEBUG)
