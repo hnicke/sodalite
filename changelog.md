@@ -9,6 +9,7 @@
 - Fix delete and yank operations when multiple partitions are involved
 - Fix paste operation
 - Activate navigate mode after pasting
+- Fix filesystem change detection
 
 ## v0.19.9
 ##### Bugfix

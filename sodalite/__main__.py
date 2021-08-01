@@ -10,6 +10,7 @@ from sodalite.core import dao, key
 from sodalite.core.config import ConfigNotFound
 from sodalite.core.entry import Entry
 from sodalite.core.entryaccess import EntryAccess
+from sodalite.core.entrywatcher import EntryWatcher
 from sodalite.util import env
 
 logger = logging.getLogger(__name__)
@@ -39,6 +40,8 @@ def _io_to_std() -> None:
 
 _CLICK_CONTEXT = dict(help_option_names=['-h', '--help'])
 
+_entry_watcher: EntryWatcher
+
 
 @click.command('sodalite', context_settings=_CLICK_CONTEXT)
 @click.version_option(env.VERSION)
@@ -53,6 +56,8 @@ def run(path: str, update_access: Optional[str]) -> None:
             _io_to_tty()
             from sodalite.ui import graphics
 
+            global _entry_watcher
+            _entry_watcher = EntryWatcher()
             graphics.run(Path(path))
 
             if env.exit_cwd:
