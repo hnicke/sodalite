@@ -36,9 +36,9 @@ class PathHandler(FileSystemEventHandler):  # type: ignore
     def __init__(self, deduplication_interval_millis: int):
         self.reloader = DeduplicatedReload(deduplication_interval_millis)
 
-    def on_any_event(self, event: FileSystemEvent) -> None:
-        _logger.debug(f"Event ({event.event_type}): {event.src_path}")
-        self.reloader.reload()
+    def on_modified(self, event: FileSystemEvent) -> None:
+        if event.is_directory:
+            self.reloader.reload()
 
 
 class EntryWatcher:
@@ -50,6 +50,7 @@ class EntryWatcher:
 
         self._watch: Optional[ObservedWatch] = None
         self._update_lock = Lock()
+        pubsub.entry_connect(self.on_navigated)
 
     def on_navigated(self, entry: Entry) -> None:
         with self._update_lock:

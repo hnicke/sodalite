@@ -140,7 +140,7 @@ class Navigator:
         self._current_entry = entry
         pubsub.entry_send(entry)
 
-    def reload_current_entry(self) -> None:
+    def reload_current_entry(self, *args: object) -> None:
         logger.info('Reloading current entry')
         try:
             self.current_entry = self.entry_access.retrieve_entry(self.current_entry.path, cache=False)
