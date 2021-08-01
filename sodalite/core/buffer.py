@@ -35,7 +35,7 @@ class Register:
         self.clear()
         dest = self.path / entry.name
         logger.info(f"Moving {entry.path} to {dest}")
-        entry.path.rename(dest)
+        shutil.move(entry.path, dest)
 
     def read_from(self, target: Entry) -> None:
         """
