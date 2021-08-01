@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+##### Feature
+- Show notification after successful execution of an operation
 ##### Bugfix
 - Fix visiting root via ',' hotkey
 - Fix broken bash integration
