@@ -4,6 +4,7 @@
 ##### Bugfix
 - Fix visiting root via ',' hotkey
 - Fix broken bash integration
+- Fix delete and yank operations when multiple partitions are involved
 
 ## v0.19.9
 ##### Bugfix
