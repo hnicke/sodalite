@@ -42,8 +42,8 @@ class Register:
         Copies this registers content into given target dir
         """
         for file in self.path.iterdir():
-            src = self.path / file
-            dest = target.path / file
+            src = self.path / file.name
+            dest = target.path
             logger.info(f"Pasting {self.name} to {dest}")
             copy(src, dest)
 
