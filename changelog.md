@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## v0.20.0
 ##### Feature
 - Show notification after successful execution of an operation
 ##### Bugfix
