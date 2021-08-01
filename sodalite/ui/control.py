@@ -288,6 +288,7 @@ class OperateControl(Control):
         entry = self.navigator.current_entry
         buffer.registers[0].read_from(entry)
         self.navigator.reload_current_entry()
+        self.enter_navigate_mode()
 
     def delete(self, key=None):
         if key:

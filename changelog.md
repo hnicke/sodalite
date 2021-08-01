@@ -5,6 +5,8 @@
 - Fix visiting root via ',' hotkey
 - Fix broken bash integration
 - Fix delete and yank operations when multiple partitions are involved
+- Fix paste operation
+- Activate navigate mode after pasting
 
 ## v0.19.9
 ##### Bugfix
