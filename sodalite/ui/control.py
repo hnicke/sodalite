@@ -277,9 +277,11 @@ class OperateControl(Control):
             if self.navigator.is_navigation_key(key):
                 target = self.navigator.current_entry.get_child_for_key(Key(key))
                 buffer.registers[0].copy_to(target)
-                notify.show(f"yanked {target.path}")
+                self.enter_navigate_mode()
                 self.active_action = None
-            self.enter_navigate_mode()
+                notify.show(f"yanked {target.path.name}")
+            else:
+                self.enter_navigate_mode()
         else:
             notify.show("yank what?", duration=0)
             self.active_action = self.yank
@@ -289,6 +291,7 @@ class OperateControl(Control):
         buffer.registers[0].read_from(entry)
         self.navigator.reload_current_entry()
         self.enter_navigate_mode()
+        notify.show(f"pasted file(s)")
 
     def delete(self, key=None):
         if key:
@@ -298,6 +301,7 @@ class OperateControl(Control):
                 self.navigator.reload_current_entry()
                 self.active_action = None
                 self.enter_navigate_mode()
+                notify.show(f"deleted {target.path.name}")
                 return True
         else:
             notify.show("delete what?", duration=0)
@@ -317,6 +321,7 @@ class OperateControl(Control):
                     self.list_entry_for_renaming = None
                     self.active_action = None
                     self.enter_navigate_mode()
+                    notify.show("renamed file")
                 else:
                     self.list_entry_for_renaming.keypress(self.filter_size, key)
                 return True

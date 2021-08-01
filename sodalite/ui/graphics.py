@@ -82,6 +82,11 @@ loop: MainLoop
 popupLauncher: HelpLauncher
 
 
+def draw_screen() -> None:
+    global loop
+    loop.draw_screen()
+
+
 def run(path: Path) -> None:
     global frame
     global loop
