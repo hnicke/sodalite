@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.2 (2021-08-02)
+### Fix
+* Bundle template configuration file next to code ([#189](https://github.com/hnicke/sodalite/issues/189)) ([`3c82cf2`](https://github.com/hnicke/sodalite/commit/3c82cf2be936fdbf67328d5a522df5450919aa39))
+
 ## v0.21.1 (2021-08-02)
 ### Fix
 * Bundle assets ([#188](https://github.com/hnicke/sodalite/issues/188)) ([`2423f78`](https://github.com/hnicke/sodalite/commit/2423f78c9409fed3342f05e550804f3795931afe))
