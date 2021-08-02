@@ -8,7 +8,7 @@ Have you ever played [crawl](https://crawl.develz.org/)?
 That's a terminal based roguelike dungeon crawler.  
 What makes it stand out is it's extremely efficient menu navigation philsophy. 
 
-![dcss inventar management](docs/crawl.png)
+![dcss inventar management](https://github.com/hnicke/sodalite/blob/master/docs/crawl.png)
 
 *Dungeon Crawl Stone Soup: For selecting an item, press it's automatically assigned key.*
 
@@ -19,7 +19,7 @@ After a while, the keys burn into one's muscle memory - using the game's interfa
 When opening `sodalite`, you will see the listing of the current directory.   
 Pressing one of the keys displayed in front of the entries will navigate there.
 
-![Sodalite](docs/sodalite.png)
+![Sodalite](https://github.com/hnicke/sodalite/blob/master/docs/sodalite.png)
 
 Assign the most intuitive and/or reachable keys to your most frequently used entries, and stick with this assignment. 
 Once setup, and muscle memory kicks in, all directories will be reachable in a blink of an eye!
@@ -66,7 +66,7 @@ In case it doesn't it's considered a bug - please file a bug report.
 > - [watchdog](https://github.com/gorakhargosh/watchdog)
 
 ## Getting started
-Check out the [manpage](docs/sodalite.1.md) for detailed usage information.
+Check out the [manpage](https://github.com/hnicke/sodalite/blob/master/docs/sodalite.1.md) for detailed usage information.
 
 ## FAQ
 ##### The default 'open' hook doesn't work / launches weird programs :(
@@ -83,10 +83,10 @@ Or learn more about [mime](https://wiki.archlinux.org/index.php/XDG_MIME_Applica
 
 
 ## Changelog
-Don't miss out on what has changed: Read the [changelog](CHANGELOG.md).
+Don't miss out on what has changed: Read the [changelog](https://github.com/hnicke/sodalite/blob/master/CHANGELOG.md).
 
 ## Contributing
-Do you want to contribute to the project? Check out the [developer guide](docs/developer_guide.md).
+Do you want to contribute to the project? Check out the [developer guide](https://github.com/hnicke/sodalite/blob/master/docs/developer_guide.md).
 
 ## License
-See [copyyright](copyright).
+See [copyyright](https://github.com/hnicke/sodalite/blob/master/copyright).
