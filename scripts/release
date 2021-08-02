@@ -1,0 +1,30 @@
+#!/bin/bash
+set -eu
+cd "$(dirname "$(readlink -f "$0")")"/..
+
+
+version=${1:?Which version?}
+
+[[ "$version" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "Invalid version: '$version'" >&2; exit 1; }
+
+
+latest_version=$(git tag --list --sort=-creatordate | head -n1)
+echo "latest version is '$latest_version'."
+
+read -n1 -p"Release version '$version'? [y/N] " confirmation
+echo
+[[ "$confirmation" =~ [^yY] ]] && exit 1
+
+
+git checkout master
+git pull
+
+
+version_file=sodalite/util/version.py
+sed -i "s/^VERSION = '.*'/VERSION = '$version'/" $version_file
+
+git add $version_file
+git commit -m "ci: release $version"
+git tag $version
+
+git push origin $version master

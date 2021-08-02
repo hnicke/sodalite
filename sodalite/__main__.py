@@ -11,7 +11,7 @@ from sodalite.core.config import ConfigNotFound
 from sodalite.core.entry import Entry
 from sodalite.core.entryaccess import EntryAccess
 from sodalite.core.entrywatcher import EntryWatcher
-from sodalite.util import env
+from sodalite.util import env, VERSION
 
 logger = logging.getLogger(__name__)
 
@@ -44,7 +44,7 @@ _entry_watcher: EntryWatcher
 
 
 @click.command('sodalite', context_settings=_CLICK_CONTEXT)
-@click.version_option(env.VERSION)
+@click.version_option(VERSION)
 @click.argument('path', required=False, type=click.Path(exists=True, resolve_path=True), default=Path.cwd())
 @click.option('-u', '--update-access', help="Store access for given path in the database and quit")
 def run(path: str, update_access: Optional[str]) -> None:
