@@ -36,6 +36,3 @@ buffer = USER_DATA / 'buffer'
 dirs = [USER_DATA, USER_CONFIG, buffer]
 for directory in dirs:
     os.makedirs(directory, exist_ok=True)
-
-ROOT = Path(__file__).parent.parent.parent.absolute()
-DOCS = ROOT / 'docs'
