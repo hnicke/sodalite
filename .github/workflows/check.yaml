@@ -51,6 +51,7 @@ jobs:
           color: orange
   release:
     runs-on: ubuntu-latest
+    needs: check
     concurrency: release
     if: github.event_name == 'push' && github.ref == 'refs/heads/master' && !contains(github.event.head_commit.message, 'chore(release):')
 
@@ -64,7 +65,5 @@ jobs:
         uses: relekang/python-semantic-release@master
         with:
           github_token: ${{ secrets.ADMIN_GITHUB_TOKEN }}
-#          pypi_token: ${{ secrets.PYPI_TOKEN }}
-          pypi_username: ${{ secrets.PYPI_USERNAME }}
-          pypi_password: ${{ secrets.PYPI_PASSWORD }}
+          pypi_token: ${{ secrets.PYPI_TOKEN }}
 
