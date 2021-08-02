@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.1 (2021-08-02)
+### Fix
+* Bundle assets ([#188](https://github.com/hnicke/sodalite/issues/188)) ([`2423f78`](https://github.com/hnicke/sodalite/commit/2423f78c9409fed3342f05e550804f3795931afe))
+
 ## v0.21.0 (2021-08-02)
 ### Feature
 * Drop support for system-wide configuration file ([#187](https://github.com/hnicke/sodalite/issues/187)) ([`4688161`](https://github.com/hnicke/sodalite/commit/46881616d540a8b07a4ac2fc2472f54274e4b8c9))
