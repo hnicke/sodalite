@@ -1,4 +1,5 @@
 import logging
+from pathlib import Path
 
 import urwid
 
@@ -8,7 +9,7 @@ from sodalite.ui import theme, graphics
 from sodalite.ui.entrylist import EntryList
 from sodalite.ui.filepreview import FilePreview
 from sodalite.ui.viewmodel import ViewModel
-from sodalite.util import env, pubsub
+from sodalite.util import pubsub
 
 logger = logging.getLogger(__name__)
 
@@ -43,10 +44,10 @@ class MainPane(urwid.WidgetWrap):  # type: ignore
 
     def _update_title(self, entry: Entry) -> None:
         cwd = entry.path
-        if cwd == env.HOME:
+        if cwd == Path.home():
             title = '~'
-        elif cwd.is_relative_to(env.HOME):
-            title = f"~/{cwd.relative_to(env.HOME)}"
+        elif cwd.is_relative_to(Path.home()):
+            title = f"~/{cwd.relative_to(Path.home())}"
         else:
             title = str(cwd)
         self.box.set_title(title)

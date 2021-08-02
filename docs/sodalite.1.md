@@ -220,9 +220,8 @@ Configuration
 =============
 Upon startup, `sodalite` looks in following places for its configuration:
 
-1. `$XDG_CONFIG_HOME/sodalite/sodalite.yml` (user specific configuration).
-    If `$XDG_CONFIG_HOME` is not set, falls back to `$HOME/.config/sodalite/sodalite.yml`
-2. `/etc/sodalite.yml` (system-wide configuration)
+1. `$XDG_CONFIG_HOME/sodalite/sodalite.conf` (user specific configuration).
+    If `$XDG_CONFIG_HOME` is not set, falls back to `$HOME/.config/sodalite/sodalite.conf`
 
 The configuration is written in [YAML](https://learnxinyminutes.com/docs/yaml/).
 

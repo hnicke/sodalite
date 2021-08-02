@@ -24,7 +24,7 @@ class History:
     """
 
     def __init__(self, history: list[Path] = None, index: int = 0, persist: bool = False):
-        self._history = history or [env.HOME]
+        self._history = history or [Path.home()]
         self._index = index
         if persist:
             atexit.register(self.save)

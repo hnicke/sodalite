@@ -1,5 +1,7 @@
 import functools
 import logging
+import os
+import shutil
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional, Union
@@ -17,20 +19,27 @@ class ConfigNotFound(Exception):
     pass
 
 
+_ENV_CONFIG_FILE = 'CONFIG_FILE'
+
+
 @functools.cache
 def _config_file() -> Path:
-    config_file_paths = [
-        env.config_file(),
-        env.USER_CONFIG / 'sodalite.conf',
-        Path('/etc/sodalite.conf'),
-        Path('/usr/local/etc/sodalite.conf'),
-        Path('/usr/share/sodalite/sodalite.conf'),
-    ]
+    env_config_file = os.getenv(_ENV_CONFIG_FILE)
+    if env_config_file:
+        config_file = Path(env_config_file).absolute()
+        if config_file.exists():
+            logger.debug(f"Using config file from env variable: '{config_file}'")
+            return config_file
+    else:
+        config_file = Path(env.USER_CONFIG / 'sodalite.conf')
+        if config_file.exists():
+            logger.debug(f"Using config file '{config_file}'")
+            return config_file
+        else:
+            logger.info(f"Creating config file '{config_file}'")
+            shutil.copy(src=env.DOCS / 'sodalite.conf', dst=config_file)
+            return config_file
 
-    for file in config_file_paths:
-        if file.exists():
-            logger.debug(f"Using config file '{file}'")
-            return file
     raise ConfigNotFound()
 
 
