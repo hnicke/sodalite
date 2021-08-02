@@ -1,5 +1,9 @@
-name: Check
-on: push
+name: CI
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 jobs:
   check:
     name: Lint, type-check and test the code base
@@ -13,11 +17,13 @@ jobs:
         with:
           python-version: '3.9.2'
 
-      - name: Install virtualenv
-        run: sudo pip install virtualenv
+      - name: Install poetry
+        uses: abatilo/actions-poetry@v2.1.0
+        with:
+          poetry-version: 1.1.7
 
-      - name: Setup venv
-        run: make venv
+      - name: Install dependencies
+        run: make deps
 
       - name: Lint
         run: make lint
@@ -43,3 +49,21 @@ jobs:
           label: typing
           message: ${{ steps.type-check.outputs.TYPE_COVERAGE }}%
           color: orange
+  release:
+    needs: check
+    # https://github.community/t/how-do-i-specify-job-dependency-running-in-another-workflow/16482
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master' && !contains(github.event.head_commit.message, 'chore(release):')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Semantic Release
+        run: |
+          pip install python-semantic-release
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          semantic-release publish
+

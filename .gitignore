@@ -5,7 +5,7 @@ tags
 .pytest_cache
 tmp/
 tests/tmp_data
-venv/
+.venv/
 sodalite.egg-info/
 db.sqlite
-build
+dist

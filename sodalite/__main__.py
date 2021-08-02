@@ -102,5 +102,9 @@ def update(target: str) -> None:
         cwd = entry_path
 
 
-if __name__ == "__main__":
+def main():
     run(prog_name=env.PROGRAM_NAME)
+
+
+if __name__ == "__main__":
+    main()

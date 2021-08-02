@@ -69,22 +69,15 @@ uninstall:
 
 ## ### PIPELINE / DEV TARGETS #####
 
-activate = . venv/bin/activate
-buildDir = build
+distDir = dist
 pkg = sodalite
-mypy = ${activate} && mypy --config mypy.ini -p ${pkg} -p tests ${shell [ ${color} != 'true' ] && echo '--no-color-output'}
-reportDir = ${buildDir}/reports
+mypy = poetry run mypy --config mypy.ini -p ${pkg} -p tests ${shell [ ${color} != 'true' ] && echo '--no-color-output'}
+reportDir = ${distDir}/reports
 
-venv: setup.py
-	virtualenv venv -p $(shell which python)
-	${activate} && pip install '.[dev]'
-	@touch venv
 
-check: lint type-check test
-.PHONY: check
 
 color = true
-type-check ${reportDir}/index.txt ${reportDir}/index.html ${reportDir}/linecount.txt: venv ${pkg} tests
+type-check ${reportDir}/index.txt ${reportDir}/index.html ${reportDir}/linecount.txt: .venv ${pkg} tests
 	${mypy} \
 		--any-exprs-report ${reportDir} \
 		--html-report ${reportDir} \
@@ -119,30 +112,52 @@ type-coverage: ${reportDir}/linecount.txt
 
 
 
-lint: venv
-	${activate} && flake8 ${pkg} tests
-.PHONY: lint
-
 
 # logs are written to journald in order not to interfere with the TUI
 logs:
 	journalctl --identifier sodalite --follow
 .PHONY: logs
 
-test: venv
-	${activate} && python -m pytest tests
+.venv: pyproject.toml poetry.lock
+	poetry install
+	touch .venv
+
+deps: .venv
+.PHONY: deps
+
+run: .venv
+	poetry run sodalite
+.PHONY: run
+
+check: lint type-check test
+.PHONY: check
+
+test: .venv
+	poetry run pytest tests
 .PHONY: test
 
+lint: .venv
+	poetry run flake8 ${pkg} tests
+.PHONY: lint
+
 prune: clean
-	rm -rf venv
+	rm -rf .venv
 .PHONY: prune
 
 clean:
-	rm -rf db.sqlite ${buildDir}
+	rm -rf db.sqlite ${distDir}
 .PHONY: clean
 
-
-SHELL := /bin/bash
 release:
 	./scripts/release "$${VERSION:?Which version?}"
+
+build: .venv
+	poetry build
+.PHONY: build
+
+setup-hooks:
+	@for file in scripts/hooks/*; do \
+		ln -sf ../../$$file .git/hooks/$$(basename $$file); \
+		echo Symlinked git hook: $$(basename $$file); \
+	done
 
