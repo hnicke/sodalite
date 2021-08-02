@@ -1,0 +1,4 @@
+#!/bin/bash
+
+poetry run cz check --commit-msg-file "$1"
+

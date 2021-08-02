@@ -1,6 +1,0 @@
-#!/bin/bash
-
-make venv > /dev/null
-. venv/bin/activate
-cz check --commit-msg-file "$1"
-

@@ -1,5 +1,9 @@
-name: Check
-on: push
+name: CI
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 jobs:
   check:
     name: Lint, type-check and test the code base
@@ -13,11 +17,13 @@ jobs:
         with:
           python-version: '3.9.2'
 
-      - name: Install virtualenv
-        run: sudo pip install virtualenv
+      - name: Install poetry
+        uses: abatilo/actions-poetry@v2.1.0
+        with:
+          poetry-version: 1.1.7
 
-      - name: Setup venv
-        run: make venv
+      - name: Install dependencies
+        run: make deps
 
       - name: Lint
         run: make lint
@@ -43,3 +49,4 @@ jobs:
           label: typing
           message: ${{ steps.type-check.outputs.TYPE_COVERAGE }}%
           color: orange
+

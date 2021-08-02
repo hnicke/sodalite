@@ -1,6 +1,0 @@
-#!/bin/bash  
-# execute in order to setup important git hooks (for developement)
-pushd "$(dirname "$0")"
-ln -fs $PWD/pre-commit ../../.git/hooks/pre-commit
-ln -fs $PWD/commit-msg ../../.git/hooks/commit-msg
-popd 
