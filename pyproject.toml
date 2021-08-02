@@ -34,10 +34,10 @@ commitizen = "^2.17.13"
 [tool.semantic_release]
 version_variable = [
     "sodalite/util/version.py:VERSION",
-    "pyproject.toml:version"
+    "pyproject.toml:version",
 ]
 branch = "master"
-upload_to_pypi = false
+upload_to_pypi = true
 upload_to_release = true
 build_command = "pip install poetry && poetry build"
 

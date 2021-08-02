@@ -83,7 +83,7 @@ Or learn more about [mime](https://wiki.archlinux.org/index.php/XDG_MIME_Applica
 
 
 ## Changelog
-Don't miss out on what has changed: Read the [changelog](changelog.md).
+Don't miss out on what has changed: Read the [changelog](CHANGELOG.md).
 
 ## Contributing
 Do you want to contribute to the project? Check out the [developer guide](docs/developer_guide.md).
