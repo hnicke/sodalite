@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "sodalite"
-version = "0.20.5"
+version = "0.21.0"
 description = "Keyboard-driven terminal file navigator and launcher"
 authors = ["Heiko Nickerl <dev@hnicke.de>"]
 license = "GPL-3.0-only"
