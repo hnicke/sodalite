@@ -50,20 +50,21 @@ jobs:
           message: ${{ steps.type-check.outputs.TYPE_COVERAGE }}%
           color: orange
   release:
-    needs: check
-    # https://github.community/t/how-do-i-specify-job-dependency-running-in-another-workflow/16482
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master' && !contains(github.event.head_commit.message, 'chore(release):')
     runs-on: ubuntu-latest
+    concurrency: release
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master' && !contains(github.event.head_commit.message, 'chore(release):')
+
     steps:
-      - uses: actions/setup-python@v2
+      - uses: actions/checkout@v2
         with:
-          python-version: 3.9
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Semantic Release
-        run: |
-          pip install python-semantic-release
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          semantic-release publish
+          fetch-depth: 0
+          token: ${{ secrets.ADMIN_GITHUB_TOKEN }}
+
+      - name: Python Semantic Release
+        uses: relekang/python-semantic-release@master
+        with:
+          github_token: ${{ secrets.ADMIN_GITHUB_TOKEN }}
+#          pypi_token: ${{ secrets.PYPI_TOKEN }}
+          pypi_username: ${{ secrets.PYPI_USERNAME }}
+          pypi_password: ${{ secrets.PYPI_PASSWORD }}
 
