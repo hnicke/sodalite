@@ -21,6 +21,8 @@ class ConfigNotFound(Exception):
 
 _ENV_CONFIG_FILE = 'CONFIG_FILE'
 
+CONFIG_TEMPLATE = Path(__file__).parent.absolute() / 'sodalite.conf'
+
 
 @functools.cache
 def _config_file() -> Path:
@@ -37,7 +39,7 @@ def _config_file() -> Path:
             return config_file
         else:
             logger.info(f"Creating config file '{config_file}'")
-            shutil.copy(src=env.DOCS / 'sodalite.conf', dst=config_file)
+            shutil.copy(src=CONFIG_TEMPLATE, dst=config_file)
             return config_file
 
     raise ConfigNotFound()

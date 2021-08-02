@@ -8,7 +8,7 @@ readme = "README.md"
 homepage = "https://github.com/hnicke/sodalite"
 repository = "https://github.com/hnicke/sodalite"
 include = [
-    "CHANGELOG.md", "docs/sodalite.conf",
+    "CHANGELOG.md",
     "docs/sodalite.1.md", "docs/sodalite.1",
     "docs/sodalite-open.1.md", "docs/sodalite-open.1",
 ]
