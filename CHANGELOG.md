@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.20.4 (2021-08-02)
+### Fix
+* Fix output of `sodalite --version` ([#183](https://github.com/hnicke/sodalite/issues/183)) ([`37ec478`](https://github.com/hnicke/sodalite/commit/37ec4789f0a46b67591a281a1429c1cbc2daa55b))
+
 ## v0.20.3 (2021-08-02)
 ### Fix
 * Fix build in release job ([#182](https://github.com/hnicke/sodalite/issues/182)) ([`9664e91`](https://github.com/hnicke/sodalite/commit/9664e91bc603151ed8195b56276cd3bc5a390f4c))
