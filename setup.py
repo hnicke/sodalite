@@ -2,11 +2,11 @@ from pathlib import Path
 
 import setuptools
 
-from sodalite.util import env
+from sodalite.util import env, VERSION
 
 setuptools.setup(
     name=env.PROGRAM_NAME,
-    version=env.VERSION,
+    version=VERSION,
     author="Heiko Nickerl",
     author_email="dev@hnicke.de",
     description='Keyboard-driven terminal file navigator and launcher',

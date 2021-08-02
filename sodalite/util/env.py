@@ -5,7 +5,6 @@ import os
 from pathlib import Path
 from typing import Optional
 
-VERSION = '0.19.4'
 PROGRAM_NAME = 'sodalite'
 
 # setup logger

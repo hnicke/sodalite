@@ -141,3 +141,8 @@ clean:
 	rm -rf db.sqlite ${buildDir}
 .PHONY: clean
 
+
+SHELL := /bin/bash
+release:
+	./scripts/release "$${VERSION:?Which version?}"
+
