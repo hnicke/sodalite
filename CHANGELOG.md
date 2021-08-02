@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.0 (2021-08-02)
+### Feature
+* Drop support for system-wide configuration file ([#187](https://github.com/hnicke/sodalite/issues/187)) ([`4688161`](https://github.com/hnicke/sodalite/commit/46881616d540a8b07a4ac2fc2472f54274e4b8c9))
+
 ## v0.20.5 (2021-08-02)
 ### Fix
 * Use absolute instead of relative links in README ([#185](https://github.com/hnicke/sodalite/issues/185)) ([`08ab712`](https://github.com/hnicke/sodalite/commit/08ab71243727daa118497f6cf4b7ae0eb3fc5e55))
