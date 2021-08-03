@@ -37,11 +37,15 @@ lxml = "^4.6.3"
 flake8 = "^3.9.2"
 flake8-sfs = "^0.0.3"
 commitizen = "^2.17.13"
+python-semantic-release = "^7.16.4"
 
 [tool.semantic_release]
 version_variable = [
     "sodalite/util/version.py:VERSION",
     "pyproject.toml:version",
+]
+version_pattern = [
+    "snapcraft.yaml:^version: {version}$"
 ]
 branch = "master"
 upload_to_pypi = true

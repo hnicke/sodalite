@@ -9,3 +9,4 @@ tests/tmp_data
 sodalite.egg-info/
 db.sqlite
 dist
+*.snap

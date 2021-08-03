@@ -1,0 +1,62 @@
+name: sodalite # you probably want to 'snapcraft register <name>'
+base: core20
+version: 0.21.2
+summary: Keyboard-driven terminal file navigator and launcher
+description: |
+  Sodalite is a keyboard-driven, terminal-based file navigator.
+  It enables navigation through the filesystem at the speed of your thoughts.
+  You might like if the shell is your daily driver.
+grade: stable
+confinement: classic
+
+apps:
+  sodalite:
+    command: usr/bin/sodalite
+    environment:
+      PYTHONPATH: $SNAP/usr/lib/python3.9/site-packages
+
+parts:
+  sodalite:
+    source: .
+    plugin: nil
+    build-packages:
+      - python3.9
+      - python3-virtualenv
+      - python3-pip
+      - make
+    stage-packages:
+      - python3.9
+    override-pull: |
+      snapcraftctl pull
+      make prune
+    override-build: |
+      update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.9 10
+      pip3 install poetry
+
+      poetry install --no-dev
+
+      poetry build --format sdist
+      cd dist
+      tar -xf *.gz
+      rm *.gz
+      cd sodalite-*
+      /usr/bin/python3.9 setup.py install \
+          --optimize=1 \
+          --root ${SNAPCRAFT_PART_INSTALL:?} \
+          --prefix /usr
+
+      target=${SNAPCRAFT_PART_INSTALL:?}/usr/lib/python3.9/site-packages/
+      mkdir -p $target
+      cp -r ${SNAPCRAFT_PART_BUILD:?}/.venv/lib/python3.9/site-packages/* $target
+      bin=${SNAPCRAFT_PART_INSTALL:?}/usr/bin
+      mkdir -p $bin
+      executable=$bin/sodalite
+      echo "#!/bin/sh" > $executable
+      echo 'python3.9 -m sodalite "$@"' >> $executable
+      chmod +x $executable
+
+      share_dir=${SNAPCRAFT_PART_INSTALL:?}/usr/share/sodalite
+      mkdir -p $share_dir
+      cp ${SNAPCRAFT_PART_BUILD}/scripts/shell-integration.* $share_dir/
+
+

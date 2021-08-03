@@ -1,4 +1,6 @@
 #!/bin/bash
 
+[ $SKIP_COMMIT_MSG_CHECK ] && exit
+
 poetry run cz check --commit-msg-file "$1"
 
