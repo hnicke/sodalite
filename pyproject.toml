@@ -2,6 +2,9 @@
 version_variable = [
     "sodalite/util/version.py:VERSION",
 ]
+version_pattern = [
+    "packaging/aur/PKGBUILD:^pkgver={version}$",
+]
 branch = "master"
 upload_to_pypi = false
 upload_to_release = false
