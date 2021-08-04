@@ -11,7 +11,8 @@ from sodalite.util import pubsub
 def test_deduplicated_reload(callback: Mock) -> None:
     pubsub.filesystem_connect(callback)
 
-    reloader = DeduplicatedReload(100)
+    deduplication_interval_millis = 100
+    reloader = DeduplicatedReload(deduplication_interval_millis)
 
     # fire multiple reloads in parallel
     threads = [Thread(target=lambda: reloader.reload()) for _ in range(20)]
@@ -19,7 +20,7 @@ def test_deduplicated_reload(callback: Mock) -> None:
         thread.start()
     for thread in threads:
         thread.join()
-    time.sleep(reloader.deduplication_interval_millis / 1000)
+    time.sleep(deduplication_interval_millis / 1000)
 
     callback.assert_called_once()
 

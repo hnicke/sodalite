@@ -1,6 +1,6 @@
 import logging
 import time
-from threading import Lock
+from threading import Lock, Thread
 from typing import Optional
 
 from watchdog.events import FileSystemEventHandler, FileSystemEvent
@@ -14,21 +14,22 @@ _logger = logging.getLogger(__name__)
 
 
 class DeduplicatedReload:
-    _lock = Lock()
     _last_reload: float = 0
 
     def __init__(self, deduplication_interval_millis: int):
-        self.deduplication_interval_millis = deduplication_interval_millis
+        self._needs_reload = False
+        self.poller = Thread(target=self._reload_thread, args=(deduplication_interval_millis,), daemon=True)
+        self.poller.start()
+
+    def _reload_thread(self, poll_millis: int) -> None:
+        while True:
+            time.sleep(poll_millis / 1000)
+            if self._needs_reload:
+                pubsub.filesystem_send()
+                self._needs_reload = False
 
     def reload(self) -> None:
-        current_time = time.time()
-        if self._lock.locked():
-            return
-        with self._lock:
-            if self._last_reload + self.deduplication_interval_millis / 1000 < current_time:
-                time.sleep(self.deduplication_interval_millis / 1000)
-                self._last_reload = time.time()
-                pubsub.filesystem_send()
+        self._needs_reload = True
 
 
 class PathHandler(FileSystemEventHandler):  # type: ignore
