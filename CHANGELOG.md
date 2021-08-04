@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.19 (2021-08-04)
+### Fix
+* Suggest 'vim' action only for plain text files ([#215](https://github.com/hnicke/sodalite/issues/215)) ([`5f647ee`](https://github.com/hnicke/sodalite/commit/5f647ee24d5d79b2623ac07afa6f6f20ce1bbdb0))
+
 ## v0.21.18 (2021-08-04)
 ### Fix
 * In help screen, hide unsuitable actions in regards to current context ([#214](https://github.com/hnicke/sodalite/issues/214)) ([`25020f7`](https://github.com/hnicke/sodalite/commit/25020f757c6ac010580a2a9f8977cd3041c16604))
