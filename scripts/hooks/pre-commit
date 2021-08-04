@@ -1,7 +1,7 @@
 #!/bin/bash  
 
 # build man page
-cd sodalite/assets
+cd docs
 for manpage in sodalite sodalite-open; do
     pandoc --standalone --to man $manpage.1.md -o $manpage.1 &&
     # remove pandoc version, it could be slightly different on every machine

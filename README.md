@@ -66,7 +66,7 @@ In case it doesn't it's considered a bug - please file a bug report.
 > - [watchdog](https://github.com/gorakhargosh/watchdog)
 
 ## Getting started
-Check out the [manpage](https://github.com/hnicke/sodalite/blob/master/sodalite/assets/sodalite.1.md) for detailed usage information.
+Check out the [manpage](https://github.com/hnicke/sodalite/blob/master/docs/sodalite.1.md) for detailed usage information.
 
 ## FAQ
 ##### The default 'open' hook doesn't work / launches weird programs :(
