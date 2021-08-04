@@ -1,6 +1,6 @@
 from pathlib import Path
 from random import shuffle
-from typing import TYPE_CHECKING, Collection
+from typing import TYPE_CHECKING, Collection, Iterable
 
 if TYPE_CHECKING:
     from sodalite.core.entry import Entry
@@ -18,7 +18,7 @@ class Key:
     the first group is the group of keys which is intended to be assigned first, the last one last.
     """
 
-    def __init__(self, value: str) -> None:
+    def __init__(self, value: str = '') -> None:
         self.value = value
         self.rank = self._compute_rank()
 
@@ -56,10 +56,10 @@ def get_all_keys() -> list[str]:
     return keys
 
 
-def _get_available_keys(old_entries: dict[Path, 'Entry']) -> list[str]:
+def _get_available_keys(entries: Iterable['Entry']) -> list[str]:
     """returns a list of keys which are not yet used by given entries
-    :param old_entries: list of Entry which already have a key"""
-    used_keys = set([x.key.value for x in old_entries.values()])
+    :param entries: entries which already have a key"""
+    used_keys = set([x.key.value for x in entries])
     used_keys.discard('')
     unused_keys = []
     for key_rank in all_keys:
@@ -70,25 +70,30 @@ def _get_available_keys(old_entries: dict[Path, 'Entry']) -> list[str]:
 
 
 def assign_keys(entries_to_assign: dict[Path, 'Entry'], old_entries: dict[Path, 'Entry']) -> list['Entry']:
-    """ assigns keys to the given new entries. Needs old entries
+    """
+    assigns keys to the given new entries.
+    Needs old entries to work properly.
+    Existing entries with a very low rating can lose their key to a new entry.
+
     :param entries_to_assign: entries without key, these will receive a key
     :param old_entries: all entries of this domain which already have a key
     :return list of old entries whose keys got reassigned and therefore need to get persisted
     """
 
-    free_keys = _get_available_keys(old_entries)
+    free_keys = _get_available_keys(old_entries.values())
     reassignable_keys = [x.key.value for x in old_entries.values() if x.rating < 0.05 and x.key.value != '']
     available_keys = free_keys + reassignable_keys
     sorted_new_entries = _sort(entries_to_assign.values())
     _assign(sorted_new_entries, available_keys)
 
     # now try reassign keys to these entries which just lost their key
+    all_entries = set(old_entries.values()).union(sorted_new_entries)
+    free_keys = _get_available_keys(all_entries)
     reassigned_keys = [x for x in reassignable_keys if x not in available_keys]
     entries_to_reassign = [x for x in old_entries.values() if x.key.value in reassigned_keys]
     for entry in entries_to_reassign:
-        entry.key = Key('')
-    _assign(entries_to_reassign,
-            [x for x in free_keys if x not in available_keys])
+        entry.key = Key()
+    _assign(entries_to_reassign, free_keys)
     return entries_to_reassign
 
 
