@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.17 (2021-08-04)
+### Fix
+* Improve startup time ([#212](https://github.com/hnicke/sodalite/issues/212)) ([`2053052`](https://github.com/hnicke/sodalite/commit/2053052b22c5f7a71a285c7b55aa30791015c490))
+
 ## v0.21.16 (2021-08-04)
 ### Fix
 * Make filesystem change detection more reliable ([#211](https://github.com/hnicke/sodalite/issues/211)) ([`903c5fa`](https://github.com/hnicke/sodalite/commit/903c5fa0a6ece6dd5cb77c3f820d795a54cc59c0))
