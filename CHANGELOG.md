@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.16 (2021-08-04)
+### Fix
+* Make filesystem change detection more reliable ([#211](https://github.com/hnicke/sodalite/issues/211)) ([`903c5fa`](https://github.com/hnicke/sodalite/commit/903c5fa0a6ece6dd5cb77c3f820d795a54cc59c0))
+
 ## v0.21.15 (2021-08-04)
 ### Fix
 * Fix external filesystem change detection ([#210](https://github.com/hnicke/sodalite/issues/210)) ([`0eb855a`](https://github.com/hnicke/sodalite/commit/0eb855afce07e335f72a0708ed6d2ad97049144e))
