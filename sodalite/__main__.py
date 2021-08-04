@@ -1,4 +1,5 @@
 import logging
+import os
 import sys
 import time
 from pathlib import Path
@@ -45,20 +46,23 @@ _entry_watcher: EntryWatcher
 
 @click.command('sodalite', context_settings=_CLICK_CONTEXT)
 @click.version_option(VERSION)
-@click.argument('path', required=False, type=click.Path(exists=True, resolve_path=True), default=Path.cwd())
+@click.argument('path', required=False, type=click.Path(exists=True, resolve_path=True))
 @click.option('-u', '--update-access', help="Store access for given path in the database and quit")
-def run(path: str, update_access: Optional[str]) -> None:
+def run(path: Optional[str], update_access: Optional[str]) -> None:
     """Opens the sodalite file navigator at given PATH"""
     if update_access:
         update(update_access)
     else:
+        if not path:
+            path = os.environ['PWD']
+        path = path
         try:
             _io_to_tty()
             from sodalite.ui import graphics
 
             global _entry_watcher
             _entry_watcher = EntryWatcher()
-            graphics.run(Path(path))
+            graphics.run(Path(path).absolute())
 
             if env.exit_cwd:
                 sys.__stdout__ = sys.stdout = open('/dev/stdout', 'w')

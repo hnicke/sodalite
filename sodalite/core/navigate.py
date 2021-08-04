@@ -13,6 +13,18 @@ from sodalite.util import pubsub
 logger = logging.getLogger(__name__)
 
 
+def _sanitize(path: Path) -> Path:
+    """
+    If path exists, returns path. Else returns the first parent that exists.
+    :raises FileNotFoundError as last resort
+    """
+    while not path.exists():
+        if path == path.parent:
+            raise FileNotFoundError()
+        path = path.parent
+    return path
+
+
 def _chdir(entry: Entry) -> None:
     if entry.is_dir:
         pwd = entry.path
@@ -26,7 +38,7 @@ class Navigator:
     Clients (e.g., GUI) may use the navigator class for interaction
     """
 
-    def __init__(self, history: History, entry_access: Optional[EntryAccess] = None):
+    def __init__(self, history: History = History.load(), entry_access: Optional[EntryAccess] = None):
         super().__init__()
         self.history = history
         self.entry_access = entry_access or EntryAccess()
@@ -37,9 +49,10 @@ class Navigator:
     def current(self) -> Entry:
         """
         :return: The entry belonging to the current directory,
+        If the current directory doesn't exist, returns the first existing parent
         or None in case the current directory does not exist anymore
         """
-        path = self.history.cwd()
+        path = _sanitize(Path(os.environ['PWD']))
         entry = self.entry_access.retrieve_entry(path)
         _chdir(entry)
         return entry
@@ -64,51 +77,46 @@ class Navigator:
             raise FileNotFoundError
         if entry is None:
             entry = self.current()
-        self.history.visit(Path(entry.path))
-        self.current_entry = entry
-        self.entry_access.access_now(entry)
-        _chdir(entry)
-        return entry
+        return self._visit_entry(entry)
 
-    def visit_path(self, path: Path) -> Entry:
+    def visit_path(self, path: Path, update_access: bool = True, update_history: bool = True) -> Entry:
         """
         Visit the file matching given path
         :param path: An absolute, canonical path describing a file
         :return:the matching entry
         :raises: PermissionError
         """
-        self.history.visit(Path(path))
-        entry = self.entry_access.retrieve_entry(path)
+        try:
+            entry = self.entry_access.retrieve_entry(path)
+            return self._visit_entry(entry, update_access=update_access, update_history=update_history)
+        except FileNotFoundError:
+            return self.visit_path(path.parent, update_access=update_access, update_history=update_history)
+
+    def _visit_entry(self, entry: Entry, update_access: bool = True, update_history: bool = True) -> Entry:
+        if not entry.path.exists():
+            return self.visit_path(entry.path.parent)
+        if update_history:
+            self.history.visit(entry.path)
         self.current_entry = entry
-        self.entry_access.access_now(entry)
+        if update_access:
+            self.entry_access.access_now(entry)
         _chdir(entry)
         return entry
 
     def visit_previous(self) -> Entry:
         path = self.history.backward()
         entry = self.entry_access.retrieve_entry(path)
-        self.current_entry = entry
-        _chdir(entry)
-        return entry
+        return self._visit_entry(entry, update_access=False, update_history=False)
 
     def visit_next(self) -> Entry:
         path = self.history.forward()
         entry = self.entry_access.retrieve_entry(path)
-        self.current_entry = entry
-        _chdir(entry)
-        return entry
+        return self._visit_entry(entry, update_access=False, update_history=False)
 
     def visit_parent(self) -> Entry:
-        path = self.history.visit_parent()
-        try:
-            entry = self.entry_access.retrieve_entry(path)
-            if not entry.path == self.current_entry.path:
-                self.current_entry = entry
-                _chdir(entry)
-            return entry
-        except FileNotFoundError:
-            self.visit_previous()
-            raise FileNotFoundError
+        path = self.history.cwd().parent
+        entry = self.entry_access.retrieve_entry(path)
+        return self._visit_entry(entry)
 
     def assign_key(self, key: Key, path: Path) -> None:
         """Assigns given key to given entry.
@@ -142,13 +150,4 @@ class Navigator:
 
     def reload_current_entry(self, *args: object) -> None:
         logger.info('Reloading current entry')
-        try:
-            self.current_entry = self.entry_access.retrieve_entry(self.current_entry.path, cache=False)
-        except FileNotFoundError:
-            self.recursive_try_visit(Path(self.current_entry.dir))
-
-    def recursive_try_visit(self, path: Path) -> None:
-        try:
-            self.visit_path(path)
-        except FileNotFoundError:
-            self.recursive_try_visit(Path(path).parent)
+        self.current_entry = self.entry_access.retrieve_entry(_sanitize(self.current_entry.path), cache=False)
