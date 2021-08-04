@@ -1,18 +1,38 @@
-from typing import TYPE_CHECKING, Callable
+from typing import TYPE_CHECKING, Callable, Optional
 
 from blinker import Signal
-
 
 if TYPE_CHECKING:
     from sodalite.core.entry import Entry
     from sodalite.ui.viewmodel import Mode
     from sodalite.ui.highlighting import HighlightedLine
 
-_entry_signal = Signal('entry')
-_entry_list_signal = Signal('entry-list')
-_filesystem_signal = Signal('filesystem')
-_filtered_file_content_signal = Signal('filtered-file-content')
-_mode_signal = Signal('mode')
+
+class MemorySignal(Signal):  # type: ignore
+    """
+    A signal that fires the last sent signal when a receiver connects
+    """
+
+    def __init__(self, name: str):
+        super().__init__(name)
+        self.latest_data: Optional[object] = None
+
+    def send(self, o: Optional[object] = None, *args: object, **kwargs: object) -> None:
+        super().send(o, *args, **kwargs)
+        if o is not None:
+            self.latest_data = o
+
+    def connect(self, callback: Callable, *args: object, **kwargs: object) -> None:  # type: ignore
+        super().connect(callback, *args, **kwargs)
+        if self.latest_data is not None:
+            callback(self.latest_data)
+
+
+_entry_signal = MemorySignal('entry')
+_entry_list_signal = MemorySignal('entry-list')
+_filesystem_signal = MemorySignal('filesystem')
+_filtered_file_content_signal = MemorySignal('filtered-file-content')
+_mode_signal = MemorySignal('mode')
 
 
 def entry_connect(callback: Callable[['Entry'], None]) -> None:

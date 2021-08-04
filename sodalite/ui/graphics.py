@@ -8,7 +8,7 @@ import urwid.curses_display
 from urwid import Widget
 
 from sodalite.core.navigate import Navigator
-from sodalite.ui import theme, viewmodel
+from sodalite.ui import theme, viewmodel, notify
 from sodalite.ui.control import NavigateControl, AssignControl, OperateControl, Control
 from sodalite.ui.filter import Filter
 from sodalite.ui.help import HelpLauncher
@@ -90,6 +90,7 @@ def run(path: Path) -> None:
     global popupLauncher
     frame = MainFrame(path)
     popupLauncher = HelpLauncher(frame)
+    notify.setup()
     loop = _create_loop(popupLauncher)
     loop.run()
 

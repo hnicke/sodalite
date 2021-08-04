@@ -36,7 +36,7 @@ class ActionName(Enum):
     rename = 'rename'
 
     def __str__(self) -> str:
-        return self.value
+        return self.value.replace('_', ' ')
 
     def __repr__(self) -> str:
         return f"Action '{self.value}'"
