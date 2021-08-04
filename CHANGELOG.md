@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.15 (2021-08-04)
+### Fix
+* Fix external filesystem change detection ([#210](https://github.com/hnicke/sodalite/issues/210)) ([`0eb855a`](https://github.com/hnicke/sodalite/commit/0eb855afce07e335f72a0708ed6d2ad97049144e))
+
 ## v0.21.14 (2021-08-04)
 ### Fix
 * Fix bug in key assign algorithm which led to entries without keys ([`cd10e8f`](https://github.com/hnicke/sodalite/commit/cd10e8fb3de8cc4b5051bd150323d7996c1487ad))
