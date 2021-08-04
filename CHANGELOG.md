@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.5 (2021-08-04)
+### Fix
+* Ditch poetry ([#196](https://github.com/hnicke/sodalite/issues/196)) ([`d65cef3`](https://github.com/hnicke/sodalite/commit/d65cef396ca84381b48e5fc001e66e33cc189e9f))
+
 ## v0.21.4 (2021-08-04)
 ### Fix
 * Remove obsolete make targets ([#195](https://github.com/hnicke/sodalite/issues/195)) ([`83fa7c1`](https://github.com/hnicke/sodalite/commit/83fa7c10e327e93e3376a39e2629760f268c573c))
