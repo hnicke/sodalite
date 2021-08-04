@@ -1,23 +1,9 @@
 # Developer Guide
 
-This document is aimed towards developers who want to contribute to sodalite.
+Please read this document of you are planning on contributing to `sodalite`.
 
-#### Building the man page
-Please add the supplied pre-commit hook:
+#### Add git hooks
+Please symlink  the supplied git hooks:
 ```bash
-bin/hooks/symlink-hooks
+make setup-hooks
 ```
-This will translate the markdown man page to the groff manpage, and stage the resulting file everytime you commit.
-
-#### Code formatting
-The project is auto-formatted with PyCharm (default settings).
-
-### Release Checklist
-##### before
-- update changelog
-- update VERSION variable in __main__.py
-- new Dependencies? Update readme!
-- push tag
-
-##### after
-- contact dev(at)heiko-nickerl.com and ask to update the aur packages

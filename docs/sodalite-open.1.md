@@ -27,7 +27,7 @@ Please report at https://github.com/hnicke/sodalite/issues.
 AUTHOR
 ======
 
-Heiko Nickerl <dev(at)heiko-nickerl.com>
+Heiko Nickerl <dev(at)hnicke.de>
 
 SEE ALSO
 ========
