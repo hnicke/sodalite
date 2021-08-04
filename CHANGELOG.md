@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.13 (2021-08-04)
+### Fix
+* Handle non-existing files and directories in a better way ([`7e82f53`](https://github.com/hnicke/sodalite/commit/7e82f53054576ba51d2f2dfc06dfd9a6a08bd67a))
+
 ## v0.21.12 (2021-08-04)
 ### Fix
 * Use brown instead of red highlight color in operate mode ([#205](https://github.com/hnicke/sodalite/issues/205)) ([`9e8a5c3`](https://github.com/hnicke/sodalite/commit/9e8a5c375c9ebeb3d3f0c5f59799f7b1d851e138))
