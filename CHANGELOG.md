@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.18 (2021-08-04)
+### Fix
+* In help screen, hide unsuitable actions in regards to current context ([#214](https://github.com/hnicke/sodalite/issues/214)) ([`25020f7`](https://github.com/hnicke/sodalite/commit/25020f757c6ac010580a2a9f8977cd3041c16604))
+
 ## v0.21.17 (2021-08-04)
 ### Fix
 * Improve startup time ([#212](https://github.com/hnicke/sodalite/issues/212)) ([`2053052`](https://github.com/hnicke/sodalite/commit/2053052b22c5f7a71a285c7b55aa30791015c490))
