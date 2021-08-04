@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/bin/sh
 
-poetry run cz check --commit-msg-file "$1"
+make deps
+. venv/bin/activate && cz check --commit-msg-file "$1"
 
