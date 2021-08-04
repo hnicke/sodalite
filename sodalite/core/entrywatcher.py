@@ -1,11 +1,11 @@
 import logging
 import time
+from pathlib import Path
 from threading import Lock, Thread
 from typing import Optional
 
 from watchdog.events import FileSystemEventHandler, FileSystemEvent
 from watchdog.observers import Observer
-from watchdog.observers.api import ObservedWatch
 
 from sodalite.core.entry import Entry
 from sodalite.util import pubsub
@@ -38,28 +38,25 @@ class PathHandler(FileSystemEventHandler):  # type: ignore
         self.reloader = DeduplicatedReload(deduplication_interval_millis)
 
     def on_modified(self, event: FileSystemEvent) -> None:
-        if event.is_directory:
-            self.reloader.reload()
+        self.reloader.reload()
 
 
 class EntryWatcher:
 
     def __init__(self, deduplication_interval_millis: int = 100) -> None:
-        self.deduplication_interval_millis = deduplication_interval_millis
         self._observer = Observer()
         self._observer.start()
 
-        self._watch: Optional[ObservedWatch] = None
+        self._observed_path: Optional[Path] = None
+        self._handler = PathHandler(deduplication_interval_millis)
+
         self._update_lock = Lock()
         pubsub.entry_connect(self.on_navigated)
 
     def on_navigated(self, entry: Entry) -> None:
         with self._update_lock:
-            path = entry.path
-            if self._watch:
-                if self._watch.path == str(path):
-                    return
-                self._observer.unschedule(self._watch)
-                self._watch = None
-            handler = PathHandler(self.deduplication_interval_millis)
-            self._watch = self._observer.schedule(handler, path, recursive=False)
+            if self._observed_path == str(entry.path):
+                return
+            self._observer.unschedule_all()
+            self._observer.schedule(self._handler, entry.path, recursive=False)
+            self._observed_path = entry.path
