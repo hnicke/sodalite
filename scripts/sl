@@ -2,10 +2,13 @@
 # development script for sodalite
 set -eu
 
-currentDir="$PWD"
-cd "$(dirname "$(readlink -f "$0")")/.."
-export CONFIG_FILE=$PWD/sodalite/core/sodalite.conf 
-export DB_PATH=$PWD/db.sqlite 
-source venv/bin/activate
-python -m sodalite "$currentDir"
+{
+    project_root="$(dirname "$(readlink -f "$0")")/.."
+    export CONFIG_FILE="$project_root/sodalite/core/sodalite.conf"
+    export PYTHONPATH="$project_root:${PYTHONPATH:-}"
+    export DB_PATH="$project_root/db.sqlite"
+    make -C "$project_root" deps
+    source "$project_root/venv/bin/activate"
+} > /dev/null
+python -m sodalite "$@"
 
