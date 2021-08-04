@@ -18,12 +18,22 @@ jobs:
         with:
           python-version: 3.9
 
+      - name: Restore dependencies from cache
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: venv
+          key: ${{ runner.os }}-venv-${{ hashFiles('setup.py') }}
+
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: make deps
+
       - name: Semantic Release
         run: |
-          pip install python-semantic-release
           git config user.name github-actions
           git config user.email github-actions@github.com
-          semantic-release publish
+          . venv/bin/activate && semantic-release publish
         env:
           GH_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN }}
           PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}

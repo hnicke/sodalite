@@ -20,7 +20,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: venv
-          key: ${{ runner.os }}-main-venv-${{ hashFiles('setup.py') }}
+          key: ${{ runner.os }}-venv-${{ hashFiles('setup.py') }}
 
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
