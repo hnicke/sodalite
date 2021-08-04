@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.6 (2021-08-04)
+### Fix
+* Do not bundle tests package ([#197](https://github.com/hnicke/sodalite/issues/197)) ([`98f0fbf`](https://github.com/hnicke/sodalite/commit/98f0fbf217fb39408b1c667ea4ba767712116db3))
+
 ## v0.21.5 (2021-08-04)
 ### Fix
 * Ditch poetry ([#196](https://github.com/hnicke/sodalite/issues/196)) ([`d65cef3`](https://github.com/hnicke/sodalite/commit/d65cef396ca84381b48e5fc001e66e33cc189e9f))
