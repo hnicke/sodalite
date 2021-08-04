@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.9 (2021-08-04)
+### Fix
+* For Aur package, use PKGBUILD from this repo ([#202](https://github.com/hnicke/sodalite/issues/202)) ([`e32dc3c`](https://github.com/hnicke/sodalite/commit/e32dc3c610ddebf05484c48d54f039c7a0260cab))
+
 ## v0.21.8 (2021-08-04)
 ### Fix
 * Improve pipeline speed ([#199](https://github.com/hnicke/sodalite/issues/199)) ([`a401de5`](https://github.com/hnicke/sodalite/commit/a401de50afebee3d9566e817385da89448d303d6))
