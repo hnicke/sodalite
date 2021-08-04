@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.4 (2021-08-04)
+### Fix
+* Remove obsolete make targets ([#195](https://github.com/hnicke/sodalite/issues/195)) ([`83fa7c1`](https://github.com/hnicke/sodalite/commit/83fa7c10e327e93e3376a39e2629760f268c573c))
+
 ## v0.21.3 (2021-08-04)
 ### Fix
 * Fix file structure of sdist and wheel ([#193](https://github.com/hnicke/sodalite/issues/193)) ([`06187bf`](https://github.com/hnicke/sodalite/commit/06187bfee2f25f59295d5826c7fd23ca9eaa1e64))
