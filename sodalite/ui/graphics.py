@@ -7,7 +7,6 @@ from typing import Optional, Tuple
 import urwid.curses_display
 from urwid import Widget
 
-from sodalite.core import History
 from sodalite.core.navigate import Navigator
 from sodalite.ui import theme, viewmodel
 from sodalite.ui.control import NavigateControl, AssignControl, OperateControl, Control
@@ -28,17 +27,14 @@ class MainFrame(urwid.Frame):  # type: ignore
 
         :param path: the start entry
         """
-        history = History.load()
-        history.visit(path)
-        self.navigator = Navigator(history)
+        self.navigator = Navigator()
         self.model = ViewModel()
         self.mainpane = MainPane(self.model, self.navigator)
         self.filter = Filter(self.model, self.mainpane.frame)
         super().__init__(self.mainpane)
         self.hookbox = HookBox(self)
 
-        # TODO do not load two times...
-        self.navigator.reload_current_entry()
+        self.navigator.visit_path(path)
 
         # setup controllers
         self.control: Control = NavigateControl(self)

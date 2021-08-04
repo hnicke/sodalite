@@ -28,8 +28,9 @@ class EntryAccess:
         Returns an entry matching given path.
         :param path: the absolute, canonical path to a file
         :param populate_children: If true, loads children from database
+        :param cache: If false, bypasses cache
         :return: the matching entry
-        :raise: FileNotFoundError
+        :raise: FileNotFoundError if path does not exist
         """
 
         if cache and self._current_entry is not None and path == self._current_entry.path:
