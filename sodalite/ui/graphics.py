@@ -74,13 +74,14 @@ MAIN_LOOP = 'MainLoop'
 threading.current_thread().setName(MAIN_LOOP)
 os.environ['ESCDELAY'] = '0'
 frame: MainFrame
-loop: MainLoop
+loop: Optional[MainLoop] = None
 popupLauncher: HelpLauncher
 
 
 def draw_screen() -> None:
     global loop
-    loop.draw_screen()
+    if loop:
+        loop.draw_screen()
 
 
 def run(path: Path) -> None:
@@ -95,8 +96,9 @@ def run(path: Path) -> None:
 
 def resume() -> None:
     global loop
-    loop.stop()
-    loop.start()
+    if loop:
+        loop.stop()
+        loop.start()
 
 
 def exit(cwd: Optional[Path] = None) -> None:

@@ -29,9 +29,10 @@ def test_file_created(tmp_path: Path) -> None:
     callback = Mock(spec=lambda: None)
     pubsub.filesystem_connect(callback)
 
-    watcher = EntryWatcher(10)
+    deduplication_interval_millis = 10
+    watcher = EntryWatcher(deduplication_interval_millis)
     watcher.on_navigated(Entry(tmp_path))
     (tmp_path / 'test.txt').write_text('test')
-    time.sleep(watcher.deduplication_interval_millis / 1000 * 2)
+    time.sleep(deduplication_interval_millis / 1000 * 2)
 
     callback.assert_called_once()
