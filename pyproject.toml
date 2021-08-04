@@ -7,13 +7,6 @@ license = "GPL-3.0-only"
 readme = "README.md"
 homepage = "https://github.com/hnicke/sodalite"
 repository = "https://github.com/hnicke/sodalite"
-include = [
-    "CHANGELOG.md", "copyright","sodalite.desktop",
-    "scripts/shell-integration.*",
-    "scripts/sodalite-open",
-    "docs/sodalite.1.md", "docs/sodalite.1",
-    "docs/sodalite-open.1.md", "docs/sodalite-open.1",
-]
 
 [tool.poetry.scripts]
 sodalite = 'sodalite.__main__:main'
@@ -44,7 +37,7 @@ version_variable = [
     "pyproject.toml:version",
 ]
 branch = "master"
-upload_to_pypi = true
-upload_to_release = true
+upload_to_pypi = false
+upload_to_release = false
 build_command = "pip install poetry && poetry build"
 
