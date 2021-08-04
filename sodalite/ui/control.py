@@ -6,8 +6,9 @@ from typing import TYPE_CHECKING
 import pyperclip
 from urwid import AttrSpec
 
-from sodalite.core import key as key_module, hook, buffer, operate, Navigator, action
+from sodalite.core import key as key_module, hook, buffer, operate, Navigator
 from sodalite.core.action import Action
+from sodalite.core.action_def import ActionName
 from sodalite.core.key import Key
 from sodalite.ui import graphics, viewmodel, notify, theme
 from sodalite.ui.entrylist import EntryList
@@ -22,23 +23,23 @@ logger = logging.getLogger(__name__)
 class Control:
 
     def __init__(self, frame: 'MainFrame'):
-        self.action_map: dict[str, Action] = {}
-        self._action_name_to_callable: dict[str, Callable] = {}
+        self.action_map: dict[ActionName, Action] = {}
+        self._action_name_to_callable: dict[ActionName, Callable] = {}
         self.action_name_to_callable = {
-            action.exit: self.exit,
-            action.abort: self.abort,
-            action.navigate_mode: self.enter_navigate_mode,
-            action.assign_mode: self.enter_assign_mode,
-            action.operate_mode: self.enter_operate_mode,
-            action.filter: self.trigger_filter,
-            action.yank_current_path: self.yank_cwd_to_clipboard,
-            action.yank_file_content: self.yank_file_content_to_clipboard,
-            action.toggle_hidden_files: self.toggle_dotfiles,
-            action.scroll_page_down: self.scroll_page_down,
-            action.scroll_page_up: self.scroll_page_up,
-            action.scroll_half_page_down: self.scroll_half_page_down,
-            action.scroll_half_page_up: self.scroll_half_page_up,
-            action.show_help: self.show_keys
+            ActionName.exit: self.exit,
+            ActionName.abort: self.abort,
+            ActionName.navigate_mode: self.enter_navigate_mode,
+            ActionName.assign_mode: self.enter_assign_mode,
+            ActionName.operate_mode: self.enter_operate_mode,
+            ActionName.filter: self.trigger_filter,
+            ActionName.yank_current_path: self.yank_cwd_to_clipboard,
+            ActionName.yank_file_content: self.yank_file_content_to_clipboard,
+            ActionName.toggle_hidden_files: self.toggle_dotfiles,
+            ActionName.scroll_page_down: self.scroll_page_down,
+            ActionName.scroll_page_up: self.scroll_page_up,
+            ActionName.scroll_half_page_down: self.scroll_half_page_down,
+            ActionName.scroll_half_page_up: self.scroll_half_page_up,
+            ActionName.show_help: self.show_keys
         }
 
         self.frame = frame
@@ -170,11 +171,11 @@ class NavigateControl(Control):
         super().__init__(frame)
 
         actions = {
-            action.go_to_parent: self.go_to_parent,
-            action.go_to_home: self.go_to_home,
-            action.go_to_root: self.go_to_root,
-            action.go_to_previous: self.go_to_previous,
-            action.go_to_next: self.go_to_next,
+            ActionName.go_to_parent: self.go_to_parent,
+            ActionName.go_to_home: self.go_to_home,
+            ActionName.go_to_root: self.go_to_root,
+            ActionName.go_to_previous: self.go_to_previous,
+            ActionName.go_to_next: self.go_to_next,
         }
         actions.update(self.action_name_to_callable)
         self.action_name_to_callable = actions
@@ -222,8 +223,8 @@ class AssignControl(Control):
     def __init__(self, frame: 'MainFrame'):
         super().__init__(frame)
         actions = {
-            action.select_next: self.list.select_next,
-            action.select_previous: self.list.select_previous,
+            ActionName.select_next: self.list.select_next,
+            ActionName.select_previous: self.list.select_previous,
         }
         actions.update(self.action_name_to_callable)
         self.action_name_to_callable = actions
@@ -263,10 +264,10 @@ class OperateControl(Control):
         super().__init__(frame)
         self.list_entry_for_renaming = None
         actions = {
-            action.yank: self.yank,
-            action.paste: self.paste,
-            action.delete: self.delete,
-            action.rename: self.rename,
+            ActionName.yank: self.yank,
+            ActionName.paste: self.paste,
+            ActionName.delete: self.delete,
+            ActionName.rename: self.rename,
         }
         actions.update(self.action_name_to_callable)
         self.action_name_to_callable = actions
@@ -309,8 +310,8 @@ class OperateControl(Control):
     def rename(self, key=None):
         if key:
             if self.list_entry_for_renaming:
-                exit_action_key = self.action_map[action.exit].keybinding
-                navigate_mode_action_key = self.action_map[action.navigate_mode].keybinding
+                exit_action_key = self.action_map[ActionName.exit].keybinding
+                navigate_mode_action_key = self.action_map[ActionName.navigate_mode].keybinding
                 if key in (exit_action_key, navigate_mode_action_key):
                     if key == exit_action_key:
                         new_name = self.list_entry_for_renaming.edit_text

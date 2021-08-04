@@ -10,6 +10,7 @@ import yaml
 from yaml.parser import ParserError
 from yaml.scanner import ScannerError
 
+from sodalite.core.action_def import ActionName
 from sodalite.util import env
 
 logger = logging.getLogger(__name__)
@@ -45,7 +46,7 @@ def _config_file() -> Path:
     raise ConfigNotFound()
 
 
-def _sanitize_keymap(keys: dict[str, str]) -> dict[str, str]:
+def _sanitize_keymap(keys: dict['ActionName', str]) -> dict['ActionName', str]:
     # ctrl h equals backspace in terminal emulators
     for action, keybinding in keys.items():
         if keybinding == 'ctrl h':
@@ -59,7 +60,7 @@ HooksConfig = dict[str, Optional[dict[str, Union[str, dict[str, str]]]]]
 @dataclass
 class Configuration:
     hooks: HooksConfig
-    keymap: dict[str, str]
+    keymap: dict['ActionName', str]
     preferred_names: list[str]
 
 
@@ -70,7 +71,7 @@ def get() -> Configuration:
         config_dict = yaml.safe_load(config_str)
         return Configuration(
             hooks=config_dict.get('hooks') or {},
-            keymap=_sanitize_keymap(config_dict.get('keymap') or {}),
+            keymap=_sanitize_keymap({ActionName(x): y for x, y in config_dict.get('keymap') or {}}),
             preferred_names=[x.lower() for x in config_dict.get('preferred_names')] or [],
         )
     except (ParserError, ScannerError):
