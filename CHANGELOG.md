@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.12 (2021-08-04)
+### Fix
+* Use brown instead of red highlight color in operate mode ([#205](https://github.com/hnicke/sodalite/issues/205)) ([`9e8a5c3`](https://github.com/hnicke/sodalite/commit/9e8a5c375c9ebeb3d3f0c5f59799f7b1d851e138))
+
 ## v0.21.11 (2021-08-04)
 ### Fix
 * Update PKGBUILD checksums before publishing package to Aur ([#204](https://github.com/hnicke/sodalite/issues/204)) ([`447e382`](https://github.com/hnicke/sodalite/commit/447e382f1f45609abcb9462f1b10a61a150c12c9))
