@@ -17,7 +17,7 @@ class HelpPopup(urwid.WidgetWrap):
 
     def __init__(self, control: Control):
         self.control = control
-        contents = [self.createActionEntry(action) for action in self.control.action_map.values()]
+        contents = [self.createActionEntry(action) for action in self.control.actions.values()]
         heading_text = f'{"action":<{self.column_spacing}}keybinding'
         heading = urwid.Text([(theme.bold, heading_text)], wrap='clip')
         contents = [heading] + contents

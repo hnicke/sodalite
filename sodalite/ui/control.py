@@ -9,10 +9,12 @@ from urwid import AttrSpec
 from sodalite.core import key as key_module, hook, buffer, operate, Navigator
 from sodalite.core.action import Action
 from sodalite.core.action_def import ActionName
+from sodalite.core.entry import Entry
 from sodalite.core.key import Key
 from sodalite.ui import graphics, viewmodel, notify, theme
 from sodalite.ui.entrylist import EntryList
 from sodalite.ui.viewmodel import Mode, ViewModel
+from sodalite.util import pubsub
 
 if TYPE_CHECKING:
     from sodalite.ui.graphics import MainFrame
@@ -20,27 +22,25 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
+def to_action_map(actions: dict[ActionName, Callable]) -> dict[ActionName, Action]:
+    return {name: Action(name, callback) for name, callback in actions.items()}
+
+
 class Control:
 
     def __init__(self, frame: 'MainFrame'):
-        self.action_map: dict[ActionName, Action] = {}
-        self._action_name_to_callable: dict[ActionName, Callable] = {}
-        self.action_name_to_callable = {
+        self.actions: dict[ActionName, Action] = to_action_map({
             ActionName.exit: self.exit,
             ActionName.abort: self.abort,
-            ActionName.navigate_mode: self.enter_navigate_mode,
-            ActionName.assign_mode: self.enter_assign_mode,
-            ActionName.operate_mode: self.enter_operate_mode,
             ActionName.filter: self.trigger_filter,
             ActionName.yank_current_path: self.yank_cwd_to_clipboard,
             ActionName.yank_file_content: self.yank_file_content_to_clipboard,
-            ActionName.toggle_hidden_files: self.toggle_dotfiles,
             ActionName.scroll_page_down: self.scroll_page_down,
             ActionName.scroll_page_up: self.scroll_page_up,
             ActionName.scroll_half_page_down: self.scroll_half_page_down,
             ActionName.scroll_half_page_up: self.scroll_half_page_up,
             ActionName.show_help: self.show_keys
-        }
+        })
 
         self.frame = frame
         self.hookbox = frame.hookbox
@@ -53,14 +53,27 @@ class Control:
         self.hookbox_size: Optional[Tuple[int, int]] = None
         self.active_action = None
 
-    @property
-    def action_name_to_callable(self):
-        return self._action_name_to_callable
+        pubsub.entry_connect(self.on_entry_changed)
 
-    @action_name_to_callable.setter
-    def action_name_to_callable(self, mapping):
-        self._action_name_to_callable = mapping
-        self.action_map: dict[str, Action] = {k: Action(k, v) for (k, v) in mapping.items()}
+    def add_action(self, action: Action):
+        self.actions[action.name] = action
+
+    def remove_action(self, name: ActionName):
+        self.actions.pop(name, None)
+
+    def on_entry_changed(self, entry: Entry):
+        actions = {
+            ActionName.toggle_hidden_files: self.toggle_dotfiles,
+            ActionName.operate_mode: self.enter_operate_mode,
+            ActionName.navigate_mode: self.enter_navigate_mode,
+            ActionName.assign_mode: self.enter_assign_mode,
+        }
+        if entry.is_dir:
+            for name, callback in actions.items():
+                self.add_action(Action(name, callback))
+        else:
+            for action in actions.keys():
+                self.remove_action(action)
 
     @property
     def list(self) -> EntryList:
@@ -78,7 +91,7 @@ class Control:
 
             if not handled:
                 if not self.handle_key_individually(key):
-                    for _action in self.action_map.values():
+                    for _action in self.actions.values():
                         if _action.handle(key):
                             break
         except PermissionError:
@@ -170,15 +183,15 @@ class NavigateControl(Control):
     def __init__(self, frame: 'MainFrame'):
         super().__init__(frame)
 
-        actions = {
+        actions = to_action_map({
             ActionName.go_to_parent: self.go_to_parent,
             ActionName.go_to_home: self.go_to_home,
             ActionName.go_to_root: self.go_to_root,
             ActionName.go_to_previous: self.go_to_previous,
             ActionName.go_to_next: self.go_to_next,
-        }
-        actions.update(self.action_name_to_callable)
-        self.action_name_to_callable = actions
+        })
+        actions.update(self.actions)
+        self.actions = actions
 
     def handle_key_individually(self, key: str):
         if hook.is_hook(key, self.model.current_entry):
@@ -222,12 +235,12 @@ class AssignControl(Control):
 
     def __init__(self, frame: 'MainFrame'):
         super().__init__(frame)
-        actions = {
+        actions = to_action_map({
             ActionName.select_next: self.list.select_next,
             ActionName.select_previous: self.list.select_previous,
-        }
-        actions.update(self.action_name_to_callable)
-        self.action_name_to_callable = actions
+        })
+        actions.update(self.actions)
+        self.actions = actions
 
     def handle_key_individually(self, key):
         if viewmodel.global_mode == Mode.ASSIGN_CHOOSE_ENTRY and self.navigator.is_navigation_key(key):
@@ -263,14 +276,14 @@ class OperateControl(Control):
     def __init__(self, frame: 'MainFrame'):
         super().__init__(frame)
         self.list_entry_for_renaming = None
-        actions = {
+        actions = to_action_map({
             ActionName.yank: self.yank,
             ActionName.paste: self.paste,
             ActionName.delete: self.delete,
             ActionName.rename: self.rename,
-        }
-        actions.update(self.action_name_to_callable)
-        self.action_name_to_callable = actions
+        })
+        actions.update(self.actions)
+        self.actions = actions
 
     def yank(self, key=None):
         if key:
@@ -310,8 +323,8 @@ class OperateControl(Control):
     def rename(self, key=None):
         if key:
             if self.list_entry_for_renaming:
-                exit_action_key = self.action_map[ActionName.exit].keybinding
-                navigate_mode_action_key = self.action_map[ActionName.navigate_mode].keybinding
+                exit_action_key = self.actions[ActionName.exit].keybinding
+                navigate_mode_action_key = self.actions[ActionName.navigate_mode].keybinding
                 if key in (exit_action_key, navigate_mode_action_key):
                     if key == exit_action_key:
                         new_name = self.list_entry_for_renaming.edit_text

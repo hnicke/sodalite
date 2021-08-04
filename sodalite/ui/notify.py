@@ -62,4 +62,5 @@ def trigger_notifications(mode: Mode) -> None:
         clear()
 
 
-pubsub.mode_connect(trigger_notifications)
+def setup():
+    pubsub.mode_connect(trigger_notifications)
