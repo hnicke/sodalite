@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.7 (2021-08-04)
+### Fix
+* Auto-bump aur package after release ([#198](https://github.com/hnicke/sodalite/issues/198)) ([`4171660`](https://github.com/hnicke/sodalite/commit/417166004c8070c1f598cfba8ef0280095ba31ee))
+
 ## v0.21.6 (2021-08-04)
 ### Fix
 * Do not bundle tests package ([#197](https://github.com/hnicke/sodalite/issues/197)) ([`98f0fbf`](https://github.com/hnicke/sodalite/commit/98f0fbf217fb39408b1c667ea4ba767712116db3))
