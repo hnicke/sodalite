@@ -1,0 +1,18 @@
+name: Aur Publish
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  aur-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publish AUR package
+        uses: ATiltedTree/create-aur-release@v1
+        with:
+          package_name: sodalite
+          commit_username: "Heiko Nickerl"
+          commit_email: "dev@hnicke.de"
+          ssh_private_key: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
