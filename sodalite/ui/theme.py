@@ -37,7 +37,7 @@ palette = (
 
     (navigate_mode, urwid.DEFAULT, ''),
     (assign_mode, urwid.DARK_GREEN, ''),
-    (operate_mode, urwid.DARK_RED, ''),
+    (operate_mode, urwid.BROWN, ''),
 
     # text preview highlighting
     (line_number, urwid.DARK_GRAY, ''),
