@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.3 (2021-08-04)
+### Fix
+* Fix file structure of sdist and wheel ([#193](https://github.com/hnicke/sodalite/issues/193)) ([`06187bf`](https://github.com/hnicke/sodalite/commit/06187bfee2f25f59295d5826c7fd23ca9eaa1e64))
+
 ## v0.21.2 (2021-08-02)
 ### Fix
 * Bundle template configuration file next to code ([#189](https://github.com/hnicke/sodalite/issues/189)) ([`3c82cf2`](https://github.com/hnicke/sodalite/commit/3c82cf2be936fdbf67328d5a522df5450919aa39))
