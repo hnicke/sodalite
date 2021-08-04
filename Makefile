@@ -50,7 +50,7 @@ logs:
 .PHONY: logs
 
 venv: setup.py
-	virtualenv venv -p $(shell which python)
+	python -m venv venv
 	${activate} && pip install '.[dev]'
 	@touch venv
 

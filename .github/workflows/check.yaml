@@ -1,12 +1,10 @@
-name: CI
+name: Check
 on:
-  push:
-    branches: [ master ]
   pull_request:
     branches: [ master ]
 jobs:
   check:
-    name: Lint, type-check and test the code base
+    name: run checks
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -17,10 +15,15 @@ jobs:
         with:
           python-version: '3.9.2'
 
-      - name: Install virtualenv
-        run: sudo pip install virtualenv
+      - name: Restore dependencies from cache
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: venv
+          key: ${{ runner.os }}-venv-${{ hashFiles('setup.py') }}
 
       - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
         run: make deps
 
       - name: Lint
@@ -38,7 +41,6 @@ jobs:
 
       # see https://github.com/marketplace/actions/dynamic-badges
       - name: Create type coverage badge
-        # if: github.ref == 'refs/head/master'
         uses: schneegans/dynamic-badges-action@v1.0.0
         with:
           auth: ${{ secrets.GIST_SECRET }}
@@ -47,25 +49,3 @@ jobs:
           label: typing
           message: ${{ steps.type-check.outputs.TYPE_COVERAGE }}%
           color: orange
-  release:
-    needs: check
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master' && !contains(github.event.head_commit.message, 'chore(release):')
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.ADMIN_GITHUB_TOKEN }}
-      - name: Semantic Release
-        run: |
-          pip install python-semantic-release
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          semantic-release publish
-        env:
-          GH_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN }}
-          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
