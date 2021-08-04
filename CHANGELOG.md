@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.11 (2021-08-04)
+### Fix
+* Update PKGBUILD checksums before publishing package to Aur ([#204](https://github.com/hnicke/sodalite/issues/204)) ([`447e382`](https://github.com/hnicke/sodalite/commit/447e382f1f45609abcb9462f1b10a61a150c12c9))
+
 ## v0.21.10 (2021-08-04)
 ### Fix
 * Bump version in PKGBUILD accordingly ([#203](https://github.com/hnicke/sodalite/issues/203)) ([`0c16aed`](https://github.com/hnicke/sodalite/commit/0c16aed9edde661ba6018d416a57bb05c867d4b2))
