@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.10 (2021-08-04)
+### Fix
+* Bump version in PKGBUILD accordingly ([#203](https://github.com/hnicke/sodalite/issues/203)) ([`0c16aed`](https://github.com/hnicke/sodalite/commit/0c16aed9edde661ba6018d416a57bb05c867d4b2))
+
 ## v0.21.9 (2021-08-04)
 ### Fix
 * For Aur package, use PKGBUILD from this repo ([#202](https://github.com/hnicke/sodalite/issues/202)) ([`e32dc3c`](https://github.com/hnicke/sodalite/commit/e32dc3c610ddebf05484c48d54f039c7a0260cab))
