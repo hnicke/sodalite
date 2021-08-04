@@ -12,7 +12,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Publish AUR package
+      - name: Validate & update checksums
+        uses: datakrama/archlinux-package-action@v1
+        with:
+          path: packaging/aur
+          updpkgsums: true
+
+      - name: Publish
         uses: KSXGitHub/github-actions-deploy-aur@v2.2.5
         with:
           pkgname: sodalite
