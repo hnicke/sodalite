@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.8 (2021-08-04)
+### Fix
+* Improve pipeline speed ([#199](https://github.com/hnicke/sodalite/issues/199)) ([`a401de5`](https://github.com/hnicke/sodalite/commit/a401de50afebee3d9566e817385da89448d303d6))
+
 ## v0.21.7 (2021-08-04)
 ### Fix
 * Auto-bump aur package after release ([#198](https://github.com/hnicke/sodalite/issues/198)) ([`4171660`](https://github.com/hnicke/sodalite/commit/417166004c8070c1f598cfba8ef0280095ba31ee))
