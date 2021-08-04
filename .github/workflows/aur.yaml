@@ -1,18 +1,23 @@
-name: Aur Publish
+name: Publish to Aur
 
 on:
   push:
     tags:
-      - "v*"
+      - 'v*'
 
 jobs:
   aur-publish:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Publish AUR package
-        uses: ATiltedTree/create-aur-release@v1
+        uses: KSXGitHub/github-actions-deploy-aur@v2.2.5
         with:
-          package_name: sodalite
+          pkgname: sodalite
+          pkgbuild: packaging/aur/PKGBUILD
           commit_username: "Heiko Nickerl"
           commit_email: "dev@hnicke.de"
           ssh_private_key: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
+          commit_message: Update AUR package
