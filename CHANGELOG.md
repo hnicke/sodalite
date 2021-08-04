@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.14 (2021-08-04)
+### Fix
+* Fix bug in key assign algorithm which led to entries without keys ([`cd10e8f`](https://github.com/hnicke/sodalite/commit/cd10e8fb3de8cc4b5051bd150323d7996c1487ad))
+
 ## v0.21.13 (2021-08-04)
 ### Fix
 * Handle non-existing files and directories in a better way ([`7e82f53`](https://github.com/hnicke/sodalite/commit/7e82f53054576ba51d2f2dfc06dfd9a6a08bd67a))
