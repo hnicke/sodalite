@@ -44,7 +44,6 @@ class Navigator:
         self.entry_access = entry_access or EntryAccess()
         self._current_entry: Optional[Entry] = None
         pubsub.filesystem_connect(self.reload_current_entry)
-        self.current_entry = self.current()
 
     def current(self) -> Entry:
         """
