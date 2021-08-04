@@ -17,10 +17,8 @@ jobs:
         with:
           python-version: '3.9.2'
 
-      - name: Install poetry
-        uses: abatilo/actions-poetry@v2.1.0
-        with:
-          poetry-version: 1.1.7
+      - name: Install virtualenv
+        run: sudo pip install virtualenv
 
       - name: Install dependencies
         run: make deps

@@ -1,0 +1,11 @@
+#!/bin/bash
+# development script for sodalite
+set -eu
+
+currentDir="$PWD"
+cd "$(dirname "$(readlink -f "$0")")/.."
+export CONFIG_FILE=$PWD/sodalite/core/sodalite.conf 
+export DB_PATH=$PWD/db.sqlite 
+source venv/bin/activate
+python -m sodalite "$currentDir"
+

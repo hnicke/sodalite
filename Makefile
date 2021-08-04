@@ -1,12 +1,14 @@
-distDir = dist
+outDir = build
 pkg = sodalite
-mypy = poetry run mypy --config mypy.ini -p ${pkg} -p tests ${shell [ ${color} != 'true' ] && echo '--no-color-output'}
-reportDir = ${distDir}/reports
+mypy = ${activate} && mypy --config mypy.ini -p ${pkg} -p tests ${shell [ ${color} != 'true' ] && echo '--no-color-output'}
+reportDir = ${outDir}/reports
+
+activate = . venv/bin/activate
 
 
 
 color = true
-type-check ${reportDir}/index.txt ${reportDir}/index.html ${reportDir}/linecount.txt: .venv ${pkg} tests
+type-check ${reportDir}/index.txt ${reportDir}/index.html ${reportDir}/linecount.txt: venv ${pkg} tests
 	${mypy} \
 		--any-exprs-report ${reportDir} \
 		--html-report ${reportDir} \
@@ -47,41 +49,35 @@ logs:
 	journalctl --identifier sodalite --follow
 .PHONY: logs
 
-.venv: pyproject.toml poetry.lock
-	poetry install
-	touch .venv
+venv: setup.py
+	virtualenv venv -p $(shell which python)
+	${activate} && pip install '.[dev]'
+	@touch venv
 
-deps: .venv
+deps: venv
 .PHONY: deps
-
-run: .venv
-	poetry run sodalite
-.PHONY: run
 
 check: lint type-check test
 .PHONY: check
 
-test: .venv
-	poetry run pytest tests
+test: venv
+	${activate} && pytest tests
 .PHONY: test
 
-lint: .venv
-	poetry run flake8 ${pkg} tests
+lint: venv
+	${activate} && flake8 ${pkg} tests
 .PHONY: lint
 
 prune: clean
-	rm -rf .venv
+	rm -rf venv
 .PHONY: prune
 
 clean:
-	rm -rf db.sqlite ${distDir}
+	rm -rf db.sqlite ${outDir} sodalite.egg-info
 .PHONY: clean
 
-release:
-	./scripts/release "$${VERSION:?Which version?}"
-
-build: .venv
-	poetry build
+build: venv
+	python setup.py build
 .PHONY: build
 
 setup-hooks:
