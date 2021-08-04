@@ -4,7 +4,6 @@ on:
     branches: [ master ]
 jobs:
   release:
-    needs: check
     if: github.event_name == 'push' && github.ref == 'refs/heads/master' && !contains(github.event.head_commit.message, 'chore(release):')
     runs-on: ubuntu-latest
     steps:
