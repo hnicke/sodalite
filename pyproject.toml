@@ -4,7 +4,7 @@ version_variable = [
 ]
 version_pattern = [
     "packaging/arch/PKGBUILD:^pkgver={version}$",
-    "packaging/deb/pkg/debian/changelog:^sodalite \\({version}-1\\)",
+    "packaging/deb/pkg/debian/changelog:^sodalite \\({version}\\)",
 ]
 branch = "master"
 upload_to_pypi = false
