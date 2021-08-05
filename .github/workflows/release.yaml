@@ -1,4 +1,4 @@
-name: Release
+name: release
 on:
   push:
     branches: [ master ]
@@ -7,25 +7,25 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master' && !contains(github.event.head_commit.message, 'chore(release):')
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: checkout code
         uses: actions/checkout@v2
 
       - uses: actions/setup-python@v2
         with:
           python-version: 3.9
 
-      - name: Restore dependencies from cache
+      - name: restore dependencies from cache
         id: cache
         uses: actions/cache@v2
         with:
           path: venv
           key: ${{ runner.os }}-venv-${{ hashFiles('setup.py') }}
 
-      - name: Install dependencies
+      - name: install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: make deps
 
-      - name: Semantic Release
+      - name: release new version (if necessary)
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com

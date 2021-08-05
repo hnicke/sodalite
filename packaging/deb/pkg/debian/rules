@@ -3,9 +3,9 @@ export DH_VERBOSE = 1
 export PYBUILD_NAME = sodalite
 export PYBUILD_DISABLE=test
 export PYBUILD_TEST_PYTEST = 1
-#export DEBPYTHON3_SUPPORTED=3.9
-#export PYBUILD_INTERPRETERS=python3.9
-#export PYBUILD_VERSIONS=3.9
+export DEBPYTHON3_SUPPORTED=3.9
+export PYBUILD_INTERPRETERS=python3.9
+export PYBUILD_VERSIONS=3.9
 
 %:
 	dh $@ --with python3 --buildsystem=pybuild
@@ -13,7 +13,9 @@ export PYBUILD_TEST_PYTEST = 1
 override_dh_auto_install:
 	dh_auto_install
 	make install-misc root=${CURDIR}/debian/sodalite
+	# fix shebang
+	sed -i 's|^#!/usr/bin/python3|#!/usr/bin/python3.9|' ${CURDIR}/debian/sodalite/usr/bin/sodalite
 
-#override_dh_python3:
-#	dh_python3 --shebang=/usr/bin/python3.9
+override_dh_python3:
+	dh_python3 --shebang=/usr/bin/python3.9
 

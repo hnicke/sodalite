@@ -1,4 +1,4 @@
-name: Downstream Packaging
+name: downstream packaging
 
 on:
   pull_request:
@@ -9,10 +9,11 @@ on:
 
 jobs:
   aur-publish:
+    name: update aur package
     if: "false"
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: checkout code
         uses: actions/checkout@v2
 
       - name: Validate & update checksums
@@ -21,7 +22,7 @@ jobs:
           path: packaging/aur
           updpkgsums: true
 
-      - name: Publish
+      - name: publish
         uses: KSXGitHub/github-actions-deploy-aur@v2.2.5
         with:
           pkgname: sodalite
@@ -32,21 +33,22 @@ jobs:
           commit_message: Update AUR package
 
   debian-package:
+    name: build debian package
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: checkout code
         uses: actions/checkout@v2
 
-      - name: Prepare package
+      - name: prepare package
         run: ./packaging/deb/assemble
 
-      - name: Build debian package
+      - name: build debian package
         uses: dawidd6/action-debian-package@v1
         with:
           source_directory: packaging/deb/pkg
           artifacts_directory: packaging/deb/build
 
-      - name: Archive debian package
+      - name: archive debian package
         uses: actions/upload-artifact@v2
         with:
           name: debian-package
