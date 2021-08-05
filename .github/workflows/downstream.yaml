@@ -1,12 +1,15 @@
 name: Downstream Packaging
 
 on:
+  pull_request:
+    branches: [ master ]
   push:
     tags:
       - 'v*'
 
 jobs:
   aur-publish:
+    if: "false"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -29,8 +32,6 @@ jobs:
           commit_message: Update AUR package
 
   debian-package:
-    # disabled for now
-    if: "false"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
