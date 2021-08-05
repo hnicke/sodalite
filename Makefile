@@ -77,7 +77,7 @@ clean:
 .PHONY: clean
 
 build: venv
-	python setup.py build
+	${activate} && python setup.py build
 .PHONY: build
 
 setup-hooks:
