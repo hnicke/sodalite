@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.25 (2021-08-05)
+### Fix
+* Fix file preview with older versions of watchdog (like 0.9.0) ([#228](https://github.com/hnicke/sodalite/issues/228)) ([`1ce79b3`](https://github.com/hnicke/sodalite/commit/1ce79b35231ccfff622677edea98c1dba3afd660))
+* Fix shell integration on ubuntu ([#227](https://github.com/hnicke/sodalite/issues/227)) ([`9c947f9`](https://github.com/hnicke/sodalite/commit/9c947f9c5a75efffad89d907c9bd4ef7e31d4670))
+
 ## v0.21.24 (2021-08-05)
 ### Fix
 * Unpin dependencies ([#224](https://github.com/hnicke/sodalite/issues/224)) ([`085b580`](https://github.com/hnicke/sodalite/commit/085b580306d89f94625feacd839228a2cc3f2c21))
