@@ -50,6 +50,8 @@ _entry_watcher: EntryWatcher
 @click.option('-u', '--update-access', help="Store access for given path in the database and quit")
 def run(path: Optional[str], update_access: Optional[str]) -> None:
     """Opens the sodalite file navigator at given PATH"""
+    logger.debug('Starting sodalite')
+    logger.debug(f"Using database: {env.db_file}")
     if update_access:
         update(update_access)
     else:

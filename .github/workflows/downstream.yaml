@@ -1,0 +1,52 @@
+name: Downstream Packaging
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  aur-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Validate & update checksums
+        uses: datakrama/archlinux-package-action@v1
+        with:
+          path: packaging/aur
+          updpkgsums: true
+
+      - name: Publish
+        uses: KSXGitHub/github-actions-deploy-aur@v2.2.5
+        with:
+          pkgname: sodalite
+          pkgbuild: packaging/arch/PKGBUILD
+          commit_username: "Heiko Nickerl"
+          commit_email: "dev@hnicke.de"
+          ssh_private_key: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
+          commit_message: Update AUR package
+
+  debian-package:
+    # disabled for now
+    if: "false"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Prepare package
+        run: ./packaging/deb/assemble
+
+      - name: Build debian package
+        uses: dawidd6/action-debian-package@v1
+        with:
+          source_directory: packaging/deb/pkg
+          artifacts_directory: packaging/deb/build
+
+      - name: Archive debian package
+        uses: actions/upload-artifact@v2
+        with:
+          name: debian-package
+          path: packaging/deb/build

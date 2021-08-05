@@ -1,0 +1,23 @@
+#!/bin/bash  
+set -eu
+
+script_root="$(realpath "$(dirname "$0")")"
+echo $script_root
+project_root="$script_root/../../"
+pkg_dir=$script_root/pkg
+debian_dir="$pkg_dir/debian"
+
+echo Assemble deb package
+
+echo Inject current datetime
+datetime=$(LC_ALL=en_US.utf8 date "+%a, %d %b %Y %H:%M:%S")
+sed -i "s/\(Heiko Nickerl <dev@hnicke\.de>\)  .* \(+0000\)/\1  $datetime \2/g" "$debian_dir/changelog"
+
+echo Inject year
+year=$(date "+%Y")
+sed -i "s/\(Copyright: 2017-\)[^ ]*/\1$year/g" "$debian_dir/copyright"
+
+echo Copy source code
+cd "$project_root"
+cp -r $(ls -1 | grep -v packaging) $pkg_dir/
+

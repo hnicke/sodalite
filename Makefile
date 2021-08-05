@@ -86,3 +86,21 @@ setup-hooks:
 		echo Symlinked git hook: $$(basename $$file); \
 	done
 
+
+root =
+prefix = /usr
+docs = ${root}${prefix}/share/doc/sodalite
+share = ${root}${prefix}/share/sodalite
+man1 = ${root}${prefix}/share/man/man1
+install-misc:
+	install -Dm755 scripts/sodalite-open "${root}${prefix}/bin/sodalite-open"
+	install -Dm644 sodalite.desktop "${root}${prefix}/share/applications/sodalite.desktop"
+	install -Dm644 docs/sodalite.1 "${man1}/sodalite.1"
+	install -Dm644 docs/sodalite-open.1 "${man1}/sodalite-open.1"
+	install -Dm644 README.md "${docs}/README"
+	install -Dm644 copyright "${docs}/copyright"
+	install -Dm644 CHANGELOG.md "${docs}/changelog"
+	install -Dm644 scripts/shell-integration.sh "${share}/shell-integration.sh"
+	install -Dm644 scripts/shell-integration.fish "${share}/shell-integration.fish"
+	install -Dm644 sodalite/core/sodalite.conf "${share}/sodalite.conf"
+

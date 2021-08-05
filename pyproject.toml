@@ -3,7 +3,8 @@ version_variable = [
     "sodalite/util/version.py:VERSION",
 ]
 version_pattern = [
-    "packaging/aur/PKGBUILD:^pkgver={version}$",
+    "packaging/arch/PKGBUILD:^pkgver={version}$",
+    "packaging/deb/pkg/debian/changelog:^sodalite \\({version}-1\\)",
 ]
 branch = "master"
 upload_to_pypi = false
