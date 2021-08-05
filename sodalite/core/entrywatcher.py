@@ -58,5 +58,11 @@ class EntryWatcher:
             if self._observed_path == str(entry.path):
                 return
             self._observer.unschedule_all()
-            self._observer.schedule(self._handler, str(entry.path), recursive=False)
-            self._observed_path = entry.path
+            self._observed_path = None
+            path = entry.path
+            if not path.is_dir():
+                # version 0.9.0 of watchdog crashes when trying to observe a file
+                path = path.parent
+            if path.exists():
+                self._observer.schedule(self._handler, str(path), recursive=False)
+                self._observed_path = path
