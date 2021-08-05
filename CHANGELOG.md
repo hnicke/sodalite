@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.21 (2021-08-05)
+### Fix
+* Gracefully exit when config file was not found ([#218](https://github.com/hnicke/sodalite/issues/218)) ([`ae4fef4`](https://github.com/hnicke/sodalite/commit/ae4fef484a0fbee625a62f475cb0d44543c975f0))
+
 ## v0.21.20 (2021-08-05)
 ### Fix
 * Fix call to watchdog ([#217](https://github.com/hnicke/sodalite/issues/217)) ([`c260cab`](https://github.com/hnicke/sodalite/commit/c260cab96e4f9b9cedd5a741858b1137d0316aa4))
