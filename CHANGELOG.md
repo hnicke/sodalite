@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.20 (2021-08-05)
+### Fix
+* Fix call to watchdog ([#217](https://github.com/hnicke/sodalite/issues/217)) ([`c260cab`](https://github.com/hnicke/sodalite/commit/c260cab96e4f9b9cedd5a741858b1137d0316aa4))
+
 ## v0.21.19 (2021-08-04)
 ### Fix
 * Suggest 'vim' action only for plain text files ([#215](https://github.com/hnicke/sodalite/issues/215)) ([`5f647ee`](https://github.com/hnicke/sodalite/commit/5f647ee24d5d79b2623ac07afa6f6f20ce1bbdb0))
