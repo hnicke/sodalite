@@ -72,8 +72,8 @@ def run(path: Optional[str], update_access: Optional[str]) -> None:
         except KeyboardInterrupt:
             logger.debug('Received SIGINT - shutting down')
             exit(1)
-        except ConfigNotFound:
-            click.echo("Config file not found", file=sys.stderr)
+        except ConfigNotFound as e:
+            click.echo(e.msg, file=sys.stderr)
             exit(1)
 
 

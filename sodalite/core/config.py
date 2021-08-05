@@ -17,7 +17,11 @@ logger = logging.getLogger(__name__)
 
 
 class ConfigNotFound(Exception):
-    pass
+    def __init__(self, path: Optional[Path] = None):
+        self.msg = "Couldn't find config file"
+        if path:
+            self.msg += f": {path}"
+        super().__init__(self.msg)
 
 
 _ENV_CONFIG_FILE = 'CONFIG_FILE'
@@ -40,7 +44,10 @@ def _config_file() -> Path:
             return config_file
         else:
             logger.info(f"Creating config file '{config_file}'")
-            shutil.copy(src=CONFIG_TEMPLATE, dst=config_file)
+            try:
+                shutil.copy(src=CONFIG_TEMPLATE, dst=config_file)
+            except FileNotFoundError:
+                raise ConfigNotFound(CONFIG_TEMPLATE)
             return config_file
 
     raise ConfigNotFound()
