@@ -9,6 +9,9 @@ jobs:
     steps:
       - name: checkout code
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.ADMIN_GITHUB_TOKEN }}
 
       - uses: actions/setup-python@v2
         with:
