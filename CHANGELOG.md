@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.22 (2021-08-05)
+### Fix
+* Ship missing configuration file ([#219](https://github.com/hnicke/sodalite/issues/219)) ([`1b3707b`](https://github.com/hnicke/sodalite/commit/1b3707bba176458e804d7874064c2607e62e7e5e))
+
 ## v0.21.21 (2021-08-05)
 ### Fix
 * Gracefully exit when config file was not found ([#218](https://github.com/hnicke/sodalite/issues/218)) ([`ae4fef4`](https://github.com/hnicke/sodalite/commit/ae4fef484a0fbee625a62f475cb0d44543c975f0))
