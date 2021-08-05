@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.26 (2021-08-05)
+### Fix
+* Upload debian package to release ([`dfe0522`](https://github.com/hnicke/sodalite/commit/dfe052206df90de9b249555a730653fdff3c79a3))
+
 ## v0.21.25 (2021-08-05)
 ### Fix
 * Fix file preview with older versions of watchdog (like 0.9.0) ([#228](https://github.com/hnicke/sodalite/issues/228)) ([`1ce79b3`](https://github.com/hnicke/sodalite/commit/1ce79b35231ccfff622677edea98c1dba3afd660))
