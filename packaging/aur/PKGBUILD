@@ -32,6 +32,7 @@ package() {
     cd $_srcdir
     python setup.py install \
     --root="$pkgdir" \
+    --prefix="/usr" \
     --optimize=1 \
     --skip-build
 

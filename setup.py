@@ -17,6 +17,9 @@ setuptools.setup(
     url='https://github.com/hnicke/sodalite',
     packages=setuptools.find_packages(exclude=("tests",)),
     include_package_data=True,
+    package_data={
+        "": ["*"],
+    },
     long_description=Path('README.md').read_text(),
     install_requires=[
         'PyYAML>=5.4.1,<6.0.0',
