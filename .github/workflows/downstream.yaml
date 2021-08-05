@@ -1,8 +1,6 @@
 name: downstream packaging
 
 on:
-  pull_request:
-    branches: [ master ]
   push:
     tags:
       - 'v*'
@@ -53,3 +51,10 @@ jobs:
         with:
           name: debian-package
           path: packaging/deb/build
+
+      - name: upload debian package to release
+        uses: Roang-zero1/github-upload-release-artifacts-action@master
+        with:
+          args: packaging/deb/build/*.deb
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
