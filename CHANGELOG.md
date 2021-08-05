@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.23 (2021-08-05)
+### Fix
+* Fix shipping package data ([#220](https://github.com/hnicke/sodalite/issues/220)) ([`11bb034`](https://github.com/hnicke/sodalite/commit/11bb034254a9d2983ebec9554de4ea871463a828))
+
 ## v0.21.22 (2021-08-05)
 ### Fix
 * Ship missing configuration file ([#219](https://github.com/hnicke/sodalite/issues/219)) ([`1b3707b`](https://github.com/hnicke/sodalite/commit/1b3707bba176458e804d7874064c2607e62e7e5e))
