@@ -1,0 +1,28 @@
+Source: sodalite
+Section: utils
+Priority: optional
+Maintainer: Heiko Nickerl <dev@hnicke.de>
+Build-Depends: debhelper (>=11), dh-python, python3, python3-setuptools, python3-pytest
+Standards-Version: 4.1.4
+Homepage: https://www.github.com/hnicke/sodalite
+Vcs-Browser: https://github.com/hnicke/sodalite
+Vcs-Git: https://github.com/hnicke/sodalite.git
+
+Package: sodalite
+Architecture: all
+X-Python3-Version: >= 3.9
+Depends: ${misc:Depends}, ${python3:Depends}
+Description: Keyboard-driven terminal file navigator and launcher
+ Sodalite is a keyboard-driven terminal file navigator and launcher.
+ It's designed to be the missing glue for those who use the shell
+ as their daily driver and seek more speed and ease.
+ In a nutshell, sodalite assigns a key to each entry.
+ Pressing a key navigates to the corresponding entry.
+ The assignments are permanent but can be changed to your liking.
+ .
+ Next to fast navigation, sodalite brings file preview
+ with syntax highlighting and a pluggable hook system.
+ .
+ Sodalite is designed as an extension to your shell.
+ After installation, don't forget to enable its shell integration.
+ 
