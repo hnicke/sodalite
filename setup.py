@@ -22,14 +22,14 @@ setuptools.setup(
     },
     long_description=Path('README.md').read_text(),
     install_requires=[
-        'PyYAML>=5.4.1,<6.0.0',
-        'Pygments>=2.9.0,<3.0.0',
-        'binaryornot>=0.4.4,<0.5.0',
-        'blinker>=1.4,<2.0',
-        'click>=8.0.1,<9.0.0',
-        'pyperclip>=1.8.2,<2.0.0',
-        'urwid>=2.1.2,<3.0.0',
-        'watchdog>=2.1.3,<3.0.0'
+        'PyYAML',
+        'Pygments',
+        'binaryornot',
+        'blinker',
+        'click',
+        'pyperclip',
+        'urwid',
+        'watchdog',
     ],
     extras_require={
         'dev': [
