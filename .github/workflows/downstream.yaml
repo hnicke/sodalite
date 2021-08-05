@@ -8,7 +8,6 @@ on:
 jobs:
   aur-publish:
     name: update aur package
-    if: "false"
     runs-on: ubuntu-latest
     steps:
       - name: checkout code
@@ -45,12 +44,6 @@ jobs:
         with:
           source_directory: packaging/deb/pkg
           artifacts_directory: packaging/deb/build
-
-      - name: archive debian package
-        uses: actions/upload-artifact@v2
-        with:
-          name: debian-package
-          path: packaging/deb/build
 
       - name: upload debian package to release
         uses: Roang-zero1/github-upload-release-artifacts-action@master
