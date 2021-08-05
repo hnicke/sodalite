@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.24 (2021-08-05)
+### Fix
+* Unpin dependencies ([#224](https://github.com/hnicke/sodalite/issues/224)) ([`085b580`](https://github.com/hnicke/sodalite/commit/085b580306d89f94625feacd839228a2cc3f2c21))
+
 ## v0.21.23 (2021-08-05)
 ### Fix
 * Fix shipping package data ([#220](https://github.com/hnicke/sodalite/issues/220)) ([`11bb034`](https://github.com/hnicke/sodalite/commit/11bb034254a9d2983ebec9554de4ea871463a828))
