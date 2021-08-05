@@ -58,5 +58,5 @@ class EntryWatcher:
             if self._observed_path == str(entry.path):
                 return
             self._observer.unschedule_all()
-            self._observer.schedule(self._handler, entry.path, recursive=False)
+            self._observer.schedule(self._handler, str(entry.path), recursive=False)
             self._observed_path = entry.path
