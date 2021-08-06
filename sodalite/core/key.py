@@ -48,6 +48,9 @@ class Key:
         return str(self)
 
 
+NO_KEY = Key()
+
+
 def get_all_keys() -> list[str]:
     keys = []
     for rank in all_keys:
@@ -90,9 +93,9 @@ def assign_keys(entries_to_assign: dict[Path, 'Entry'], old_entries: dict[Path, 
     all_entries = set(old_entries.values()).union(sorted_new_entries)
     free_keys = _get_available_keys(all_entries)
     reassigned_keys = [x for x in reassignable_keys if x not in available_keys]
-    entries_to_reassign = [x for x in old_entries.values() if x.key.value in reassigned_keys]
+    entries_to_reassign = [x for x in old_entries.values() if x.key.value in reassigned_keys or x.key == NO_KEY]
     for entry in entries_to_reassign:
-        entry.key = Key()
+        entry.key = NO_KEY
     _assign(entries_to_reassign, free_keys)
     return entries_to_reassign
 
