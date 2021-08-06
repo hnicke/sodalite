@@ -30,10 +30,11 @@ Once setup, and muscle memory kicks in, all directories will be reachable in a b
 
 ##### Debian-based Distros (e.g., Ubuntu)
  ```bash
-# add repository http://debian.hnicke.de/repo/
+# add apt key and repository http://debian.hnicke.de/repo/
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 5B08767916BCFCE7
-sudo echo "deb http://debian.hnicke.de/repo/ unstable main" >> /etc/apt/sources.list
+sudo sh -c 'echo "deb [arch=amd64] http://debian.hnicke.de/repo/ unstable main" >/etc/apt/sources.list.d/sodalite.list'
 sudo apt-get update
+
 # install
 sudo apt install sodalite
 ```
