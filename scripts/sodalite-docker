@@ -1,0 +1,8 @@
+#!/bin/bash
+set -eu
+docker_dir="$(dirname "$(readlink -f "$0")")"/docker
+
+( cd $docker_dir && docker build -t sodalite .; )
+
+docker run -it --rm sodalite
+
