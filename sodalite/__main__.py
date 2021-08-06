@@ -73,10 +73,10 @@ def run(path: Optional[str], update_access: Optional[str]) -> None:
             logger.debug("Shutting down")
         except KeyboardInterrupt:
             logger.debug('Received SIGINT - shutting down')
-            exit(1)
+            sys.exit(1)
         except ConfigNotFound as e:
             click.echo(e.msg, file=sys.stderr)
-            exit(1)
+            sys.exit(1)
 
 
 def update(target: str) -> None:
@@ -86,7 +86,7 @@ def update(target: str) -> None:
     target_path = Path(target)
     if not target_path.exists():
         logger.warning(f'Not updating target {target}: no such file or directory')
-        exit(1)
+        sys.exit(1)
     target_name = str(target_path)
     if target_name.startswith("/"):
         target_name = target_name[1:]
