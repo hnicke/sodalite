@@ -1,7 +1,7 @@
 import urwid
 from pygments import token
 
-from sodalite.ui.viewmodel import Mode
+from sodalite.ui.mmode import Mode
 from sodalite.util import pubsub
 
 file = urwid.WHITE

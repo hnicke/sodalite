@@ -12,6 +12,8 @@ function set_fallback_editor {
             editor=vim
         elif type nano; then
             editor=nano
+        elif type vi; then
+            editor=vi
         else
             echo "Could not find a suitable editor"; exit 1
         fi

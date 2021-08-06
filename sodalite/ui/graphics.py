@@ -14,7 +14,8 @@ from sodalite.ui.filter import Filter
 from sodalite.ui.help import HelpLauncher
 from sodalite.ui.hookbox import HookBox
 from sodalite.ui.mainpane import MainPane
-from sodalite.ui.viewmodel import ViewModel, Mode
+from sodalite.ui.viewmodel import ViewModel
+from sodalite.ui.mmode import Mode
 from sodalite.util import env, pubsub
 
 logger = logging.getLogger(__name__)

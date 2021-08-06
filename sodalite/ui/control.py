@@ -4,16 +4,17 @@ from typing import Callable, Tuple, Optional
 from typing import TYPE_CHECKING
 
 import pyperclip
-from urwid import AttrSpec
 
+import sodalite.ui.mmode
 from sodalite.core import key as key_module, hook, buffer, operate, Navigator
 from sodalite.core.action import Action
 from sodalite.core.action_def import ActionName
 from sodalite.core.entry import Entry
 from sodalite.core.key import Key
-from sodalite.ui import graphics, viewmodel, notify, theme
+from sodalite.ui import graphics, notify
 from sodalite.ui.entrylist import EntryList
-from sodalite.ui.viewmodel import Mode, ViewModel
+from sodalite.ui.mmode import Mode
+from sodalite.ui.viewmodel import ViewModel
 from sodalite.util import pubsub
 
 if TYPE_CHECKING:
@@ -95,9 +96,9 @@ class Control:
                         if _action.handle(key):
                             break
         except PermissionError:
-            notify.show((AttrSpec(theme.forbidden + ',bold', '', colors=16), "PERMISSION DENIED"))
+            notify.show_error("PERMISSION DENIED")
         except FileNotFoundError:
-            notify.show((AttrSpec(theme.forbidden + ',bold', '', colors=16), "FILE NOT FOUND"))
+            notify.show_error("FILE NOT FOUND")
 
     def handle_key_individually(self, key):
         pass
@@ -117,17 +118,17 @@ class Control:
         graphics.exit()
 
     def enter_navigate_mode(self) -> None:
-        viewmodel.global_mode.mode = Mode.NAVIGATE
+        sodalite.ui.mmode.global_mode.mode = Mode.NAVIGATE
         self.list.render(self.list_size, True)
 
     def enter_assign_mode(self) -> None:
         if self.model.current_entry.is_dir:
-            viewmodel.global_mode.mode = Mode.ASSIGN_CHOOSE_ENTRY
+            sodalite.ui.mmode.global_mode.mode = Mode.ASSIGN_CHOOSE_ENTRY
             self.list.render(self.list_size, True)
 
     def enter_operate_mode(self) -> None:
         if self.model.current_entry.is_dir:
-            viewmodel.global_mode.mode = Mode.OPERATE
+            sodalite.ui.mmode.global_mode.mode = Mode.OPERATE
             self.list.render(self.list_size, True)
 
     def trigger_filter(self) -> None:
@@ -243,25 +244,25 @@ class AssignControl(Control):
         self.actions = actions
 
     def handle_key_individually(self, key):
-        if viewmodel.global_mode == Mode.ASSIGN_CHOOSE_ENTRY and self.navigator.is_navigation_key(key):
+        if sodalite.ui.mmode.global_mode == Mode.ASSIGN_CHOOSE_ENTRY and self.navigator.is_navigation_key(key):
             self.choose_entry(key)
             return True
-        elif viewmodel.global_mode == Mode.ASSIGN_CHOOSE_KEY and key_module.is_navigation_key(key):
+        elif sodalite.ui.mmode.global_mode == Mode.ASSIGN_CHOOSE_KEY and key_module.is_navigation_key(key):
             self.assign_key(key)
             return True
 
     def exit(self) -> None:
-        if viewmodel.global_mode == Mode.ASSIGN_CHOOSE_ENTRY:
-            viewmodel.global_mode.mode = Mode.ASSIGN_CHOOSE_KEY
+        if sodalite.ui.mmode.global_mode == Mode.ASSIGN_CHOOSE_ENTRY:
+            sodalite.ui.mmode.global_mode.mode = Mode.ASSIGN_CHOOSE_KEY
 
     def choose_entry(self, key: str) -> None:
         if key in key_module.get_all_keys():
             entry = self.navigator.current_entry.get_child_for_key(Key(key))
             assert entry
             self.list.select(entry)
-            viewmodel.global_mode.mode = Mode.ASSIGN_CHOOSE_KEY
+            sodalite.ui.mmode.global_mode.mode = Mode.ASSIGN_CHOOSE_KEY
         elif key == 'enter':
-            viewmodel.global_mode.mode = Mode.ASSIGN_CHOOSE_KEY
+            sodalite.ui.mmode.global_mode.mode = Mode.ASSIGN_CHOOSE_KEY
 
     def assign_key(self, key: str):
         if key_module.is_navigation_key(key):

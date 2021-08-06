@@ -51,7 +51,11 @@ Check out the [manpage](https://github.com/hnicke/sodalite/blob/master/docs/soda
 ## FAQ
 ##### The default 'open' hook doesn't work / launches weird programs :(
 Most probably it is not sodalite's fault, but your mime default application list isn't configured correctly.
-You could try this:
+Run the following command to find the associated application for given file:
+```bash
+xdg-mime query default $(xdg-mime query filetype <file>)
+```
+In order to change the default application for a files mime type, run:
 ```bash
 xdg-mime default <desktop> $(xdg-mime query filetype <file>)
 ```

@@ -1,9 +1,9 @@
 from typing import Callable
 
+import sodalite.ui.mmode
 from sodalite.core import config, action_def
 from sodalite.core.action_def import ActionName
-from sodalite.ui import viewmodel
-from sodalite.ui.viewmodel import Mode
+from sodalite.ui.mmode import Mode
 
 
 class Action:
@@ -17,7 +17,7 @@ class Action:
 
     def handle(self, key: str) -> bool:
         if key == self.keybinding:
-            if self.is_global or viewmodel.global_mode in self.modes:
+            if self.is_global or sodalite.ui.mmode.global_mode in self.modes:
                 self.action()
                 return True
         return False
