@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.28 (2021-08-06)
+### Fix
+* Dispatch add_package event to debian repository ([#230](https://github.com/hnicke/sodalite/issues/230)) ([`bfeadd5`](https://github.com/hnicke/sodalite/commit/bfeadd5d860a296d78b4072321b6f426a3508847))
+
 ## v0.21.27 (2021-08-06)
 ### Fix
 * Test automated release to debian repository ([`2218594`](https://github.com/hnicke/sodalite/commit/22185940685d5ae47686f000f6405789f19b62ea))
