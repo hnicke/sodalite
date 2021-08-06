@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.27 (2021-08-06)
+### Fix
+* Test automated release to debian repository ([`2218594`](https://github.com/hnicke/sodalite/commit/22185940685d5ae47686f000f6405789f19b62ea))
+
 ## v0.21.26 (2021-08-05)
 ### Fix
 * Upload debian package to release ([`dfe0522`](https://github.com/hnicke/sodalite/commit/dfe052206df90de9b249555a730653fdff3c79a3))
