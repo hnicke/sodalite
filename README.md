@@ -28,16 +28,8 @@ Once setup, and muscle memory kicks in, all directories will be reachable in a b
 
 #### Linux
 
-##### Arch Linux
-AUR package [sodalite](https://aur.archlinux.org/packages/sodalite/) (stable release):
-> `yaourt -S sodalite`
-
-AUR package [sodalite-git](https://aur.archlinux.org/packages/sodalite-git/) (master branch):
-> `yaourt -S sodalite-git`
-
-
 ##### Debian-based Distros (e.g., Ubuntu)
-> ```bash
+ ```bash
 # add repository http://debian.hnicke.de/repo/
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 5B08767916BCFCE7
 sudo echo "deb http://debian.hnicke.de/repo/ unstable main" >> /etc/apt/sources.list
@@ -46,33 +38,12 @@ sudo apt-get update
 sudo apt install sodalite
 ```
 
-
-
-#### OSX
-1. Install [brew](https://brew.sh/):
-> `/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
-2. Install dependencies:
-    1. python3: `brew install python3.9`
-    2. other: `pip3 install .`
-3. run `sudo python3.9 setup.py install`
-
-#### Manual Installation
-In order to manually install `sodalite`, clone this repository, `cd` to the project root and execute:
+##### Arch Linux
+AUR package [sodalite](https://aur.archlinux.org/packages/sodalite/):
 ```bash
-sudo make prefix=/usr sysconfdir=/etc install
+yay -S sodalite
 ```
-Replace the values for `prefix` and `sysconfdir` with the appropriate directories for your OS.
 
-
-> **Necessary dependencies**:  
-> - [python3](https://www.python.org/downloads/release/python-364/)  (>=3.6)
-> - [urwid](http://urwid.org)
-> - [click](https://click.palletsprojects.com/en/7.x/)
-> - [pygments](http://pygments.org)
-> - [binaryornot](https://github.com/audreyr/binaryornot)
-> - [PyYAML](https://github.com/yaml/pyyaml)
-> - [pyperclip](https://github.com/asweigart/pyperclip)
-> - [watchdog](https://github.com/gorakhargosh/watchdog)
 
 ## Getting started
 Check out the [manpage](https://github.com/hnicke/sodalite/blob/master/docs/sodalite.1.md) for detailed usage information.
