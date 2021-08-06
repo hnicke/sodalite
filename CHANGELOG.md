@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.32 (2021-08-06)
+### Fix
+* Replace 'vim' hook with generic 'edit' hook ([#236](https://github.com/hnicke/sodalite/issues/236)) ([`e24c4dc`](https://github.com/hnicke/sodalite/commit/e24c4dccfd9cd4348a2a95d8222edec2ea8c9382))
+
 ## v0.21.31 (2021-08-06)
 ### Fix
 * Entries which end up having no key get a key reassigned eventually ([#235](https://github.com/hnicke/sodalite/issues/235)) ([`ad67c78`](https://github.com/hnicke/sodalite/commit/ad67c78f128a66798ace44d6f5d94ed7677ba58f))
