@@ -51,7 +51,7 @@ class Navigator:
         If the current directory doesn't exist, returns the first existing parent
         or None in case the current directory does not exist anymore
         """
-        path = _sanitize(Path(os.environ['PWD']))
+        path = _sanitize(Path(os.environ.get('PWD', '/')))
         entry = self.entry_access.retrieve_entry(path)
         _chdir(entry)
         return entry

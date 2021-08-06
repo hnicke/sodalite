@@ -56,7 +56,7 @@ def run(path: Optional[str], update_access: Optional[str]) -> None:
         update(update_access)
     else:
         if not path:
-            path = os.environ['PWD']
+            path = str(os.environ.get('PWD', '/'))
         path = path
         try:
             _io_to_tty()
