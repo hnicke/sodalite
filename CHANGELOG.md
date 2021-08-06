@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.33 (2021-08-06)
+### Fix
+* Fix arch linux packaging ([`2d06338`](https://github.com/hnicke/sodalite/commit/2d06338a868ac075fb1210897f1c8dd6cad8844d))
+
 ## v0.21.32 (2021-08-06)
 ### Fix
 * Replace 'vim' hook with generic 'edit' hook ([#236](https://github.com/hnicke/sodalite/issues/236)) ([`e24c4dc`](https://github.com/hnicke/sodalite/commit/e24c4dccfd9cd4348a2a95d8222edec2ea8c9382))
