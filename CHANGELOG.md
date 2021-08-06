@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.29 (2021-08-06)
+### Fix
+* Fix debian repository dispatch ([`9655e29`](https://github.com/hnicke/sodalite/commit/9655e292672f392124c927641bf5dfec82a754b8))
+
 ## v0.21.28 (2021-08-06)
 ### Fix
 * Dispatch add_package event to debian repository ([#230](https://github.com/hnicke/sodalite/issues/230)) ([`bfeadd5`](https://github.com/hnicke/sodalite/commit/bfeadd5d860a296d78b4072321b6f426a3508847))
