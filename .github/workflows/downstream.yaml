@@ -51,3 +51,24 @@ jobs:
           args: packaging/deb/build/*.deb
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: dispatch event to ppa repository
+        run: |
+          version=$(echo $GITHUB_REF | cut -d/ -f3 | cut -dv -f2)
+          status=$(curl \
+            -X POST \
+            https://api.github.com/repos/hnicke/debian-repository/dispatches \
+            -d '{
+              "event_type":"add_package",
+                 "client_payload": {
+                    "download_url": "https://github.com/hnicke/sodalite/releases/download/v'"$version"'/sodalite_'"$version"'_all.deb"
+                 }
+              }' \
+            -u "{{ secrets.DEBIAN_REPOSITORY_USER }}:{{ secrets.DEBIAN_REPOSITORY_TOKEN }}" \
+            -L \
+            -H "Accept: application/vnd.github.v3+json" \
+            -so /dev/null \
+            -w "%{http_code}")
+          echo "Dispatch response: $status"
+          [ "$status" = 204 ]
+
