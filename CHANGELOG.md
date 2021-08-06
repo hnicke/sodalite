@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.30 (2021-08-06)
+### Fix
+* Do not crash if env var PWD is not set ([#234](https://github.com/hnicke/sodalite/issues/234)) ([`52a48c9`](https://github.com/hnicke/sodalite/commit/52a48c9d6ca3e8adf4c9bcf80123100acc69ee74))
+
 ## v0.21.29 (2021-08-06)
 ### Fix
 * Fix debian repository dispatch ([`9655e29`](https://github.com/hnicke/sodalite/commit/9655e292672f392124c927641bf5dfec82a754b8))
