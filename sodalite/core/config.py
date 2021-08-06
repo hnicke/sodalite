@@ -2,6 +2,7 @@ import functools
 import logging
 import os
 import shutil
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional, Union
@@ -83,4 +84,4 @@ def get() -> Configuration:
         )
     except (ParserError, ScannerError):
         logger.exception(f"Failed to parse config file'{_config_file()}': Invalid yaml.", exc_info=True)
-        exit(1)
+        sys.exit(1)
