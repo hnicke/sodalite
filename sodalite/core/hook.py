@@ -5,7 +5,6 @@ from typing import Union, TYPE_CHECKING, Optional
 
 from sodalite.core import config
 from sodalite.core.config import HooksConfig
-from sodalite.ui import notify
 
 if TYPE_CHECKING:
     from sodalite.core.entry import Entry
@@ -38,6 +37,7 @@ class Hook:
         result = os.system(f"( {self.action} ) > /dev/tty < /dev/tty")
         logger.info(f"Result is {result}")
         if result != 0:
+            from sodalite.ui import notify
             notify.show_error(f"command failed with exit code {result}")
         from sodalite.ui import graphics
         if self.finally_exit:

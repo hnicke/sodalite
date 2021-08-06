@@ -1,18 +1,48 @@
 import logging
 import re
 import sre_constants
+from enum import Enum
 from re import Pattern
 from typing import Optional
 
 from sodalite.core.entry import Entry
 from sodalite.ui import highlighting
 from sodalite.ui.highlighting import HighlightedLine
-from sodalite.ui.mmode import Mode
 from sodalite.util import pubsub
 
 logger = logging.getLogger(__name__)
 
+
+class Mode(Enum):
+    NAVIGATE = 1
+    ASSIGN_CHOOSE_ENTRY = 2
+    ASSIGN_CHOOSE_KEY = 3
+    OPERATE = 4
+
+
 ANY_ASSIGN_MODE = (Mode.ASSIGN_CHOOSE_KEY, Mode.ASSIGN_CHOOSE_ENTRY)
+
+
+class GlobalMode:
+
+    def __init__(self):
+        super().__init__()
+        self.mode = Mode.NAVIGATE
+
+    @property
+    def mode(self):
+        return self._mode
+
+    @mode.setter
+    def mode(self, mode: Mode):
+        self._mode = mode
+        pubsub.mode_send(self._mode)
+
+    def __eq__(self, other):
+        return self._mode == other or super.__eq__(self, other)
+
+
+global_mode = GlobalMode()
 
 
 class ViewModel:

@@ -5,7 +5,6 @@ from typing import Optional
 import urwid
 from urwid import AttrSpec, ListBox
 
-import sodalite.ui.mmode
 from sodalite.core.entry import Entry
 from sodalite.core.navigate import Navigator
 from sodalite.ui import theme, graphics, viewmodel
@@ -83,7 +82,7 @@ class ListEntry(urwid.WidgetWrap):
         caption = "    " + key + "    "
         text = self.entry.name
         display = caption + text
-        if focus and sodalite.ui.mmode.global_mode in viewmodel.ANY_ASSIGN_MODE:
+        if focus and viewmodel.global_mode in viewmodel.ANY_ASSIGN_MODE:
             color = AttrSpec(self.color.foreground + ',standout', self.color.background, colors=16)
         else:
             color = self.color

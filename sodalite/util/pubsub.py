@@ -4,7 +4,7 @@ from blinker import Signal
 
 if TYPE_CHECKING:
     from sodalite.core.entry import Entry
-    from sodalite.ui.mmode import Mode
+    from sodalite.ui.viewmodel import Mode
     from sodalite.ui.highlighting import HighlightedLine
 
 
