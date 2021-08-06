@@ -16,7 +16,7 @@ jobs:
       - name: Validate & update checksums
         uses: datakrama/archlinux-package-action@v1
         with:
-          path: packaging/aur
+          path: packaging/arch
           updpkgsums: true
 
       - name: publish
