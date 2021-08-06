@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.34 (2021-08-06)
+### Fix
+* Fix urwid display error ([#237](https://github.com/hnicke/sodalite/issues/237)) ([`eb89c43`](https://github.com/hnicke/sodalite/commit/eb89c43a9057f1c261ec619017fcda860010ae02))
+
 ## v0.21.33 (2021-08-06)
 ### Fix
 * Fix arch linux packaging ([`2d06338`](https://github.com/hnicke/sodalite/commit/2d06338a868ac075fb1210897f1c8dd6cad8844d))
