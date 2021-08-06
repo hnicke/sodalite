@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.31 (2021-08-06)
+### Fix
+* Entries which end up having no key get a key reassigned eventually ([#235](https://github.com/hnicke/sodalite/issues/235)) ([`ad67c78`](https://github.com/hnicke/sodalite/commit/ad67c78f128a66798ace44d6f5d94ed7677ba58f))
+
 ## v0.21.30 (2021-08-06)
 ### Fix
 * Do not crash if env var PWD is not set ([#234](https://github.com/hnicke/sodalite/issues/234)) ([`52a48c9`](https://github.com/hnicke/sodalite/commit/52a48c9d6ca3e8adf4c9bcf80123100acc69ee74))
