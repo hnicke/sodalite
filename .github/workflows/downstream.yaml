@@ -64,7 +64,7 @@ jobs:
                     "download_url": "https://github.com/hnicke/sodalite/releases/download/v'"$version"'/sodalite_'"$version"'_all.deb"
                  }
               }' \
-            -u "{{ secrets.DEBIAN_REPOSITORY_USER }}:{{ secrets.DEBIAN_REPOSITORY_TOKEN }}" \
+            -u "${{ secrets.DEBIAN_REPOSITORY_USER }}:${{ secrets.DEBIAN_REPOSITORY_TOKEN }}" \
             -L \
             -H "Accept: application/vnd.github.v3+json" \
             -so /dev/null \
