@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.37 (2021-08-07)
+### Fix
+* Fix debian metadata ([`e4b559b`](https://github.com/hnicke/sodalite/commit/e4b559b98101cfffa979c67df9afa0602f17f945))
+
 ## v0.21.36 (2021-08-07)
 ### Fix
 * Fix debian metadata ([`dec67c3`](https://github.com/hnicke/sodalite/commit/dec67c3682ccf6656d305f8686d15d367d3d1499))
