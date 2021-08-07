@@ -4,5 +4,5 @@ GenericName=File Navigator
 Exec=sodalite %f
 Terminal=true
 Type=Application
-Categories=FileManager;FileTools;Utility
+Categories=FileManager;FileTools;System
 Keywords=Navigator;Launcher;

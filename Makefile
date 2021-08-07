@@ -87,20 +87,28 @@ setup-hooks:
 	done
 
 
+
+###################
+#### Installer
+
 root =
 prefix = /usr
-docs = ${root}${prefix}/share/doc/sodalite
-share = ${root}${prefix}/share/sodalite
-man1 = ${root}${prefix}/share/man/man1
+root_prefix = ${root}${prefix}
+docs = ${root_prefix}/share/doc/sodalite
+share = ${root_prefix}/share/sodalite
+man1 = ${root_prefix}/share/man/man1
+
+install = install
+
 install-misc:
-	install -Dm755 scripts/sodalite-open "${root}${prefix}/bin/sodalite-open"
-	install -Dm644 sodalite.desktop "${root}${prefix}/share/applications/sodalite.desktop"
-	install -Dm644 docs/sodalite.1 "${man1}/sodalite.1"
-	install -Dm644 docs/sodalite-open.1 "${man1}/sodalite-open.1"
-	install -Dm644 README.md "${docs}/README"
-	install -Dm644 copyright "${docs}/copyright"
-	install -Dm644 CHANGELOG.md "${docs}/changelog"
-	install -Dm644 scripts/shell-integration.sh "${share}/shell-integration.sh"
-	install -Dm644 scripts/shell-integration.fish "${share}/shell-integration.fish"
-	install -Dm644 sodalite/core/sodalite.conf "${share}/sodalite.conf"
+	${install} -Dm755 {scripts,${root_prefix}}/bin/sodalite-open
+	${install} -Dm644 {.,${root_prefix}/share/applications}/de.hnicke.Sodalite.desktop
+	${install} -Dm644 {docs,${man1}}/sodalite.1
+	${install} -Dm644 {docs,${man1}}/sodalite-open.1
+	${install} -Dm644 {.,${docs}}/README.md
+	${install} -Dm644 {.,${docs}}/copyright
+	${install} -Dm644 {.,${docs}}/CHANGELOG.md
+	${install} -Dm644 {scripts,${share}}/shell-integration.sh
+	${install} -Dm644 {scripts,${share}}/shell-integration.fish
+	${install} -Dm644 {sodalite/core,${share}}/sodalite.conf
 
