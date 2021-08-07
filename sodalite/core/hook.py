@@ -5,6 +5,7 @@ from typing import Union, TYPE_CHECKING, Optional
 
 from sodalite.core import config
 from sodalite.core.config import HooksConfig
+from sodalite.util import env
 
 if TYPE_CHECKING:
     from sodalite.core.entry import Entry
@@ -34,7 +35,12 @@ class Hook:
     def trigger(self, entry: 'Entry') -> None:
         os.environ['entry'] = str(entry.path)
         logger.info(f"Executing command: {self.action}")
-        result = os.system(f"( {self.action} ) > /dev/tty < /dev/tty")
+        cmd = self.action
+        if env.RUNNING_IN_FLATPAK:
+            # TODO this is a hack and should be addressed (see https://github.com/hnicke/sodalite/issues/240)
+            if 'sodalite-open' not in cmd:
+                cmd = 'flatpak-spawn --host ' + cmd
+        result = os.system(f"( {cmd} ) > /dev/tty < /dev/tty")
         logger.info(f"Result is {result}")
         if result != 0:
             from sodalite.ui import notify

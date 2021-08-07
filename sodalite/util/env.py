@@ -20,6 +20,8 @@ logging.getLogger('sodalite').setLevel(logging.DEBUG)
 
 logger = logging.getLogger(__name__)
 
+RUNNING_IN_FLATPAK = os.getenv('SODALITE_FLATPAK') == 'true'
+
 exit_cwd: Optional[Path] = None
 # program will read following environment variables
 ENV_DATA_DIR = 'DATA_DIR'

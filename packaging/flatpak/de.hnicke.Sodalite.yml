@@ -1,0 +1,56 @@
+app-id: de.hnicke.Sodalite
+runtime: org.freedesktop.Platform
+runtime-version: '20.08'
+sdk: org.freedesktop.Sdk
+command: sodalite
+modules:
+  - name: python
+    sources:
+      - type: archive
+        url: https://www.python.org/ftp/python/3.9.6/Python-3.9.6.tar.xz
+        sha256: 397920af33efc5b97f2e0b57e91923512ef89fc5b3c1d21dbfc8c4828ce0108a
+
+  - name: dependencies
+    buildsystem: simple
+    build-commands:
+      - python3.9 -m pip install .
+    build-options:
+      build-args:
+        - --share=network
+    sources:
+      - type: dir
+        path: source
+
+  - name: sodalite
+    buildsystem: simple
+    build-commands:
+      - make install prefix=/app
+      - find /app
+    sources:
+      - type: dir
+        path: source
+cleanup:
+  - '*.debug'
+cleanup-commands:
+  - |
+    cd /app/lib/python3.9 && \
+    rm -rf \
+      config-3.9-x86_64-linux-gnu \
+      site-packages/{pip,urwid/tests,setuptools} \
+      pydoc_data \
+      turtledemo \
+      test \
+      unittest \
+      lib2to3 \
+      tkinter \
+      distutils \
+      ensurepip \
+      venv \
+      setuptools \
+      idlelib \
+      /app/lib/debug \
+      /app/bin/{2to3-3.9,pip3,idle3,pydoc3.9,watchmedo,python3-config,chardetect,pygmentize,pydoc3} 
+finish-args:
+  - --filesystem=host
+  - --talk-name=org.freedesktop.Flatpak
+  - --env=SODALITE_FLATPAK=true

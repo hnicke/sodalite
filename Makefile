@@ -86,10 +86,16 @@ setup-hooks:
 		echo Symlinked git hook: $$(basename $$file); \
 	done
 
+test-metadata:
+	desktop-file-validate meta/de.hnicke.Sodalite.desktop
+	appstream-util validate meta/de.hnicke.Sodalite.appdata.xml
+.PHONY: test-metadata
 
 
 ###################
 #### Installer
+python = python3.9
+install_opts =
 
 root =
 prefix = /usr
@@ -100,9 +106,13 @@ man1 = ${root_prefix}/share/man/man1
 
 install = install
 
-test-metadata:
-	desktop-file-validate meta/de.hnicke.Sodalite.desktop
-	appstream-util validate meta/de.hnicke.Sodalite.appdata.xml
+
+install: install-misc
+	${python} setup.py install \
+		--root=${root} \
+		--prefix=${prefix} \
+		${install_opts}
+.PHONY: install
 
 install-misc:
 	${install} -Dm755 {scripts,${root_prefix}/bin}/sodalite-open
