@@ -14,8 +14,7 @@ Architecture: all
 Depends: python3-binaryornot, python3-blinker, python3-click, python3-pygments, python3-pyperclip, python3-urwid, python3-watchdog, python3-yaml, python3.9, ${misc:Depends}
 # can not make this work -- will always include python3.8
 #Depends: ${misc:Depends}, ${python3:Depends}
-Description:
- Sodalite is a keyboard-driven terminal file navigator and launcher.
+Description: Sodalite is a keyboard-driven terminal file navigator and launcher.
  It's designed to be the missing glue for those who use the shell
  as their daily driver and seek more speed and ease.
  In a nutshell, sodalite assigns a key to each entry.
