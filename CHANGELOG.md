@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.38 (2021-08-07)
+### Fix
+* Fix debian pipeline ([#242](https://github.com/hnicke/sodalite/issues/242)) ([`dce1fcf`](https://github.com/hnicke/sodalite/commit/dce1fcfae7027f14fa3327118cf6b9ccb49d3cee))
+
 ## v0.21.37 (2021-08-07)
 ### Fix
 * Fix debian metadata ([`e4b559b`](https://github.com/hnicke/sodalite/commit/e4b559b98101cfffa979c67df9afa0602f17f945))
