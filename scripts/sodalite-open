@@ -8,11 +8,11 @@
 function set_fallback_editor {
     editor=${VISUAL:-$EDITOR}
     if [ ! $editor ]; then
-        if type vim; then
+        if type vim > /dev/null; then
             editor=vim
-        elif type nano; then
+        elif type nano > /dev/null; then
             editor=nano
-        elif type vi; then
+        elif type vi > /dev/null; then
             editor=vi
         else
             echo "Could not find a suitable editor"; exit 1
