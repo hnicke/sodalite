@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.36 (2021-08-07)
+### Fix
+* Fix debian metadata ([`dec67c3`](https://github.com/hnicke/sodalite/commit/dec67c3682ccf6656d305f8686d15d367d3d1499))
+
 ## v0.21.35 (2021-08-07)
 ### Fix
 * Fix installer ([`7e0617d`](https://github.com/hnicke/sodalite/commit/7e0617dcbf7a1460a5c76738240390f4ef9ef0b4))
