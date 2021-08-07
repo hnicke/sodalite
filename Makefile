@@ -1,3 +1,5 @@
+SHELL = /bin/bash
+
 outDir = build
 pkg = sodalite
 mypy = ${activate} && mypy --config mypy.ini -p ${pkg} -p tests ${shell [ ${color} != 'true' ] && echo '--no-color-output'}
