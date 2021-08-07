@@ -5,4 +5,5 @@ Exec=sodalite %f
 Terminal=true
 Type=Application
 Categories=FileManager;FileTools;System
-Keywords=Navigator;Launcher;
+Keywords=Navigator;Launcher
+MimeType=inode/directory;text/*

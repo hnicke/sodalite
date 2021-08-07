@@ -8,7 +8,7 @@ Have you ever played [crawl](https://crawl.develz.org/)?
 That's a terminal based roguelike dungeon crawler.  
 What makes it stand out is it's extremely efficient menu navigation philsophy. 
 
-![dcss inventar management](https://raw.githubusercontent.com/hnicke/sodalite/master/docs/crawl.png)
+![dcss inventar management](https://raw.githubusercontent.com/hnicke/sodalite/master/docs/images/crawl.png)
 
 *Dungeon Crawl Stone Soup: For selecting an item, press it's automatically assigned key.*
 
@@ -19,7 +19,8 @@ After a while, the keys burn into one's muscle memory - using the game's interfa
 When opening `sodalite`, you will see the listing of the current directory.   
 Pressing one of the keys displayed in front of the entries will navigate there.
 
-![sodalite](https://raw.githubusercontent.com/hnicke/sodalite/master/docs/sodalite.png)
+![directory pane](https://raw.githubusercontent.com/hnicke/sodalite/master/docs/images/sodalite-directory-pane.png)
+![file preview](https://raw.githubusercontent.com/hnicke/sodalite/master/docs/images/sodalite-file-preview.png)
 
 Assign the most intuitive and/or reachable keys to your most frequently used entries, and stick with this assignment. 
 Once setup, and muscle memory kicks in, all directories will be reachable in a blink of an eye!

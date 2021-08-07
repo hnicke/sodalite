@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2017 Heiko Nickerl -->
+<component>
+    <id>de.hnicke.Sodalite</id>
+    <metadata_license>CC0-1.0</metadata_license>
+    <name>sodalite</name>
+    <summary>Keyboard-driven terminal file navigator and launcher</summary>
+    <description>
+        <p>
+            Sodalite is a keyboard-driven terminal file navigator and launcher.
+            Next to fast navigation, sodalite has file preview with syntax highlighting and a pluggable hook system.
+            It's designed to be the missing glue for those who use the shell
+            as their daily driver and seek more speed and ease.
+        </p>
+        <p>
+            In a nutshell, sodalite assigns a key to each entry.
+            Pressing a key navigates to the corresponding entry.
+            The assignments are permanent but can be changed to your liking.
+        </p>
+
+
+        <p>Sodalite is designed as an extension to your shell.</p>
+        <p>Therefore don't forget to make use of its shell integration.</p>
+    </description>
+    <url type="homepage">https://sodalite.hnicke.de</url>
+    <url type="bugtracker">https://github.com/hnicke/sodalite/issues</url>
+    <url type="help">https://github.com/hnicke/sodalite/blob/master/docs/sodalite.1.md</url>
+    <launchable type="desktop-id">de.hnicke.Sodalite.desktop</launchable>
+    <provides>
+        <binary>sodalite</binary>
+        <binary>sodalite-bin</binary>
+        <python3>sodalite</python3>
+        <mediatype>inode/directory</mediatype>
+        <mediatype>text/*</mediatype>
+    </provides>
+    <requires>
+        <control>keyboard</control>
+    </requires>
+    <developer_name>Heiko Nickerl</developer_name>
+    <update_contact>sodalite@hnicke.de</update_contact>
+    <project_license>GPL-3.0+</project_license>
+    <translation/>
+    <screenshots>
+        <screenshot type="default">
+            <caption>Main view: directory listing</caption>
+            <image type="source" width="960" height="540">https://raw.githubusercontent.com/hnicke/sodalite/master/docs/images/sodalite-directory-pane.png</image>
+        </screenshot>
+        <screenshot>
+            <caption>File preview</caption>
+            <image type="source" width="960" height="540">https://raw.githubusercontent.com/hnicke/sodalite/master/docs/images/sodalite-file-preview.png</image>
+        </screenshot>
+    </screenshots>
+</component>

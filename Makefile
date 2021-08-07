@@ -100,9 +100,14 @@ man1 = ${root_prefix}/share/man/man1
 
 install = install
 
+test-metadata:
+	desktop-file-validate meta/de.hnicke.Sodalite.desktop
+	appstream-util validate meta/de.hnicke.Sodalite.appdata.xml
+
 install-misc:
 	${install} -Dm755 {scripts,${root_prefix}}/bin/sodalite-open
-	${install} -Dm644 {.,${root_prefix}/share/applications}/de.hnicke.Sodalite.desktop
+	${install} -Dm644 {meta,${root_prefix}/share/applications}/de.hnicke.Sodalite.desktop
+	${install} -Dm644 {meta,${root_prefix}/share/metainfo}/de.hnicke.Sodalite.appdata.xml
 	${install} -Dm644 {docs,${man1}}/sodalite.1
 	${install} -Dm644 {docs,${man1}}/sodalite-open.1
 	${install} -Dm644 {.,${docs}}/README.md
