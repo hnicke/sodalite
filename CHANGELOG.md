@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.35 (2021-08-07)
+### Fix
+* Fix installer ([`7e0617d`](https://github.com/hnicke/sodalite/commit/7e0617dcbf7a1460a5c76738240390f4ef9ef0b4))
+
 ## v0.21.34 (2021-08-06)
 ### Fix
 * Fix urwid display error ([#237](https://github.com/hnicke/sodalite/issues/237)) ([`eb89c43`](https://github.com/hnicke/sodalite/commit/eb89c43a9057f1c261ec619017fcda860010ae02))
