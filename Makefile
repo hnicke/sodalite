@@ -105,7 +105,7 @@ test-metadata:
 	appstream-util validate meta/de.hnicke.Sodalite.appdata.xml
 
 install-misc:
-	${install} -Dm755 {scripts,${root_prefix}}/bin/sodalite-open
+	${install} -Dm755 {scripts,${root_prefix}/bin}/sodalite-open
 	${install} -Dm644 {meta,${root_prefix}/share/applications}/de.hnicke.Sodalite.desktop
 	${install} -Dm644 {meta,${root_prefix}/share/metainfo}/de.hnicke.Sodalite.appdata.xml
 	${install} -Dm644 {docs,${man1}}/sodalite.1
@@ -116,4 +116,5 @@ install-misc:
 	${install} -Dm644 {scripts,${share}}/shell-integration.sh
 	${install} -Dm644 {scripts,${share}}/shell-integration.fish
 	${install} -Dm644 {sodalite/core,${share}}/sodalite.conf
+.PHONY: install-misc
 
