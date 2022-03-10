@@ -3,8 +3,6 @@ from pathlib import Path
 from typing import Callable, Tuple, Optional
 from typing import TYPE_CHECKING
 
-import pyperclip
-
 from sodalite.core import key as key_module, hook, buffer, operate, Navigator
 from sodalite.core.action import Action
 from sodalite.core.action_def import ActionName
@@ -154,6 +152,7 @@ class Control:
             self.yank_to_clipboard(entry.content)
 
     def yank_to_clipboard(self, text: str) -> None:
+        import pyperclip
         try:
             pyperclip.copy(text)
             text_to_log = text[0:60].replace("\n", "")

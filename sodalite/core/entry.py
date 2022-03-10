@@ -4,8 +4,6 @@ from io import UnsupportedOperation
 from pathlib import Path
 from typing import Optional
 
-from binaryornot import check
-
 from sodalite.core import rating, config
 from sodalite.core.hook import Hook
 from sodalite.core.key import Key
@@ -116,7 +114,11 @@ class Entry:
 
     @functools.cached_property
     def is_plain_text_file(self) -> bool:
-        return self.is_file and not self.name.endswith('.pdf') and not check.is_binary(str(self.path))
+        if self.is_file:
+            from binaryornot import check
+            return not self.name.endswith('.pdf') and not check.is_binary(str(self.path))
+        else:
+            return False
 
     @functools.cached_property
     def is_dir(self) -> bool:

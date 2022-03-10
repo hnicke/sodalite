@@ -2,10 +2,6 @@ import logging
 from pathlib import Path
 from typing import Pattern, Generator
 
-import pygments
-from pygments import lexers, token
-from pygments.lexers.shell import BashLexer
-
 from sodalite.core.entry import Entry
 from sodalite.ui import theme
 
@@ -21,6 +17,7 @@ class HighlightedLine:
         self.numbered_content = [formatted_line_number] + content
 
     def bold_headings(self, content):
+        from pygments import token
         heading = None
         new_content = []
         for attr, word in content:
@@ -47,16 +44,17 @@ def compute_highlighting(entry: Entry) -> Generator[HighlightedLine, None, None]
 
 
 def find_lexer(file: Path, content: str):
+    import pygments
     try:
         if file.name in ('.gitignore', '.dockerignore'):
+            from pygments.lexers.shell import BashLexer
             lexer = BashLexer()
         else:
-            lexer = lexers.guess_lexer_for_filename(str(file), content, stripnl=False,
-                                                    ensurenl=False)
+            lexer = pygments.lexers.guess_lexer_for_filename(str(file), content, stripnl=False, ensurenl=False)
         logger.debug('Detected lexer by filename')
     except pygments.util.ClassNotFound:
         try:
-            lexer = lexers.guess_lexer(content, stripnl=False, ensurenl=False)
+            lexer = pygments.lexers.guess_lexer(content, stripnl=False, ensurenl=False)
             logger.debug('Detected lexer by file content')
         except pygments.util.ClassNotFound:
             lexer = BashLexer(stripnl=False, ensurenl=False)
