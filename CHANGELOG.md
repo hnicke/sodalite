@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.39 (2022-03-10)
+### Performance
+* Improve startup performance ([#243](https://github.com/hnicke/sodalite/issues/243)) ([`aed211b`](https://github.com/hnicke/sodalite/commit/aed211b9e09e718cfddda8ed25b6f58aea38917d))
+
 ## v0.21.38 (2021-08-07)
 ### Fix
 * Fix debian pipeline ([#242](https://github.com/hnicke/sodalite/issues/242)) ([`dce1fcf`](https://github.com/hnicke/sodalite/commit/dce1fcfae7027f14fa3327118cf6b9ccb49d3cee))
