@@ -41,11 +41,6 @@ type-coverage: ${reportDir}/linecount.txt
 .PHONY: type-coverage
 
 
-
-
-
-
-
 # logs are written to journald in order not to interfere with the TUI
 logs:
 	journalctl --identifier sodalite --follow
@@ -89,6 +84,11 @@ setup-hooks:
 	done
 
 
+import-profile: deps
+	${activate} \
+	&& pip install tuna \
+	&& tuna <(python -X importtime -m sodalite 2>&1 1>/dev/null)
+.PHONY: import-profile
 
 ###################
 #### Installer
