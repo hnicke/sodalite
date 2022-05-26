@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.40 (2022-05-26)
+### Fix
+* Fix packaging for arch linux ([#245](https://github.com/hnicke/sodalite/issues/245)) ([`20be29d`](https://github.com/hnicke/sodalite/commit/20be29d936c9e8a26e086cd0f5b94a50249d34d4))
+
+### Documentation
+* Regenerate manpages ([#244](https://github.com/hnicke/sodalite/issues/244)) ([`77d2bd3`](https://github.com/hnicke/sodalite/commit/77d2bd31e3c8deea2049685cd9b43b2e3c5e5e95))
+
 ## v0.21.39 (2022-03-10)
 ### Performance
 * Improve startup performance ([#243](https://github.com/hnicke/sodalite/issues/243)) ([`aed211b`](https://github.com/hnicke/sodalite/commit/aed211b9e09e718cfddda8ed25b6f58aea38917d))
