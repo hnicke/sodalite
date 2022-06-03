@@ -18,6 +18,8 @@ jobs:
         with:
           path: packaging/arch
           updpkgsums: true
+          # workaround for https://github.com/hapakaien/archlinux-package-action/issues/23
+          aur: true
 
       - name: publish
         uses: KSXGitHub/github-actions-deploy-aur@v2.2.5
