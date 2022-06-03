@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.41 (2022-06-03)
+### Fix
+* Aur packaging ([#246](https://github.com/hnicke/sodalite/issues/246)) ([`0afc600`](https://github.com/hnicke/sodalite/commit/0afc600c478daa3f57d8585906e623feaa2bba38))
+
 ## v0.21.40 (2022-05-26)
 ### Fix
 * Fix packaging for arch linux ([#245](https://github.com/hnicke/sodalite/issues/245)) ([`20be29d`](https://github.com/hnicke/sodalite/commit/20be29d936c9e8a26e086cd0f5b94a50249d34d4))
