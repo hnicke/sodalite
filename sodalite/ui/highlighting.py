@@ -44,7 +44,8 @@ def compute_highlighting(entry: Entry) -> Generator[HighlightedLine, None, None]
 
 
 def find_lexer(file: Path, content: str):
-    import pygments
+    from pygments.util import ClassNotFound
+    import pygments.lexers
     try:
         if file.name in ('.gitignore', '.dockerignore'):
             from pygments.lexers.shell import BashLexer
@@ -52,11 +53,11 @@ def find_lexer(file: Path, content: str):
         else:
             lexer = pygments.lexers.guess_lexer_for_filename(str(file), content, stripnl=False, ensurenl=False)
         logger.debug('Detected lexer by filename')
-    except pygments.util.ClassNotFound:
+    except ClassNotFound:
         try:
             lexer = pygments.lexers.guess_lexer(content, stripnl=False, ensurenl=False)
             logger.debug('Detected lexer by file content')
-        except pygments.util.ClassNotFound:
+        except ClassNotFound:
             lexer = BashLexer(stripnl=False, ensurenl=False)
             logger.debug('Using fallback lexer')
     return lexer
