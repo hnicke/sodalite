@@ -6,6 +6,7 @@ pkgdesc="Keyboard-driven terminal file navigator and launcher"
 arch=('any')
 url="https://sodalite.hnicke.de"
 license=('GPL')
+makedepends=('python-setuptools')
 depends=(
     'python>=3.9'
     'python-binaryornot'
