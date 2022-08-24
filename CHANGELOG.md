@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.21.42 (2022-08-24)
+### Fix
+* Fix crashing when entering plain text file preview panel ([#247](https://github.com/hnicke/sodalite/issues/247)) ([`053ae44`](https://github.com/hnicke/sodalite/commit/053ae445937f341c068ae92f22425b0b1e835e9e))
+
 ## v0.21.41 (2022-06-03)
 ### Fix
 * Aur packaging ([#246](https://github.com/hnicke/sodalite/issues/246)) ([`0afc600`](https://github.com/hnicke/sodalite/commit/0afc600c478daa3f57d8585906e623feaa2bba38))
